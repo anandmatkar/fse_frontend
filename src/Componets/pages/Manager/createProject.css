@@ -1,0 +1,130 @@
+/* createProject.css */
+/* createProject.css */
+
+.new-project-screen {
+  /* Your existing styles for the new-project-screen container */
+}
+
+.machine-table {
+  margin-top: 20px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.machine-table th,
+.machine-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.machine-table th {
+  background-color: #f2f2f2;
+}
+
+.machine-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.machine-table tr:hover {
+  background-color: #ddd;
+}
+
+
+.new-project-screen {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-machine-button {
+  background-color: #007bff;
+  margin-right: 1rem;
+  margin-bottom: .5rem;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-machine-button:hover {
+  background-color: #0056b3;
+}
+
+.submit-button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #1a862d;
+}
+
+.go-back {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.go-back:hover {
+  background-color: #b52030;
+}
+
+.popup {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  margin-top: 10px;
+  animation: fadeInOut 2s ease;
+}
+
+.machine-details {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+

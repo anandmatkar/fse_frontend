@@ -1,0 +1,58 @@
+/* NewCustomerScreen.css */
+
+.new-customer-screen {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.new-customer-screen h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.new-customer-screen .form-group {
+  margin-bottom: 20px;
+}
+
+.new-customer-screen label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.new-customer-screen input[type="text"],
+.new-customer-screen input[type="email"],
+.new-customer-screen select,
+.new-customer-screen textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.new-customer-screen .submit-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #59f09d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.new-customer-screen .submit-button:hover {
+  background-color: #0056b3;
+}
+
+.new-customer-screen .popup {
+  background-color: #28a745;
+  color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  margin-top: 20px;
+}

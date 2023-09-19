@@ -1,0 +1,39 @@
+/* jobProgress.css */
+
+.job-progress {
+  padding: 20px;
+}
+
+.job-progress h2 {
+  margin-bottom: 20px;
+}
+
+.job-progress table {
+  width: 100%;
+}
+
+.job-progress th,
+.job-progress td {
+  text-align: center;
+}
+
+.job-progress th:first-child,
+.job-progress td:first-child {
+  text-align: left;
+}
+
+.job-progress th {
+  background-color: #f2f2f2;
+}
+
+.job-progress tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.job-progress tbody tr:hover {
+  background-color: #ddd;
+}
+
+.job-progress button {
+  width: 100%;
+}

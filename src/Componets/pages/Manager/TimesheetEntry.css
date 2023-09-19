@@ -1,0 +1,42 @@
+/* TimesheetEntry.css */
+
+.timesheet-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.timesheet-info {
+  flex-grow: 1;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+/* Responsive styles for small screens */
+@media (max-width: 768px) {
+  .timesheet-entry {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .timesheet-info {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+}

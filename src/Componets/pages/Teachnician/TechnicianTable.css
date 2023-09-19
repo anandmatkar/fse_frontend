@@ -1,0 +1,28 @@
+.technician-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.technician-table th,
+.technician-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.technician-table th {
+  background-color: #f2f2f2;
+}
+
+.assign-button {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.assign-button:hover {
+  background-color: #45a049;
+}

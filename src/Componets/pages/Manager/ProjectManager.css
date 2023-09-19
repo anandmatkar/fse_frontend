@@ -1,0 +1,36 @@
+.project-manager-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  .logo {
+    width: 100px; 
+    height: 100px; 
+    margin-bottom: 20px; 
+  }
+  
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .assign-button {
+    background-color: #63f9a7;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .assign-button:hover {
+    background-color: #0056b3;
+  }
+  

@@ -1,0 +1,39 @@
+/* ManagerNavBar.css */
+.navbar-container {
+  background-color: #f8f9fa; /* Set the background color of the navigation bar */
+  padding: 10px; /* Add some padding for better spacing */
+}
+
+.navbar-container .navbar-brand {
+  font-size: 1.5rem; /* Adjust the font size of the brand name */
+  font-weight: bold;
+}
+
+.navbar-container .navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-container .navbar-right .btn-danger {
+  margin-right: 10px; /* Add some spacing between the Logout button and the profile photo */
+}
+
+.navbar-container .navbar-right .profile-photo-container {
+  position: relative; /* To position the profile photo icon */
+  margin-right: 10px; /* Add some spacing between the profile photo and the user name */
+}
+
+.navbar-container .navbar-right .profile-photo-container img {
+  width: 40px; /* Adjust the width of the profile photo */
+  height: 40px; /* Adjust the height of the profile photo */
+  border-radius: 50%; /* Make the photo round */
+  cursor: pointer; /* Add a cursor pointer on hover for a better user experience */
+}
+
+.navbar-container .navbar-right .profile-photo-container input[type="file"] {
+  display: none; /* Hide the file input by default */
+}
+
+.navbar-container .navbar-right .profile-photo-container .user-name {
+  margin-left: 5px; /* Add some spacing between the profile photo and the user name */
+}
