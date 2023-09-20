@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../../auth-context/auth-context";
 import { useState, useRef, useContext } from "react";
 import Layout from "../../Layout/Layout";
-
-
-
+import axios from 'axios'
 
 function AdminLogin() {
   const navigate = useNavigate();
@@ -25,25 +23,24 @@ function AdminLogin() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3003/api/v1/companyAdmin/adminLogin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const response = await axios.post("http://localhost:3003/api/v1/companyAdmin/adminLogin", {
           email: enteredEmail,
           password: enteredPassword,
-        }),
+       
       });
+    console.log(response,'response');
 
-      if (!response.ok) {
+      if (response.status!==200) {
         throw new Error("Authentication failed");
       }
 
-      const data = await response.json();
+      const data =  response.data;
+
+        // Parse expiresIn as an integer (assuming it's in seconds)
+       const expiresIn = parseInt(data.expiresIn);
 
       const expireTokenTime = new Date(
-        new Date().getTime() + +data.expiresIn * 1000
+        Date.now() + expiresIn * 1000
       );
       authCtx.login(data.idToken, expireTokenTime.toISOString());
       navigate("/AdminD");

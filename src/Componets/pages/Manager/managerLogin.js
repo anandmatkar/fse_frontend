@@ -71,7 +71,7 @@ function ManagerLogin(){
           })
           .then((data) => {
             const expireTokentime = new Date(
-              new Date().getTime() + +data.expiresIn * 1000
+              new Date().getTime() + +data.expiresIn * 60 * 60
             );
             authCtx.login(data.idToken, expireTokentime.toISOString());
             Navigate("/manager");
@@ -113,7 +113,7 @@ function ManagerLogin(){
           })
           .then((data) => {
             const expireTokentime = new Date(
-              new Date().getTime() + +data.expiresIn * 1000
+              new Date().getTime() + +data.expiresIn *60*60
             );
             authCtx.login(data.idToken, expireTokentime.toISOString());
             Navigate("/manger");

@@ -36,7 +36,7 @@ function App() {
         <Route
           path="/"
           exact
-          element={!authCtx.isLoggedIn && <LoginFrontPage />}
+          element={<LoginFrontPage />}
         />
       </Routes>
 
@@ -44,33 +44,32 @@ function App() {
       <Routes>
         <Route
           path="/adminLogin"
-          element={!authCtx.isLoggedIn && <AdminLogin />}
+          element={ <AdminLogin />}
         ></Route>
         {/* <Route path="/register" element={!authCtx.isLoggedIn && <RegistrationPage /> }></Route> */}
       </Routes>
       <Routes>
         <Route
           path="/managerL"
-          element={!authCtx.isLoggedIn && <ManagerDashboard />}
+          element={ <ManagerDashboard />}
         ></Route>
         <Route
           path="/register"
-          element={!authCtx.isLoggedIn && <RegistrationPage />}
+          element={<RegistrationPage />}
         ></Route>
         <Route
           path="/mangerLogin"
-          element={!authCtx.isLoggedIn && <ManagerLogin />}
+          element={ <ManagerLogin />}
         ></Route>
       </Routes>
       <Routes>
         <Route
           path="/techLogin"
-          element={!authCtx.isLoggedIn && <TechnicianLogin />}
+          element={ <TechnicianLogin />}
         ></Route>
       </Routes>
       <Routes>
-        <Route path="/reset" element={!authCtx.isLoggedIn && <Reset />}></Route>
-
+        <Route path="/reset" element={ <Reset />}></Route>
         <Route
           path="/manager"
           element={
