@@ -15,7 +15,7 @@
 //             Email Us
 //           </a>
 //         </address>
-//       </div>
+//       </div>.
 
 //       <ul className="footer__nav">
 //         <li className="nav__item">
