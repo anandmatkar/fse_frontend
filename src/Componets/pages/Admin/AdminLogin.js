@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../auth-context/auth-context";
-import { useState, useRef, useContext } from "react";
 import Layout from "../../Layout/Layout";
-import axios from 'axios'
+import axios from "axios";
 
 function AdminLogin() {
   const navigate = useNavigate();
@@ -12,42 +11,37 @@ function AdminLogin() {
 
   const authCtx = useContext(AuthContext);
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const submitHandler = async (event) => {
     event.preventDefault();
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
 
-    setIsLoading(true);
-
     try {
-      const response = await axios.post("http://localhost:3003/api/v1/companyAdmin/adminLogin", {
+      const response = await axios.post(
+        "http://localhost:3003/api/v1/companyAdmin/adminLogin",
+        {
           email: enteredEmail,
           password: enteredPassword,
-       
-      });
-    console.log(response,'response');
+        }
+      );
 
-      if (response.status!==200) {
+      if (response.status !== 200) {
         throw new Error("Authentication failed");
       }
 
-      const data =  response.data;
+      const data = response.data;
 
-        // Parse expiresIn as an integer (assuming it's in seconds)
-       const expiresIn = parseInt(data.expiresIn);
+      // Assume you receive an 'idToken' for authentication
+      const idToken = data.idToken;
 
-      const expireTokenTime = new Date(
-        Date.now() + expiresIn * 1000
-      );
-      authCtx.login(data.idToken, expireTokenTime.toISOString());
+      // You can set an arbitrary expiration time (e.g., 1 hour from now)
+      const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+      authCtx.login(idToken, expirationTime.toISOString());
       navigate("/AdminD");
     } catch (error) {
       alert(error.message);
-    } finally {
-      setIsLoading(false);
     }
   };
   return (
