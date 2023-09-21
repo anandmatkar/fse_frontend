@@ -37,7 +37,7 @@ function TechnicianLogin(){
       setIsLoading(true);
       if (isLogin) {
         fetch(
-          "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD569iNkhWZ_j_QiOm2Ffg55IsELbjyuSI",
+          "http://localhost:3003/api/v1/technician/techLogin",
           {
             method: "POST",
             body: JSON.stringify({
@@ -78,7 +78,7 @@ function TechnicianLogin(){
           });
       } else {
         fetch(
-          "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD569iNkhWZ_j_QiOm2Ffg55IsELbjyuSI",
+          "http://localhost:3003/api/v1/technician/techLogin",
           {
             method: "POST",
             body: JSON.stringify({

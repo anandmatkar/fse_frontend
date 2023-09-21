@@ -77,7 +77,7 @@ function TechnicianTable() {
     const assignedTechnician = updatedTechnicians[index];
 
     // Send data to Firebase Realtime Database
-    fetch('https://testproject-e9582-default-rtdb.firebaseio.com/technician.json', {
+    fetch('http://localhost:3003/api/v1/technician/assignedProjectDetails?projectId=08e2d3fc-a0a0-4446-840c-9c529f748267', {
       method: 'POST',
       body: JSON.stringify(assignedTechnician),
       headers: {

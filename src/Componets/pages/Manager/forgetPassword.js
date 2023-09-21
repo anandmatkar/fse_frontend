@@ -11,7 +11,7 @@ function Reset() {
     const enteredNewPass = NewPassRef.current.value;
     console.log(enteredNewPass)
     fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAvdBD8xZ0WJX9FP_ffZBJ7Cgf9n90HMjg",
+      "http://localhost:3003/api/v1/manager/resetPassword",
       {
         method: "POST",
         body: JSON.stringify({

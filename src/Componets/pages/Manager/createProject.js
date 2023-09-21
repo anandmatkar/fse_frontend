@@ -90,7 +90,7 @@ function NewProjectScreen(props) {
 
     // Send the dataToSend to Firebase Realtime Database (or other backend)
     fetch(
-      "https://testproject-e9582-default-rtdb.firebaseio.com/projectnew.json",
+      "http://localhost:3003/api/v1/manager/createProject",
       {
         method: "POST",
         headers: {

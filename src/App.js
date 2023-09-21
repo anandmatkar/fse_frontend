@@ -27,6 +27,7 @@ import JobEWaitingAprroval from "./Componets/pages/Teachnician/JobWaitingApprova
 import JobClosed from "./Componets/pages/Teachnician/JobClosed";
 import JobWaitingApprovalM from "./Componets/pages/Manager/jobWaitingApproval";
 import ProjectManager from "./Componets/pages/Manager/ProjectManager";
+import AccountWA from "./Componets/pages/Admin/AccountWA"
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -113,9 +114,10 @@ function App() {
           path="/WaitingAprroval"
           element={<JobWaitingApprovalM />}
         ></Route>
+        <Route path="AccountWA" element={<AccountWA/>}></Route>
       </Routes>
 
-      <Routes></Routes>
+      <Routes></Routes> 
     </React.Fragment>
   );
 }

@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import Layout from "../../Layout/Layout";
 import DynamicButton from "../../Model/DynamicButton";
 import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 function AdminDashboard() {
     const [numberOfAccounts,setnumberOfAccounts] = useState(13)
+    const navigate = useNavigate(); // Initialize useNavigate
+
+    // Function to handle the click event
+    const handleAccountsApprovalClick = () => {
+      // Redirect to the desired page when the button is clicked
+      navigate("/AccountWA"); // Use the route path
+    };
 
   return (
     <Layout>
@@ -41,10 +49,7 @@ function AdminDashboard() {
                     </div>
                     <div className="solu_description">
                       <p>• Accounts which are Registered are Shown Here!</p>
-                      {/* <button type="button" className="read_more_btn" onClick={createCustomerHandler}>
-                      Click Here
-                    </button> */}
-                      <DynamicButton className="read_more_btn"></DynamicButton>
+                      <DynamicButton className="read_more_btn"  ></DynamicButton>
                       <Button variant="danger" className="read_more_btn">{numberOfAccounts}</Button>
                     </div>
                   </div>
@@ -65,7 +70,7 @@ function AdminDashboard() {
                     </div>
                     <div className="solu_description">
                       <p>• Account WAITING for APPROVAL are Shown Here!</p>
-                      <DynamicButton className="read_more_btn">
+                      <DynamicButton className="read_more_btn" onClick={handleAccountsApprovalClick}>
                         Click Here
                       </DynamicButton>
                     </div>

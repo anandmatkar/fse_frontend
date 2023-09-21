@@ -9,7 +9,7 @@ function TimesheetScreen() {
 
   useEffect(() => {
     // Fetch data from Firebase API
-    fetch("http://localhost:3003/api/v1/technician/createTimesheet")
+    fetch("http://localhost:3003/api/v1/manager/timesheetListsForApproval")
       .then((response) => response.json())
       .then((data) => {
         // Convert the response data into an array of entries
@@ -41,7 +41,7 @@ function TimesheetScreen() {
 
   const approveTimesheetEntry = (id) => {
     // Send the entry to the approved timesheet API endpoint
-    fetch("https://testproject-e9582-default-rtdb.firebaseio.com/timesheetapproved.json", {
+    fetch("http://localhost:3003/api/v1/manager/acceptTimesheetRequest?projectId=08e2d3fc-a0a0-4446-840c-9c529f748267&techId=27d5039b-f3c5-44a1-95c1-3ecc12c2e836", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

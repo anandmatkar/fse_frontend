@@ -1,9 +1,9 @@
+
 import React, { useState } from "react";
 import "./NewCustomerScreen.css";
 import { toast } from "react-toastify";
 
 function NewCustomerScreen() {
-  // const [customerName, setCustomerName] = useState("");
   const [customerAccount, setCustomerAccount] = useState("");
   const [country, setCountry] = useState("");
   const [customerContact, setCustomerContact] = useState("");
@@ -12,9 +12,8 @@ function NewCustomerScreen() {
   const [lineNumber, setLineNumber] = useState("");
   const [scopeOfWork, setScopeOfWork] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-  const [customerName, setCustomerName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
+  const [customerName, setCustomerName] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -36,14 +35,13 @@ function NewCustomerScreen() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept":"application/json"
+        "Accept": "application/json",
       },
       body: JSON.stringify(customerData),
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.ok) {
           // Reset form fields
-          setCustomerName("");
           setCustomerAccount("");
           setCountry("");
           setCustomerContact("");
@@ -54,15 +52,16 @@ function NewCustomerScreen() {
           setShowPopup(true);
 
           // Show success toast message
-          
           toast.success("New customer created!");
+
+          // Parse response JSON
+          const responseData = await response.json();
+          console.log("Response Data:", responseData);
         } else {
           // Show error toast message
           toast.error("Error creating new customer.");
         }
       })
-
-
       .catch((error) => {
         console.error("Error:", error);
         // Show error toast message
@@ -72,7 +71,6 @@ function NewCustomerScreen() {
         setIsLoading(false);
       });
   };
-
   return (
     <div className="new-customer-screen">
       <h2>New Customer</h2>
