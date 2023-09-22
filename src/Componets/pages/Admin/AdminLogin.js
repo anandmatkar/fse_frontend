@@ -33,10 +33,13 @@ function AdminLogin() {
       const data = response.data;
 
       // Assume you receive an 'idToken' for authentication
-      const idToken = data.idToken;
+      const idToken = data.data.token;
+      console.log(data,'data')
 
       // You can set an arbitrary expiration time (e.g., 1 hour from now)
       const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+      localStorage.setItem('token',idToken)
+      console.log(idToken,'id token')
 
       authCtx.login(idToken, expirationTime.toISOString());
       navigate("/AdminD");

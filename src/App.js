@@ -27,7 +27,10 @@ import JobEWaitingAprroval from "./Componets/pages/Teachnician/JobWaitingApprova
 import JobClosed from "./Componets/pages/Teachnician/JobClosed";
 import JobWaitingApprovalM from "./Componets/pages/Manager/jobWaitingApproval";
 import ProjectManager from "./Componets/pages/Manager/ProjectManager";
-import AccountWA from "./Componets/pages/Admin/AccountWA"
+import AccountWA from "./Componets/pages/Admin/AccountWA";
+import NewAccount from './Componets/pages/Manager/customerInfo';
+import Userverified from "./Componets/pages/Manager/Userverified";
+import Registeredaccount from "./Componets/pages/Admin/Registeredaccount";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -72,7 +75,7 @@ function App() {
       <Routes>
         <Route path="/reset" element={ <Reset />}></Route>
         <Route
-          path="/manager"
+          path="/managert"
           element={
             !authCtx.isLoggedIn ? (
               <AddTimesheetEntryForm />
@@ -101,6 +104,7 @@ function App() {
         <Route path="/AdminD" element={<AdminDashboard />}></Route>
         <Route path="/timeSheet" element={<TimesheetScreen />}></Route>
         <Route path="/timeSheetEntry" element={<TimesheetEntry />}></Route>
+        <Route path="/newaccount" element={<NewAccount/>}></Route>
         <Route
           path="/timeSheetForm"
           element={<AddTimesheetEntryForm />}
@@ -115,6 +119,8 @@ function App() {
           element={<JobWaitingApprovalM />}
         ></Route>
         <Route path="AccountWA" element={<AccountWA/>}></Route>
+        <Route path="userverified" element={<Userverified/>}></Route>
+        <Route path="registerdaccount" element={<Registeredaccount/>}></Route>
       </Routes>
 
       <Routes></Routes> 

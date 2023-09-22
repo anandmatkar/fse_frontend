@@ -1,0 +1,32 @@
+/* Styles for the container div */
+.verification-message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Styles for the message div */
+  .verification-message {
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Styles for the title */
+  .message-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  /* Styles for the message text */
+  .message-text {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #555;
+  }
+  

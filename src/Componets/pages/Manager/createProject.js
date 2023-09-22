@@ -74,12 +74,27 @@ function NewProjectScreen(props) {
 
     // Create an object with the form field values
     const projectData = {
-      customer: customer,
+      customerId: "94361abe-3c42-44e2-93da-d2ebe224738d", // Hardcoded for now, replace with dynamic value
       projectType: projectType,
-      projectDescription: projectDescription,
+      description: projectDescription,
       startDate: startDate,
       endDate: endDate,
       technicians: technicians,
+      projectAttach: [], // You can add attachments here if needed
+      machineDetails: machinesData.map((machine) => ({
+        MachineType: machine.machineType,
+        MachineSerial: machine.serialNumber,
+        hourCount: machine.hourCount,
+        nomSpeed: machine.nominalSpeed,
+        actSpeed: machine.actualSpeed,
+        techIds: machine.technicians, // Assuming techIds is an array of technician IDs
+        machineAttach: Array.isArray(machine.attachments) ? 
+        machine.attachments.map((attachment) => ({
+          path: attachment.path,
+          size: attachment.size,
+          mimetype: attachment.type,
+        })):[],
+      })),
     };
 
     // Combine projectData and machinesData into one object
@@ -101,7 +116,7 @@ function NewProjectScreen(props) {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log("Data sent to Firebase:", data);
+        console.log("Data sent to Api:", data);
         // Reset form fields and show popup
         setCustomer("");
         setProjectType("");
@@ -115,7 +130,7 @@ function NewProjectScreen(props) {
         setTimeout(() => setShowPopup(false), 2000);
       })
       .catch((error) => {
-        console.error("Error sending data to Firebase:", error);
+        console.error("Error sending data to api:", error);
       });
   };
   const handleDeleteMachine = (index) => {

@@ -64,7 +64,7 @@ const RegistrationPage = () => {
       enteredExperience
     }
     fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAvdBD8xZ0WJX9FP_ffZBJ7Cgf9n90HMjg",
+      "http://localhost:3003/api/v1/manager/managerLogin",
       {
         method: "POST",
         body: JSON.stringify({
@@ -97,16 +97,16 @@ const RegistrationPage = () => {
       })
       .then((data) => {
         const expireTokentime = new Date(
-          new Date().getTime() + +data.expiresIn * 1000
+          new Date().getTime() + +data.expiresIn * 60*60
         );
         authCtx.login(data.idToken, expireTokentime.toISOString());
-        Navigate("/manger");
+        Navigate("/manager");
       })
       .catch((err) => {
         <Alert>{err}</Alert>
       });
 
-      fetch("https://testproject-e9582-default-rtdb.firebaseio.com/projectnew.json",{
+      fetch("http://localhost:3003/api/v1/manager/createManager",{
         method : "Post",
         body : JSON.stringify(RegistrationData),
         headers : {
