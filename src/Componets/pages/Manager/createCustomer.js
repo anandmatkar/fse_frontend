@@ -2,6 +2,10 @@
 import React, { useState } from "react";
 import "./NewCustomerScreen.css";
 import { toast } from "react-toastify";
+import Spinner from "../Common/Spinner";
+import axios from 'axios';
+import { Create_Customer_Api } from "../../../Api/Manager_Api";
+
 
 function NewCustomerScreen() {
   const [customerAccount, setCustomerAccount] = useState("");
@@ -15,7 +19,7 @@ function NewCustomerScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [customerName, setCustomerName] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const customerData = {
@@ -31,16 +35,20 @@ function NewCustomerScreen() {
 
     setIsLoading(true);
 
-    fetch("http://localhost:3003/api/v1/customer/createCustomer", {
-      method: "POST",
+    const axiosConfig = {
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Authorization: localStorage.getItem("token"), // Assuming you store the token in localStorage
       },
-      body: JSON.stringify(customerData),
-    })
-      .then(async (response) => {
-        if (response.ok) {
+    };
+    console.log(axiosConfig,'data to send')
+    try {
+    const response = await axios.post(Create_Customer_Api,
+      customerData,
+      axiosConfig
+    );
+     
+        if (response.status===200) {
           // Reset form fields
           setCustomerAccount("");
           setCountry("");
@@ -53,24 +61,26 @@ function NewCustomerScreen() {
 
           // Show success toast message
           toast.success("New customer created!");
-
-          // Parse response JSON
-          const responseData = await response.json();
-          console.log("Response Data:", responseData);
+          console.log("Response Data:", response);
         } else {
           // Show error toast message
           toast.error("Error creating new customer.");
         }
-      })
-      .catch((error) => {
+      }catch(error){
         console.error("Error:", error);
         // Show error toast message
         toast.error("Error creating new customer.");
-      })
-      .finally(() => {
+      }finally {
         setIsLoading(false);
-      });
+      };
   };
+  if (isLoading) {
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <div className="new-customer-screen">
       <h2>New Customer</h2>

@@ -9,7 +9,7 @@ function TimesheetScreen() {
 
   useEffect(() => {
     // Fetch data from Firebase API
-    fetch("http://localhost:3003/api/v1/manager/timesheetListsForApproval")
+    fetch("http://localhost:3003/api/v1/technician/timesheetList?projectId=08e2d3fc-a0a0-4446-840c-9c529f748267")
       .then((response) => response.json())
       .then((data) => {
         // Convert the response data into an array of entries
@@ -26,7 +26,7 @@ function TimesheetScreen() {
 
   const deleteTimesheetEntry = (id) => {
     // Delete the entry from the Firebase API
-    fetch(`https://testproject-e9582-default-rtdb.firebaseio.com/timesheet/${id}.json`, {
+    fetch(`http://localhost:3003/api/v1/technician/deleteTimesheet?projectId=08e2d3fc-a0a0-4446-840c-9c529f748267`, {
       method: "DELETE",
     })
       .then(() => {

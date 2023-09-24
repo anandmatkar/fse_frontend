@@ -12,6 +12,8 @@ import AuthContext from "../../auth-context/auth-context";
 import LayoutTech from "../../Layout/Layout3";
 import { Link } from "react-router-dom";
 import Alert from 'react-bootstrap/Alert';
+import axios from 'axios'
+import { managerlogin_Api } from "../../../Api/Manager_Api";
 
 const RegistrationPage = () => {
   const authCtx = useContext(AuthContext);
@@ -35,7 +37,7 @@ const RegistrationPage = () => {
   //   setIsLogin((prevState) => !prevState);
   // };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
 
     const enteredPassword = passwordInputRef.current.value;
@@ -59,77 +61,51 @@ const RegistrationPage = () => {
     localStorage.setItem("enteredLastname", JSON.stringify(enteredLastname));
     // localStorage.setItem("enteredMobile", JSON.stringify(enteredMobile));
     const RegistrationData = {
-      enterComapny,
-      entereQualification,
-      enteredExperience
+      email: enteredEmail,
+      password: enteredPassword,
+      confirmPass: confirmPasswords,
+      returnSecureToken: true,
     }
-    fetch(
-      "http://localhost:3003/api/v1/manager/managerLogin",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          // name: enteredFirstname,
-          email: enteredEmail,
-          password: enteredPassword,
-          confirmPass: confirmPasswords,
-          returnSecureToken: true,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((res) => {
-        setIsLoading(false);
-        console.log(res);
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json().then((data) => {
-            let errorMessage = "Authentication failed!";
-            if (data && data.error && data.error.message) {
-              errorMessage = data.error.message;
-            }
 
-            throw new Error(errorMessage);
-          });
+   
+    try {
+  const registrationResponse = await axios.post(
+   managerlogin_Api,
+    RegistrationData
+  )
+     // Assuming your API returns a token, use it for authentication
+     const token = registrationResponse.data.token;
+
+       // Create the manager data
+       const managerResponse = await axios.post(
+        "http://localhost:3003/api/v1/manager/createManager",
+       
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Send the token in the headers
+          },
         }
-      })
-      .then((data) => {
-        const expireTokentime = new Date(
-          new Date().getTime() + +data.expiresIn * 60*60
+
         );
-        authCtx.login(data.idToken, expireTokentime.toISOString());
-        Navigate("/manager");
-      })
-      .catch((err) => {
-        <Alert>{err}</Alert>
-      });
 
-      fetch("http://localhost:3003/api/v1/manager/createManager",{
-        method : "Post",
-        body : JSON.stringify(RegistrationData),
-        headers : {
-          "Content-Type" : "application-json",
-        }
-      }).then((res) => {
-        if(!res.ok){
-          return res.json()
-        }else{
-          return res.json().then((data) => {
-            let errorMessage = "Authentication failed!";
-            if (data && data.error && data.error.message) {
-              errorMessage = data.error.message;
-            }
-            throw new Error(errorMessage)
+        
+      // Handle success of both registration and manager creation
+      const expireTokenTime = new Date(
+        new Date().getTime() + +registrationResponse.data.expiresIn * 60 * 60
+      );
 
-          })
-        }
-      }).catch((err) => {
-        <Alert>{err}</Alert>
+      authCtx.login(token, expireTokenTime.toISOString());
+      Navigate("/manager");
+  
+} catch (error) {
+  // Handle errors here
+  console.error("API Error:", error);
+  // You can show an error message to the user if needed.
+<error>Alert!</error>
+}
+}
+   
 
-      })
-  };
   return(
   <LayoutTech>
   <section className="vh-100" style={{ backgroundColor: 'white' }}>

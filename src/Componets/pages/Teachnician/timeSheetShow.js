@@ -10,7 +10,7 @@ function TimeSheet() {
   const [comments, setComments] = useState("");
   const [message,setMessage] = useState(false)
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
 
     // Create an object with the timesheet data
@@ -23,10 +23,10 @@ function TimeSheet() {
     };
 
     // Send the timesheetData to Firebase Realtime Database
-    fetch(
+    const response = await axios.post(
       "https://testproject-e9582-default-rtdb.firebaseio.com/timesheet.json",
       {
-        method: "POST",
+        
         headers: {
           "Content-Type": "application/json",
         },

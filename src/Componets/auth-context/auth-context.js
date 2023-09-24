@@ -3,7 +3,7 @@ import React, { useEffect, useState,useCallback } from 'react';
 let logOutTimer;
 const AuthContext = React.createContext({
   token: '',
-  isLoggedIn: false,
+  isLoggedIn: true,
   login: (token) => {},
 
   

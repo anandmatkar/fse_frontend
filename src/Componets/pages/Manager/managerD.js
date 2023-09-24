@@ -1,6 +1,6 @@
 import React from 'react';
 import './managerD.css';
-import LayoutManager from '../../Layout/Layout2';
+//import LayoutManager from '../../Layout/Layout2';
 // import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import DynamicButton from '../../Model/DynamicButton';
@@ -34,7 +34,7 @@ export default function ManagerDashboard() {
   
   
   return (
-    <LayoutManager>
+   
     
     <div className="imgBg">
       <br />
@@ -150,7 +150,7 @@ export default function ManagerDashboard() {
         </div>
       </div>
     </div>
-    </LayoutManager>
+   
   );
 }
 

@@ -4,7 +4,11 @@ import AuthContext from "../../auth-context/auth-context";
 import { useState, useRef, useContext } from "react";
 import Layout from "../../Layout/Layout";
 import { Button } from "react-bootstrap";
+import axios from "axios";
+import Spinner from "../Common/Spinner";
+
 // import Layout from "../../Layout/Layout";
+import { managerlogin_Api } from "./../../../Api/Manager_Api";
 
 function ManagerLogin() {
   const Navigate = useNavigate();
@@ -22,101 +26,42 @@ function ManagerLogin() {
   };
   const buttonHandler = () => {
     Navigate("/register");
-    Navigate("/newaccount")
+    Navigate("/newaccount");
   };
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
+    setIsLoading(true);
     event.preventDefault();
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
-    //   let enteredConfirmPass;
-    //   if (!isLogin) {
-    //     enteredConfirmPass = confirmpasswordInputRef.current.value;
-    //   }
-    localStorage.setItem("enteredEmail", JSON.stringify(enteredEmail));
-
-    // optional: Add validation
-
-    setIsLoading(true);
-    if (isLogin) {
-      fetch("http://localhost:3003/api/v1/manager/managerLogin", {
-        method: "POST",
-        body: JSON.stringify({
-          email: enteredEmail,
-          password: enteredPassword,
-          returnSecureToken: true,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => {
-          setIsLoading(false);
-          console.log(res);
-          if (res.ok) {
-            return res.json();
-          } else {
-            return res.json().then((data) => {
-              let errorMessage = "Authentication failed!";
-              if (data && data.error && data.error.message) {
-                errorMessage = data.error.message;
-              }
-
-              throw new Error(errorMessage);
-            });
-          }
-        })
-        .then((data) => {
-          const expireTokentime = new Date(
-            new Date().getTime() + +data.expiresIn * 60 * 60
-          );
-          authCtx.login(data.idToken, expireTokentime.toISOString());
-          Navigate("/manager");
-        })
-        .catch((err) => {
-          alert(err.message);
-        });
-    } else {
-      fetch("http://localhost:3003/api/v1/manager/createManager", {
-        method: "POST",
-        body: JSON.stringify({
-          email: enteredEmail,
-          password: enteredPassword,
-          //   confirmPass: enteredConfirmPass,
-          returnSecureToken: true,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => {
-          setIsLoading(false);
-          console.log(res);
-          if (res.ok) {
-            return res.json();
-          } else {
-            return res.json().then((data) => {
-              let errorMessage = "Authentication failed!";
-              if (data && data.error && data.error.message) {
-                errorMessage = data.error.message;
-              }
-
-              throw new Error(errorMessage);
-            });
-          }
-        })
-        .then((data) => {
-          const expireTokentime = new Date(
-            new Date().getTime() + +data.expiresIn * 60 * 60
-          );
-          authCtx.login(data.idToken, expireTokentime.toISOString());
-          Navigate("/manger");
-        })
-        .catch((err) => {
-          alert(err.message);
-        });
+    let body = {
+      email: enteredEmail,
+      password: enteredPassword,
+    };
+    try {
+      const response = await axios.post(managerlogin_Api, body);
+      let resData = response.data.data;
+      console.log(resData, "res data");
+      if (response.data.status === 200) {
+        setIsLoading(false);
+        Navigate("/manager");
+        console.log(resData, "response data");
+        localStorage.setItem("token", resData.token);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error.message);
+      window.alert(error.message);
     }
   };
+  if (isLoading) {
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <Layout>
       <section className="vh-100" style={{ backgroundColor: "white" }}>

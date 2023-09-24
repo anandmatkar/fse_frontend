@@ -8,6 +8,13 @@ function AdminDashboard() {
     const [numberOfAccounts,setnumberOfAccounts] = useState(13)
     const navigate = useNavigate(); // Initialize useNavigate
 
+
+      // Function to handle the click event for Registered accounts
+  const handleRegisteredAccountsClick = () => {
+    // Redirect to the "Registered Account" page when the button is clicked
+    navigate("/registerdaccount"); // Use the route path
+  };
+
     // Function to handle the click event
     const handleAccountsApprovalClick = () => {
       // Redirect to the desired page when the button is clicked
@@ -49,7 +56,7 @@ function AdminDashboard() {
                     </div>
                     <div className="solu_description">
                       <p>• Accounts which are Registered are Shown Here!</p>
-                      <DynamicButton className="read_more_btn"  ></DynamicButton>
+                      <DynamicButton className="read_more_btn" onClick={handleRegisteredAccountsClick}  ></DynamicButton>
                       <Button variant="danger" className="read_more_btn">{numberOfAccounts}</Button>
                     </div>
                   </div>

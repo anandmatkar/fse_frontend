@@ -7,7 +7,7 @@ import classes from  "./timeSheetShow.module.css";
 function TimeSheetsAndReports(){
     const Navigate = useNavigate();
     const progrssHandler = () => {
-        // Navigate("/timeSheetss")
+        Navigate("/timeSheetss")
         console.log("Successfully Updated");
        
     }

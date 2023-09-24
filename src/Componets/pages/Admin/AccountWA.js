@@ -1,20 +1,42 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './AccountWA.css'
+import Spinner from './../Common/Spinner';
 function UserTable() {
   const [users, setUsers] = useState([]);
+  const [loading,setLoading] = useState(false)
 
-  const toggleActivation = (userId) => {
-    axios.put(`http://localhost:3003/api/v1/companyAdmin/approveManager?managerId=${userId}`)
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id === userId ? { ...user, isActive: !user.isActive } : user
-      )
-    );
+  const toggleActivation = async (userId) => {
+    setLoading(true)
+    const token = localStorage.getItem("token");
+  
+    if (!token) {
+      console.error("Token not found in localStorage.");
+      return;
+    }
+  
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+  
+    try {
+      const response = await axios.put(`http://localhost:3003/api/v1/companyAdmin/approveManager?managerId=${userId}`, null, config);
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    setLoading(false)
+    window.location.href = "/AccountWA"
+    
   };
+  
 
   useEffect(() => {
     // Fetch data from the API
+    setLoading(true)
     const config = {
       headers: {
         Authorization: `${localStorage.getItem("token")}`, // Add the token to the headers
@@ -22,7 +44,7 @@ function UserTable() {
     };
     
     axios
-      .put("http://localhost:3003/api/v1/companyAdmin/managerListForApproval", config)
+      .get("http://localhost:3003/api/v1/companyAdmin/managerListForApproval", config)
       .then((response) => {
         // Assuming the response data is an array of user objects
         const apiUsers = response.data;
@@ -38,6 +60,7 @@ function UserTable() {
         // }));
         
         // Now, the GET request will include the authorization token in the headers.
+        setLoading(false)
       })
       .catch((error) => {
         if (error.response &&error.response.status===401){
@@ -50,7 +73,12 @@ function UserTable() {
         console.error("Error fetching data:", error);
       });
   }, []); // Empty dependency array to run the effect only once
+ if(loading){
+  return <div>
+    <Spinner/>
+  </div>;
 
+ }
   return (
     <div className="user-table-container">
       <table className="user-table">
@@ -80,7 +108,7 @@ function UserTable() {
               <td>{user.created_at}</td>
               <td>
                 <button onClick={() => toggleActivation(user.id)}>
-                  {user.isActive ? "Deactivate" : "Activate"}
+                  {user.status==2 ? "Active" : "Approved"}
                 </button>
               </td>
             </tr>

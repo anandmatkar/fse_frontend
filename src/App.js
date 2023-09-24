@@ -28,52 +28,34 @@ import JobClosed from "./Componets/pages/Teachnician/JobClosed";
 import JobWaitingApprovalM from "./Componets/pages/Manager/jobWaitingApproval";
 import ProjectManager from "./Componets/pages/Manager/ProjectManager";
 import AccountWA from "./Componets/pages/Admin/AccountWA";
-import NewAccount from './Componets/pages/Manager/customerInfo';
+import NewAccount from "./Componets/pages/Manager/customerInfo";
 import Userverified from "./Componets/pages/Manager/Userverified";
 import Registeredaccount from "./Componets/pages/Admin/Registeredaccount";
+import TechnicianTable from "./Componets/pages/Teachnician/assignedProject";
+import ProjectList from "./Componets/pages/Teachnician/viewProjectDetails";
 
 function App() {
   const authCtx = useContext(AuthContext);
   return (
     <React.Fragment>
       <Routes>
-        <Route
-          path="/"
-          exact
-          element={<LoginFrontPage />}
-        />
+        <Route path="/" exact element={<LoginFrontPage />} />
       </Routes>
 
-      
       <Routes>
-        <Route
-          path="/adminLogin"
-          element={ <AdminLogin />}
-        ></Route>
+        <Route path="/adminLogin" element={<AdminLogin />}></Route>
         {/* <Route path="/register" element={!authCtx.isLoggedIn && <RegistrationPage /> }></Route> */}
       </Routes>
       <Routes>
-        <Route
-          path="/managerL"
-          element={ <ManagerDashboard />}
-        ></Route>
-        <Route
-          path="/register"
-          element={<RegistrationPage />}
-        ></Route>
-        <Route
-          path="/mangerLogin"
-          element={ <ManagerLogin />}
-        ></Route>
+        <Route path="/managerL" element={<ManagerDashboard />}></Route>
+        <Route path="/register" element={<RegistrationPage />}></Route>
+        <Route path="/mangerLogin" element={<ManagerLogin />}></Route>
       </Routes>
       <Routes>
-        <Route
-          path="/techLogin"
-          element={ <TechnicianLogin />}
-        ></Route>
+        <Route path="/techLogin" element={<TechnicianLogin />}></Route>
       </Routes>
       <Routes>
-        <Route path="/reset" element={ <Reset />}></Route>
+        <Route path="/reset" element={<Reset />}></Route>
         <Route
           path="/managert"
           element={
@@ -88,14 +70,14 @@ function App() {
         <Route
           path="/manager"
           element={
-            authCtx.isLoggedIn ? <ManagerDashboard /> : <Navigate to={"/"} />
+           <ManagerDashboard />  
           }
         ></Route>
         <Route path="/timeSheetss" element={<TimeSheet />}></Route>
       </Routes>
 
       <Routes>
-      <Route path="/projectmanager" element={<ProjectManager />}></Route>
+        <Route path="/projectmanager" element={<ProjectManager />}></Route>
         <Route path="/createCustomer" element={<CreateCustomer />}></Route>
         <Route path="/assignTech" element={<AssignedProject />}></Route>
         <Route path="/createP" element={<NewProjectScreen />}></Route>
@@ -104,7 +86,7 @@ function App() {
         <Route path="/AdminD" element={<AdminDashboard />}></Route>
         <Route path="/timeSheet" element={<TimesheetScreen />}></Route>
         <Route path="/timeSheetEntry" element={<TimesheetEntry />}></Route>
-        <Route path="/newaccount" element={<NewAccount/>}></Route>
+        <Route path="/newaccount" element={<NewAccount />}></Route>
         <Route
           path="/timeSheetForm"
           element={<AddTimesheetEntryForm />}
@@ -118,12 +100,14 @@ function App() {
           path="/WaitingAprroval"
           element={<JobWaitingApprovalM />}
         ></Route>
-        <Route path="AccountWA" element={<AccountWA/>}></Route>
-        <Route path="userverified" element={<Userverified/>}></Route>
-        <Route path="registerdaccount" element={<Registeredaccount/>}></Route>
+        <Route path="AccountWA" element={<AccountWA />}></Route>
+        <Route path="userverified" element={<Userverified />}></Route>
+        <Route path="registerdaccount" element={<Registeredaccount />}></Route>
+        <Route path="techniciantable" element={<TechnicianTable/>}></Route>
+        <Route path="projectlist" element={<ProjectList/>}></Route>
       </Routes>
 
-      <Routes></Routes> 
+      <Routes></Routes>
     </React.Fragment>
   );
 }

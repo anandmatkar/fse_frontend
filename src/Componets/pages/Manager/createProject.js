@@ -5,6 +5,9 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { Navigate } from "react-router-dom";
+import axios from 'axios';
+import { Create_Project_Api } from "../../../Api/Manager_Api";
+import Spinner from "../Common/Spinner";
 
 function NewProjectScreen(props) {
   const [customer, setCustomer] = useState("");
@@ -15,6 +18,7 @@ function NewProjectScreen(props) {
   const [technicians, setTechnicians] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [show, setShow] = useState(false);
+  const [isLoading,setIsLoading]= useState(false);
   const machineTypeRef = useRef();
   const serialNumberRef = useRef();
   const hourCountRef = useRef();
@@ -24,12 +28,12 @@ function NewProjectScreen(props) {
   const attachmentsRef = useRef();
   const [savedMachineData, setSavedMachineData] = useState(null);
   const [machinesData, setMachinesData] = useState([]);
-  const techniciansOptions = ["Shubham", "Yash", "Riya", "Kamal"];
+  const techniciansOptions = ["Kylie", "Kendall", "Kourtney", "Kim"];
   const machineTypeOptions = ["Machine 1", "Machine 2", "Machine 3", "Machine 4"];
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleModalSubmit = (event) => {
+  const handleModalSubmit =  (event) => {
     event.preventDefault();
 
     // Get the machine details from the modal form
@@ -69,7 +73,7 @@ function NewProjectScreen(props) {
     Navigate("/manager");
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Create an object with the form field values
@@ -102,45 +106,54 @@ function NewProjectScreen(props) {
       ...projectData,
       machinesData,
     };
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      },
+    };
+    console.log(dataToSend,'data to send')
+    try {
+      // Send the dataToSend to the API using Axios
+      setIsLoading(true)
+      console.log(Create_Project_Api,'create project data')
+      const response = await axios.post(
+        Create_Project_Api,
+        dataToSend,
+        config
+      );
 
-    // Send the dataToSend to Firebase Realtime Database (or other backend)
-    fetch(
-      "http://localhost:3003/api/v1/manager/createProject",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Data sent to Api:", data);
-        // Reset form fields and show popup
-        setCustomer("");
-        setProjectType("");
-        setProjectDescription("");
-        setStartDate("");
-        setEndDate("");
-        setTechnicians([]);
-        setSavedMachineData(null);
-        setMachinesData([]);
-        setShowPopup(true);
-        setTimeout(() => setShowPopup(false), 2000);
-      })
-      .catch((error) => {
-        console.error("Error sending data to api:", error);
-      });
+      console.log("Data sent to Api:", response.data);
+
+      // Reset form fields and show popup
+      setCustomer("");
+      setProjectType("");
+      setProjectDescription("");
+      setStartDate("");
+      setEndDate("");
+      setTechnicians([]);
+      setSavedMachineData(null);
+      setMachinesData([]);
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 2000);
+      setIsLoading(false)
+    } catch (error) {
+      console.error("Error sending data to api:", error);
+    }
   };
   const handleDeleteMachine = (index) => {
     setMachinesData((prevMachinesData) =>
       prevMachinesData.filter((_, i) => i !== index)
     );
   };
+  if(isLoading){
+    return <div>
+      <Spinner/>
+    </div>;
+  }
 
   return (
-    <React.Fragment>
+    <div>
+      <React.Fragment>
     <div className="new-project-screen">
       <h2>New Project</h2>
       <form onSubmit={handleSubmit}>
@@ -364,7 +377,12 @@ function NewProjectScreen(props) {
         </Modal.Footer>
       </Modal>
     </React.Fragment>
-  );
-}
+    </div>
+  )
+    }
+  
+  
+              
+
 
 export default NewProjectScreen;
