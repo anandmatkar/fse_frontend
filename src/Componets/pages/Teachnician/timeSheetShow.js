@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
-import classes from  "./timeSheetShow.module.css";
+import classes from "./timeSheetShow.module.css";
+import axios from "axios"; // Import Axios
 
 function TimeSheet() {
   const [date, setDate] = useState("");
-  const [name,setName] = useState("");
+  const [name, setName] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [comments, setComments] = useState("");
-  const [message,setMessage] = useState(false)
+  const [message, setMessage] = useState(false);
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Create an object with the timesheet data
@@ -22,48 +23,44 @@ function TimeSheet() {
       comments,
     };
 
-    // Send the timesheetData to Firebase Realtime Database
-    const response = await axios.post(
-      "https://testproject-e9582-default-rtdb.firebaseio.com/timesheet.json",
-      {
-        
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(timesheetData),
-      }
-    )
-      .then((response) => {
-        // setMessage(true);
-        return response.json()
-       
-    })
-      .then((data) => {
-        console.log("Timesheet data sent to Firebase:", data);
-        // Reset form fields
-        setName("")
-        setDate("");
-        setStartTime("");
-        setEndTime("");
-        setComments("");
-        setMessage(true)
-        setTimeout(() => setMessage(false), 2000);
-      })
-      .catch((error) => {
-        console.error("Error sending timesheet data to Firebase:", error);
-      });
+    try {
+      // Send the timesheetData to Firebase Realtime Database
+      const response = await axios.post(
+        "https://testproject-e9582-default-rtdb.firebaseio.com/timesheet.json",
+        timesheetData, // Send the data directly
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Timesheet data sent to Firebase:", response.data);
+      // Reset form fields
+      setName("");
+      setDate("");
+      setStartTime("");
+      setEndTime("");
+      setComments("");
+      setMessage(true);
+      setTimeout(() => setMessage(false), 2000);
+    } catch (error) {
+      console.error("Error sending timesheet data to Firebase:", error);
+    }
   };
 
   return (
     <div>
-    {message && <h1 className={classes["success-message"]}>Your Timesheet is Saved</h1>}
+      {message && (
+        <h1 className={classes["success-message"]}>Your Timesheet is Saved</h1>
+      )}
       <h2>Time Sheet</h2>
       <form onSubmit={handleSubmit}>
-      <div className="form-group">
-          <label htmlFor="name">Tehnician Name</label>
+        <div className="form-group">
+          <label htmlFor="name">Technician Name</label>
           <input
             type="text"
-            id="text"
+            id="name" // Change the id to "name"
             value={name}
             onChange={(event) => setName(event.target.value)}
             required
