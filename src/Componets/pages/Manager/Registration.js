@@ -92,7 +92,12 @@ const RegistrationPage = () => {
           alert(
             'Registration Successful Please Verify your Email address through your Email...'
           );
-          navigate('/mangerLogin');
+          localStorage.setItem(
+            'registrationData',
+            JSON.stringify(registrationData)
+          );
+
+          navigate('/verifyManager');
         } else if (response.data.status === 409) {
           alert('Email already exists');
           console.error('Registration Failed. Status Code:', response.status);

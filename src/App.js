@@ -1,38 +1,38 @@
-import React, { useContext } from "react";
-import ManagerDashboard from "./Componets/pages/Manager/managerD";
-import { Navigate, Route, Routes } from "react-router-dom";
-import CreateCustomer from "./Componets/pages/Manager/createCustomer";
+import React, { useContext } from 'react';
+import ManagerDashboard from './Componets/pages/Manager/managerD';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import CreateCustomer from './Componets/pages/Manager/createCustomer';
 // import Login from "./Componets/login/Login";
-import ManagerLogin from "./Componets/pages/Manager/managerLogin";
-import RegistrationPage from "./Componets/pages/Manager/Registration";
-import AuthContext from "./Componets/auth-context/auth-context";
-import AssignedProject from "./Componets/pages/Teachnician/assignedProject";
+import ManagerLogin from './Componets/pages/Manager/managerLogin';
+import RegistrationPage from './Componets/pages/Manager/Registration';
+import AuthContext from './Componets/auth-context/auth-context';
+import AssignedProject from './Componets/pages/Teachnician/assignedProject';
 // import NewCustomerScreen from "./Componets/pages/Manager/createCustomer";
-import NewProjectScreen from "./Componets/pages/Manager/createProject";
-import ProjectStatus from "./Componets/pages/Manager/projectStatus";
-import TechnicianDashboard from "./Componets/pages/Teachnician/techDashboard";
-import AdminDashboard from "./Componets/pages/Admin/adminDash";
-import Reset from "./Componets/pages/Manager/forgetPassword";
-import TimesheetScreen from "./Componets/pages/Manager/timeSheetsandReports";
-import TimesheetEntry from "./Componets/pages/Manager/timeSheetEntry";
-import AddTimesheetEntryForm from "./Componets/pages/Manager/addTimeSheetForm";
-import LoginFrontPage from "./Componets/pages/Common/Login";
-import AdminLogin from "./Componets/pages/Admin/AdminLogin";
-import TechnicianLogin from "./Componets/pages/Teachnician/TeachLogin";
-import TimeSheet from "./Componets/pages/Teachnician/timeSheetShow";
-import ShowCreatedProject from "./Componets/pages/Manager/showCreatedProject";
-import JobProgress from "./Componets/pages/Manager/jobiProgress";
-import JobAssigned from "./Componets/pages/Teachnician/JobAssigned";
-import JobEWaitingAprroval from "./Componets/pages/Teachnician/JobWaitingApproval";
-import JobClosed from "./Componets/pages/Teachnician/JobClosed";
-import JobWaitingApprovalM from "./Componets/pages/Manager/jobWaitingApproval";
-import ProjectManager from "./Componets/pages/Manager/ProjectManager";
-import AccountWA from "./Componets/pages/Admin/AccountWA";
-import NewAccount from "./Componets/pages/Manager/customerInfo";
-import Userverified from "./Componets/pages/Manager/Userverified";
-import Registeredaccount from "./Componets/pages/Admin/Registeredaccount";
-import TechnicianTable from "./Componets/pages/Teachnician/assignedProject";
-import ProjectList from "./Componets/pages/Teachnician/viewProjectDetails";
+import NewProjectScreen from './Componets/pages/Manager/createProject';
+import ProjectStatus from './Componets/pages/Manager/projectStatus';
+import TechnicianDashboard from './Componets/pages/Teachnician/techDashboard';
+import AdminDashboard from './Componets/pages/Admin/adminDash';
+import Reset from './Componets/pages/Manager/forgetPassword';
+import TimesheetScreen from './Componets/pages/Manager/timeSheetsandReports';
+import TimesheetEntry from './Componets/pages/Manager/timeSheetEntry';
+import AddTimesheetEntryForm from './Componets/pages/Manager/addTimeSheetForm';
+import LoginFrontPage from './Componets/pages/Common/Login';
+import AdminLogin from './Componets/pages/Admin/AdminLogin';
+import TechnicianLogin from './Componets/pages/Teachnician/TeachLogin';
+import TimeSheet from './Componets/pages/Teachnician/timeSheetShow';
+import ShowCreatedProject from './Componets/pages/Manager/showCreatedProject';
+import JobProgress from './Componets/pages/Manager/jobiProgress';
+import JobAssigned from './Componets/pages/Teachnician/JobAssigned';
+import JobEWaitingAprroval from './Componets/pages/Teachnician/JobWaitingApproval';
+import JobClosed from './Componets/pages/Teachnician/JobClosed';
+import JobWaitingApprovalM from './Componets/pages/Manager/jobWaitingApproval';
+import ProjectManager from './Componets/pages/Manager/ProjectManager';
+import AccountWA from './Componets/pages/Admin/AccountWA';
+import NewAccount from './Componets/pages/Manager/customerInfo';
+import Userverified from './Componets/pages/Manager/Userverified';
+import Registeredaccount from './Componets/pages/Admin/Registeredaccount';
+import TechnicianTable from './Componets/pages/Teachnician/assignedProject';
+import ProjectList from './Componets/pages/Teachnician/viewProjectDetails';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -62,17 +62,12 @@ function App() {
             !authCtx.isLoggedIn ? (
               <AddTimesheetEntryForm />
             ) : (
-              <Navigate to={"/"} />
+              <Navigate to={'/'} />
             )
           }
         ></Route>
 
-        <Route
-          path="/manager"
-          element={
-           <ManagerDashboard />  
-          }
-        ></Route>
+        <Route path="/manager" element={<ManagerDashboard />}></Route>
         <Route path="/timeSheetss" element={<TimeSheet />}></Route>
       </Routes>
 
@@ -101,10 +96,10 @@ function App() {
           element={<JobWaitingApprovalM />}
         ></Route>
         <Route path="AccountWA" element={<AccountWA />}></Route>
-        <Route path="userverified" element={<Userverified />}></Route>
+        <Route path="/verifyManager" element={<Userverified />}></Route>
         <Route path="registerdaccount" element={<Registeredaccount />}></Route>
-        <Route path="techniciantable" element={<TechnicianTable/>}></Route>
-        <Route path="projectlist" element={<ProjectList/>}></Route>
+        <Route path="techniciantable" element={<TechnicianTable />}></Route>
+        <Route path="projectlist" element={<ProjectList />}></Route>
       </Routes>
 
       <Routes></Routes>
