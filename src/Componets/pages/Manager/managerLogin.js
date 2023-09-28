@@ -8,6 +8,7 @@ import axios from 'axios';
 import Spinner from '../Common/Spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
 
 // import Layout from "../../Layout/Layout";
 import { managerlogin_Api } from './../../../Api/Manager_Api';
@@ -45,6 +46,20 @@ function ManagerLogin() {
 
       if (response.data.status === 200) {
         setIsLoading(false);
+        const token = response.data.data.token;
+        Cookies.set('token', token, { expires: 1 });
+
+        // Assume you receive an 'idToken' for authentication
+        const idToken = response.data.data.token;
+        console.log(idToken, 'data');
+
+        // You can set an arbitrary expiration time (e.g., 1 hour from now)
+        const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+        localStorage.setItem('token', idToken);
+        console.log(idToken, 'id token');
+
+        authCtx.login(idToken, expirationTime.toISOString());
+
         toast.success(response.data.message, {
           position: 'top-right',
           autoClose: 2000, // Notification will close automatically after 2 seconds
@@ -53,9 +68,7 @@ function ManagerLogin() {
           pauseOnHover: true,
           draggable: true,
           onClose: () => {
-            setIsLoading(false); // Hide the spinner after the toast is closed
-            localStorage.setItem('token', response.data.data.token);
-            console.log(response.data.data.token);
+            setIsLoading(false);
             Navigate('/manager');
           },
         });

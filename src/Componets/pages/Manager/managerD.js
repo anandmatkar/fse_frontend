@@ -4,255 +4,173 @@ import './managerD.css';
 // import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import DynamicButton from '../../Model/DynamicButton';
+import NavbarManager from './Navbar';
 
 export default function ManagerDashboard() {
   const navigate = useNavigate();
   const createCustomerHandler = () => {
-    navigate("/createCustomer")
-  }
+    navigate('/createCustomer');
+  };
   const AssignTechnician = () => {
-    navigate("/assignTech")
-  }
+    navigate('/assignTech');
+  };
   const ManageProjectStatus = () => {
-    navigate("/projectStatus")
-  }
+    navigate('/projectStatus');
+  };
   const ManageCustomerInfo = () => {
-    navigate("/manageCustomerInfo")
-  }
+    navigate('/manageCustomerInfo');
+  };
   const ManageMachineInfo = () => {
-    navigate("/machinInfo")
-  }
+    navigate('/machinInfo');
+  };
   const createProject = () => {
-    navigate("/createP")
-  }
+    navigate('/createP');
+  };
   const timeSheetHandler = () => {
-    navigate("/timeSheet")
-  }
+    navigate('/timeSheet');
+  };
   const showNewProject = () => {
-    navigate("/showproject")
-  }
-  
-  
-  return (
-   
-    
-    <div className="imgBg">
-      <br />
-      <br />
-      <br />
+    navigate('/showproject');
+  };
 
-      <div className="section_our_solution">
-        <div className="row">
-          <div className="col-lg-12 col-md-12 col-sm-12">
-            <div className="our_solution_category">
-              <div className="solution_cards_box">
-                <div className="solution_card">
-                  <div className="hover_color_bubble"></div>
-                  <div className="so_top_icon">
-                    <svg
-                      id="Layer_1"
-                      enable-background="new 0 0 512 512"
-                      height="50"
-                      viewBox="0 0 512 512"
-                      width="40"
-                      xmlns="http://www.w3.org/2000/svg"
-                    ></svg>
-                  </div>
-                  <div className="solu_title">
-                    <h3>Create Customer</h3>
-                  </div>
-                  <div className="solu_description">
-                    <p>
-                    • Creating New Customer and Manageing them
-                    </p>
-                    {/* <button type="button" className="read_more_btn" onClick={createCustomerHandler}>
+  return (
+    <>
+      <div className="imgBg">
+        <br />
+        <br />
+        <br />
+
+        <div className="section_our_solution">
+          <div className="row">
+            <div className="col-lg-12 col-md-12 col-sm-12">
+              <div className="our_solution_category">
+                <div className="solution_cards_box">
+                  <div className="solution_card">
+                    <div className="hover_color_bubble"></div>
+                    <div className="so_top_icon">
+                      <svg
+                        id="Layer_1"
+                        enable-background="new 0 0 512 512"
+                        height="50"
+                        viewBox="0 0 512 512"
+                        width="40"
+                        xmlns="http://www.w3.org/2000/svg"
+                      ></svg>
+                    </div>
+                    <div className="solu_title">
+                      <h3>Create Customer</h3>
+                    </div>
+                    <div className="solu_description">
+                      <p>• Creating New Customer and Manageing them</p>
+                      {/* <button type="button" className="read_more_btn" onClick={createCustomerHandler}>
                       Click Here
                     </button> */}
-                    <DynamicButton className="read_more_btn" onClick={createCustomerHandler}></DynamicButton>
+                      <DynamicButton
+                        className="read_more_btn"
+                        onClick={createCustomerHandler}
+                      ></DynamicButton>
+                    </div>
+                  </div>
+                  <div className="solution_card">
+                    <div className="hover_color_bubble"></div>
+                    <div className="so_top_icon">
+                      <svg
+                        id="Layer_1"
+                        enable-background="new 0 0 512 512"
+                        height="50"
+                        viewBox="0 0 512 512"
+                        width="40"
+                        xmlns="http://www.w3.org/2000/svg"
+                      ></svg>
+                    </div>
+                    <div className="solu_title">
+                      <h3>Create Project</h3>
+                    </div>
+                    <div className="solu_description">
+                      <p>• Create and Manage Project with Ease</p>
+                      <DynamicButton
+                        className="read_more_btn"
+                        onClick={createProject}
+                      >
+                        Click Here
+                      </DynamicButton>
+                    </div>
                   </div>
                 </div>
-                <div className="solution_card">
-                  <div className="hover_color_bubble"></div>
-                  <div className="so_top_icon">
-                    <svg
-                      id="Layer_1"
-                      enable-background="new 0 0 512 512"
-                      height="50"
-                      viewBox="0 0 512 512"
-                      width="40"
-                      xmlns="http://www.w3.org/2000/svg"
-                    ></svg>
-                  </div>
-                  <div className="solu_title">
-                    <h3>Create Project</h3>
-                  </div>
-                  <div className="solu_description">
-                    <p>
-                    • Create and Manage Project with Ease
-                    </p>
-                    <DynamicButton className="read_more_btn" onClick={createProject}>Click Here</DynamicButton>
-                  </div>
-                </div>
-              </div>
 
-              <div className="solution_cards_box sol_card_top_3">
-                <div className="solution_card">
-                  <div className="hover_color_bubble"></div>
-                  <div className="so_top_icon">
-                    <svg
-                      id="Layer_1"
-                      enable-background="new 0 0 512 512"
-                      height="50"
-                      viewBox="0 0 512 512"
-                      width="40"
-                      xmlns="http://www.w3.org/2000/svg"
-                    ></svg>
-                  </div>
-                  <div className="solu_title">
-                    <h3>Manage Status</h3>
-                  </div>
-                  <div className="solu_description">
-                  <p>
-                    • Approve or reject project time sheets and reports
-                    </p>
-                    <button type="button" className="read_more_btn" onClick={ManageProjectStatus}>
-                      Click Here!
-                    </button>
+                <div className="solution_cards_box sol_card_top_3">
+                  <div className="solution_card">
+                    <div className="hover_color_bubble"></div>
+                    <div className="so_top_icon">
+                      <svg
+                        id="Layer_1"
+                        enable-background="new 0 0 512 512"
+                        height="50"
+                        viewBox="0 0 512 512"
+                        width="40"
+                        xmlns="http://www.w3.org/2000/svg"
+                      ></svg>
+                    </div>
+                    <div className="solu_title">
+                      <h3>Manage Status</h3>
+                    </div>
+                    <div className="solu_description">
+                      <p>• Approve or reject project time sheets and reports</p>
+                      <button
+                        type="button"
+                        className="read_more_btn"
+                        onClick={ManageProjectStatus}
+                      >
+                        Click Here!
+                      </button>
 
-                    <button type="button" className="read_more_btn" onClick={showNewProject}>
-                     show new project!
-                    </button>
+                      <button
+                        type="button"
+                        className="read_more_btn"
+                        onClick={showNewProject}
+                      >
+                        show new project!
+                      </button>
 
-                    <button type="button" className="read_more_btn" onClick={timeSheetHandler}>
-                    timeSheetHandler!
-                    </button>
+                      <button
+                        type="button"
+                        className="read_more_btn"
+                        onClick={timeSheetHandler}
+                      >
+                        timeSheetHandler!
+                      </button>
 
-                    <button type="button" className="read_more_btn" onClick={ManageMachineInfo}>
-                    ManageMachineInfo!
-                    </button>
+                      <button
+                        type="button"
+                        className="read_more_btn"
+                        onClick={ManageMachineInfo}
+                      >
+                        ManageMachineInfo!
+                      </button>
 
-                    <button type="button" className="read_more_btn" onClick={ManageCustomerInfo}>
-                    ManageCustomerInfo!
-                    </button>
+                      <button
+                        type="button"
+                        className="read_more_btn"
+                        onClick={ManageCustomerInfo}
+                      >
+                        ManageCustomerInfo!
+                      </button>
 
-                    <button type="button" className="read_more_btn" onClick={AssignTechnician}>
-                    AssignTechnician!
-                    </button>
-
-                    
-
+                      <button
+                        type="button"
+                        className="read_more_btn"
+                        onClick={AssignTechnician}
+                      >
+                        AssignTechnician!
+                      </button>
+                    </div>
                   </div>
                 </div>
-            
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-   
+    </>
   );
 }
-
-
-    {/* <div className="solution_card">
-                  <div className="hover_color_bubble"></div>
-                  <div className="so_top_icon">
-                    <svg
-                      id="Layer_1"
-                      enable-background="new 0 0 512 512"
-                      height="50"
-                      viewBox="0 0 512 512"
-                      width="40"
-                      xmlns="http://www.w3.org/2000/svg"
-                    ></svg>
-                  </div>
-                  <div className="solu_title">
-                    <h3>Manage Status</h3>
-                  </div>
-                  <div className="solu_description">
-                    <p>
-                    • Manage and View Project Status in Real Time 
-                    </p>
-                    <button type="button" className="read_more_btn" onClick={ManageProjectStatus}>
-                      Click Here!
-                    </button>
-                  </div>
-                </div> */}
-
-
-                //            {/* <div className="solution_card">
-                //   <div className="hover_color_bubble"></div>
-                //   <div className="so_top_icon">
-                //     <svg
-                //       id="Layer_1"
-                //       enable-background="new 0 0 512 512"
-                //       height="50"
-                //       viewBox="0 0 512 512"
-                //       width="40"
-                //       xmlns="http://www.w3.org/2000/svg"
-                //     ></svg>
-                //   </div>
-                //   <div className="solu_title">
-                //     <h3>TimeSheets And Reports</h3>
-                //   </div>
-                //   <div className="solu_description">
-                //     <p>
-                //     • Approve or reject project time sheets and reports
-                //     </p>
-                //     <button type="button" className="read_more_btn" onClick={timeSheetHandler}>
-                //     Click Here!
-                //     </button>
-                //   </div>
-                // </div> */}
-
-                {/* <div className="solution_card ">
-                  <div className="hover_color_bubble"></div>
-                  <div className="so_top_icon">
-                    <svg
-                      id="Layer_1"
-                      enable-background="new 0 0 512 512"
-                      height="50"
-                      viewBox="0 0 512 512"
-                      width="40"
-                      xmlns="http://www.w3.org/2000/svg"
-                    ></svg>
-                  </div>
-                  <div className="solu_title">
-                    <h3>Customer and Machine Info</h3>
-                  </div>
-                  <div className="solu_description">
-                    <p>
-                    • Manage Customer and Machine Information
-                    </p>
-                    <button type="button" className="read_more_btn" onClick={showNewProject}>
-                    Click Here!
-                    </button>
-                  </div>
-                </div> */}
-
-
-              //   <div className="solution_card">
-              //   <div className="hover_color_bubble"></div>
-              //   <div className="so_top_icon">
-              //     <svg
-              //       id="Layer_1"
-              //       enable-background="new 0 0 512 512"
-              //       height="50"
-              //       viewBox="0 0 512 512"
-              //       width="40"
-              //       xmlns="http://www.w3.org/2000/svg"
-              //     ></svg>
-              //   </div>
-              //   <div className="solu_title">
-              //     <h3>Manage Status</h3>
-              //   </div>
-              //   <div className="solu_description">
-              //     <p>
-              //     • Manage and View Project Status in Real Time 
-              //     </p>
-              //     <button type="button" className="read_more_btn" onClick={ManageProjectStatus}>
-              //       Click Here!
-              //     </button>
-              //   </div>
-              // </div>

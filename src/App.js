@@ -33,6 +33,7 @@ import Userverified from './Componets/pages/Manager/Userverified';
 import Registeredaccount from './Componets/pages/Admin/Registeredaccount';
 import TechnicianTable from './Componets/pages/Teachnician/assignedProject';
 import ProjectList from './Componets/pages/Teachnician/viewProjectDetails';
+import NavbarManager from './Componets/pages/Manager/Navbar';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -66,7 +67,7 @@ function App() {
             )
           }
         ></Route>
-
+        <Route path="/navbarmanager" element={<NavbarManager />}></Route>
         <Route path="/manager" element={<ManagerDashboard />}></Route>
         <Route path="/timeSheetss" element={<TimeSheet />}></Route>
       </Routes>

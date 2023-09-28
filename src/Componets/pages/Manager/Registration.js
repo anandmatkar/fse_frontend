@@ -1,10 +1,9 @@
 import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import AuthContext from '../../auth-context/auth-context';
 import LayoutTech from '../../Layout/Layout3';
-import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import axios from 'axios';
 import { managerlogin_Api } from '../../../Api/Manager_Api';
@@ -21,14 +20,6 @@ const RegistrationPage = () => {
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
-  // const emailInputRef = useRef();
-  // const passwordInputRef = useRef();
-  // const firstnameRef = useRef();
-  // const lastNameRef = useRef();
-  // const comapanyRef = useRef();
-  // const phoneRef = useRef();
-  // const Position = useRef();
-  // const confirmPasswordRef = useRef();
 
   const submitHandler = async (event) => {
     event.preventDefault();
