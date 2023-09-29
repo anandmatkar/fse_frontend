@@ -10,6 +10,7 @@ import AuthContext from "../auth-context/auth-context";
 import "./ManagerNavBar.css";
 
 function ManagerNavigation() {
+  
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [isIconClicked, setIconClicked] = useState(false);
   const authCtx = useContext(AuthContext);
@@ -41,7 +42,7 @@ function ManagerNavigation() {
   return (
     <Navbar bg="light" expand="lg" className="navbar-container">
       <Container fluid>
-        <Navbar.Brand>FSE Report</Navbar.Brand>
+        <Navbar.Brand>FSE Manager</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -57,6 +58,11 @@ function ManagerNavigation() {
             {isLoggedIn && (
               <Nav.Link>
                 <Link to={"/service"}>About</Link>
+              </Nav.Link>
+            )}
+            {isLoggedIn && (
+              <Nav.Link>
+                <Link to={"/"}>About</Link>
               </Nav.Link>
             )}
             {!isLoggedIn && (
