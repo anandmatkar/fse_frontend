@@ -58,12 +58,11 @@ function CreateTechnician() {
     createTechnician(values);
   };
   
-  
-  
-  
-
   return (
     <React.Fragment>
+
+      <h3 className='my-3 text-center'>Create Technician</h3>
+
       <Container as={Card.Header}>
         <Formik
           validationSchema={schema}
@@ -83,7 +82,7 @@ function CreateTechnician() {
           {({ handleSubmit, handleChange, values, touched, errors }) => (
             <Form noValidate onSubmit={handleSubmit}>
               <Row className="mb-3">
-                <Form.Group controlId="validationFormik01">
+                <Form.Group controlId="validationFormik01" className='my-2'>
                   <Form.Label>Name</Form.Label>
                   <Form.Control
                     type="text"
@@ -95,7 +94,7 @@ function CreateTechnician() {
                   />
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group controlId="validationFormik02">
+                <Form.Group controlId="validationFormik02" className='my-2'>
                   <Form.Label>Surname</Form.Label>
                   <Form.Control
                     type="text"
@@ -108,7 +107,7 @@ function CreateTechnician() {
 
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group controlId="validationFormikUsername">
+                <Form.Group controlId="validationFormikUsername" className='my-2'>
                   <Form.Label>Email Address</Form.Label>
                   <InputGroup hasValidation>
                     <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
@@ -126,7 +125,7 @@ function CreateTechnician() {
                     </Form.Control.Feedback>
                   </InputGroup>
                 </Form.Group>
-                <Form.Group controlId="validationFormik03">
+                <Form.Group controlId="validationFormik03" className='my-2'>
                   <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="text"
@@ -141,7 +140,7 @@ function CreateTechnician() {
                     {errors.password}
                   </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group controlId="validationFormik04">
+                <Form.Group controlId="validationFormik04" className='my-2'>
                   <Form.Label>Phone</Form.Label>
                   <Form.Control
                     type="text"
@@ -155,7 +154,7 @@ function CreateTechnician() {
                     {errors.phone}
                   </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group controlId="validationFormik05">
+                <Form.Group controlId="validationFormik05" className='my-2'>
                   <Form.Label>Nationality</Form.Label>
                   <Form.Control
                     type="text"
@@ -171,7 +170,7 @@ function CreateTechnician() {
                   </Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group controlId="validationFormik06">
+                <Form.Group controlId="validationFormik06" className='my-2'>
                   <Form.Label>Qualification</Form.Label>
                   <Form.Control
                     type="text"
@@ -186,7 +185,7 @@ function CreateTechnician() {
                     {errors.qualification}
                   </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group controlId="validationFormik07">
+                <Form.Group controlId="validationFormik07" className='my-2'>
                   <Form.Label>Level</Form.Label>
                   <Form.Control
                     type="text"
@@ -201,7 +200,7 @@ function CreateTechnician() {
                     {errors.level}
                   </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group controlId="validationFormik08">
+                <Form.Group controlId="validationFormik08" className='my-2'>
                   <Form.Label>Profile Picture</Form.Label>
                   <Form.Control
                     type="text"

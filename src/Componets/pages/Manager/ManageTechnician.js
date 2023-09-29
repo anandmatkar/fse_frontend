@@ -37,7 +37,9 @@ export default function ManageTechnician() {
 
             <Button variant='warning' as={NavLink} to={'/createtechnician'}>Create Technician</Button>
 
-            <Table striped bordered hover responsive className='my-5'>
+            <h3 className='my-3'>Manage Technicians</h3>
+
+            <Table striped bordered hover responsive className='my-3'>
                 <thead>
                     <tr>
                         <th>S. No.</th>
@@ -55,7 +57,7 @@ export default function ManageTechnician() {
                                     <td>{`${technician.name} ${technician.surname}`}</td>
                                     <td>{technician.email_address}</td>
                                     <td>
-                                        <Button>
+                                        <Button as={NavLink} to={`/viewtechnicianprofile/${technician.id}`}>
                                             View Details
                                         </Button>
                                     </td>
