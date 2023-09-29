@@ -37,7 +37,7 @@ function TechNavigation() {
               {!isLoggedIn && (
                   <NavDropdown title="Login" id="navbarScrollingDropdown">
                   <NavDropdown.Item>
-                    <Link to={"/admin"}>Admin Login</Link>
+                    {/* <Link to={"/admin"}>Admin Login</Link> */}
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
     
@@ -56,7 +56,7 @@ function TechNavigation() {
               Link
             </Nav.Link>
           </Nav>
-          {isLoggedIn &&  <Button onClick={logoutHandler} variant="danger">Logout</Button>}
+          {isLoggedIn &&  <Button onClick={logoutHandler} variant="danger"><Link to={"/Tech/Logout"}>Logout</Link></Button>}
           {isLoggedIn && (
              <Form className="d-flex">
              <Form.Control

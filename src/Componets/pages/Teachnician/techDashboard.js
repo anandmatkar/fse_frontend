@@ -2,7 +2,7 @@ import React from "react";
 import LayoutTech from "../../Layout/Layout3";
 import classes from "./techdashboard.module.css"
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function TechnicianDashboard() {
     const Navigate = useNavigate();
@@ -21,6 +21,7 @@ function TechnicianDashboard() {
       };
     return(
         <LayoutTech>
+          <Button variant="secondary"  as= {NavLink} to="/updateTechnicianprofile"> Technician Profile</Button>
             <div className={classes.cardContainer}>
               <div className={classes.card1}>
                 <div className={classes.cardBody}>

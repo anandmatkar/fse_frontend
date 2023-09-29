@@ -6,6 +6,7 @@ import Layout from "../../Layout/Layout";
 import LayoutTech from "../../Layout/Layout3";
 // import Layout from "../../Layout/Layout";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 function TechnicianLogin() {
   const navigate = useNavigate();
@@ -45,28 +46,29 @@ function TechnicianLogin() {
         })
         .then((response) => {
           setIsLoading(false);
-          console.log(response.data,'response data');
-          if (response.data.status == 200) {
-            console.log("flag 0")
+          if (response.data.status === 200) {
+
             const data = response.data.data;
-            console.log(data,'data')
+
             if (data.token ) {
-              console.log('flag 1')
+
+              Cookies.set('token', data.token, { expires: 2 });
+
+              localStorage.setItem('token', data.token);
+
               const currentTime = new Date().getTime();
-              //const expirationTime =
-                //currentTime + parseInt(data.expiresIn) * 60 * 60 * 1000;
+              const expirationTime =
+                currentTime + parseInt(data.expiresIn) * 60 * 60 * 1000;
               // Convert to milliseconds
               // Save the token and expiration time in localStorage
               localStorage.setItem("token", data.token);
-              //localStorage.setItem("tokenExpiration", expirationTime);
-console.log('flag 2')
+              localStorage.setItem("tokenExpiration", expirationTime);
+
               authCtx.login(
                 data.token
-             
               );
               navigate("/techD");
-              console.log(data.token, "token");
-              console.log(response);
+
             } else {
               throw new Error("Invalid response from the server");
             }
