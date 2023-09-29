@@ -34,6 +34,8 @@ import Registeredaccount from './Componets/pages/Admin/Registeredaccount';
 import TechnicianTable from './Componets/pages/Teachnician/assignedProject';
 import ProjectList from './Componets/pages/Teachnician/viewProjectDetails';
 import NavbarManager from './Componets/pages/Manager/Navbar';
+import ManageTechnician from './Componets/pages/Manager/ManageTechnician';
+import CreateTechnician from './Componets/pages/Manager/CreateTechnician';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -67,8 +69,11 @@ function App() {
             )
           }
         ></Route>
+        {/* Manager Routes */}
         <Route path="/navbarmanager" element={<NavbarManager />}></Route>
         <Route path="/manager" element={<ManagerDashboard />}></Route>
+        <Route path="/managetechnician" element={<ManageTechnician />} />
+        <Route path="/createtechnician" element={<CreateTechnician/>} />
         <Route path="/timeSheetss" element={<TimeSheet />}></Route>
       </Routes>
 
@@ -83,19 +88,13 @@ function App() {
         <Route path="/timeSheet" element={<TimesheetScreen />}></Route>
         <Route path="/timeSheetEntry" element={<TimesheetEntry />}></Route>
         <Route path="/newaccount" element={<NewAccount />}></Route>
-        <Route
-          path="/timeSheetForm"
-          element={<AddTimesheetEntryForm />}
-        ></Route>
+        <Route path="/timeSheetForm" element={<AddTimesheetEntryForm />} ></Route>
         <Route path="/showproject" element={<ShowCreatedProject />}></Route>
         <Route path="/projectprogress" element={<JobProgress />}></Route>
         <Route path="/JobAssigned" element={<JobAssigned />}></Route>
         <Route path="/JobClosed" element={<JobClosed />}></Route>
         <Route path="/JobApproval" element={<JobEWaitingAprroval />}></Route>
-        <Route
-          path="/WaitingAprroval"
-          element={<JobWaitingApprovalM />}
-        ></Route>
+        <Route path="/WaitingAprroval" element={<JobWaitingApprovalM />}></Route>
         <Route path="AccountWA" element={<AccountWA />}></Route>
         <Route path="/verifyManager" element={<Userverified />}></Route>
         <Route path="registerdaccount" element={<Registeredaccount />}></Route>

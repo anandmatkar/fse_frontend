@@ -32,6 +32,9 @@ export default function ManagerDashboard() {
   const showNewProject = () => {
     navigate('/showproject');
   };
+  const manageTechnicians = () => {
+    navigate('/managetechnician');
+  };
 
   return (
     <>
@@ -44,6 +47,7 @@ export default function ManagerDashboard() {
           <div className="row">
             <div className="col-lg-12 col-md-12 col-sm-12">
               <div className="our_solution_category">
+
                 <div className="solution_cards_box">
                   <div className="solution_card">
                     <div className="hover_color_bubble"></div>
@@ -96,6 +100,62 @@ export default function ManagerDashboard() {
                       </DynamicButton>
                     </div>
                   </div>
+                </div>
+                
+                {/* Addon on 28 Sep */}
+                <div className="solution_cards_box">
+                  <div className="solution_card">
+                    <div className="hover_color_bubble"></div>
+                    <div className="so_top_icon">
+                      <svg
+                        id="Layer_1"
+                        enable-background="new 0 0 512 512"
+                        height="50"
+                        viewBox="0 0 512 512"
+                        width="40"
+                        xmlns="http://www.w3.org/2000/svg"
+                      ></svg>
+                    </div>
+                    <div className="solu_title">
+                      <h3>Manage Technician</h3>
+                    </div>
+                    <div className="solu_description">
+                      <p>• Manage Technician </p>
+                      {/* <button type="button" className="read_more_btn" onClick={createCustomerHandler}>
+                      Click Here
+                    </button> */}
+                      <DynamicButton
+                        className="read_more_btn"
+                        onClick={manageTechnicians}
+                      ></DynamicButton>
+                    </div>
+                  </div>
+
+                  {/* <div className="solution_card">
+                    <div className="hover_color_bubble"></div>
+                    <div className="so_top_icon">
+                      <svg
+                        id="Layer_1"
+                        enable-background="new 0 0 512 512"
+                        height="50"
+                        viewBox="0 0 512 512"
+                        width="40"
+                        xmlns="http://www.w3.org/2000/svg"
+                      ></svg>
+                    </div>
+                    <div className="solu_title">
+                      <h3>Create Project</h3>
+                    </div>
+                    <div className="solu_description">
+                      <p>• Create and Manage Project with Ease</p>
+                      <DynamicButton
+                        className="read_more_btn"
+                        onClick={createProject}
+                      >
+                        Click Here
+                      </DynamicButton>
+                    </div>
+                  </div> */}
                 </div>
 
                 <div className="solution_cards_box sol_card_top_3">
@@ -166,6 +226,38 @@ export default function ManagerDashboard() {
                     </div>
                   </div>
                 </div>
+
+                {/* <div className="solution_cards_box sol_card_top_3">
+                  <div className="solution_card">
+                    <div className="hover_color_bubble"></div>
+                    <div className="so_top_icon">
+                      <svg
+                        id="Layer_1"
+                        enable-background="new 0 0 512 512"
+                        height="50"
+                        viewBox="0 0 512 512"
+                        width="40"
+                        xmlns="http://www.w3.org/2000/svg"
+                      ></svg>
+                    </div>
+                    <div className="solu_title">
+                      <h3>Manage Technician</h3>
+                    </div>
+                    <div className="solu_description">
+                      <p>• Manage Technician</p>
+                      <button
+                        type="button"
+                        className="read_more_btn"
+                        onClick={ManageProjectStatus}
+                      >
+                        Click Here!
+                      </button>
+
+                    </div>
+                  </div>
+                </div> */}
+
+                
               </div>
             </div>
           </div>
