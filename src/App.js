@@ -34,7 +34,9 @@ import Registeredaccount from './Componets/pages/Admin/Registeredaccount';
 import TechnicianTable from './Componets/pages/Teachnician/assignedProject';
 import ProjectList from './Componets/pages/Teachnician/viewProjectDetails';
 import NavbarManager from './Componets/pages/Manager/Navbar';
-
+import ManageTechnician from './Componets/pages/Manager/ManageTechnician';
+import CreateTechnician from './Componets/pages/Manager/CreateTechnician';
+//function
 function App() {
   const authCtx = useContext(AuthContext);
   return (
