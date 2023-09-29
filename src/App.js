@@ -36,12 +36,14 @@ import ProjectList from './Componets/pages/Teachnician/viewProjectDetails';
 import NavbarManager from './Componets/pages/Manager/Navbar';
 import ManageTechnician from './Componets/pages/Manager/ManageTechnician';
 import CreateTechnician from './Componets/pages/Manager/CreateTechnician';
+import DetailofJobwaiting from './Componets/pages/Teachnician/DetailofJobwaiting';
+import DeatailofJobAssign from './Componets/pages/Teachnician/DeatailofJobAssign';
+import DetailofJobclosed from './Componets/pages/Teachnician/DetailofJobclosed';
 import ViewTechnicianProfile from './Componets/pages/Manager/ViewTechnicianProfile';
 import CustomerList from './Componets/pages/Manager/CustomerList';
 import CustomerEditedDetails from './Componets/pages/Manager/CustomerEditedDetails';
 import UpdateTechincianprofile from './Componets/pages/Teachnician/UpdateTechincianProfile.js';
 
-//function
 function App() {
   const authCtx = useContext(AuthContext);
   return (
@@ -112,6 +114,9 @@ function App() {
         <Route path="registerdaccount" element={<Registeredaccount />}></Route>
         <Route path="techniciantable" element={<TechnicianTable />}></Route>
         <Route path="projectlist" element={<ProjectList />}></Route>
+        <Route path="DetailofJobwaiting/:projectID" element={<DetailofJobwaiting/>}></Route>
+        <Route path="DeatilsodJobAssign/:projectID" element={<DeatailofJobAssign/>}></Route>
+        <Route path="DetailsofJobClosed/:projectID" element={<DetailofJobclosed/>}></Route>
       </Routes>
 
       <Routes></Routes>
