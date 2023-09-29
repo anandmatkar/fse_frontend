@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './TechnicianTable.css';
 
+
 function TechnicianTable() {
   const [technicians, setTechnicians] = useState([
     { name: 'kylie', age: 28, speciality: 'Drill Machine', experience: '2 years', assigned: false },
