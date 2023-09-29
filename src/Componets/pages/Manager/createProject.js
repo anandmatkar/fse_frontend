@@ -7,14 +7,17 @@ import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { Create_Project_Api } from '../../../Api/Manager_Api';
 import Spinner from '../Common/Spinner';
+import Cookies from 'js-cookie';
 
 function NewProjectScreen(props) {
-  const [customer, setCustomer] = useState('');
+  const [customerList, setCustomerList] = useState([]);
+  const [customerId, setCustomer] = useState('');
   const [projectType, setProjectType] = useState('');
-  const [projectDescription, setProjectDescription] = useState('');
+  const [description, setProjectDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [technicians, setTechnicians] = useState([]);
+  const [projectAttach, setProjectAttach] = useState(null);
+  const [technician, setTechnicians] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +29,7 @@ function NewProjectScreen(props) {
   const technicianRef = useRef();
   const attachmentsRef = useRef();
   const [savedMachineData, setSavedMachineData] = useState(null);
-  const [machinesData, setMachinesData] = useState([]);
+  const [machineDetails, setMachinesData] = useState(null);
   const techniciansOptions = ['Kylie', 'Kendall', 'Kourtney', 'Kim'];
   const machineTypeOptions = [
     'Machine 1',
@@ -38,55 +41,64 @@ function NewProjectScreen(props) {
 
   useEffect(() => {
     // Fetch customer data from the API using Axios or your preferred HTTP library
+    const token = Cookies.get('token');
+
+    // Check if a token is available
+    if (token) {
+      // Set the token in Axios headers
+      axios.defaults.headers.common['Authorization'] = token;
+    }
+
     axios
-      .post(Create_Project_Api)
+      .get('/api/v1/manager/customerList')
       .then((response) => {
         // Assuming the response contains an array of customer objects
-        setCustomers(response.data);
+        const customersData = response.data.data;
+
+        // Extract customer names from the data
+        const names = customersData.map((customer) => customer.customer_name);
+
+        // Update the state with customer names
+        setCustomerList(names);
+
+        // Optionally, you can also set the entire customer data
+        setCustomers(customersData);
       })
       .catch((error) => {
         console.error('Error fetching customer data:', error);
       });
   }, []);
 
+  useEffect(() => {
+    const token = Cookies.get('token');
+
+    // Check if a token is available
+    if (token) {
+      // Set the token in Axios headers
+      axios.defaults.headers.common['Authorization'] = token;
+    }
+    // Fetch technician data from the API using Axios or your preferred HTTP library
+    axios
+      .get('http://localhost:3003/api/v1/manager/technicianLists')
+      .then((response) => {
+        // Assuming the response contains an array of technician objects
+        const techniciansData = response.data.data;
+
+        // Extract technician names from the data
+        const technicianNames = techniciansData.map(
+          (technician) => technician.name
+        );
+
+        // Update the state with technician names
+        setTechnicians(technicianNames);
+      })
+      .catch((error) => {
+        console.error('Error fetching technician data:', error);
+      });
+  }, []);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  const handleModalSubmit = (event) => {
-    event.preventDefault();
-
-    // Get the machine details from the modal form
-    const machineType = machineTypeRef.current.value;
-    const serialNumber = serialNumberRef.current.value;
-    const hourCount = hourCountRef.current.value;
-    const nominalSpeed = nominalSpeedRef.current.value;
-    const actualSpeed = actualSpeedRef.current.value;
-    const selectedTechnicians = Array.from(
-      technicianRef.current.selectedOptions
-    ).map((option) => option.value);
-    const attachments = attachmentsRef.current.files;
-
-    // Create an object with the machine details
-
-    const newMachineData = {
-      machineType,
-      serialNumber,
-      hourCount,
-      nominalSpeed,
-      actualSpeed,
-      technicians: selectedTechnicians,
-      attachments,
-    };
-
-    // Save the new machine data to the machinesData state
-    setMachinesData((prevMachinesData) => [
-      ...prevMachinesData,
-      newMachineData,
-    ]);
-
-    // Close the modal after submission
-    handleClose();
-  };
 
   const goBackHandler = () => {
     Navigate('/manager');
@@ -106,25 +118,24 @@ function NewProjectScreen(props) {
 
   return (
     <div>
-      <React.Fragment>
+      <React.Fragment className="">
         <div className="new-project-screen">
           <h2>New Project</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="customer">Customer</label>
               <select
-                id="customer"
-                value={customer}
+                id="customerId"
+                value={customerId}
                 onChange={(event) => setCustomer(event.target.value)}
-                required
                 className="custom-input"
               >
                 <option value="" disabled>
                   Select Customer
                 </option>
-                {customers.map((customer) => (
-                  <option key={customer.id} value={customer.id}>
-                    {customer.name}
+                {customers.map((customer, index) => (
+                  <option key={index} value={customer.customer_id}>
+                    {customer.customer_name}
                   </option>
                 ))}
               </select>
@@ -151,10 +162,9 @@ function NewProjectScreen(props) {
             <div className="form-group">
               <label htmlFor="projectDescription">Project Description</label>
               <textarea
-                id="projectDescription"
-                value={projectDescription}
+                id="description"
+                value={description}
                 onChange={(event) => setProjectDescription(event.target.value)}
-                required
                 className="custom-input"
               ></textarea>
             </div>
@@ -165,7 +175,6 @@ function NewProjectScreen(props) {
                 id="startDate"
                 value={startDate}
                 onChange={(event) => setStartDate(event.target.value)}
-                required
                 className="custom-input"
               />
             </div>
@@ -176,7 +185,16 @@ function NewProjectScreen(props) {
                 id="endDate"
                 value={endDate}
                 onChange={(event) => setEndDate(event.target.value)}
-                required
+                className="custom-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="projectAttach">End Date</label>
+              <input
+                type="file"
+                id="projectAttach"
+                value={projectAttach}
+                onChange={(event) => setProjectAttach(event.target.value)}
                 className="custom-input"
               />
             </div>
@@ -202,51 +220,6 @@ function NewProjectScreen(props) {
             </Button>
           </form>
           {showPopup && <div className="popup">New project created!</div>}
-          Machine's Added
-          {/* {machinesData.map((machine, index) => (
-          <div key={index} className="machine-details">
-            <h3>Machine {index + 1}</h3>
-            <p>Machine Type: {machine.machineType}</p>
-            <p>Serial Number: {machine.serialNumber}</p>
-            <p>Hour Count: {machine.hourCount}</p>
-            <p>Nominal Speed: {machine.nominalSpeed}</p>
-            <p>Actual Speed: {machine.actualSpeed}</p>
-            <p>Technicians: {machine.technicians.join(", ")}</p>
-            Display other machine data as needed
-          </div>
-        ))} */}
-          {machinesData.length > 0 && (
-            <div className="machine-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Machine Type</th>
-                    <th>Serial Number</th>
-                    <th>Hour Count</th>
-                    <th>Nominal Speed</th>
-                    <th>Actual Speed</th>
-                    <th>Technicians</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {machinesData.map((machine, index) => (
-                    <tr key={index}>
-                      <td>{machine.machineType}</td>
-                      <td>{machine.serialNumber}</td>
-                      <td>{machine.hourCount}</td>
-                      <td>{machine.nominalSpeed}</td>
-                      <td>{machine.actualSpeed}</td>
-                      <td>{machine.technicians.join(', ')}</td>
-                      <td>
-                        <Button variant="danger">Delete</Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
         </div>
 
         <Modal show={show} onHide={handleClose}>
@@ -256,7 +229,7 @@ function NewProjectScreen(props) {
             <Modal.Title>Add Machine Details</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form onSubmit={handleModalSubmit}>
+            <Form>
               {/* Machine details form fields */}
               <Form.Group className="mb-3" controlId="machineType">
                 <Form.Label>Machine Type</Form.Label>
@@ -308,12 +281,21 @@ function NewProjectScreen(props) {
 
               <Form.Group className="mb-3" controlId="technician">
                 <Form.Label>Technician</Form.Label>
-                <Form.Control as="select" multiple ref={technicianRef}>
-                  <option>Shubham Goswami</option>
-                  <option>Yash Tiwari</option>
-                  <option>Riya</option>
-                  {/* Add more technicians as needed */}
-                </Form.Control>
+                <Form.Select
+                  multiple
+                  value={technician}
+                  onChange={(event) => setTechnicians(event.target.value)}
+                  ref={technicianRef}
+                >
+                  <option value="" disabled>
+                    Select Technician
+                  </option>
+                  {technician.map((technicianName, index) => (
+                    <option key={index} value={technicianName}>
+                      {technicianName}
+                    </option>
+                  ))}
+                </Form.Select>
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="attachments">
@@ -326,9 +308,7 @@ function NewProjectScreen(props) {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={handleModalSubmit}>
-              Save Machine Details
-            </Button>
+            <Button variant="primary">Save Machine Details</Button>
           </Modal.Footer>
         </Modal>
       </React.Fragment>

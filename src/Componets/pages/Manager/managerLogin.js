@@ -27,10 +27,10 @@ function ManagerLogin() {
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
-  const buttonHandler = () => {
-    Navigate('/register');
-    Navigate('/newaccount');
-  };
+  // const buttonHandler = () => {
+  //   Navigate('/register');
+  //   Navigate('/newaccount');
+  // };
   const submitHandler = async (event) => {
     setIsLoading(true);
     event.preventDefault();
@@ -168,7 +168,7 @@ function ManagerLogin() {
                           <div className="pt-1 mb-4">
                             <button
                               className="btn btn-dark btn-lg btn-block"
-                              type="button"
+                              type="submit"
                               onClick={submitHandler}
                             >
                               Login
@@ -177,25 +177,14 @@ function ManagerLogin() {
                           <Link to={'/reset'} className="small text-muted">
                             Forgot password?
                           </Link>
-                          <p
-                            className="mb-5 pb-lg-2"
-                            style={{ color: '#393f81' }}
-                          >
-                            Don't have an account?{' '}
-                            <button
-                              onClick={buttonHandler}
-                              style={{ color: '#393f81' }}
-                            >
-                              Register here
-                            </button>
-                          </p>
+
                           <p
                             className="mb-5 pb-lg-2"
                             style={{ color: '#393f81' }}
                           >
                             New account?{' '}
                             <button
-                              onClick={buttonHandler}
+                              onClick={'/register'}
                               style={{ color: '#393f81' }}
                             >
                               New Account
