@@ -37,6 +37,9 @@ import NavbarManager from './Componets/pages/Manager/Navbar';
 import ManageTechnician from './Componets/pages/Manager/ManageTechnician';
 import CreateTechnician from './Componets/pages/Manager/CreateTechnician';
 import ViewTechnicianProfile from './Componets/pages/Manager/ViewTechnicianProfile';
+import CustomerList from './Componets/pages/Manager/CustomerList';
+import CustomerEditedDetails from './Componets/pages/Manager/CustomerEditedDetails';
+
 //function
 function App() {
   const authCtx = useContext(AuthContext);
@@ -77,6 +80,11 @@ function App() {
         <Route path="/createtechnician" element={<CreateTechnician/>} />
         <Route path="/viewtechnicianprofile/:technicianID" element={<ViewTechnicianProfile/>} />
         <Route path="/timeSheetss" element={<TimeSheet />}></Route>
+        <Route path="/customerlist" element={<CustomerList />}></Route>
+        <Route
+          path="/customerediteddetails/:customerID"
+          element={<CustomerEditedDetails />}
+        ></Route>
       </Routes>
 
       <Routes>
