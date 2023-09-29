@@ -39,6 +39,7 @@ import CreateTechnician from './Componets/pages/Manager/CreateTechnician';
 import ViewTechnicianProfile from './Componets/pages/Manager/ViewTechnicianProfile';
 import CustomerList from './Componets/pages/Manager/CustomerList';
 import CustomerEditedDetails from './Componets/pages/Manager/CustomerEditedDetails';
+import UpdateTechincianprofile from './Componets/pages/Teachnician/UpdateTechincianProfile.js';
 
 //function
 function App() {
@@ -60,6 +61,7 @@ function App() {
       </Routes>
       <Routes>
         <Route path="/techLogin" element={<TechnicianLogin />}></Route>
+        <Route path= "/updateTechnicianprofile" element={< UpdateTechincianprofile/>}></Route>
       </Routes>
       <Routes>
         <Route path="/reset" element={<Reset />}></Route>
