@@ -39,9 +39,7 @@ export default function ManagerDashboard() {
   return (
     <>
       <div className="imgBg">
-        <br />
-        <br />
-        <br />
+        <NavbarManager />
 
         <div className="section_our_solution">
           <div className="row">

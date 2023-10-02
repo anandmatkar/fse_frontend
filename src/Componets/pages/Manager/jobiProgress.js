@@ -1,64 +1,74 @@
-import React, { useState } from "react";
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileAlt, faClipboard } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect } from 'react';
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileAlt, faClipboard } from '@fortawesome/free-solid-svg-icons';
+import Cookies from 'js-cookie';
+import { Link, useNavigate } from 'react-router-dom';
 
 const JobProgress = () => {
-  const jobData = [
-    {
-      orderNumber: "12345",
-      customerName: "John Doe",
-      customerAccount: "789456",
-      countryName: "United States",
-      jobDescription: "Job 1 Description",
-      dateFrom: "2023-07-01",
-      dateTo: "2023-07-10",
-      technicalReport: "Technical Report 1",
-      timeSheet: "Time Sheet 1",
-    },
-    {
-      orderNumber: "67890",
-      customerName: "Jane Smith",
-      customerAccount: "987654",
-      countryName: "Canada",
-      jobDescription: "Job 2 Description",
-      dateFrom: "2023-07-15",
-      dateTo: "2023-07-25",
-      technicalReport: "Technical Report 2",
-      timeSheet: "Time Sheet 2",
-    },
-  ];
-
+  const navigate = useNavigate();
+  const [jobData, setJobData] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [showTimeSheetModal, setShowTimeSheetModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+
+  useEffect(() => {
+    // Fetch data from the API endpoint
+    const token = Cookies.get('token');
+    const axiosConfig = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token, // Assuming you use Bearer token format
+      },
+    };
+    fetch('/api/v1/manager/projectList', axiosConfig)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data.data.projectInProgress)) {
+          setJobData(data.data.projectInProgress);
+        } else {
+          console.error('API response is not in the expected format:', data);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  const [showTimeSheetModal, setShowTimeSheetModal] = useState(false);
+
   const [showReportModaal, setShoeReportModal] = useState(false);
 
   const handleShowModal = (jobIndex) => {
-    setSelectedJob(jobData[jobIndex]);
-    setShowModal(true);
+    const selectedProject = jobData[jobIndex];
+    setSelectedJob(selectedProject);
+    navigate(`/projectstatusdetails/${selectedProject.project_id}`);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setShowTimeSheetModal(false); 
-  };
+  // const handleCloseModal = () => {
+  //   setShowModal(false);
+  //   // setShowTimeSheetModal(false);
+  // };
 
-  const handleShowTimeSheetModal = () => {
-    setShowTimeSheetModal(true);
-  };
+  // const handleShowTimeSheetModal = () => {
+  //   setShowTimeSheetModal(true);
+  // };
 
-  const handleCloseTimeSheetModal = () => {
-    setShowTimeSheetModal(false);
-  };
-  const handleShowReportModal = () => {
-    setShoeReportModal(true);
-  }
-  const handleCloseReportModal = () => {
-    setShoeReportModal(false);
-  }
+  // const handleCloseTimeSheetModal = () => {
+  //   setShowTimeSheetModal(false);
+  // };
+  // const handleShowReportModal = () => {
+  //   setShoeReportModal(true);
+  // };
+  // const handleCloseReportModal = () => {
+  //   setShoeReportModal(false);
+  // };
 
   return (
     <div className="job-progress">
@@ -66,192 +76,55 @@ const JobProgress = () => {
       <Table striped bordered responsive>
         <thead>
           <tr>
-            <th>Order number</th>
-            <th>Customer account</th>
-            <th>Customer name</th>
-            <th>Country name</th>
-            <th>Job Description</th>
-            <th>Date from</th>
-            <th>Date to</th>
+            <th>Order_ID</th>
+            <th>project_type</th>
+            <th>description</th>
+            <th>start_date</th>
+            <th>end_date</th>
+            <th>customer_name</th>
+            <th>customer_contact</th>
+            <th>customer_account</th>
+            <th>email_address</th>
+            <th>phone_number</th>
+            <th>country</th>
+            <th>city</th>
+            <th>address</th>
+            <th>scope_of_work</th>
             <th>More</th>
           </tr>
         </thead>
         <tbody>
           {jobData.map((job, index) => (
             <tr key={index}>
-              <td>{job.orderNumber}</td>
-              <td>{job.customerAccount}</td>
-              <td>{job.customerName}</td>
-              <td>{job.countryName}</td>
-              <td>{job.jobDescription}</td>
-              <td>{job.dateFrom}</td>
-              <td>{job.dateTo}</td>
+              <td>{job.order_id}</td>
+              <td>{job.project_type}</td>
+              <td>{job.description}</td>
+              <td>{job.start_date}</td>
+              <td>{job.end_date}</td>
+              <td>{job.customer_name}</td>
+              <td>{job.customer_contact}</td>
+              <td>{job.customer_account}</td>
+              <td>{job.email_address}</td>
+              <td>{job.phone_number}</td>
+              <td>{job.country}</td>
+              <td>{job.city}</td>
+              <td>{job.address}</td>
+              <td>{job.scope_of_work}</td>
               <td>
-                <Button
-                  variant="primary"
+                <Link
+                  to={`/projectprogress/${job.project_id}`} // Use the project_id to create the link
+                  className="btn btn-primary"
                   onClick={() => handleShowModal(index)}
                 >
-                  More
-                </Button>
+                  Details
+                </Link>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
-
-      <Modal show={showModal} onHide={handleCloseModal} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Order Number: {selectedJob?.orderNumber}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div>
-            <h4>Customer Details:</h4>
-            <p>Customer: {selectedJob?.customerName}</p>
-            <p>Customer Account: {selectedJob?.customerAccount}</p>
-            <p>Job Description: {selectedJob?.jobDescription}</p>
-            <input type="file" placeholder="Attach Documents" />
-          </div>
-          <div>
-            <h4>Technician Assign and TimeSheets</h4>
-            <Table striped bordered responsive>
-              <thead>
-                <tr>
-                  <th>Qualification</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Tel phone</th>
-                  <th>Scope</th>
-                  <th>Start date</th>
-                  <th>End Date</th>
-                  <th>Technical Report</th>
-                  <th>Time Sheet</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Electrician</td>
-                  <td>Shubham</td>
-                  <td>gmail.com</td>
-                  <td>524647584</td>
-                  <td>Blower OH</td>
-                  <td>12/03/2023</td>
-                  <td>End Date 1</td>
-                  <td>
-                    <FontAwesomeIcon
-                     icon={faFileAlt}
-                      size="lg"
-                      onClick={handleShowReportModal}
-                      style={{ cursor: "pointer", color:"#FFC9A2"}}
-                       />
-                  </td>
-                  <td>
-                    <FontAwesomeIcon
-                      icon={faClipboard}
-                      size="lg"
-                      onClick={handleShowTimeSheetModal}
-                      style={{ cursor: "pointer" }}
-                    />
-                  </td>
-                </tr>
-                {/* Add more technical report and time sheet data as needed */}
-              </tbody>
-            </Table>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-        <Button variant="success" onClick={handleCloseModal}>
-            Approve
-          </Button>
-
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Time Sheet Modal */}
-      <Modal
-        show={showTimeSheetModal}
-        onHide={handleCloseTimeSheetModal}
-        size="lg"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Time Sheet</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h5>Technician Name: Shubham</h5>
-          <Table striped bordered responsive>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Starting Time</th>
-                <th>Ending Time</th>
-                <th>Comments</th>
-                {/* <th>Approve or Reject TimwSheet</th> */}
-              
-                {/* Add more fields as needed */}
-              </tr>
-            </thead>
-            <tbody>
-              {/* Add time sheet data here */}
-              <tr>
-                <td>22/03/2023</td>
-                <td>14:30 pm</td>
-                <td>18:30pm</td>
-                <td>Working</td>
-                {/* <Button variant="secondary">Approve</Button>
-                <Button variant="danger">Reject</Button> */}
-              </tr>
-              <tr>
-                <td>23/03/2023</td>
-                <td>10:00 AM</td>
-                <td>20:00 PM</td>
-                <td>Lazy Day</td>
-                {/* <Button variant="secondary">Approve</Button>
-                <Button variant="danger">Reject</Button> */}
-              </tr>
-              <tr>
-                <td>24/03/2023</td>
-                <td>10:00 AM</td>
-                <td>20:00 PM</td>
-                <td>OVERHAUL</td>
-                {/* <Button variant="secondary">Approve</Button>
-                <Button variant="danger">Reject</Button> */}
-              </tr>
-              <tr>
-                <td>25/03/2023</td>
-                <td>10:00 AM</td>
-                <td>20:00 PM</td>
-                <td>Machine Design</td>
-                {/* <Button variant="secondary">Approve</Button>
-                <Button variant="danger">Reject</Button> */}
-              </tr>
-              <tr>
-                <td>26/03/2023</td>
-                <td></td>
-                <td></td>
-                <td>day off</td>
-                {/* <Button variant="secondary">Approve</Button>
-                <Button variant="danger">Reject</Button> */}
-              </tr>
-              {/* Add more rows as needed */}
-            </tbody>
-          </Table>
-        </Modal.Body>
-        <Modal.Footer>
-        {/* <Button variant="primary">Validate</Button> */}
-        {/* <Button variant="success" onClick={handleCloseModal}>
-            Approve TimeSheet
-          </Button> */}
-          <Button variant="secondary" onClick={handleCloseTimeSheetModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };
 
 export default JobProgress;
-
-

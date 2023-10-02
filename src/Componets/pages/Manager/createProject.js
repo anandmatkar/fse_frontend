@@ -1,25 +1,27 @@
-import './createProject.css';
 import React, { useRef, useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import { Navigate } from 'react-router-dom';
-import axios from 'axios';
-import { Create_Project_Api } from '../../../Api/Manager_Api';
+import './createProject.css';
 import Spinner from '../Common/Spinner';
 import Cookies from 'js-cookie';
+import { Navigate } from 'react-router-dom';
+import axios from 'axios';
 
-function NewProjectScreen(props) {
+function CreateProject() {
   const [customerList, setCustomerList] = useState([]);
-  const [customerId, setCustomer] = useState('');
+  const [customers, setCustomers] = useState([]);
+  const [technician, setTechnicians] = useState([]);
+  const [customerId, setCustomerId] = useState('');
   const [projectType, setProjectType] = useState('');
-  const [description, setProjectDescription] = useState('');
+  const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [projectAttach, setProjectAttach] = useState(null);
-  const [technician, setTechnicians] = useState([]);
-  const [showPopup, setShowPopup] = useState(false);
-  const [show, setShow] = useState(false);
+  const [MachineType, setMachineType] = useState('');
+  const [MachineSerial, setMachineSerial] = useState('');
+  const [hourCount, setHourCount] = useState('');
+  const [nomSpeed, setNomSpeed] = useState('');
+  const [actSpeed, setActSpeed] = useState('');
+  const [techIds, setTechId] = useState('');
+  const [machineAttach, setMachineAttach] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const machineTypeRef = useRef();
   const serialNumberRef = useRef();
@@ -28,16 +30,6 @@ function NewProjectScreen(props) {
   const actualSpeedRef = useRef();
   const technicianRef = useRef();
   const attachmentsRef = useRef();
-  const [savedMachineData, setSavedMachineData] = useState(null);
-  const [machineDetails, setMachinesData] = useState(null);
-  const techniciansOptions = ['Kylie', 'Kendall', 'Kourtney', 'Kim'];
-  const machineTypeOptions = [
-    'Machine 1',
-    'Machine 2',
-    'Machine 3',
-    'Machine 4',
-  ];
-  const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
     // Fetch customer data from the API using Axios or your preferred HTTP library
@@ -97,15 +89,58 @@ function NewProjectScreen(props) {
       });
   }, []);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   const goBackHandler = () => {
     Navigate('/manager');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Create a FormData object to send the form data including files
+    const formData = new FormData();
+    formData.append('customerId', customerId);
+    formData.append('projectType', projectType);
+    formData.append('description', description);
+    formData.append('startDate', startDate);
+    formData.append('endDate', endDate);
+    if (projectAttach) {
+      for (let i = 0; i < projectAttach.length; i++) {
+        formData.append('projectAttach', projectAttach[i]);
+      }
+    }
+
+    // Create an array of machine details objects
+    const machineDetails = [
+      {
+        MachineType,
+        MachineSerial,
+        hourCount,
+        nomSpeed,
+        actSpeed,
+        techIds,
+        machineAttach,
+      },
+    ];
+    formData.append('machineDetails', JSON.stringify(machineDetails));
+
+    try {
+      // Send the POST request to create the project
+      const response = await axios.post(
+        '/api/v1/manager/createProject',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      // Handle success response here
+      console.log('Project created successfully', response.data);
+    } catch (error) {
+      // Handle error here
+      console.error('Error creating project', error);
+    }
   };
 
   if (isLoading) {
@@ -118,202 +153,236 @@ function NewProjectScreen(props) {
 
   return (
     <div>
-      <React.Fragment className="">
-        <div className="new-project-screen">
-          <h2>New Project</h2>
+      <div class="container newproject">
+        <header class="headernewproject">
+          <h1 id="title" class="text-center heading1">
+            New Project
+          </h1>
+        </header>
+        <div class="form-wrap newprojectform">
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="customer">Customer</label>
-              <select
-                id="customerId"
-                value={customerId}
-                onChange={(event) => setCustomer(event.target.value)}
-                className="custom-input"
-              >
-                <option value="" disabled>
-                  Select Customer
-                </option>
-                {customers.map((customer, index) => (
-                  <option key={index} value={customer.customer_id}>
-                    {customer.customer_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="projectType">Project Type</label>
-              <select
-                id="projectType"
-                value={projectType}
-                onChange={(event) => setProjectType(event.target.value)}
-                required
-                className="custom-input"
-              >
-                <option value="" disabled>
-                  Select Project Type
-                </option>
-                <option value="Type 1">Type 1</option>
-                <option value="Type 2">Type 2</option>
-                <option value="Type 3">Type 3</option>
-                <option value="Type 4">Type 4</option>
-                {/* Add more project type options as needed */}
-              </select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="projectDescription">Project Description</label>
-              <textarea
-                id="description"
-                value={description}
-                onChange={(event) => setProjectDescription(event.target.value)}
-                className="custom-input"
-              ></textarea>
-            </div>
-            <div className="form-group">
-              <label htmlFor="startDate">Start Date</label>
-              <input
-                type="date"
-                id="startDate"
-                value={startDate}
-                onChange={(event) => setStartDate(event.target.value)}
-                className="custom-input"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="endDate">End Date</label>
-              <input
-                type="date"
-                id="endDate"
-                value={endDate}
-                onChange={(event) => setEndDate(event.target.value)}
-                className="custom-input"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="projectAttach">End Date</label>
-              <input
-                type="file"
-                id="projectAttach"
-                value={projectAttach}
-                onChange={(event) => setProjectAttach(event.target.value)}
-                className="custom-input"
-              />
-            </div>
-
-            <button
-              type="button"
-              onClick={handleShow}
-              className="add-machine-button"
-            >
-              Add Machine Details
-            </button>
-
-            <button type="submit" className="submit-button">
-              Save/Submit
-            </button>
-            <br />
-            <Button
-              variant="danger"
-              className="go-back"
-              onClick={goBackHandler}
-            >
-              GO Back!
-            </Button>
-          </form>
-          {showPopup && <div className="popup">New project created!</div>}
-        </div>
-
-        <Modal show={show} onHide={handleClose}>
-          {' '}
-          <Modal.Header closeButton>
-            {' '}
-            <Modal.Title>Add Machine Details</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              {/* Machine details form fields */}
-              <Form.Group className="mb-3" controlId="machineType">
-                <Form.Label>Machine Type</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter Machine type"
-                  ref={machineTypeRef}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="serialNumber">
-                <Form.Label>Serial Number</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter serial number"
-                  ref={serialNumberRef}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="hourCount">
-                <Form.Label>Hour Count</Form.Label>
-                <Form.Control
-                  type="number"
-                  step="1"
-                  placeholder="Enter hour count"
-                  ref={hourCountRef}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="nominalSpeed">
-                <Form.Label>Nominal Speed</Form.Label>
-                <Form.Control
-                  type="number"
-                  step="0.01"
-                  placeholder="Enter nominal speed"
-                  ref={nominalSpeedRef}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="actualSpeed">
-                <Form.Label>Actual Speed</Form.Label>
-                <Form.Control
-                  type="number"
-                  step="0.01"
-                  placeholder="Enter actual speed"
-                  ref={actualSpeedRef}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="technician">
-                <Form.Label>Technician</Form.Label>
-                <Form.Select
-                  multiple
-                  value={technician}
-                  onChange={(event) => setTechnicians(event.target.value)}
-                  ref={technicianRef}
-                >
-                  <option value="" disabled>
-                    Select Technician
-                  </option>
-                  {technician.map((technicianName, index) => (
-                    <option key={index} value={technicianName}>
-                      {technicianName}
+            <div class="row colrow">
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label htmlFor="customer" className="labeltag">
+                    Customer
+                  </label>
+                  <select
+                    id="customerId"
+                    class="form-control formcontrol"
+                    value={customerId.customerId}
+                    onChange={(event) => setCustomerId(event.target.value)}
+                  >
+                    <option disabled selected value="">
+                      Select Customer
                     </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="attachments">
-                <Form.Label>Attachments</Form.Label>
-                <Form.Control type="file" multiple ref={attachmentsRef} />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary">Save Machine Details</Button>
-          </Modal.Footer>
-        </Modal>
-      </React.Fragment>
+                    {customers.map((customer, index) => (
+                      <option key={index} value={customer.customer_id}>
+                        {customer.customer_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label htmlFor="projectType" className="labeltag">
+                    Project Type
+                  </label>
+                  <input
+                    type="text"
+                    name="projectType"
+                    id="projectType"
+                    placeholder="Project type"
+                    class="form-control formcontrol"
+                    value={projectType}
+                    onChange={(event) => setProjectType(event.target.value)}
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label htmlFor="projectDescription" className="labeltag">
+                    Project description
+                  </label>
+                  <input
+                    type="text"
+                    name="description"
+                    id="description"
+                    value={description}
+                    onChange={(event) => setDescription(event.target.value)}
+                    placeholder="Project description"
+                    class="form-control formcontrol"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row colrow">
+              <div class="col-md-4">
+                <div class="form-group ">
+                  <label htmlFor="startDate" className="labeltag">
+                    Start Date
+                  </label>
+                  <input
+                    type="date"
+                    name="startDate"
+                    id="startDate"
+                    value={startDate}
+                    onChange={(event) => setStartDate(event.target.value)}
+                    class="form-control formcontrol"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label htmlFor="endDate" className="labeltag">
+                    End Date
+                  </label>
+                  <input
+                    type="date"
+                    name="endDate"
+                    id="endDate"
+                    value={endDate}
+                    onChange={(event) => setEndDate(event.target.value)}
+                    class="form-control formcontrol"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label htmlFor="projectAttach" className="labeltag">
+                    Project Documents
+                  </label>
+                  <input
+                    type="file"
+                    name="projectAttach"
+                    id="projectAttach"
+                    value={projectAttach}
+                    onChange={(event) => setProjectAttach(event.target.value)}
+                    class="form-control formcontrol"
+                  />
+                </div>
+              </div>
+            </div>
+            {/* <header className="col-md-12 text-center fs-2">
+              Add Machine Details
+            </header> */}
+            <div class="row p-2 colrow">
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label id="name-label" className="labeltag">
+                    Machine Type
+                  </label>
+                  <input
+                    type="text"
+                    name="MachineType"
+                    ref={machineTypeRef}
+                    placeholder="Machine type"
+                    class="form-control formcontrol"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label id="email-label" className="labeltag">
+                    Serial Number
+                  </label>
+                  <input
+                    type="text"
+                    name="MachineSerial"
+                    ref={serialNumberRef}
+                    placeholder="Machine Serial number"
+                    class="form-control formcontrol"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label id="email-label" className="labeltag">
+                    Hour Count
+                  </label>
+                  <input
+                    type="text"
+                    name="hourCount"
+                    ref={hourCountRef}
+                    placeholder="Hour Count"
+                    class="form-control formcontrol"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row colrow">
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label id="number-label" className="labeltag">
+                    Nominal Speed
+                  </label>
+                  <input
+                    type="text"
+                    name="nomSpeed"
+                    ref={nominalSpeedRef}
+                    placeholder="Nominal Speed"
+                    class="form-control formcontrol"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label id="number-label" className="labeltag">
+                    Actual Speed
+                  </label>
+                  <input
+                    type="text"
+                    name="actSpeed"
+                    placeholder="Actual Speed"
+                    ref={actualSpeedRef}
+                    class="form-control formcontrol"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label id="number-label" for="number">
+                    Technician
+                  </label>
+                  <select
+                    id="techIds"
+                    class="form-control formcontrol"
+                    value={techIds}
+                    onChange={(event) => setTechId(event.target.value)}
+                  >
+                    <option value="" disabled selected>
+                      Select Technician
+                    </option>
+                    {technician.map((technicianName, index) => (
+                      <option key={index} value={technicianName}>
+                        {technicianName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 ">
+              <label className="labeltag">Machine Attachments</label>
+              <div class="form-control formcontrol">
+                <input
+                  type="file"
+                  class="formcontrol"
+                  accept="image/*"
+                  multiple
+                  // onChange={handleFileChange}
+                />
+              </div>
+            </div>
+            <div className="col-12 d-flex justify-content-end">
+              <button className="btn btn-primary1 mt-2 ">Submit</button>
+            </div>{' '}
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
 
-export default NewProjectScreen;
+export default CreateProject;
