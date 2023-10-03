@@ -17,9 +17,41 @@ const RegistrationPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const [profilePic, setProfilePic] = useState(null);
+  const [profilePicURL, setProfilePicURL] = useState(''); // Holds the uploaded picture URL
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
+
+  const handleProfilePicChange = async (event) => {
+    const file = event.target.files[0];
+    setProfilePic(file);
+
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const response = await axios.post(
+          '/api/v1/manager/uploadProfilePic',
+          formData
+        );
+        console.log(response.data.data);
+        if (response.data.status === 201) {
+          // The API should return the URL of the uploaded profile picture
+          const uploadedURL = response.data.data;
+          console.log(uploadedURL);
+          setProfilePicURL(uploadedURL);
+        } else {
+          console.error(
+            'Profile Picture Upload Failed. Status Code:',
+            response.status
+          );
+        }
+      } catch (error) {
+        console.error('API Error:', error);
+      }
+    }
+  };
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -61,7 +93,7 @@ const RegistrationPage = () => {
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
-      const registrationData = {
+      let registrationData = {
         emailAddress,
         password,
         confirmPass,
@@ -71,6 +103,13 @@ const RegistrationPage = () => {
         company,
         phone,
       };
+
+      registrationData = {
+        ...registrationData,
+        profilePic: profilePicURL,
+      };
+
+      console.log(registrationData);
 
       try {
         const response = await axios.post(
@@ -281,6 +320,24 @@ const RegistrationPage = () => {
                             <span className="error" style={{ color: 'red' }}>
                               {errors.phone}
                             </span>
+                          )}
+                        </div>
+                        <div className="form-outline mb-4">
+                          <input
+                            type="file"
+                            id="file"
+                            className="form-control form-control-lg"
+                            onChange={handleProfilePicChange}
+                          />
+                          {profilePicURL && (
+                            <div>
+                              <p>Uploaded Profile Picture:</p>
+                              <img
+                                src={profilePicURL}
+                                alt="Profile"
+                                width="100"
+                              />
+                            </div>
                           )}
                         </div>
                         <div className="pt-1 mb-4">

@@ -96,6 +96,16 @@ function ShowManagerProfile() {
             <h1 class="mb-3"> Customer Details Update</h1>
 
             <form onSubmit={handleSubmit}>
+              <div>
+                {managerData.avatar && (
+                  <img
+                    src={managerData.avatar}
+                    alt="Profile Picture"
+                    className="img-fluid mb-3"
+                    style={{ maxWidth: '200px' }}
+                  />
+                )}
+              </div>
               <div class="row g-3">
                 <div class="col-md-6">
                   <label for="your-name" class="form-label">

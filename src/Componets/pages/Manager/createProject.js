@@ -3,10 +3,13 @@ import './createProject.css';
 import Spinner from '../Common/Spinner';
 import Cookies from 'js-cookie';
 import { Navigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 function CreateProject() {
   const [customerList, setCustomerList] = useState([]);
+  const [techList, setTechList] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [technician, setTechnicians] = useState([]);
   const [customerId, setCustomerId] = useState('');
@@ -20,16 +23,17 @@ function CreateProject() {
   const [hourCount, setHourCount] = useState('');
   const [nomSpeed, setNomSpeed] = useState('');
   const [actSpeed, setActSpeed] = useState('');
-  const [techIds, setTechId] = useState('');
+  const [techIds, setTechId] = useState([]);
   const [machineAttach, setMachineAttach] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const machineTypeRef = useRef();
-  const serialNumberRef = useRef();
-  const hourCountRef = useRef();
-  const nominalSpeedRef = useRef();
-  const actualSpeedRef = useRef();
-  const technicianRef = useRef();
-  const attachmentsRef = useRef();
+
+  const handleTechIdChange = (event) => {
+    const selectedIds = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setTechId(selectedIds);
+  };
 
   useEffect(() => {
     // Fetch customer data from the API using Axios or your preferred HTTP library
@@ -62,6 +66,7 @@ function CreateProject() {
   }, []);
 
   useEffect(() => {
+    // Fetch customer data from the API using Axios or your preferred HTTP library
     const token = Cookies.get('token');
 
     // Check if a token is available
@@ -69,23 +74,26 @@ function CreateProject() {
       // Set the token in Axios headers
       axios.defaults.headers.common['Authorization'] = token;
     }
-    // Fetch technician data from the API using Axios or your preferred HTTP library
+
     axios
       .get('http://localhost:3003/api/v1/manager/technicianLists')
       .then((response) => {
-        // Assuming the response contains an array of technician objects
+        // Assuming the response contains an array of customer objects
         const techniciansData = response.data.data;
 
-        // Extract technician names from the data
+        // Extract customer names from the data
         const technicianNames = techniciansData.map(
-          (technician) => technician.name
+          (technician) => technician.customer_name
         );
 
-        // Update the state with technician names
-        setTechnicians(technicianNames);
+        // Update the state with customer names
+        setTechList(technicianNames);
+
+        // Optionally, you can also set the entire customer data
+        setTechnicians(techniciansData);
       })
       .catch((error) => {
-        console.error('Error fetching technician data:', error);
+        console.error('Error fetching customer data:', error);
       });
   }, []);
 
@@ -93,38 +101,101 @@ function CreateProject() {
     Navigate('/manager');
   };
 
+  const handleProfilePicChange = async (event) => {
+    const files = event.target.files;
+    const fileArray = Array.from(files); // Convert FileList to an array
+    setMachineAttach(fileArray);
+
+    if (fileArray.length > 0) {
+      const formData = new FormData();
+
+      // Append each file to the formData with the same field name 'files'
+      fileArray.forEach((file, index) => {
+        formData.append('files', file);
+      });
+
+      try {
+        const response = await axios.post(
+          '/api/v1/manager/uploadMachineFiles',
+          formData
+        );
+
+        if (response.data.status === 201) {
+          // The API should return an array of URLs for the uploaded files
+          const uploadedURLs = response.data.data;
+          console.log(uploadedURLs);
+          setMachineAttach(uploadedURLs);
+        } else {
+          console.error('Files Upload Failed. Status Code:', response.status);
+        }
+      } catch (error) {
+        console.error('API Error:', error);
+      }
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Create a FormData object to send the form data including files
-    const formData = new FormData();
-    formData.append('customerId', customerId);
-    formData.append('projectType', projectType);
-    formData.append('description', description);
-    formData.append('startDate', startDate);
-    formData.append('endDate', endDate);
-    if (projectAttach) {
-      for (let i = 0; i < projectAttach.length; i++) {
-        formData.append('projectAttach', projectAttach[i]);
-      }
-    }
+    // const formData = new FormData();
+    // formData.append('customerId', customerId);
+    // formData.append('projectType', projectType);
+    // formData.append('description', description);
+    // formData.append('startDate', startDate);
+    // formData.append('endDate', endDate);
+    // if (projectAttach) {
+    //   for (let i = 0; i < projectAttach.length; i++) {
+    //     formData.append('projectAttach', projectAttach[i]);
+    //   }
+    // }
 
-    // Create an array of machine details objects
-    const machineDetails = [
-      {
-        MachineType,
-        MachineSerial,
-        hourCount,
-        nomSpeed,
-        actSpeed,
-        techIds,
-        machineAttach,
-      },
-    ];
-    formData.append('machineDetails', JSON.stringify(machineDetails));
+    // // Create an array of machine details objects
+    // const machineDetails = [
+    //   {
+    //     MachineType,
+    //     MachineSerial,
+    //     hourCount,
+    //     nomSpeed,
+    //     actSpeed,
+    //     techIds,
+    //     machineAttach,
+    //   },
+    // ];
+    // formData.append('techIds', JSON.stringify(techIds));
+
+    // formData.append('machineDetails', JSON.stringify(machineDetails));
+
+    const projectData = {
+      customerId,
+      projectType,
+      description,
+      startDate,
+      endDate,
+      projectAttach,
+      machineDetails: [
+        {
+          MachineType,
+          MachineSerial,
+          hourCount,
+          nomSpeed,
+          actSpeed,
+          techIds,
+          machineAttach,
+        },
+      ],
+      techIds, // Add techIds directly to the object
+    };
+
+    // Convert the projectData object to JSON
+    const projectDataJSON = JSON.stringify(projectData);
+
+    // Create a FormData object to send the form data including files
+    const formData = new FormData();
+    formData.append('projectData', projectDataJSON);
+    console.log(projectData);
 
     try {
-      // Send the POST request to create the project
       const response = await axios.post(
         '/api/v1/manager/createProject',
         formData,
@@ -135,11 +206,19 @@ function CreateProject() {
         }
       );
 
-      // Handle success response here
-      console.log('Project created successfully', response.data);
+      if (response.data.status === 201) {
+        // Handle success
+        toast.success('Project created successfully');
+        console.log('Project created successfully', response.data);
+      } else {
+        // Handle API error (status code other than 201)
+        toast.error('Error creating project');
+        console.error('Error creating project. Status Code:', response.status);
+      }
     } catch (error) {
-      // Handle error here
-      console.error('Error creating project', error);
+      // Handle network or other errors
+      toast.error('An error occurred while creating the project');
+      console.error('API Error:', error);
     }
   };
 
@@ -170,14 +249,14 @@ function CreateProject() {
                   <select
                     id="customerId"
                     class="form-control formcontrol"
-                    value={customerId.customerId}
+                    value={customerId}
                     onChange={(event) => setCustomerId(event.target.value)}
                   >
                     <option disabled selected value="">
                       Select Customer
                     </option>
                     {customers.map((customer, index) => (
-                      <option key={index} value={customer.customer_id}>
+                      <option key={index} value={customer.id}>
                         {customer.customer_name}
                       </option>
                     ))}
@@ -276,7 +355,8 @@ function CreateProject() {
                   <input
                     type="text"
                     name="MachineType"
-                    ref={machineTypeRef}
+                    value={MachineType}
+                    onChange={(event) => setMachineType(event.target.value)}
                     placeholder="Machine type"
                     class="form-control formcontrol"
                   />
@@ -290,7 +370,8 @@ function CreateProject() {
                   <input
                     type="text"
                     name="MachineSerial"
-                    ref={serialNumberRef}
+                    value={MachineSerial}
+                    onChange={(event) => setMachineSerial(event.target.value)}
                     placeholder="Machine Serial number"
                     class="form-control formcontrol"
                   />
@@ -304,7 +385,8 @@ function CreateProject() {
                   <input
                     type="text"
                     name="hourCount"
-                    ref={hourCountRef}
+                    value={hourCount}
+                    onChange={(event) => setHourCount(event.target.value)}
                     placeholder="Hour Count"
                     class="form-control formcontrol"
                   />
@@ -320,7 +402,8 @@ function CreateProject() {
                   <input
                     type="text"
                     name="nomSpeed"
-                    ref={nominalSpeedRef}
+                    value={nomSpeed}
+                    onChange={(event) => setNomSpeed(event.target.value)}
                     placeholder="Nominal Speed"
                     class="form-control formcontrol"
                   />
@@ -335,7 +418,8 @@ function CreateProject() {
                     type="text"
                     name="actSpeed"
                     placeholder="Actual Speed"
-                    ref={actualSpeedRef}
+                    value={actSpeed}
+                    onChange={(event) => setActSpeed(event.target.value)}
                     class="form-control formcontrol"
                   />
                 </div>
@@ -345,7 +429,7 @@ function CreateProject() {
                   <label id="number-label" for="number">
                     Technician
                   </label>
-                  <select
+                  {/* <select
                     id="techIds"
                     class="form-control formcontrol"
                     value={techIds}
@@ -359,6 +443,23 @@ function CreateProject() {
                         {technicianName}
                       </option>
                     ))}
+                  </select> */}
+
+                  <select
+                    id="techId"
+                    class="form-control formcontrol"
+                    multiple
+                    value={techIds}
+                    onChange={handleTechIdChange}
+                  >
+                    <option disabled selected value="">
+                      Select Teachnician
+                    </option>
+                    {technician.map((technician, index) => (
+                      <option key={index} value={technician.id}>
+                        {technician.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -369,9 +470,9 @@ function CreateProject() {
                 <input
                   type="file"
                   class="formcontrol"
-                  accept="image/*"
+                  // accept="imafge/*"
                   multiple
-                  // onChange={handleFileChange}
+                  onChange={handleProfilePicChange}
                 />
               </div>
             </div>
@@ -381,6 +482,7 @@ function CreateProject() {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
