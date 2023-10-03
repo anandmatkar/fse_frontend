@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import TimeSheetModal from './TimeSheetModal';
 import NewReportModal from './NewReportModal';
+import RequestApproval from './RequestApproval';
+import { Button } from 'react-bootstrap';
+
 
 
 const DeatailofJobAssign = () => {
@@ -15,8 +18,6 @@ const DeatailofJobAssign = () => {
     const [project , setProject] = useState(null);
     const [timesheetData, setTimesheetData] = useState([]);
     const [NewReport, setNewReport] = useState([]);
-   
-
 
     const {projectID} = useParams();
 
@@ -102,6 +103,7 @@ const DeatailofJobAssign = () => {
                             <h1>Timesheet Data:</h1>
                             {/* <button onClick={() => setShowModal(true)} type="button" className="btn btn-primary float-end" style={{position: "relative", left: "170%"}}>Add new Timesheet</button> */}
                             <TimeSheetModal projectID={projectID} onNewTimesheet={setTimesheetData} />
+                          
 
             </div>
             <table style={{ width: '110%', borderCollapse: 'collapse', marginTop: '20px' }}>
@@ -133,7 +135,9 @@ const DeatailofJobAssign = () => {
                     <div className='d-flex'>
     <h1>Project Reports:</h1>
     <NewReportModal projectID={projectID} onNewReport={setNewReport} />
+    {/* <RequestApproval projectID={projectID} /> */}    
     </div>
+   
     {project && project.technician_data && (
         <table style={{ width: '100%', borderCollapse: 'collapse' ,marginTop:"20px"}}>
             <thead>

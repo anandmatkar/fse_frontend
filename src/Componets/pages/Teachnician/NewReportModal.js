@@ -12,69 +12,75 @@ const NewReportModal = ({projectID, onNewReport}) => {
     attachment: null
   });
 
+  const [attachments, setAttachments] = useState([]); 
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
-    setFormData(prev => ({ ...prev, attachment: e.target.files[0] }));
-  };
+  const handleFileUpload = async (e) => {
+    const token = Cookies.get('token'); 
+    const file = e.target.files[0];
+    if (file) {
+        const fileFormData = new FormData();
+        fileFormData.append('files', file);
+         fileFormData.append('projectID', projectID);
 
-  const handleSubmit = async (e) => {
+        try {
+            const response = await fetch('http://localhost:3003/api/v1/technician/uploadReportAttach', {
+                method: 'POST',
+                headers: {
+                    'Authorization': token
+                },
+                body: fileFormData
+            });
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.message);
+            }
+
+            // Store the attachment path directly in the state
+            setAttachments(data.data); 
+
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            alert('Error uploading file: ' + error.message);
+        }
+    }
+};
+
+const handleSubmit = async (e) => {
     e.preventDefault();
-  
     const token = Cookies.get('token');
-    let attachmentPath = [];
 
     try {
-      let response = await fetch('http://localhost:3003/api/v1/technician/createReport', {
-        method: 'POST',
-        headers: {
-          'Authorization': token,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          projectID: formData.projectID,
-          date: formData.date,
-            description: formData.description,
-          attachment: attachmentPath 
-        })
-      });
-      let data = await response.json();
-      console.log(data.data);
-      onNewReport(data.data); 
-      // Check if data was sent successfully
-      if (!data.success) {
-        throw new Error(data.message);
-      }
-
-      // If the above data was sent successfully and there's an attachment to send
-      if (formData.attachment) {
-        const fileFormData = new FormData();
-        fileFormData.append('attachment', formData.attachment);
-
-        response = await fetch('http://localhost:3003/api/v1/technician/uploadTimesheetAttachements', {
-          method: 'POST',
-          headers: {
-            'Authorization': token
-          },
-          body: fileFormData
+        const response = await fetch('http://localhost:3003/api/v1/technician/createReport', {
+            method: 'POST',
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                projectID: formData.projectID,
+                date: formData.date,
+                description: formData.description,
+                attachment: attachments
+            })
         });
-        data = await response.json();
-
+        const data = await response.json();
         if (!data.success) {
-          throw new Error(data.message);
+            throw new Error(data.message);
         }
-        attachmentPath = data.data[0].path;
-      }
 
-      alert('Timesheet created successfully');
-      setShowModal(false);
+        onNewReport(data.data);
 
+        alert('Report created successfully');
+        setShowModal(false);
     } catch (error) {
-      console.error('Error:', error);
-      alert('Error creating timesheet: ' + error.message);
+        console.error('Error:', error);
+        alert('Error creating report: ' + error.message);
     }
 };
   return (
@@ -103,7 +109,7 @@ const NewReportModal = ({projectID, onNewReport}) => {
             {/* Attachment Input */}
             <label className='mt-3'>
               Attachment:
-              <input type="file" name="attachment" onChange={handleFileChange} />
+              <input type="file" name="attachment" onChange={handleFileUpload} />
             </label>
             <Button className='mt-3' type="submit">Submit</Button> 
           </form>

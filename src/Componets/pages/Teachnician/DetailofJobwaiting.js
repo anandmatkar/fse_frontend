@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import TimeSheetModal from './TimeSheetModal';
 import NewReportModal from './NewReportModal';
+import RequestApproval from './RequestApproval';
 
 const DetailofJobwaiting = () => {
     const style = {
@@ -127,6 +128,7 @@ const { projectID } = useParams();
                     <div className='d-flex'>
     <h1>Project Reports:</h1>
     <NewReportModal projectID={projectID} onNewReport={setNewReport} />
+    <RequestApproval projectID={projectID} />
     </div>
     {project && project.technician_data && (
         <table style={{ width: '100%', borderCollapse: 'collapse' ,marginTop:"20px"}}>

@@ -43,6 +43,7 @@ import ViewTechnicianProfile from './Componets/pages/Manager/ViewTechnicianProfi
 import CustomerList from './Componets/pages/Manager/CustomerList';
 import CustomerEditedDetails from './Componets/pages/Manager/CustomerEditedDetails';
 import UpdateTechincianprofile from './Componets/pages/Teachnician/UpdateTechincianProfile.js';
+import TechnicianForgotPassword from './Componets/pages/Teachnician/TechnicianForgotPassword';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -117,6 +118,7 @@ function App() {
         <Route path="DetailofJobwaiting/:projectID" element={<DetailofJobwaiting/>}></Route>
         <Route path="DeatilsodJobAssign/:projectID" element={<DeatailofJobAssign/>}></Route>
         <Route path="DetailsofJobClosed/:projectID" element={<DetailofJobclosed/>}></Route>
+        <Route path='TechnicianForgotPassword' element={<TechnicianForgotPassword/>}></Route>
       </Routes>
 {/* jst for push */}
       <Routes></Routes>

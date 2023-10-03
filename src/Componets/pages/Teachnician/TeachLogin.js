@@ -5,7 +5,7 @@ import { useState, useRef, useContext } from "react";
 import Layout from "../../Layout/Layout";
 import Cookies from 'js-cookie';
 import LayoutTech from "../../Layout/Layout3";
-// import Layout from "../../Layout/Layout";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import './Techlogin.css'
 function TechnicianLogin() {
@@ -149,9 +149,9 @@ function TechnicianLogin() {
                                     </div>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <a className="small text-muted" href="#!">
-                                        Forgot password?
-                                    </a>
+                               <Link to="/TechnicianForgotPassword" className="small text-muted">
+                                     Forgot password?
+                               </Link>
                                 </div>
                             </div>
                             <div className="pt-1 mb-4">

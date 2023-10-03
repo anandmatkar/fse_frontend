@@ -3,82 +3,85 @@ import { Button, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 
 const TimeSheetModal = ({ projectID , onNewTimesheet }) => { 
-    const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    projectID: projectID, 
-    date: '',
-    start_time: '',
-    end_time: '',
-    comments: '', 
-    attachment: null
+      projectID: projectID,
+      date: '',
+      start_time: '',
+      end_time: '',
+      comments: '',
+      attachment: null
   });
+  const [attachments, setAttachments] = useState([]); 
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+      const { name, value } = e.target;
+      setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
-    setFormData(prev => ({ ...prev, attachment: e.target.files[0] }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    const token = Cookies.get('token');
-    let attachmentPath = [];
-
-    try {
-      let response = await fetch('http://localhost:3003/api/v1/technician/createTimesheet', {
-        method: 'POST',
-        headers: {
-          'Authorization': token,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          projectID: formData.projectID,
-          date: formData.date,
-          startTime: formData.start_time,
-          endTime: formData.end_time,
-          comments: formData.comments,
-          attachment: attachmentPath 
-        })
-      });
-      let data = await response.json();
-      console.log(data.data);
-      onNewTimesheet(data.data); 
-      // Check if data was sent successfully
-      if (!data.success) {
-        throw new Error(data.message);
-      }
-
-      // If the above data was sent successfully and there's an attachment to send
-      if (formData.attachment) {
+  const handleFileUpload = async (e) => {
+    const token = Cookies.get('token'); 
+    const file = e.target.files[0];
+    if (file) {
         const fileFormData = new FormData();
-        fileFormData.append('attachment', formData.attachment);
+        fileFormData.append('files', file);
+        fileFormData.append('projectID', projectID); // Add projectID here
 
-        response = await fetch('http://localhost:3003/api/v1/technician/uploadTimesheetAttachements', {
+        try {
+            const response = await fetch('http://localhost:3003/api/v1/technician/uploadTimesheetAttachements', {
+                method: 'POST',
+                headers: {
+                    'Authorization': token
+                },
+                body: fileFormData
+            });
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.message);
+            }
+
+            // Set the path to state
+            setAttachments(data.data); 
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            alert('Error uploading file: ' + error.message);
+        }
+    }
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const token = Cookies.get('token');
+
+  try {
+      const timesheetResponse = await fetch('http://localhost:3003/api/v1/technician/createTimesheet', {
           method: 'POST',
           headers: {
-            'Authorization': token
+              'Authorization': token,
+              'Content-Type': 'application/json'
           },
-          body: fileFormData
-        });
-        data = await response.json();
+          body: JSON.stringify({
+              projectID: formData.projectID,
+              date: formData.date,
+              startTime: formData.start_time,
+              endTime: formData.end_time,
+              comments: formData.comments,
+              attachment: attachments // Send the attachments array here
+          })
+      });
+      const timesheetData = await timesheetResponse.json();
 
-        if (!data.success) {
-          throw new Error(data.message);
-        }
-        attachmentPath = data.data[0].path;
+      if (!timesheetData.success) {
+          throw new Error(timesheetData.message);
       }
 
       alert('Timesheet created successfully');
       setShowModal(false);
-
-    } catch (error) {
+  } catch (error) {
       console.error('Error:', error);
       alert('Error creating timesheet: ' + error.message);
-    }
+  }
 };
 
   return (
@@ -123,7 +126,7 @@ const TimeSheetModal = ({ projectID , onNewTimesheet }) => {
               {/* Attachment Input */}
               <label>
               Attachment:
-              <input type="file" name="attachment" className='mt-3' onChange={handleFileChange} />
+              <input type="file"name="files" onChange={handleFileUpload} className='mt-3' />
             </label>
             <Button type="submit">Submit</Button> 
             </form>

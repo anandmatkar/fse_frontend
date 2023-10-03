@@ -82,7 +82,7 @@ projectList.map((project, index) => (
 <td>{project.city}</td>
 <td>{project.address}</td>
 <td>{project.scope_of_work}</td>
-<td><Link to={`/DetailofJobwaiting/${project.project_id}`} className="btn btn-success">
+<td><Link to={`/DetailofJobwaiting/${project.project_id}`} className="btn btn-primary">
     See Details
 </Link>
 </td>
