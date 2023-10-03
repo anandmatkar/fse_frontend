@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React, { useState } from 'react'; 
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -10,9 +10,12 @@ import { Card, Container } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 function CreateTechnician() {
   const { Formik } = formik;
+  const navigate = useNavigate();
 
   const schema = yup.object().shape({
     name: yup.string().required(),
@@ -23,12 +26,16 @@ function CreateTechnician() {
     nationality: yup.string().required(),
     qualification: yup.string().required(),
     level: yup.string().required(),
-    profilePic: yup.string().required(),
+    profilePic: yup.string(),
   });
+
+  const [selectedFile, setSelectedFile] = useState(''); // State to hold the selected file
+  const [profilePicPath, setProfilePicPath] = useState(''); // State to hold the profile picture path
 
   const createTechnician = async (formData) => {
     try {
-        const token = localStorage.getItem("token");
+        // const token = localStorage.getItem("token");
+        const token = Cookies.get("token");
         if (!token) {
         console.error("Token not found in localStorage.");
         return;
@@ -38,11 +45,12 @@ function CreateTechnician() {
                 Authorization: token,
             },
         };
-        let technicianData = formData;
+        let technicianData = {...formData, profilePic: profilePicPath};
         console.log(technicianData);
         const response = await axios.post('http://localhost:3003/api/v1/manager/createTechnician', technicianData, config);
         console.log(response.data);
         if(response.success === true) {
+          navigate('/managetechnician');
           toast.success(response.data.message);
         } else {
           toast.error(response.data.message);           
@@ -55,7 +63,42 @@ function CreateTechnician() {
   
   const handleSubmit = (values, e) => {
     console.log("Form Data:", values);
+    // console.log(selectedFile);
     createTechnician(values);
+  };
+
+  const handleFileChange = async (e) => {
+    try {
+      setSelectedFile(e.target.files[0]);
+      const profileImage = e.target.files[0];
+      console.log(profileImage);
+
+      const token = Cookies.get('token');
+        if (!token) {
+        console.error("Token not found in localStorage.");
+        return;
+        }
+        let config = {
+            headers: {
+                Authorization: token,
+            },
+        };
+        let fileData = new FormData();
+
+        // Append the profile image to the FormData
+        fileData.append('image', profileImage);
+
+      const response = await axios.post('http://localhost:3003/api/v1/technician/uploadProfilePic', fileData, config);
+
+      console.log(response.data);
+
+      setProfilePicPath(response.data.data);
+
+
+    } catch (error) {
+      console.log(error.message);
+    }
+
   };
   
   return (
@@ -201,21 +244,18 @@ function CreateTechnician() {
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="validationFormik08" className='my-2'>
-                  <Form.Label>Profile Picture</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Profile Photo"
-                    name="profilePic"
-                    value={values.profilePic}
-                    onChange={handleChange}
-                    isInvalid={!!errors.profilePic}
-                  />
+                <Form.Label>Profile Picture</Form.Label>
+                <Form.Control
+                  type="file" // Use type "file" for file input
+                  name="profilePic"
+                  onChange={handleFileChange} // Handle file input change
+                  isInvalid={!!errors.profilePic}
+                />
 
-                  <Form.Control.Feedback type="invalid">
-                    {errors.profilePic}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                
+                <Form.Control.Feedback type="invalid">
+                  {errors.profilePic}
+                </Form.Control.Feedback>
+              </Form.Group>
               </Row>
               
               <Button variant='warning' type="button" onClick={handleSubmit} className='my-3' as={Col} lg="3">Submit Technician Details</Button>
