@@ -3,10 +3,8 @@ import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import TimeSheetModal from './TimeSheetModal';
 import NewReportModal from './NewReportModal';
-import RequestApproval from './RequestApproval';
-import { Button } from 'react-bootstrap';
-
-
+import axios from 'axios';
+import TimeSheetApprovalModal from './TimeSheetApprovalModal';
 
 const DeatailofJobAssign = () => {
     const style = {
@@ -18,38 +16,79 @@ const DeatailofJobAssign = () => {
     const [project , setProject] = useState(null);
     const [timesheetData, setTimesheetData] = useState([]);
     const [NewReport, setNewReport] = useState([]);
+   
+
 
     const {projectID} = useParams();
 
+        const deleteTimeSheet = async (id, project_id) => {
 
-    useEffect(() => {
-        const token = Cookies.get('token');
-        fetch(`/api/v1/technician/assignedProjectDetails?projectId=${projectID}`, {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: token,
-            },
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
+          console.log(id, project_id);
+
+          try {
+            const token = Cookies.get('token');
+console.log(token,"token")
+            if (!token) {
+              console.error("Token not found in localStorage.");
+              return;
             }
-            return response.json();
-          })
-          .then(data => {
-            if (data && data.data && data.data.length > 0) {
-              setProject(data.data[0]);
-              setTimesheetData(data.data[0].timesheet_data);
+
+            const config = {
+              headers: {
+                Authorization: token, // Attach the token with "Bearer" prefix
+              },
+            };
+console.log(config, "config")
+            let url = `http://localhost:3003/api/v1/technician/deleteTimesheet?projectId=${project_id}&timeSheetId=${id}`
+            
+            const response = await axios.get(url, config);            
+
+            if (response.status === 200) {
+              // Successfully deleted, you can update the UI or take any other action
+              console.log('Timesheet entry deleted successfully');
+              // Refresh timesheet data after deletion
+              // Call the API to fetch updated timesheet data
+              // setTimesheetData(updatedTimesheetData);
             } else {
-              console.error('API response is not in the expected format:', data);
+              console.error('Failed to delete timesheet entry');
+              // Display an error message to the user
+              // You can use a toast or show the error message in the UI
             }
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
-        }, [projectID]);
+          } catch (error) {
+            console.error('Error:', error);
+            // Handle the error and display an error message
+            // You can use a toast or show the error message in the UI
+          }
+        };
 
-
+        useEffect(() => {
+          const token = Cookies.get('token');
+          fetch(`/api/v1/technician/assignedProjectDetails?projectId=${projectID}`, {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token,
+              },
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (data && data.data && data.data.length > 0) {
+                setProject(data.data[0]);
+                setTimesheetData(data.data[0].timesheet_data);
+              } else {
+                console.error('API response is not in the expected format:', data);
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching data:', error);
+            });
+          }, [projectID]);
+  
+        
        
   return (
     <div>
@@ -103,9 +142,9 @@ const DeatailofJobAssign = () => {
                             <h1>Timesheet Data:</h1>
                             {/* <button onClick={() => setShowModal(true)} type="button" className="btn btn-primary float-end" style={{position: "relative", left: "170%"}}>Add new Timesheet</button> */}
                             <TimeSheetModal projectID={projectID} onNewTimesheet={setTimesheetData} />
-                          
-
-            </div>
+                            
+                            <TimeSheetApprovalModal projectID={projectID} />
+                   </div>
             <table style={{ width: '110%', borderCollapse: 'collapse', marginTop: '20px' }}>
         <thead>
             <tr>
@@ -113,6 +152,8 @@ const DeatailofJobAssign = () => {
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Start Time</th>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>End Time</th>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Date</th>
+                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Action</th>
+
             </tr>
         </thead>
         <tbody>
@@ -123,6 +164,13 @@ const DeatailofJobAssign = () => {
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{timesheet.start_time}</td>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{timesheet.end_time}</td>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{timesheet.date}</td>
+                        {
+            <td>
+            {
+              <button onClick={() => deleteTimeSheet(timesheet.id, timesheet.project_id)} className='btn btn-danger btn-sm'> Delete </button>
+            }
+            </td>
+          }
                     </tr>
                 ))
             ))}
@@ -135,9 +183,7 @@ const DeatailofJobAssign = () => {
                     <div className='d-flex'>
     <h1>Project Reports:</h1>
     <NewReportModal projectID={projectID} onNewReport={setNewReport} />
-    {/* <RequestApproval projectID={projectID} /> */}    
     </div>
-   
     {project && project.technician_data && (
         <table style={{ width: '100%', borderCollapse: 'collapse' ,marginTop:"20px"}}>
             <thead>
