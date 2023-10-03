@@ -118,7 +118,7 @@ function App() {
         <Route path="DeatilsodJobAssign/:projectID" element={<DeatailofJobAssign/>}></Route>
         <Route path="DetailsofJobClosed/:projectID" element={<DetailofJobclosed/>}></Route>
       </Routes>
-
+{/* jst for push */}
       <Routes></Routes>
     </React.Fragment>
   );
