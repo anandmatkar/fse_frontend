@@ -40,6 +40,7 @@ import DetailofJobwaiting from './Componets/pages/Teachnician/DetailofJobwaiting
 import DeatailofJobAssign from './Componets/pages/Teachnician/DeatailofJobAssign';
 import DetailofJobclosed from './Componets/pages/Teachnician/DetailofJobclosed';
 import ViewTechnicianProfile from './Componets/pages/Manager/ViewTechnicianProfile';
+import ShowManagerProfile from './Componets/pages/Manager/ShowManagerProfile';
 import CustomerList from './Componets/pages/Manager/CustomerList';
 import CustomerEditedDetails from './Componets/pages/Manager/CustomerEditedDetails';
 import UpdateTechincianprofile from './Componets/pages/Teachnician/UpdateTechincianProfile.js';
@@ -94,6 +95,10 @@ function App() {
 
       <Routes>
         <Route path="/projectmanager" element={<ProjectManager />}></Route>
+        <Route
+          path="/showmanagerprofile"
+          element={<ShowManagerProfile />}
+        ></Route>
         <Route path="/createCustomer" element={<CreateCustomer />}></Route>
         <Route path="/assignTech" element={<AssignedProject />}></Route>
         <Route path="/createP" element={<NewProjectScreen />}></Route>
