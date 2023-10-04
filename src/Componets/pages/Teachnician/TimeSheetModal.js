@@ -22,9 +22,12 @@ const TimeSheetModal = ({ projectID , onNewTimesheet }) => {
   const handleFileUpload = async (e) => {
     const token = Cookies.get('token'); 
     const file = e.target.files[0];
-    if (file) {
+    if (file.length > 0) {
         const fileFormData = new FormData();
-        fileFormData.append('files', file);
+         for(let i = 0; i < file.length; i++) {
+          fileFormData.append('files', file);
+         }
+      
         fileFormData.append('projectID', projectID); // Add projectID here
 
         try {
@@ -42,7 +45,7 @@ const TimeSheetModal = ({ projectID , onNewTimesheet }) => {
             }
 
             // Set the path to state
-            setAttachments(data.data); 
+            setAttachments(prev => [...prev, ...data.data]);
         } catch (error) {
             console.error('Error uploading file:', error);
             alert('Error uploading file: ' + error.message);
@@ -126,7 +129,7 @@ const handleSubmit = async (e) => {
               {/* Attachment Input */}
               <label>
               Attachment:
-              <input type="file"name="files" onChange={handleFileUpload} className='mt-3' />
+              <input type="file"name="files" onChange={handleFileUpload} multiple className='mt-3' />
             </label>
             <Button type="submit">Submit</Button> 
             </form>

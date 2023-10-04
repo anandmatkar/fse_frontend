@@ -22,9 +22,12 @@ const NewReportModal = ({projectID, onNewReport}) => {
   const handleFileUpload = async (e) => {
     const token = Cookies.get('token'); 
     const file = e.target.files[0];
-    if (file) {
+    if (file.length > 0) {
         const fileFormData = new FormData();
+        for(let i = 0; i < file.length; i++){
         fileFormData.append('files', file);
+        }
+
          fileFormData.append('projectID', projectID);
 
         try {
@@ -42,7 +45,7 @@ const NewReportModal = ({projectID, onNewReport}) => {
             }
 
             // Store the attachment path directly in the state
-            setAttachments(data.data); 
+            setAttachments(prev =>[...prev, ...data.data]); 
 
         } catch (error) {
             console.error('Error uploading file:', error);
