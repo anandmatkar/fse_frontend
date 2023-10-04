@@ -44,23 +44,27 @@ console.log(config, "config")
             const response = await axios.get(url, config);            
 
             if (response.status === 200) {
-              // Successfully deleted, you can update the UI or take any other action
+              alert('Timesheet successfully deleted!');
               console.log('Timesheet entry deleted successfully');
-              // Refresh timesheet data after deletion
-              // Call the API to fetch updated timesheet data
-              // setTimesheetData(updatedTimesheetData);
-            } else {
+  
+              // Update the state to reflect the deleted timesheet
+              setProject((prevProject) => {
+                  const updatedTechnicianData = prevProject.technician_data.map(technician => {
+                      const updatedTimeSheets = technician.timesheet_data.filter(timesheet => timesheet.id !== id);
+                      return { ...technician, timesheet_data: updatedTimeSheets };
+                  });
+  
+                  return { ...prevProject, technician_data: updatedTechnicianData };
+              });
+  
+          } else {
               console.error('Failed to delete timesheet entry');
-              // Display an error message to the user
-              // You can use a toast or show the error message in the UI
-            }
-          } catch (error) {
-            console.error('Error:', error);
-            // Handle the error and display an error message
-            // You can use a toast or show the error message in the UI
           }
-        };
-
+      } catch (error) {
+          console.error('Error:', error);
+      }
+  };
+  
         const deleteReport = async (id, project_id) => {
 
           console.log(id, project_id);
@@ -84,23 +88,23 @@ console.log(config, "config")
             const response = await axios.get(url, config);            
 
             if (response.status === 200) {
-              // Successfully deleted, you can update the UI or take any other action
-              console.log('Timesheet entry deleted successfully');
-              // Refresh timesheet data after deletion
-              // Call the API to fetch updated timesheet data
-              // setTimesheetData(updatedTimesheetData);
-            } else {
-              console.error('Failed to delete timesheet entry');
-              // Display an error message to the user
-              // You can use a toast or show the error message in the UI
-            }
-          } catch (error) {
-            console.error('Error:', error);
-            // Handle the error and display an error message
-            // You can use a toast or show the error message in the UI
-          }
-        };
+              alert('Report successfully deleted!');
+              setProject((prevProject) => {
+                const updatedTechnicianData = prevProject.technician_data.map(technician => {
+                    const updatedReports = technician.project_report_data.filter(report => report.id !== id);
+                    return { ...technician, project_report_data: updatedReports };
+                });
 
+                return { ...prevProject, technician_data: updatedTechnicianData };
+            });
+
+        } else {
+            console.error('Failed to delete report entry');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
         useEffect(() => {
           const token = Cookies.get('token');
           fetch(`/api/v1/technician/assignedProjectDetails?projectId=${projectID}`, {
@@ -178,22 +182,22 @@ console.log(config, "config")
                   </div>
 
                   <div className="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                              <div className='d-flex '>
-                            <h1>Timesheet Data:</h1>
-                            {/* <button onClick={() => setShowModal(true)} type="button" className="btn btn-primary float-end" style={{position: "relative", left: "170%"}}>Add new Timesheet</button> */}
-                            <TimeSheetModal projectID={projectID} onNewTimesheet={setTimesheetData} />
-                            
-                            <TimeSheetApprovalModal projectID={projectID} />
-                   </div>
-            <table style={{ width: '110%', borderCollapse: 'collapse', marginTop: '20px' }}>
+    <div className='d-flex '>
+        <h1>Timesheet Data:</h1>
+        {/* <button onClick={() => setShowModal(true)} type="button" className="btn btn-primary float-end" style={{position: "relative", left: "170%"}}>Add new Timesheet</button> */}
+        <TimeSheetModal projectID={projectID} onNewTimesheet={setTimesheetData} />
+        
+        <TimeSheetApprovalModal projectID={projectID} />
+    </div>
+    <table style={{ width: '110%', borderCollapse: 'collapse', marginTop: '20px' }}>
         <thead>
             <tr>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Comments</th>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Start Time</th>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>End Time</th>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Date</th>
+                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th> {/* New Column */}
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Action</th>
-
             </tr>
         </thead>
         <tbody>
@@ -204,25 +208,27 @@ console.log(config, "config")
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{timesheet.start_time}</td>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{timesheet.end_time}</td>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{timesheet.date}</td>
-                        {
-            <td>
-            {
-              <button onClick={() => deleteTimeSheet(timesheet.id, projectID)} className='btn btn-danger btn-sm'> Delete </button>
-            }
-            </td>
-          }
+                        <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
+                            {timesheet.timesheet_attach_data && timesheet.timesheet_attach_data.map(attachment => (
+                                <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer">
+                                    {attachment.file_path.split('/').pop()}
+                                </a>
+                            ))}
+                        </td>
+                        <td>
+                            <button onClick={() => deleteTimeSheet(timesheet.id, projectID)} className='btn btn-danger btn-sm'> Delete </button>
+                        </td>
                     </tr>
                 ))
             ))}
         </tbody>
     </table>
-                           
-                  </div>
+</div>
 
-                  <div className="tab-pane fade" id="v-pills-Report" role="tabpanel" aria-labelledby="v-pills-Report-tab">
-                    <div className='d-flex'>
-    <h1>Project Reports:</h1>
-    <NewReportModal projectID={projectID} onNewReport={setNewReport} />
+<div className="tab-pane fade" id="v-pills-Report" role="tabpanel" aria-labelledby="v-pills-Report-tab">
+    <div className='d-flex'>
+        <h1>Project Reports:</h1>
+        <NewReportModal projectID={projectID} onNewReport={setNewReport} />
     </div>
     {project && project.technician_data && (
         <table style={{ width: '100%', borderCollapse: 'collapse' ,marginTop:"20px"}}>
@@ -230,6 +236,7 @@ console.log(config, "config")
                 <tr>
                     <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Date</th>
                     <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Description</th>
+                    <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th> {/* New Column */}
                     <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Action</th>
                 </tr>
             </thead>
@@ -239,13 +246,16 @@ console.log(config, "config")
                         <tr key={report.id}>
                             <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{report.date}</td>
                             <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{report.description}</td>
-                            {
-            <td>
-            {
-              <button onClick={() => deleteReport(report.id, projectID)} className='btn btn-danger btn-sm'> Delete </button>
-            }
-            </td>
-          }
+                            <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
+                                {report.report_attach_data && report.report_attach_data.map(attachment => (
+                                    <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer">
+                                        {attachment.file_path.split('/').pop()}
+                                    </a>
+                                ))}
+                            </td>
+                            <td>
+                                <button onClick={() => deleteReport(report.id, projectID)} className='btn btn-danger btn-sm'> Delete </button>
+                            </td>
                         </tr>
                     ))
                 )}
