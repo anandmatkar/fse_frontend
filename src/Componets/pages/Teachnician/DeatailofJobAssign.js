@@ -61,6 +61,46 @@ console.log(config, "config")
           }
         };
 
+        const deleteReport = async (id, project_id) => {
+
+          console.log(id, project_id);
+
+          try {
+            const token = Cookies.get('token');
+              // console.log(token,"token")
+            if (!token) {
+              console.error("Token not found in localStorage.");
+              return;
+            }
+
+            const config = {
+              headers: {
+                Authorization: token, // Attach the token with "Bearer" prefix
+              },
+            };
+              console.log(config, "config")
+            let url = `http://localhost:3003/api/v1/technician/deleteReport?projectId=${project_id}&reportId=${id}`
+            
+            const response = await axios.get(url, config);            
+
+            if (response.status === 200) {
+              // Successfully deleted, you can update the UI or take any other action
+              console.log('Timesheet entry deleted successfully');
+              // Refresh timesheet data after deletion
+              // Call the API to fetch updated timesheet data
+              // setTimesheetData(updatedTimesheetData);
+            } else {
+              console.error('Failed to delete timesheet entry');
+              // Display an error message to the user
+              // You can use a toast or show the error message in the UI
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            // Handle the error and display an error message
+            // You can use a toast or show the error message in the UI
+          }
+        };
+
         useEffect(() => {
           const token = Cookies.get('token');
           fetch(`/api/v1/technician/assignedProjectDetails?projectId=${projectID}`, {
@@ -167,7 +207,7 @@ console.log(config, "config")
                         {
             <td>
             {
-              <button onClick={() => deleteTimeSheet(timesheet.id, timesheet.project_id)} className='btn btn-danger btn-sm'> Delete </button>
+              <button onClick={() => deleteTimeSheet(timesheet.id, projectID)} className='btn btn-danger btn-sm'> Delete </button>
             }
             </td>
           }
@@ -190,6 +230,7 @@ console.log(config, "config")
                 <tr>
                     <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Date</th>
                     <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Description</th>
+                    <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -198,6 +239,13 @@ console.log(config, "config")
                         <tr key={report.id}>
                             <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{report.date}</td>
                             <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{report.description}</td>
+                            {
+            <td>
+            {
+              <button onClick={() => deleteReport(report.id, projectID)} className='btn btn-danger btn-sm'> Delete </button>
+            }
+            </td>
+          }
                         </tr>
                     ))
                 )}
