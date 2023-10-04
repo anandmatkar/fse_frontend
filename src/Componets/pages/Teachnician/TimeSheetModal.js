@@ -21,12 +21,14 @@ const TimeSheetModal = ({ projectID , onNewTimesheet }) => {
 
   const handleFileUpload = async (e) => {
     const token = Cookies.get('token'); 
-    const file = e.target.files[0];
-    if (file.length > 0) {
+    const files = e.target.files;
+
+    if (files.length > 0) {
         const fileFormData = new FormData();
-         for(let i = 0; i < file.length; i++) {
-          fileFormData.append('files', file);
-         }
+         
+        for(let i = 0; i < files.length; i++) {
+            fileFormData.append('files', files[i]);
+        }
       
         fileFormData.append('projectID', projectID); // Add projectID here
 
@@ -52,7 +54,6 @@ const TimeSheetModal = ({ projectID , onNewTimesheet }) => {
         }
     }
 };
-
 const handleSubmit = async (e) => {
   e.preventDefault();
   const token = Cookies.get('token');
