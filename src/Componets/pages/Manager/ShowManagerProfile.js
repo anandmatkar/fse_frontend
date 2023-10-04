@@ -16,6 +16,7 @@ function ShowManagerProfile() {
     company: '',
     email_address: '',
     phone_number: '',
+    profilePic: '',
   });
 
   useEffect(() => {
@@ -50,7 +51,24 @@ function ShowManagerProfile() {
       [name]: value,
     }));
   };
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0]; // Get the first selected file
 
+    if (file) {
+      // Create a FileReader to read the selected file
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        // Update the managerData state with the new profilePic URL
+        setManagerData((prevData) => ({
+          ...prevData,
+          profilePic: reader.result, // Set the result of the FileReader as the profilePic
+        }));
+      };
+
+      reader.readAsDataURL(file); // Read the selected file as a data URL
+    }
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     const token = Cookies.get('token');
@@ -62,7 +80,14 @@ function ShowManagerProfile() {
         'Content-Type': 'application/json',
         Authorization: token,
       },
-      body: JSON.stringify(managerData),
+      body: JSON.stringify({
+        name: managerData.name,
+        surname: managerData.surname,
+        email_address: managerData.email_address,
+        phone_number: managerData.phone_number,
+        company: managerData.company,
+        profilePic: managerData.profilePic,
+      }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -96,6 +121,22 @@ function ShowManagerProfile() {
             <h1 class="mb-3"> Customer Details Update</h1>
 
             <form onSubmit={handleSubmit}>
+              <div>
+                {managerData.avatar && (
+                  <img
+                    src={managerData.avatar}
+                    alt="Profile Picture"
+                    className="img-fluid mb-3"
+                    style={{ maxWidth: '150px' }}
+                  />
+                )}
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleProfilePicChange}
+                />
+              </div>
               <div class="row g-3">
                 <div class="col-md-6">
                   <label for="your-name" class="form-label">
