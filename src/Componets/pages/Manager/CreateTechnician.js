@@ -49,7 +49,7 @@ function CreateTechnician() {
         console.log(technicianData);
         const response = await axios.post('http://localhost:3003/api/v1/manager/createTechnician', technicianData, config);
         console.log(response.data);
-        if(response.success === true) {
+        if(response.data.status === 201) {
           navigate('/managetechnician');
           toast.success(response.data.message);
         } else {
