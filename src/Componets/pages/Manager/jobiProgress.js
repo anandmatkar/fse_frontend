@@ -41,35 +41,6 @@ const JobProgress = () => {
       });
   }, []);
 
-  const [showTimeSheetModal, setShowTimeSheetModal] = useState(false);
-
-  const [showReportModaal, setShoeReportModal] = useState(false);
-
-  const handleShowModal = (jobIndex) => {
-    const selectedProject = jobData[jobIndex];
-    setSelectedJob(selectedProject);
-    navigate(`/projectstatusdetails/${selectedProject.project_id}`);
-  };
-
-  // const handleCloseModal = () => {
-  //   setShowModal(false);
-  //   // setShowTimeSheetModal(false);
-  // };
-
-  // const handleShowTimeSheetModal = () => {
-  //   setShowTimeSheetModal(true);
-  // };
-
-  // const handleCloseTimeSheetModal = () => {
-  //   setShowTimeSheetModal(false);
-  // };
-  // const handleShowReportModal = () => {
-  //   setShoeReportModal(true);
-  // };
-  // const handleCloseReportModal = () => {
-  //   setShoeReportModal(false);
-  // };
-
   return (
     <div className="job-progress">
       <h2>Job Progress</h2>
@@ -112,9 +83,8 @@ const JobProgress = () => {
               <td>{job.scope_of_work}</td>
               <td>
                 <Link
-                  to={`/projectprogress/${job.project_id}`} // Use the project_id to create the link
+                  to={`/projectstatusdetails/${job.project_id}`} // Use the project_id to create the link
                   className="btn btn-primary"
-                  onClick={() => handleShowModal(index)}
                 >
                   Details
                 </Link>
