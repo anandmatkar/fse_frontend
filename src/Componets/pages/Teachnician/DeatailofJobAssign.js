@@ -5,6 +5,7 @@ import TimeSheetModal from './TimeSheetModal';
 import NewReportModal from './NewReportModal';
 import axios from 'axios';
 import TimeSheetApprovalModal from './TimeSheetApprovalModal';
+import RequestApproval from './RequestApproval';
 
 const DeatailofJobAssign = () => {
     const style = {
@@ -229,6 +230,7 @@ console.log(config, "config")
     <div className='d-flex'>
         <h1>Project Reports:</h1>
         <NewReportModal projectID={projectID} onNewReport={setNewReport} />
+        <RequestApproval projectID={projectID}/>
     </div>
     {project && project.technician_data && (
         <table style={{ width: '100%', borderCollapse: 'collapse' ,marginTop:"20px"}}>

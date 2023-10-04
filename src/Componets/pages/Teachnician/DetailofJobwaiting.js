@@ -1,9 +1,9 @@
 import React, {useState , useEffect} from 'react'
 import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import TimeSheetModal from './TimeSheetModal';
-import NewReportModal from './NewReportModal';
-import RequestApproval from './RequestApproval';
+// import TimeSheetModal from './TimeSheetModal';
+// import NewReportModal from './NewReportModal';
+import axios from 'axios';
 
 const DetailofJobwaiting = () => {
     const style = {
@@ -17,7 +17,91 @@ const DetailofJobwaiting = () => {
     const [NewReport, setNewReport] = useState([]);
 
 const { projectID } = useParams();
-    // console.log(projectID); // Extract projectID from the URL 
+
+const deleteTimeSheet = async (id, project_id) => {
+
+  console.log(id, project_id);
+
+  try {
+    const token = Cookies.get('token');
+console.log(token,"token")
+    if (!token) {
+      console.error("Token not found in localStorage.");
+      return;
+    }
+
+    const config = {
+      headers: {
+        Authorization: token, // Attach the token with "Bearer" prefix
+      },
+    };
+console.log(config, "config")
+    let url = `http://localhost:3003/api/v1/technician/deleteTimesheet?projectId=${project_id}&timeSheetId=${id}`
+    
+    const response = await axios.get(url, config);            
+
+    if (response.status === 200) {
+      alert('Timesheet successfully deleted!');
+      console.log('Timesheet entry deleted successfully');
+
+      // Update the state to reflect the deleted timesheet
+      setProject((prevProject) => {
+          const updatedTechnicianData = prevProject.technician_data.map(technician => {
+              const updatedTimeSheets = technician.timesheet_data.filter(timesheet => timesheet.id !== id);
+              return { ...technician, timesheet_data: updatedTimeSheets };
+          });
+
+          return { ...prevProject, technician_data: updatedTechnicianData };
+      });
+
+  } else {
+      console.error('Failed to delete timesheet entry');
+  }
+} catch (error) {
+  console.error('Error:', error);
+}
+};
+
+const deleteReport = async (id, project_id) => {
+
+  console.log(id, project_id);
+
+  try {
+    const token = Cookies.get('token');
+      // console.log(token,"token")
+    if (!token) {
+      console.error("Token not found in localStorage.");
+      return;
+    }
+
+    const config = {
+      headers: {
+        Authorization: token, // Attach the token with "Bearer" prefix
+      },
+    };
+      console.log(config, "config")
+    let url = `http://localhost:3003/api/v1/technician/deleteReport?projectId=${project_id}&reportId=${id}`
+    
+    const response = await axios.get(url, config);            
+
+    if (response.status === 200) {
+      alert('Report successfully deleted!');
+      setProject((prevProject) => {
+        const updatedTechnicianData = prevProject.technician_data.map(technician => {
+            const updatedReports = technician.project_report_data.filter(report => report.id !== id);
+            return { ...technician, project_report_data: updatedReports };
+        });
+
+        return { ...prevProject, technician_data: updatedTechnicianData };
+    });
+
+} else {
+    console.error('Failed to delete report entry');
+}
+} catch (error) {
+console.error('Error:', error);
+}
+};
 
     useEffect(() => {
         const token = Cookies.get('token');
@@ -68,7 +152,7 @@ const { projectID } = useParams();
               {project && (
                 <>
                   <div className="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                    <h1>Technician Data:</h1>
+                    <h1>Cusotmer Data:</h1>
                     <p>Name: {project.customer_name}</p>
                     <p>Contact: {project.customer_contact}</p>
                     <p>Account: {project.customer_account}</p>
@@ -93,19 +177,22 @@ const { projectID } = useParams();
                   </div>
 
                   <div className="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                              <div className='d-flex '>
-                            <h1>Timesheet Data:</h1>
-                            {/* <button onClick={() => setShowModal(true)} type="button" className="btn btn-primary float-end" style={{position: "relative", left: "170%"}}>Add new Timesheet</button> */}
-                            <TimeSheetModal projectID={projectID} onNewTimesheet={setTimesheetData} />
-
-            </div>
-            <table style={{ width: '110%', borderCollapse: 'collapse', marginTop: '20px' }}>
+    <div className='d-flex '>
+        <h1>Timesheet Data:</h1>
+        {/* <button onClick={() => setShowModal(true)} type="button" className="btn btn-primary float-end" style={{position: "relative", left: "170%"}}>Add new Timesheet</button> */}
+        {/* <TimeSheetModal projectID={projectID} onNewTimesheet={setTimesheetData} /> */}
+        
+       
+    </div>
+    <table style={{ width: '110%', borderCollapse: 'collapse', marginTop: '20px' }}>
         <thead>
             <tr>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Comments</th>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Start Time</th>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>End Time</th>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Date</th>
+                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th> {/* New Column */}
+                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -116,19 +203,28 @@ const { projectID } = useParams();
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{timesheet.start_time}</td>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{timesheet.end_time}</td>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{timesheet.date}</td>
+                        <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
+                        {timesheet.timesheet_attach_data && timesheet.timesheet_attach_data.map(attachment => (
+                    <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
+                        <i className="fa fa-cloud-upload fa-2x" style={{marginRight: '5px', color:"black"}}></i> 
+                    </a>
+                ))}
+                        </td>
+                        <td>
+                            <button onClick={() => deleteTimeSheet(timesheet.id, projectID)} className='btn btn-danger btn-sm'> Delete </button>
+                        </td>
                     </tr>
                 ))
             ))}
         </tbody>
     </table>
-                           
-                  </div>
+</div>
 
-                  <div className="tab-pane fade" id="v-pills-Report" role="tabpanel" aria-labelledby="v-pills-Report-tab">
-                    <div className='d-flex'>
-    <h1>Project Reports:</h1>
-    <NewReportModal projectID={projectID} onNewReport={setNewReport} />
-    <RequestApproval projectID={projectID} />
+<div className="tab-pane fade" id="v-pills-Report" role="tabpanel" aria-labelledby="v-pills-Report-tab">
+    <div className='d-flex'>
+        <h1>Project Reports:</h1>
+        {/* <NewReportModal projectID={projectID} onNewReport={setNewReport} /> */}
+      
     </div>
     {project && project.technician_data && (
         <table style={{ width: '100%', borderCollapse: 'collapse' ,marginTop:"20px"}}>
@@ -136,6 +232,8 @@ const { projectID } = useParams();
                 <tr>
                     <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Date</th>
                     <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Description</th>
+                    <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th> {/* New Column */}
+                    <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -144,6 +242,18 @@ const { projectID } = useParams();
                         <tr key={report.id}>
                             <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{report.date}</td>
                             <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{report.description}</td>
+                            <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
+                                {report.report_attach_data && report.report_attach_data.map(attachment => (
+                                     <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" style={{ margin: '0 5px' }}>
+                                      <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" style={{ margin: '0 5px' }}>
+                                      <i class="fa fa-cloud-upload fa-2x" style={{color:"black"}}></i>
+                                </a>
+                                 </a>
+                                ))}
+                            </td>
+                            <td>
+                                <button onClick={() => deleteReport(report.id, projectID)} className='btn btn-danger btn-sm'> Delete </button>
+                            </td>
                         </tr>
                     ))
                 )}
@@ -151,16 +261,20 @@ const { projectID } = useParams();
         </table>
     )}
 </div>
-                  <div className="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                    <h1>Project Attachments:</h1>
-                    {project.project_attach_data.map((item) => (
-                      <div key={item.id}>
-                        <a href={item.file_path} target="_blank" rel="noreferrer">
-                          {item.file_path.split('/').pop()}
-                        </a>
-                      </div>
-                    ))}
-                  </div>
+<div className="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+    <h1>Project Attachments:</h1>
+    {project.project_attach_data.map((item, index) => (
+        <div key={item.id}>
+            <a href={item.file_path} target="_blank" rel="noreferrer" title={item.file_path.split('/').pop()}>
+           
+                <i className="fa fa-cloud-upload fa-2x" style={{color: "black"}}></i>
+                <div className='inn' style={{position:"relative" , left:"50px" , bottom:"30px"}}>
+                File {index + 1}
+                </div>
+            </a>
+        </div>
+    ))}
+</div>
                 </>
               )}
             </div>
