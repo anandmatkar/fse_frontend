@@ -21,11 +21,12 @@ const NewReportModal = ({projectID, onNewReport}) => {
 
   const handleFileUpload = async (e) => {
     const token = Cookies.get('token'); 
-    const file = e.target.files[0];
-    if (file.length > 0) {
+    const files = e.target.files;
+
+    if (files.length > 0) {
         const fileFormData = new FormData();
-        for(let i = 0; i < file.length; i++){
-        fileFormData.append('files', file);
+        for(let i = 0; i < files.length; i++){
+        fileFormData.append('files', files[i]);
         }
 
          fileFormData.append('projectID', projectID);
@@ -112,7 +113,7 @@ const handleSubmit = async (e) => {
             {/* Attachment Input */}
             <label className='mt-3'>
               Attachment:
-              <input type="file" name="attachment" onChange={handleFileUpload} />
+              <input type="file" name="attachment" onChange={handleFileUpload} multiple />
             </label>
             <Button className='mt-3' type="submit">Submit</Button> 
           </form>
