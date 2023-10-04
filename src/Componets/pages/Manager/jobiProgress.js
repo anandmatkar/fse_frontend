@@ -48,19 +48,19 @@ const JobProgress = () => {
         <thead>
           <tr>
             <th>Order_ID</th>
-            <th>project_type</th>
+            <th>customer_account</th>
+            <th>customer_name</th>
+            <th>country</th>
             <th>description</th>
             <th>start_date</th>
             <th>end_date</th>
-            <th>customer_name</th>
-            <th>customer_contact</th>
-            <th>customer_account</th>
-            <th>email_address</th>
+            {/* <th>project_type</th> */}
+            {/* <th>email_address</th>
             <th>phone_number</th>
-            <th>country</th>
+            <th>customer_contact</th>
             <th>city</th>
             <th>address</th>
-            <th>scope_of_work</th>
+            <th>scope_of_work</th> */}
             <th>More</th>
           </tr>
         </thead>
@@ -68,19 +68,19 @@ const JobProgress = () => {
           {jobData.map((job, index) => (
             <tr key={index}>
               <td>{job.order_id}</td>
-              <td>{job.project_type}</td>
+              <td>{job.customer_account}</td>
+              <td>{job.customer_name}</td>
+              <td>{job.country}</td>
               <td>{job.description}</td>
               <td>{job.start_date}</td>
               <td>{job.end_date}</td>
-              <td>{job.customer_name}</td>
+              {/* <td>{job.project_type}</td>
               <td>{job.customer_contact}</td>
-              <td>{job.customer_account}</td>
               <td>{job.email_address}</td>
               <td>{job.phone_number}</td>
-              <td>{job.country}</td>
               <td>{job.city}</td>
               <td>{job.address}</td>
-              <td>{job.scope_of_work}</td>
+              <td>{job.scope_of_work}</td> */}
               <td>
                 <Link
                   to={`/projectstatusdetails/${job.project_id}`} // Use the project_id to create the link

@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
-import classes from "./timeSheetShow.module.css";
-import axios from "axios"; // Import Axios
+import React, { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import classes from './timeSheetShow.module.css';
+import axios from 'axios'; // Import Axios
+import Cookies from 'js-cookie';
 
 function TimeSheet() {
-  const [date, setDate] = useState("");
-  const [name, setName] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [comments, setComments] = useState("");
+  const [date, setDate] = useState('');
+  const [name, setName] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [comments, setComments] = useState('');
   const [message, setMessage] = useState(false);
 
   const handleSubmit = async (event) => {
@@ -24,35 +25,37 @@ function TimeSheet() {
     };
 
     try {
+      const token = Cookies.get('token');
       // Send the timesheetData to Firebase Realtime Database
       const response = await axios.post(
-        "https://testproject-e9582-default-rtdb.firebaseio.com/timesheet.json",
+        'https://testproject-e9582-default-rtdb.firebaseio.com/timesheet.json',
         timesheetData, // Send the data directly
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            Authorization: token,
           },
         }
       );
 
-      console.log("Timesheet data sent to Firebase:", response.data);
+      console.log('Timesheet data sent to Firebase:', response.data);
       // Reset form fields
-      setName("");
-      setDate("");
-      setStartTime("");
-      setEndTime("");
-      setComments("");
+      setName('');
+      setDate('');
+      setStartTime('');
+      setEndTime('');
+      setComments('');
       setMessage(true);
       setTimeout(() => setMessage(false), 2000);
     } catch (error) {
-      console.error("Error sending timesheet data to Firebase:", error);
+      console.error('Error sending timesheet data to Firebase:', error);
     }
   };
 
   return (
     <div>
       {message && (
-        <h1 className={classes["success-message"]}>Your Timesheet is Saved</h1>
+        <h1 className={classes['success-message']}>Your Timesheet is Saved</h1>
       )}
       <h2>Time Sheet</h2>
       <form onSubmit={handleSubmit}>

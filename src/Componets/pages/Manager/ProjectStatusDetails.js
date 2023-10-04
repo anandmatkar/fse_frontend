@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import Table from 'react-bootstrap/Table';
 import Cookies from 'js-cookie';
+import { useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ProjectStatusDetails = () => {
-  const style = {
-    borderRight: '1px solid #000',
-    paddingRight: '16px',
-    height: '100%',
-  };
-
+  const navigate = useNavigate();
+  const [jobData, setJobData] = useState([]);
   const [project, setProject] = useState(null);
   const { projectId } = useParams();
 
@@ -29,6 +27,7 @@ const ProjectStatusDetails = () => {
       .then((data) => {
         if (data && data.data && data.data.length > 0) {
           setProject(data.data[0]);
+          setJobData(data.data);
         } else {
           console.error('API response is not in the expected format:', data);
         }
@@ -39,154 +38,97 @@ const ProjectStatusDetails = () => {
   }, [projectId]);
 
   return (
-    <div>
-      <div className="container">
-        <div className="container border border-dark mt-5 rounded p-4">
-          <div className="row justify-content-center">
-            <div className="d-flex align-items-start">
-              <div
-                className="nav flex-column nav-pills me-3"
-                id="v-pills-tab"
-                role="tablist"
-                aria-orientation="vertical"
-                style={style}
-              >
-                <button
-                  className="nav-link active"
-                  id="v-pills-home-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#v-pills-home"
-                  type="button"
-                  role="tab"
-                  aria-controls="v-pills-home"
-                  aria-selected="true"
-                >
-                  Order ID
-                </button>
-                <button
-                  className="nav-link"
-                  id="v-pills-profile-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#v-pills-profile"
-                  type="button"
-                  role="tab"
-                  aria-controls="v-pills-profile"
-                  aria-selected="false"
-                >
-                  Technician Detail
-                </button>
-                <button
-                  className="nav-link"
-                  id="v-pills-messages-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#v-pills-messages"
-                  type="button"
-                  role="tab"
-                  aria-controls="v-pills-messages"
-                  aria-selected="false"
-                >
-                  Timesheet
-                </button>
-                <button
-                  className="nav-link"
-                  id="v-pills-settings-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#v-pills-settings"
-                  type="button"
-                  role="tab"
-                  aria-controls="v-pills-settings"
-                  aria-selected="false"
-                >
-                  Project Attachments
-                </button>
-              </div>
-              <div className="tab-content" id="v-pills-tabContent">
-                <div
-                  className="tab-pane fade show active"
-                  id="v-pills-home"
-                  role="tabpanel"
-                  aria-labelledby="v-pills-home-tab"
-                >
-                  <h1>Order ID:</h1>
-                  <h2 className="fs-2">
-                    {project ? project.order_id : 'Loading...'}
-                  </h2>
-                </div>
-
-                {project && (
-                  <>
-                    <div
-                      className="tab-pane fade"
-                      id="v-pills-profile"
-                      role="tabpanel"
-                      aria-labelledby="v-pills-profile-tab"
-                    >
-                      <h1>Technician Data:</h1>
-                      <p>
-                        Name: {project.name} {project.surname}
-                      </p>
-                      <p>Email: {project.email_address}</p>
-                      <p>Phone: {project.phone_number}</p>
-                      <p>
-                        Qualification: {project.technician_data.qualification}
-                      </p>
-                      <p>level: {project.level}</p>
-                    </div>
-
-                    {/* <div
-                      className="tab-pane fade"
-                      id="v-pills-messages"
-                      role="tabpanel"
-                      aria-labelledby="v-pills-messages-tab"
-                    >
-                      <h1>Timesheet Data:</h1>
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          width: '110%',
-                        }}
-                      >
-                        {project.timesheet_data.map((item) => (
-                          <div
-                            key={item.id}
-                            style={{ width: '50%', padding: '10px' }}
-                          >
-                            <p>Comments: {item.comments}</p>
-                            <p>Start Time: {item.start_time}</p>
-                            <p>End Time: {item.end_time}</p>
-                            <p>Date: {item.date}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div> */}
-
-                    {/* <div
-                      className="tab-pane fade"
-                      id="v-pills-settings"
-                      role="tabpanel"
-                      aria-labelledby="v-pills-settings-tab"
-                    >
-                      <h1>Project Attachments:</h1>
-                      {project.project_attach_data.map((item) => (
-                        <div key={item.id}>
-                          <a
-                            href={item.file_path}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {item.file_path.split('/').pop()}
-                          </a>
-                        </div>
-                      ))}
-                    </div> */}
-                  </>
-                )}
-              </div>
-            </div>
+    <div className="job-progress">
+      <h2>Project Details</h2>
+      <div>
+        {project ? (
+          <div className="">
+            <p>
+              <b>Order ID:</b> {project.order_id}
+            </p>
+            <p>
+              <b>Customer Name:</b> {project.customer_name}
+            </p>
+            <p>
+              <b>Customer Account ID: </b>
+              {project.customer_account}
+            </p>
+            <p>
+              <b>Description: </b>
+              {project.description}
+            </p>
           </div>
-        </div>
+        ) : (
+          <p>Loading project details...</p>
+        )}
       </div>
+      <Table striped bordered responsive>
+        <thead>
+          <h3>Technician Details</h3>
+          <tr>
+            <th>Qualification</th>
+            <th> Name</th>
+            <th> Email</th>
+            <th> Phone</th>
+            <th>Email</th>
+            <th>Scope</th>
+            <th>Start_date</th>
+            <th>Start_end</th>
+            <th>Tech Report</th>
+            <th>Time Sheet</th>
+            {/* <th>More</th> */}
+          </tr>
+        </thead>
+        <tbody>
+          {jobData.map((job) =>
+            job.technician_data.map((technician, index) => (
+              <tr key={index}>
+                <td>{technician.qualification || 'N/A'}</td>
+                <td>{`${technician.name} ${technician.surname}` || 'N/A'}</td>
+                <td>{job.email_address}</td>
+                <td>{job.phone_number}</td>
+                <td>{job.email_address}</td>
+                <td>{job.scope_of_work}</td>
+                <td>{job.start_date}</td>
+                <td>{job.end_date}</td>
+                <td>
+                  {job.technician_data.map((technician, techIndex) => (
+                    <div key={techIndex}>
+                      {technician.project_report_data &&
+                      technician.project_report_data.length > 0
+                        ? technician.project_report_data.map(
+                            (report, reportIndex) => (
+                              <i
+                                key={reportIndex}
+                                className="fa fa-address-book"
+                                style={{ fontSize: '20px' }}
+                              ></i>
+                            )
+                          )
+                        : 'No Report'}
+                    </div>
+                  ))}
+                </td>
+
+                <td>
+                  {technician.timesheet_data &&
+                  technician.timesheet_data.length > 0
+                    ? technician.timesheet_data.map(
+                        (timesheet, timesheetIndex) => (
+                          <i
+                            key={timesheetIndex}
+                            className="fa fa-book"
+                            style={{ fontSize: '20px' }}
+                          ></i>
+                        )
+                      )
+                    : 'No Timesheet'}
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </Table>
     </div>
   );
 };
