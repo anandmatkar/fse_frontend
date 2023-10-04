@@ -118,7 +118,7 @@ function TechnicianLogin() {
                             <label className="form-label" htmlFor="form2Example17">
                                     Email address
                                 </label>
-                                <i class="fa fa-user-o"></i>
+                             
                                 <input
                                     type="email"
                                     id="form2Example17"
@@ -131,7 +131,7 @@ function TechnicianLogin() {
                             <label className="form-label" htmlFor="form2Example27">
                                     Password
                                 </label>
-                                <i class="fa fa-key"></i>
+                                
                                 <input
                                     type="password"
                                     id="form2Example27"

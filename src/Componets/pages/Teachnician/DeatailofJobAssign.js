@@ -36,7 +36,7 @@ console.log(token,"token")
 
             const config = {
               headers: {
-                Authorization: token, // Attach the token with "Bearer" prefix
+                Authorization: token, 
               },
             };
 console.log(config, "config")
@@ -230,7 +230,7 @@ console.log(config, "config")
     <div className='d-flex'>
         <h1>Project Reports:</h1>
         <NewReportModal projectID={projectID} onNewReport={setNewReport} />
-        <RequestApproval projectID={projectID}/>
+        {project && project.technician_data && project.technician_data.some(technician => technician.project_report_data.length > 0) && <RequestApproval projectID={projectID} />}
     </div>
     {project && project.technician_data && (
         <table style={{ width: '100%', borderCollapse: 'collapse' ,marginTop:"20px"}}>
@@ -238,7 +238,7 @@ console.log(config, "config")
                 <tr>
                     <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Date</th>
                     <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Description</th>
-                    <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th> {/* New Column */}
+                    <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th> 
                     <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Action</th>
                 </tr>
             </thead>
