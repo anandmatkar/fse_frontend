@@ -24,7 +24,7 @@ function CreateProject() {
   const [nomSpeed, setNomSpeed] = useState('');
   const [actSpeed, setActSpeed] = useState('');
   const [techIds, setTechId] = useState([]);
-  const [machineAttach, setMachineAttach] = useState(null);
+  const [machineAttach, setMachineAttach] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
