@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './createProject.css';
 import Spinner from '../Common/Spinner';
 import Cookies from 'js-cookie';
@@ -17,7 +17,7 @@ function CreateProject() {
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [projectAttach, setProjectAttach] = useState(null);
+  const [projectAttach, setProjectAttach] = useState([]);
   const [MachineType, setMachineType] = useState('');
   const [MachineSerial, setMachineSerial] = useState('');
   const [hourCount, setHourCount] = useState('');
@@ -27,16 +27,7 @@ function CreateProject() {
   const [machineAttach, setMachineAttach] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleTechIdChange = (event) => {
-    const selectedIds = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
-    );
-    setTechId(selectedIds);
-  };
-
   useEffect(() => {
-    // Fetch customer data from the API using Axios or your preferred HTTP library
     const token = Cookies.get('token');
 
     // Check if a token is available
@@ -97,8 +88,16 @@ function CreateProject() {
       });
   }, []);
 
-  const goBackHandler = () => {
-    Navigate('/manager');
+  // const goBackHandler = () => {
+  //   Navigate('/manager');
+  // };
+
+  const handleTechIdChange = (event) => {
+    const selectedIds = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setTechId(selectedIds);
   };
 
   const handleProfilePicChange = async (event) => {
@@ -137,35 +136,6 @@ function CreateProject() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Create a FormData object to send the form data including files
-    // const formData = new FormData();
-    // formData.append('customerId', customerId);
-    // formData.append('projectType', projectType);
-    // formData.append('description', description);
-    // formData.append('startDate', startDate);
-    // formData.append('endDate', endDate);
-    // if (projectAttach) {
-    //   for (let i = 0; i < projectAttach.length; i++) {
-    //     formData.append('projectAttach', projectAttach[i]);
-    //   }
-    // }
-
-    // // Create an array of machine details objects
-    // const machineDetails = [
-    //   {
-    //     MachineType,
-    //     MachineSerial,
-    //     hourCount,
-    //     nomSpeed,
-    //     actSpeed,
-    //     techIds,
-    //     machineAttach,
-    //   },
-    // ];
-    // formData.append('techIds', JSON.stringify(techIds));
-
-    // formData.append('machineDetails', JSON.stringify(machineDetails));
-
     const projectData = {
       customerId,
       projectType,
@@ -184,29 +154,18 @@ function CreateProject() {
           machineAttach,
         },
       ],
-      techIds, // Add techIds directly to the object
+      // techIds, // Add techIds directly to the object
     };
-
-    // Convert the projectData object to JSON
-    const projectDataJSON = JSON.stringify(projectData);
-
-    // Create a FormData object to send the form data including files
-    const formData = new FormData();
-    formData.append('projectData', projectDataJSON);
     console.log(projectData);
 
     try {
       const response = await axios.post(
         '/api/v1/manager/createProject',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
+        projectData
       );
+      console.log(projectData);
 
-      if (response.data.status === 201) {
+      if (response.data.status === 200) {
         // Handle success
         toast.success('Project created successfully');
         console.log('Project created successfully', response.data);
@@ -429,21 +388,6 @@ function CreateProject() {
                   <label id="number-label" for="number">
                     Technician
                   </label>
-                  {/* <select
-                    id="techIds"
-                    class="form-control formcontrol"
-                    value={techIds}
-                    onChange={(event) => setTechId(event.target.value)}
-                  >
-                    <option value="" disabled selected>
-                      Select Technician
-                    </option>
-                    {technician.map((technicianName, index) => (
-                      <option key={index} value={technicianName}>
-                        {technicianName}
-                      </option>
-                    ))}
-                  </select> */}
 
                   <select
                     id="techId"
