@@ -27,10 +27,12 @@ function CreateTechnician() {
     qualification: yup.string().required(),
     level: yup.string().required(),
     profilePic: yup.string(),
+    documents: yup.string(),
   });
 
   const [selectedFile, setSelectedFile] = useState(''); // State to hold the selected file
   const [profilePicPath, setProfilePicPath] = useState(''); // State to hold the profile picture path
+  const [documentsPath, setDocumentsPath] = useState([]); // State to hold the documents path
 
   const createTechnician = async (formData) => {
     try {
@@ -45,7 +47,8 @@ function CreateTechnician() {
                 Authorization: token,
             },
         };
-        let technicianData = {...formData, profilePic: profilePicPath};
+
+        let technicianData = {...formData, profilePic: profilePicPath, documents: documentsPath};
         console.log(technicianData);
         const response = await axios.post('http://localhost:3003/api/v1/manager/createTechnician', technicianData, config);
         console.log(response.data);
@@ -99,6 +102,45 @@ function CreateTechnician() {
       console.log(error.message);
     }
 
+  };
+
+  // Define your handleFileChange function
+  const handleDocFileChange = async (event) => {
+    const selectedFiles = event.target.files;
+
+    // Create a FormData object to store the files
+    const docFormData = new FormData();
+
+    // Append each selected file to the FormData object
+    for (let i = 0; i < selectedFiles.length; i++) {
+      docFormData.append('files', selectedFiles[i]);
+    }
+
+    const token = Cookies.get('token');
+          if (!token) {
+          console.error("Token not found in localStorage.");
+          return;
+          }
+          let config = {
+              headers: {
+                  Authorization: token,
+              },
+          };
+          console.log(docFormData);
+    // Make an HTTP POST request to your API to send the documents
+    try {
+      const response = await axios.post('http://localhost:3003/api/v1/manager/uploadTechnicianDocuments', docFormData, config);
+
+      if(response.data.status === 201){
+        setDocumentsPath(response.data.data)
+        toast.success(response.data.message);
+        console.log(response.data.data);
+      }
+      
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message);
+    }
   };
   
   return (
@@ -244,18 +286,34 @@ function CreateTechnician() {
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="validationFormik08" className='my-2'>
-                <Form.Label>Profile Picture</Form.Label>
-                <Form.Control
-                  type="file" // Use type "file" for file input
-                  name="profilePic"
-                  onChange={handleFileChange} // Handle file input change
-                  isInvalid={!!errors.profilePic}
-                />
+                  <Form.Label>Profile Picture</Form.Label>
+                  <Form.Control
+                    type="file" // Use type "file" for file input
+                    name="profilePic"
+                    onChange={handleFileChange} // Handle file input change
+                    isInvalid={!!errors.profilePic}
+                  />
 
-                <Form.Control.Feedback type="invalid">
-                  {errors.profilePic}
-                </Form.Control.Feedback>
-              </Form.Group>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.profilePic}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId="validationFormik09" className='my-2'>
+                  <Form.Label>Documents</Form.Label>
+                  <Form.Control
+                    type="file" // Use type "file" for file input
+                    name="documents"
+                    onChange={handleDocFileChange} // Handle file input change
+                    isInvalid={!!errors.documents}
+                    multiple // Allow multiple file selection
+
+                  />
+
+                  <Form.Control.Feedback type="invalid">
+                    {errors.documents}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                
               </Row>
               
               <Button variant='warning' type="button" onClick={handleSubmit} className='my-3' as={Col} lg="3">Submit Technician Details</Button>
