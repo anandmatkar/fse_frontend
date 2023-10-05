@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const TimeSheetApprovalModal = ({ projectID, onNewTimesheet }) => {
   const [showModal, setShowModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleRequestApproveModal = async () => {
     const token = Cookies.get('token');
@@ -33,6 +36,9 @@ const TimeSheetApprovalModal = ({ projectID, onNewTimesheet }) => {
 
       // Show a success message or perform any other actions
       alert('Timesheet Sent for approved successfully');
+
+      navigate('/JobAssigned');
+
     } catch (error) {
       console.error('Error:', error);
       alert('Error approving timesheet: ' + error.message);

@@ -18,49 +18,49 @@ const DetailofJobwaiting = () => {
 
 const { projectID } = useParams();
 
-const deleteTimeSheet = async (id, project_id) => {
+// const deleteTimeSheet = async (id, project_id) => {
 
-  console.log(id, project_id);
+//   console.log(id, project_id);
 
-  try {
-    const token = Cookies.get('token');
-console.log(token,"token")
-    if (!token) {
-      console.error("Token not found in localStorage.");
-      return;
-    }
+//   try {
+//     const token = Cookies.get('token');
+// console.log(token,"token")
+//     if (!token) {
+//       console.error("Token not found in localStorage.");
+//       return;
+//     }
 
-    const config = {
-      headers: {
-        Authorization: token, // Attach the token with "Bearer" prefix
-      },
-    };
-console.log(config, "config")
-    let url = `http://localhost:3003/api/v1/technician/deleteTimesheet?projectId=${project_id}&timeSheetId=${id}`
+//     const config = {
+//       headers: {
+//         Authorization: token, // Attach the token with "Bearer" prefix
+//       },
+//     };
+// console.log(config, "config")
+//     let url = `http://localhost:3003/api/v1/technician/deleteTimesheet?projectId=${project_id}&timeSheetId=${id}`
     
-    const response = await axios.get(url, config);            
+//     const response = await axios.get(url, config);            
 
-    if (response.status === 200) {
-      alert('Timesheet successfully deleted!');
-      console.log('Timesheet entry deleted successfully');
+//     if (response.status === 200) {
+//       alert('Timesheet successfully deleted!');
+//       console.log('Timesheet entry deleted successfully');
 
-      // Update the state to reflect the deleted timesheet
-      setProject((prevProject) => {
-          const updatedTechnicianData = prevProject.technician_data.map(technician => {
-              const updatedTimeSheets = technician.timesheet_data.filter(timesheet => timesheet.id !== id);
-              return { ...technician, timesheet_data: updatedTimeSheets };
-          });
+//       // Update the state to reflect the deleted timesheet
+//       setProject((prevProject) => {
+//           const updatedTechnicianData = prevProject.technician_data.map(technician => {
+//               const updatedTimeSheets = technician.timesheet_data.filter(timesheet => timesheet.id !== id);
+//               return { ...technician, timesheet_data: updatedTimeSheets };
+//           });
 
-          return { ...prevProject, technician_data: updatedTechnicianData };
-      });
+//           return { ...prevProject, technician_data: updatedTechnicianData };
+//       });
 
-  } else {
-      console.error('Failed to delete timesheet entry');
-  }
-} catch (error) {
-  console.error('Error:', error);
-}
-};
+//   } else {
+//       console.error('Failed to delete timesheet entry');
+//   }
+// } catch (error) {
+//   console.error('Error:', error);
+// }
+// };
 
 const deleteReport = async (id, project_id) => {
 
@@ -192,7 +192,6 @@ console.error('Error:', error);
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>End Time</th>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Date</th>
                 <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th> {/* New Column */}
-                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -210,9 +209,9 @@ console.error('Error:', error);
                     </a>
                 ))}
                         </td>
-                        <td>
+                        {/* <td>
                             <button onClick={() => deleteTimeSheet(timesheet.id, projectID)} className='btn btn-danger btn-sm'> Delete </button>
-                        </td>
+                        </td> */}
                     </tr>
                 ))
             ))}

@@ -46,6 +46,7 @@ function UpdateTechincianProfile() {
     nationality: yup.string().required(),
     qualification: yup.string().required(),
     level: yup.string().required(),
+    avatar: yup.string().required(),
 
   });
 
@@ -129,6 +130,11 @@ const handleImageUpload = async (e) => {
       const response = await axios.get('http://localhost:3003/api/v1/technician/showProfile', config);
       const profileData = response.data.data[0];
       console.log(profileData);
+
+      if (profileData.profilePic) {
+        setSelectedImage(profileData.profilePic);
+      }
+
       setFormData({
         name: profileData.name,
         surname: profileData.surname,
@@ -137,8 +143,11 @@ const handleImageUpload = async (e) => {
         nationality: profileData.nationality,
         qualification: profileData.qualification,
         level: profileData.level,
+        profilePic: profileData.profilepic,
 
       });
+
+      setSelectedImage(profileData.profilepic)
     } catch (error) {
       console.log(error.message);
     }
@@ -409,6 +418,7 @@ useEffect(() => {
                       <Form.Control
                         type="file"
                         accept="image/*"
+
                         onChange={handleImageUpload}
                       />
                     </Form.Group>
