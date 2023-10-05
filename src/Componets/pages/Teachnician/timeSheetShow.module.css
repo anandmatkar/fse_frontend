@@ -55,5 +55,7 @@ textarea {
 
 Button[type="submit"] {
   margin-top: 20px;
-  width: 100%;
+  width: 66%;
+  font-size: 23px;
+  font-weight: bold;
 }

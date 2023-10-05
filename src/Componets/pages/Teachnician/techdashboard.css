@@ -1,0 +1,96 @@
+.techdashboard-bodynew {
+    height: 80vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  .techdashboard-blog_post {
+    background: #fff;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease; /* Added filter to transition for smooth color change */
+    background-color: #ffffff; 
+  }
+  
+  .techdashboard-img_pod {
+    height: 110px;
+    width: 110px;
+    background: linear-gradient(90deg, #416894, #2976cd);
+    z-index: 10;
+    box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
+    border-radius: 100%;
+    position: absolute;
+    right: -10%;
+    top: -13%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .techdashboard-img {
+    height: 6.0rem;
+    width: 6.0rem;
+    position: relative;
+    border-radius: 100%;
+    box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+  
+  
+  
+  .techdashboard-container_copy {
+    padding: 3rem 1rem 2rem 3rem;
+  }
+  
+  .techdashboard-h3 {
+    margin: 0 0 0.5rem 0;
+    color: #272223;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .techdashboard-h1 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    color: #333;
+  }
+  
+  .techdashboard-p {
+    margin: 0 0 4.5rem 0;
+    font-size: 1rem;
+    line-height: 1.45;
+    color: #333;
+  }
+  
+  .techdashboard-btn_primary {
+    border: none;
+    outline: none;
+    background: linear-gradient(90deg, #416894, #2976cd);
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.2s ease-in;
+    text-decoration: none;
+  }
+  
+  .techdashboard-btn_primary:hover {
+    box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .techdashboard-blog_post:hover {
+    transform: translateY(-10px); 
+    box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2);
+    filter: brightness(0.9); /* This will darken the color by 10% */
+  }
+  
+  @media only screen and (max-width: 650px) {
+    .techdashboard-bodynew {
+      background-color: black;
+    }
+  }
