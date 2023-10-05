@@ -46,6 +46,7 @@ import CustomerList from './Componets/pages/Manager/CustomerList';
 import CustomerEditedDetails from './Componets/pages/Manager/CustomerEditedDetails';
 import UpdateTechincianprofile from './Componets/pages/Teachnician/UpdateTechincianProfile.js';
 import TechnicianForgotPassword from './Componets/pages/Teachnician/TechnicianForgotPassword';
+import ChangePassword from './Componets/pages/Teachnician/ChangePassword';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -67,6 +68,8 @@ function App() {
       <Routes>
         <Route path="/techLogin" element={<TechnicianLogin />}></Route>
         <Route path= "/updateTechnicianprofile" element={< UpdateTechincianprofile/>}></Route>
+        <Route path='/ChangePassword' element={< ChangePassword/>}></Route>
+
       </Routes>
       <Routes>
         <Route path="/reset" element={<Reset />}></Route>
