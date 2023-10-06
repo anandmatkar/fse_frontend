@@ -134,7 +134,7 @@
     height: 100%;
     width: 40%;
     text-align: center;
-    background: rgb(12, 38, 64);
+    background: linear-gradient(45deg, #2980b9, #3498db);
     transition: all 0.8s cubic-bezier(.67, .67, .34, .95);
 }
 
