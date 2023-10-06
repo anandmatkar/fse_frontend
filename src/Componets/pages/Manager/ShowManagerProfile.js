@@ -3,11 +3,12 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import axios from 'axios';
 function ShowManagerProfile() {
   const navigate = useNavigate();
   const { customerID } = useParams();
   console.log(customerID); // Extract customerId from the URL
+  const [profilePicURL, setProfilePicURL] = useState('');
   const [managerData, setManagerData] = useState({
     // id: customerID,
     name: '',
@@ -16,9 +17,7 @@ function ShowManagerProfile() {
     company: '',
     email_address: '',
     phone_number: '',
-    profilePic: '',
   });
-
   useEffect(() => {
     const token = Cookies.get('token');
     // Fetch data from the API endpoint using the customerId
@@ -38,12 +37,12 @@ function ShowManagerProfile() {
         // Update the input fields with the fetched data
         console.log(data);
         setManagerData(data.data);
+        setProfilePicURL(data.data.avatar);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   }, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setManagerData((prevData) => ({
@@ -51,28 +50,34 @@ function ShowManagerProfile() {
       [name]: value,
     }));
   };
-  const handleProfilePicChange = (e) => {
-    const file = e.target.files[0]; // Get the first selected file
-
+  const handleProfilePicChange = async (event) => {
+    const file = event.target.files[0];
     if (file) {
-      // Create a FileReader to read the selected file
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        // Update the managerData state with the new profilePic URL
-        setManagerData((prevData) => ({
-          ...prevData,
-          profilePic: reader.result, // Set the result of the FileReader as the profilePic
-        }));
-      };
-
-      reader.readAsDataURL(file); // Read the selected file as a data URL
+      const formData = new FormData();
+      formData.append('image', file);
+      try {
+        const response = await axios.post(
+          '/api/v1/manager/uploadProfilePic',
+          formData
+        );
+        if (response.data.status === 201) {
+          const uploadedURL = response.data.data;
+          console.log(uploadedURL);
+          setProfilePicURL(uploadedURL);
+        } else {
+          console.error(
+            'Profile Picture Upload Failed. Status Code:',
+            response.status
+          );
+        }
+      } catch (error) {
+        console.error('API Error:', error);
+      }
     }
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     const token = Cookies.get('token');
-
     // Send a PUT request to update customer details
     fetch(`/api/v1/manager/updateProfile`, {
       method: 'PUT',
@@ -86,7 +91,7 @@ function ShowManagerProfile() {
         email_address: managerData.email_address,
         phone_number: managerData.phone_number,
         company: managerData.company,
-        profilePic: managerData.profilePic,
+        profilePic: profilePicURL,
       }),
     })
       .then((response) => {
@@ -107,7 +112,6 @@ function ShowManagerProfile() {
         toast.error(error.message);
       });
   };
-
   return (
     <div className="container ">
       <Link to="/manager" className="">
@@ -119,18 +123,16 @@ function ShowManagerProfile() {
         <div class="row justify-content-center">
           <div class="col-lg-9">
             <h1 class="mb-3"> Customer Details Update</h1>
-
             <form onSubmit={handleSubmit}>
               <div>
-                {managerData.avatar && (
+                {(profilePicURL || managerData.avatar) && (
                   <img
-                    src={managerData.avatar}
+                    src={profilePicURL || managerData.avatar}
                     alt="Profile Picture"
                     className="img-fluid mb-3"
                     style={{ maxWidth: '150px' }}
                   />
                 )}
-
                 <input
                   type="file"
                   accept="image/*"
@@ -164,7 +166,6 @@ function ShowManagerProfile() {
                     onChange={handleChange}
                   />
                 </div>
-
                 <div class="col-md-6">
                   <label for="your-subject" class="form-label">
                     Company
@@ -178,7 +179,6 @@ function ShowManagerProfile() {
                     // onChange={handleChange}
                   />
                 </div>
-
                 <div class="col-md-6">
                   <label for="your-subject" class="form-label">
                     Email{' '}
@@ -205,7 +205,6 @@ function ShowManagerProfile() {
                     onChange={handleChange}
                   />
                 </div>
-
                 <div class="col-12">
                   <div class="row">
                     <div class="col-md-6">
@@ -224,5 +223,4 @@ function ShowManagerProfile() {
     </div>
   );
 }
-
 export default ShowManagerProfile;

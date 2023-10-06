@@ -3,13 +3,11 @@ import Table from 'react-bootstrap/Table';
 import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
-
 const ProjectStatusDetails = () => {
   const navigate = useNavigate();
   const [jobData, setJobData] = useState([]);
   const [project, setProject] = useState(null);
   const { projectId } = useParams();
-
   useEffect(() => {
     const token = Cookies.get('token');
     fetch(`/api/v1/manager/projectDetails?projectId=${projectId}`, {
@@ -36,11 +34,37 @@ const ProjectStatusDetails = () => {
         console.error('Error fetching data:', error);
       });
   }, [projectId]);
-
+  const handleDeleteProject = async () => {
+    const token = Cookies.get('token');
+    try {
+      const response = await fetch(
+        `/api/v1/manager/deleteProject?projectId=${projectId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      // Redirect to a different page after successful deletion, e.g., the project list page
+      navigate('/projectprogress'); // Change the route accordingly
+    } catch (error) {
+      console.error('Error deleting project:', error);
+    }
+  };
   return (
     <div className="job-progress">
       <h2>Project Details</h2>
       <div>
+        <div className="d-flex float-end mt-2 p-2">
+          <button className="btn btn-danger" onClick={handleDeleteProject}>
+            Delete
+          </button>
+        </div>
         {project ? (
           <div className="">
             <p>
@@ -91,38 +115,51 @@ const ProjectStatusDetails = () => {
                 <td>{job.scope_of_work}</td>
                 <td>{job.start_date}</td>
                 <td>{job.end_date}</td>
-                <td>
-                  {job.technician_data.map((technician, techIndex) => (
-                    <div key={techIndex}>
-                      {technician.project_report_data &&
-                      technician.project_report_data.length > 0
-                        ? technician.project_report_data.map(
-                            (report, reportIndex) => (
-                              <i
-                                key={reportIndex}
-                                className="fa fa-address-book"
-                                style={{ fontSize: '20px' }}
-                              ></i>
-                            )
-                          )
-                        : 'No Report'}
-                    </div>
-                  ))}
+                <td className="text-center">
+                  {technician.project_report_data &&
+                  technician.project_report_data.length > 0 ? (
+                    <Link
+                      to={`/projectreportdata/${technician.id}/${job.project_id}`}
+                    >
+                      <i
+                        className="fa fa-address-book"
+                        style={{ fontSize: '20px' }}
+                      ></i>
+                    </Link>
+                  ) : (
+                    'No Report'
+                  )}
                 </td>
-
-                <td>
+                {/* <td>
                   {technician.timesheet_data &&
                   technician.timesheet_data.length > 0
                     ? technician.timesheet_data.map(
                         (timesheet, timesheetIndex) => (
-                          <i
-                            key={timesheetIndex}
-                            className="fa fa-book"
-                            style={{ fontSize: '20px' }}
-                          ></i>
+                          <Link to="/timesheetforapproval/${technician_data.id}">
+                            <i
+                              key={timesheetIndex}
+                              className="fa fa-book"
+                              style={{ fontSize: '20px' }}
+                            ></i>
+                          </Link>
                         )
                       )
                     : 'No Timesheet'}
+                </td> */}
+                <td className="text-center">
+                  {technician.timesheet_data &&
+                  technician.timesheet_data.length > 0 ? (
+                    <Link
+                      to={`/timesheetforapproval/${technician.id}/${job.project_id}`}
+                    >
+                      <i
+                        className="fa fa-book"
+                        style={{ fontSize: '20px' }}
+                      ></i>
+                    </Link>
+                  ) : (
+                    'No Timesheet'
+                  )}
                 </td>
               </tr>
             ))
@@ -132,5 +169,4 @@ const ProjectStatusDetails = () => {
     </div>
   );
 };
-
 export default ProjectStatusDetails;

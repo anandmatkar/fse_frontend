@@ -47,6 +47,8 @@ import CustomerEditedDetails from './Componets/pages/Manager/CustomerEditedDetai
 import UpdateTechincianprofile from './Componets/pages/Teachnician/UpdateTechincianProfile.js';
 import TechnicianForgotPassword from './Componets/pages/Teachnician/TechnicianForgotPassword';
 import ChangePassword from './Componets/pages/Teachnician/ChangePassword';
+import TimeSheetForApproved from './Componets/pages/Manager/TimeSheetForApproved';
+import ProjectReportData from './Componets/pages/Manager/ProjectReportData';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -99,6 +101,14 @@ function App() {
           path="/projectstatusdetails/:projectId"
           element={<ProjectStatusDetails />}
         ></Route>
+        <Route
+          path="/timesheetforapproval/:techId/:projectId"
+          element={<TimeSheetForApproved />}
+        />
+        <Route
+          path="/ProjectReportData/:techId/:projectId"
+          element={<ProjectReportData />}
+        />
       </Routes>
 
       <Routes>
