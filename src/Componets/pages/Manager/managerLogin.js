@@ -2,13 +2,14 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../../auth-context/auth-context';
 import { useState, useRef, useContext } from 'react';
-import Layout from '../../Layout/Layout';
+// import Layout from '../../Layout/Layout';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import Spinner from '../Common/Spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie';
+import Navbar from '../../NavBar/navbarManager';
 
 // import Layout from "../../Layout/Layout";
 import { managerlogin_Api } from './../../../Api/Manager_Api';
@@ -103,7 +104,8 @@ function ManagerLogin() {
   };
 
   return (
-    <Layout>
+    <div>
+      <Navbar />
       <section className="vh-100" style={{ backgroundColor: 'white' }}>
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -183,12 +185,9 @@ function ManagerLogin() {
                             style={{ color: '#393f81' }}
                           >
                             New account?{' '}
-                            <button
-                              onClick={'/register'}
-                              style={{ color: '#393f81' }}
-                            >
+                            <Link to={'/register'} style={{ color: '#393f81' }}>
                               New Account
-                            </button>
+                            </Link>
                           </p>
                           <a href="#!" className="small text-muted">
                             Terms of use.
@@ -207,7 +206,7 @@ function ManagerLogin() {
         </div>
       </section>
       <ToastContainer />
-    </Layout>
+    </div>
   );
 }
 

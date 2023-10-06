@@ -49,6 +49,7 @@ import TechnicianForgotPassword from './Componets/pages/Teachnician/TechnicianFo
 import ChangePassword from './Componets/pages/Teachnician/ChangePassword';
 import TimeSheetForApproved from './Componets/pages/Manager/TimeSheetForApproved';
 import ProjectReportData from './Componets/pages/Manager/ProjectReportData';
+import ProjectRequestedForApproval from './Componets/pages/Manager/ProjectRequestedForApproval';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -69,9 +70,11 @@ function App() {
       </Routes>
       <Routes>
         <Route path="/techLogin" element={<TechnicianLogin />}></Route>
-        <Route path= "/updateTechnicianprofile" element={< UpdateTechincianprofile/>}></Route>
-        <Route path='/ChangePassword' element={< ChangePassword/>}></Route>
-
+        <Route
+          path="/updateTechnicianprofile"
+          element={<UpdateTechincianprofile />}
+        ></Route>
+        <Route path="/ChangePassword" element={<ChangePassword />}></Route>
       </Routes>
       <Routes>
         <Route path="/reset" element={<Reset />}></Route>
@@ -89,8 +92,11 @@ function App() {
         <Route path="/navbarmanager" element={<NavbarManager />}></Route>
         <Route path="/manager" element={<ManagerDashboard />}></Route>
         <Route path="/managetechnician" element={<ManageTechnician />} />
-        <Route path="/createtechnician" element={<CreateTechnician/>} />
-        <Route path="/viewtechnicianprofile/:technicianID" element={<ViewTechnicianProfile/>} />
+        <Route path="/createtechnician" element={<CreateTechnician />} />
+        <Route
+          path="/viewtechnicianprofile/:technicianID"
+          element={<ViewTechnicianProfile />}
+        />
         <Route path="/timeSheetss" element={<TimeSheet />}></Route>
         <Route path="/customerlist" element={<CustomerList />}></Route>
         <Route
@@ -109,6 +115,10 @@ function App() {
           path="/ProjectReportData/:techId/:projectId"
           element={<ProjectReportData />}
         />
+        <Route
+          path="/projectRequestedForApprova"
+          element={<ProjectRequestedForApproval />}
+        />
       </Routes>
 
       <Routes>
@@ -126,24 +136,42 @@ function App() {
         <Route path="/timeSheet" element={<TimesheetScreen />}></Route>
         <Route path="/timeSheetEntry" element={<TimesheetEntry />}></Route>
         <Route path="/newaccount" element={<NewAccount />}></Route>
-        <Route path="/timeSheetForm" element={<AddTimesheetEntryForm />} ></Route>
+        <Route
+          path="/timeSheetForm"
+          element={<AddTimesheetEntryForm />}
+        ></Route>
         <Route path="/showproject" element={<ShowCreatedProject />}></Route>
         <Route path="/projectprogress" element={<JobProgress />}></Route>
         <Route path="/JobAssigned" element={<JobAssigned />}></Route>
         <Route path="/JobClosed" element={<JobClosed />}></Route>
         <Route path="/JobApproval" element={<JobEWaitingAprroval />}></Route>
-        <Route path="/WaitingAprroval" element={<JobWaitingApprovalM />}></Route>
+        <Route
+          path="/WaitingAprroval"
+          element={<JobWaitingApprovalM />}
+        ></Route>
         <Route path="AccountWA" element={<AccountWA />}></Route>
         <Route path="/verifyManager" element={<Userverified />}></Route>
         <Route path="registerdaccount" element={<Registeredaccount />}></Route>
         <Route path="techniciantable" element={<TechnicianTable />}></Route>
         <Route path="projectlist" element={<ProjectList />}></Route>
-        <Route path="DetailofJobwaiting/:projectID" element={<DetailofJobwaiting/>}></Route>
-        <Route path="DeatilsodJobAssign/:projectID" element={<DeatailofJobAssign/>}></Route>
-        <Route path="DetailsofJobClosed/:projectID" element={<DetailofJobclosed/>}></Route>
-        <Route path='TechnicianForgotPassword' element={<TechnicianForgotPassword/>}></Route>
+        <Route
+          path="DetailofJobwaiting/:projectID"
+          element={<DetailofJobwaiting />}
+        ></Route>
+        <Route
+          path="DeatilsodJobAssign/:projectID"
+          element={<DeatailofJobAssign />}
+        ></Route>
+        <Route
+          path="DetailsofJobClosed/:projectID"
+          element={<DetailofJobclosed />}
+        ></Route>
+        <Route
+          path="TechnicianForgotPassword"
+          element={<TechnicianForgotPassword />}
+        ></Route>
       </Routes>
-{/* jst for push */}
+      {/* jst for push */}
       <Routes></Routes>
     </React.Fragment>
   );

@@ -11,7 +11,7 @@ function ProjectStatus() {
   };
   const progrssHandlerM = () => {
     console.log('Successfully Updated');
-    Navigate('/WaitingAprroval');
+    Navigate('/projectRequestedForApproval');
   };
 
   return (
