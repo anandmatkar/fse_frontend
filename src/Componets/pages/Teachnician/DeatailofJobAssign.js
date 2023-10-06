@@ -132,9 +132,47 @@ console.log(config, "config")
               console.error('Error fetching data:', error);
             });
           }, [projectID]);
+
+
+  // Update timesheetData
+          const onNewTimesheetCallback = (newTimesheet) => {
+        setTimesheetData(prevData => [...prevData, newTimesheet]);
+        // Update project
+        setProject(prevProject => {
+            const updatedTechnicianData = prevProject.technician_data.map(technician => {
+                return {
+                    ...technician,
+                    timesheet_data: [...technician.timesheet_data, newTimesheet]
+                };
+            });
+            return {
+                ...prevProject,
+                technician_data: updatedTechnicianData
+            };
+        });
+    }
+   
+    // update Report
+    const onNewReportCallback = (newReport) => {
+      setNewReport(prevData => [...prevData, newReport]);
+      
+      setProject(prevProject => {
+          const updatedTechnicianData = prevProject.technician_data.map(technician => {
+              return {
+                  ...technician,
+                  project_report_data: [...technician.project_report_data, newReport]
+              };
+          });
+          return {
+              ...prevProject,
+              technician_data: updatedTechnicianData
+          };
+      });
+  }
+
+ 
   
-        
-       
+      
   return (
     <div>
        <div className="container ">
@@ -187,7 +225,7 @@ console.log(config, "config")
     <div className='d-flex '>
         <h1>Timesheet Data:</h1>
         {/* <button onClick={() => setShowModal(true)} type="button" className="btn btn-primary float-end" style={{position: "relative", left: "170%"}}>Add new Timesheet</button> */}
-        <TimeSheetModal projectID={projectID} onNewTimesheet={setTimesheetData} />
+        <TimeSheetModal projectID={projectID} onNewTimesheet={onNewTimesheetCallback} />
         
         <TimeSheetApprovalModal projectID={projectID} />
     </div>
@@ -230,7 +268,7 @@ console.log(config, "config")
 <div className="tab-pane fade" id="v-pills-Report" role="tabpanel" aria-labelledby="v-pills-Report-tab">
     <div className='d-flex'>
         <h1>Project Reports:</h1>
-        <NewReportModal projectID={projectID} onNewReport={setNewReport} />
+        <NewReportModal projectID={projectID} onNewReport={onNewReportCallback} />
         {project && project.technician_data && project.technician_data.some(technician => technician.project_report_data.length > 0) && <RequestApproval projectID={projectID} />}
     </div>
     {project && project.technician_data && (

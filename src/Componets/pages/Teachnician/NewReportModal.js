@@ -78,10 +78,11 @@ const handleSubmit = async (e) => {
             throw new Error(data.message);
         }
 
-        onNewReport(data.data);
-
         alert('Report created successfully');
         setShowModal(false);
+        if(data.data) {
+          onNewReport(data.data);
+        }
     } catch (error) {
         console.error('Error:', error);
         alert('Error creating report: ' + error.message);

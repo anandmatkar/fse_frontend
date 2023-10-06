@@ -82,6 +82,10 @@ const handleSubmit = async (e) => {
 
       alert('Timesheet created successfully');
       setShowModal(false);
+      // Here's the change: Pass the newly created timesheet data back to parent.
+      if (timesheetData.data) {
+        onNewTimesheet(timesheetData.data);
+    }
   } catch (error) {
       console.error('Error:', error);
       alert('Error creating timesheet: ' + error.message);

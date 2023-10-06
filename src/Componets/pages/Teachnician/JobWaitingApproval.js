@@ -56,7 +56,7 @@ const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
         className="form-control mb-4"
         placeholder="Search by Project Type..."
         onChange={e => setSearch(e.target.value)}
-        style={{width:"25%" , border:"1px solid black",float:"inline-end"}}
+        style={{width:"25%" , border:"1px solid black",float:"inline-end",marginTop:"10px"}}
       />
 
     {filteredProjects.length === 0 ? (
