@@ -125,7 +125,7 @@
     height: 100%;
 }
 
-.loginOverlay-container {
+.Admin-loginOverlay-container {
     position: absolute;
     right: 0;
     display: flex;
@@ -134,9 +134,9 @@
     height: 100%;
     width: 40%;
     text-align: center;
-    background: rgb(12, 38, 64);
     transition: all 0.8s cubic-bezier(.67, .67, .34, .95);
-}
+    background: rgb(12, 38, 64);
+  }
 
 .go-login .loginOverlay-container {
     right: 65%;
@@ -211,3 +211,6 @@
 .loginBtn:focus, .loginBtn:active {
     outline: 0;
 }
+.loginBtn.loginBtn--main {
+    background: rgb(12, 38, 64);
+  }

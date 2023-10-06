@@ -67,9 +67,9 @@ function TechnicianLogin() {
             <h1 className="loginForm__heading">Technician Login</h1>
             <form action="" className="loginForm">
                 <h3 className="loginForm__heading">Sign In</h3>
-                <p className="loginForm__text">or use your account</p>
-                <input type="email" placeholder="email" className="loginForm__field" ref={emailInputRef}/>
-                <input type="password" placeholder="password" className="loginForm__field" ref={passwordInputRef}/>
+                <p className="loginForm__text">Or Use Your Account</p>
+                <input type="Email" placeholder="Email" className="loginForm__field" ref={emailInputRef}/>
+                <input type="Password" placeholder="Password" className="loginForm__field" ref={passwordInputRef}/>
                 <div className="row mt-4 mb-4">
     
                     <div className="col-md-12">
@@ -89,7 +89,7 @@ function TechnicianLogin() {
             <div className="loginOverlay loginOverlay--right">
                 <img src='https://img.freepik.com/premium-photo/cute-happy-male-teacher-white-background-ai-generated_971652-235.jpg?size=626&ext=jpg&ga=GA1.1.1085728591.1696533906&semt=ais' alt='' height={250} width={200} style={{borderRadius:"50%"}}/>
                 <h3 className="loginOverlay__heading">Hello Technician</h3>
-                <p className="loginOverlay__desc">Enter your personal details and start journey with us</p>
+                <p className="loginOverlay__desc">Enter Your Details And Start Journey With Us</p>
             </div>           
         </div>
       </div>
