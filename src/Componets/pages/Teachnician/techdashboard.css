@@ -1,9 +1,10 @@
 .techdashboard-bodynew {
-    height: 80vh;
+  position: relative;
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 2rem;
+    top:110px;
   }
   
   .techdashboard-blog_post {
@@ -12,7 +13,7 @@
     border-radius: 10px;
     box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
     position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease; /* Added filter to transition for smooth color change */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease; 
     background-color: #ffffff; 
   }
   

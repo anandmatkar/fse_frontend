@@ -1,9 +1,9 @@
 import React from "react";
-import LayoutTech from "../../Layout/Layout3";
+import Layout4 from "../../Layout/Layout4";
 import classes from "./techdashboard.module.css"
 import './techdashboard.css'
-import { Button , Dropdown } from "react-bootstrap";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import {  useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 function TechnicianDashboard() {
@@ -22,58 +22,10 @@ function TechnicianDashboard() {
         console.log("Successfully Updated");
       };
       
-      const handleLogout = async () => {
-        const token = Cookies.get('token');
-        console.log("Token from cookies:", token);
-    
-        try {
-            const response = await fetch("http://localhost:3003/api/v1/technician/techLogout", {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': token
-                }
-            });
-    
-            const responseData = await response.json(); // assuming server responds with json
-            console.log("Server Response:", responseData);
-    
-            if (response.ok) {
-                Cookies.remove('token');
-                Navigate("/techlogin");
-                console.log("successfully logout");
-            } else {
-                console.log("Logout failed.");
-            }
-        } catch (error) {
-            console.error("There was an error logging out", error);
-        }
-    };
+      
 
-    const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-      <a
-          href=""
-          ref={ref}
-          onClick={(e) => {
-              e.preventDefault();
-              onClick(e);
-          }}
-      >
-          {children}
-      </a>
-  ));
     return(
-      <LayoutTech>
-      <Dropdown className="imgdropdown">
-                <Dropdown.Toggle as={CustomToggle}>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU" alt="Profile" style={{ width: '60px', borderRadius: '50%' }} />
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                    <Dropdown.Item as={NavLink} to="/updateTechnicianprofile">Show Profile</Dropdown.Item>
-                    <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
+      <Layout4>
       <div className='techdashboard-bodynew'>
           <div className="techdashboard-blog_post">
               <div className="techdashboard-img_pod">
@@ -111,7 +63,7 @@ function TechnicianDashboard() {
               </div>
           </div>
       </div>
-  </LayoutTech>
+  </Layout4>
           );
 }
 
