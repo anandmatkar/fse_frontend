@@ -1,46 +1,22 @@
 import React, {useContext} from 'react'
 import AuthContext from "../auth-context/auth-context";
 import { Dropdown, NavLink } from "react-bootstrap";
-import {  useNavigate } from "react-router-dom";
+import {  useNavigate , Navigate} from "react-router-dom";
 import Cookies from "js-cookie";
 
 const NavTechnicanProfile = () => {
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
     const authCtx = useContext(AuthContext);
     const isLoggedIn = authCtx.isLoggedIn;
-
+const token = Cookies.get('token')
+console.log(token,"token")
     const logoutHandler = () => {
+      Cookies.remove('token')
+      Navigate('/techLogin')
       console.log("Logout SucessFull");
       authCtx.logout();
-
     }
-    const handleLogout = async () => {
-        const token = Cookies.get('token');
-        console.log("Token from cookies:", token);
     
-        try {
-            const response = await fetch("http://localhost:3003/api/v1/technician/techLogout", {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': token
-                }
-            });
-    
-            const responseData = await response.json(); // assuming server responds with json
-            console.log("Server Response:", responseData);
-    
-            if (response.ok) {
-                Cookies.remove('token');
-                Navigate("/techlogin");
-                console.log("successfully logout");
-            } else {
-                console.log("Logout failed.");
-            }
-        } catch (error) {
-            console.error("There was an error logging out", error);
-        }
-    };
     const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
         <a
             href=""
@@ -84,7 +60,7 @@ const NavTechnicanProfile = () => {
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item as={NavLink} to="/updateTechnicianprofile">Show Profile</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => navigate("/updateTechnicianprofile")}>Show Profile</Dropdown.Item>
                                     <Dropdown.Item onClick={logoutHandler}>Logout</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>

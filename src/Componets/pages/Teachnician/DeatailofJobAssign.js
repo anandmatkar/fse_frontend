@@ -148,6 +148,7 @@ console.log(config, "config")
               <button className="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Project Attachments</button>
               <button className="nav-link" id="v-pills-technician-tab" data-bs-toggle="pill" data-bs-target="#v-pills-technician" type="button" role="tab" aria-controls="v-pills-technician" aria-selected="false">Technician Detail</button>
               <button className="nav-link" id="v-pills-Report-tab" data-bs-toggle="pill" data-bs-target="#v-pills-Report" type="button" role="tab" aria-controls="v-pills-Report" aria-selected="false">Project Report</button>
+              <button className="nav-link" id="v-pills-machine-tab" data-bs-toggle="pill" data-bs-target="#v-pills-machine" type="button" role="tab" aria-controls="v-pills-machine" aria-selected="false">Machine Data</button>
             </div>
             <div className="tab-content" id="v-pills-tabContent">
               <div className="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
@@ -281,6 +282,49 @@ console.log(config, "config")
         </div>
     ))}
 </div>
+
+<div className="tab-pane fade" id="v-pills-machine" role="tabpanel" aria-labelledby="v-pills-machine-tab">
+    {project && (
+        <div>
+            <h1>Machine Data:</h1>
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
+                <thead>
+                    <tr>
+                        <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Type</th>
+                        <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Hour Count</th>
+                        <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Serial</th>
+                        <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Nominal Speed</th>
+                        <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Actual Speed</th>
+                        <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Description</th>
+                        <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {project.technician_data.flatMap(technician => 
+                        technician.machine_data.map(machine => (
+                            <tr key={machine.id}>
+                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{machine.machine_type}</td>
+                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{machine.hour_count}</td>
+                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{machine.serial}</td>
+                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{machine.nom_speed}</td>
+                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{machine.act_speed}</td>
+                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{machine.description}</td>
+                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
+                                    {machine.machine_attach_data.map(attachment => (
+                                        <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
+                                            <i className="fa fa-cloud-upload fa-2x" style={{marginRight: '5px', color:"black"}}></i>
+                                        </a>
+                                    ))}
+                                </td>
+                            </tr>
+                        ))
+                    )}
+                </tbody>
+            </table>
+        </div>
+    )}
+</div>
+
                 </>
               )}
             </div>

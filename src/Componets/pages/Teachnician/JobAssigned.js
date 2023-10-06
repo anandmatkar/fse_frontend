@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import './JobAssigned.css'
-
 function JobAssigned() {
   const [projectList, setProjectList] = useState([]);
   const [search, setSearch] = useState('');
@@ -49,7 +48,9 @@ function JobAssigned() {
     const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 
   return (
-    <div className="container mt-5">
+    <>
+  
+    <div className="jobcontainer container mt-5">
       <h1 className="text-center mb-4">Technician Job Assign</h1>
       
       <input
@@ -63,7 +64,11 @@ function JobAssigned() {
       {filteredProjects.length === 0 ? (
         <div className="text-center mt-5 fw-bold fs-3 text-capitalize">No data found</div>
       ) : (
-        <div className="bf-table-responsive bf-table-responsive--zebra">
+        <div>
+          <div className="card">
+  <div className="card-body">
+        <div className="bf-table-responsive">
+
           <table className="bf-table table table-bordered table-hover">
             <thead>
                 <tr>
@@ -110,8 +115,12 @@ function JobAssigned() {
                 ))}
             </tbody>
           </table>
-
-          <nav className="dt-pagination">
+          
+</div>
+</div>
+          
+        </div>
+        <nav className="dt-pagination">
     <ul className="dt-pagination-ul">
         <li className={`dt-item ${currentPage === 1 ? 'disabled': ''}`}><button className="dt-link" onClick={() => setCurrentPage(currentPage - 1)}>Prev</button></li>
         {arrOfCurrButtons.map((data, index) => {
@@ -123,8 +132,11 @@ function JobAssigned() {
     </ul>
 </nav>
         </div>
+        
       )}
     </div>
+    
+    </>
   );
 }
 

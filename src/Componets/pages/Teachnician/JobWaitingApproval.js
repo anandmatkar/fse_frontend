@@ -62,8 +62,10 @@ const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
     {filteredProjects.length === 0 ? (
       <div className="text-center mt-5 fw-bold fs-3 text-capitalize">No data found</div>
       ) : (
-  
-        <div className="bf-table-responsive bf-table-responsive--zebra">
+        <div>
+           <div className="card">
+  <div className="card-body">
+        <div className="bf-table-responsive">
                     <table className="bf-table table table-bordered table-hover">
 
 <thead>
@@ -111,7 +113,9 @@ const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 ))}
 </tbody>
 </table>
-
+</div>
+</div>
+</div>
 <nav className="dt-pagination">
     <ul className="dt-pagination-ul">
         <li className={`dt-item ${currentPage === 1 ? 'disabled': ''}`}><button className="dt-link" onClick={() => setCurrentPage(currentPage - 1)}>Prev</button></li>
