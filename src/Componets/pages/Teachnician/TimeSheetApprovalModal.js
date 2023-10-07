@@ -47,9 +47,8 @@ const TimeSheetApprovalModal = ({ projectID, onNewTimesheet }) => {
 
   return (
     <div className='d-flex '>
-      <Button
-        className="btn btn-primary float-end"
-        style={{ position: "relative", left: "415%" ,top:"150%"}}
+      <Button className='btn btn-success'
+        style={{ position: "relative", left: "335%" ,top:"150%"}}
         onClick={() => setShowModal(true)}
       >
         Req Timesheet

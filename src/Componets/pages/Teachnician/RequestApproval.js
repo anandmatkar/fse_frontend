@@ -30,7 +30,7 @@ const RequestApproval = ({projectID}) => {
   return (
    <div>
        <Button onClick={() => setShowApprovalModal(true)} className="btn btn-success" 
-                style={{}}>Request Approval</Button>
+                style={{position:"relative" , left:"295%"}}>Request Approval</Button>
 
             <Modal show={showApprovalModal} onHide={() => setShowApprovalModal(false)}>
                 <Modal.Header closeButton>

@@ -1,6 +1,3 @@
-.table-filter-info{
-    padding : 15px;
-  }
   .thead-primary tr th {
       background-color: #5a8dee;
       border-color: #5a8dee;
@@ -14,15 +11,6 @@
   .dt-pagination .dt-item {
       display: inline-block;
   }
-
-  a.btn.btn-primary.btn-sm {
-    padding: 3px;
-    width: 70px;
-    height: 46px;
-    font-size: 14px;
-    font-weight: 600;
-}
-  
   .dt-pagination .dt-item .dt-link {
       padding: 6px 8px;
       min-width: 32px;
@@ -60,7 +48,7 @@
   }
 
   /* Heading */
-h1.text-center {
+.jobassigntext {
     font-size: 2.5rem;
     margin-bottom: 2rem;
     font-weight: 700;
@@ -132,3 +120,14 @@ nav.dt-pagination{
     padding: 20px;
   }
   
+  .job-delete-timesheet-btn{
+    width: 6pc;
+    height: 2pc;
+    line-height: 10px;
+  }
+
+  .job-delete-report-btn{
+    width: 6pc;
+    height: 2pc;
+    line-height: 10px;
+  }

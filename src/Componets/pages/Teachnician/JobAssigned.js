@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Table, Container, Button } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import './JobAssigned.css'
@@ -51,7 +52,7 @@ function JobAssigned() {
     <>
   
     <div className="jobcontainer container mt-5">
-      <h1 className="text-center mb-4">Technician Job Assign</h1>
+      <h1 className="jobassigntext mb-4">Technician Job Assign</h1>
       
       <input
         type="text"
@@ -69,52 +70,56 @@ function JobAssigned() {
   <div className="card-body">
         <div className="bf-table-responsive">
 
-          <table className="bf-table table table-bordered table-hover">
-            <thead>
-                <tr>
+        <Container fluid>
+    <Table responsive bordered hover className="bf-table">
+        <thead>
+            <tr>
                 <th>Order ID</th>
-				<th>Project Type</th>
-					<th>Description</th>
- 					<th>Start Date</th>
-					<th>End Date</th>
-					<th>Customer Name</th>
-					<th>Customer Contact</th>
- 					<th>Customer Account</th>
-          <th>Email</th>
-           <th>Phone No.</th>  
-          <th>Country</th>
-          <th>City</th>
-          <th>Address</th>
-          <th>Scope of Work</th>
-           <th>See details</th>
-                </tr>
-            </thead>
-            <tbody>
-                {currentProjects.map((project, index) => (
-                    <tr key={index}>
-                        <td>{project.order_id}</td>
-       <td>{project.project_type}</td>
-       <td>{project.description}</td>
-       <td>{project.start_date}</td>
-       <td>{project.end_date}</td>
-       <td>{project.customer_name}</td>
-       <td>{project.customer_contact}</td>
-       <td>{project.customer_account}</td>
-       <td>{project.email_address}</td>
-       <td>{project.phone_number}</td>
-       <td>{project.country}</td>
-       <td>{project.city}</td>
-     <td>{project.address}</td>
-       <td>{project.scope_of_work}</td>
-                        <td>
-                            <Link to={`/DeatilsodJobAssign/${project.project_id}`} className="btn btn-primary btn-sm">
+                <th>Project Type</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Customer Name</th>
+                <th>Customer Contact</th>
+                <th>Customer Account</th>
+                <th>Email</th>
+                <th>Phone No.</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Address</th>
+                <th>Scope of Work</th>
+                <th>See details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {currentProjects.map((project, index) => (
+                <tr key={index}>
+                    <td>{project.order_id}</td>
+                    <td>{project.project_type}</td>
+                    <td>{project.description}</td>
+                    <td>{project.start_date}</td>
+                    <td>{project.end_date}</td>
+                    <td>{project.customer_name}</td>
+                    <td>{project.customer_contact}</td>
+                    <td>{project.customer_account}</td>
+                    <td>{project.email_address}</td>
+                    <td>{project.phone_number}</td>
+                    <td>{project.country}</td>
+                    <td>{project.city}</td>
+                    <td>{project.address}</td>
+                    <td>{project.scope_of_work}</td>
+                    <td>
+                        <Link to={`/DeatilsodJobAssign/${project.project_id}`}>
+                            <Button variant="primary" size="sm">
                                 See details
-                            </Link>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-          </table>
+                            </Button>
+                        </Link>
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    </Table>
+</Container>
           
 </div>
 </div>

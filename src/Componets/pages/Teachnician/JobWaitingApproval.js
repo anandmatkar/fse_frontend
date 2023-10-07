@@ -1,4 +1,5 @@
 import React,{useState , useEffect} from "react";
+import { Table, Container, Button } from 'react-bootstrap';
 import Cookies from 'js-cookie' 
 import { Link } from "react-router-dom";
 
@@ -50,7 +51,7 @@ const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 
   return (
     <div className="container mt-5">
-<h1 className="text-center mb-4">Technician Job waiting approval </h1>
+<h1 className="jobassigntext mb-4">Technician Job waiting approval </h1>
 <input
         type="text"
         className="form-control mb-4"
@@ -66,7 +67,8 @@ const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
            <div className="card">
   <div className="card-body">
         <div className="bf-table-responsive">
-                    <table className="bf-table table table-bordered table-hover">
+        <Container fluid>
+    <Table responsive bordered hover className="bf-table">
 
 <thead>
   <tr>
@@ -105,14 +107,17 @@ const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 <td>{project.city}</td>
 <td>{project.address}</td>
 <td>{project.scope_of_work}</td>
-<td><Link to={`/DetailofJobwaiting/${project.project_id}`} className="btn btn-primary">
-    See Details
+<td><Link to={`/DetailofJobwaiting/${project.project_id}`}>
+<Button variant="primary" size="sm">
+                                See details
+                            </Button>
 </Link>
 </td>
 </tr>
 ))}
 </tbody>
-</table>
+</Table>
+</Container>
 </div>
 </div>
 </div>

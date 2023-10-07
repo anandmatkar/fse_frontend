@@ -90,8 +90,8 @@ const handleSubmit = async (e) => {
 };
   return (
     <div>
-      <Button onClick={() => setShowModal(true)} className="btn btn-primary float-end" 
-        style={{position: "relative", left: "500%"}} >Add New Report</Button>
+      <Button onClick={() => setShowModal(true)} className='btn btn-success'
+        style={{position: "relative", left: "420%" , top:"130%"}} >Add New Report</Button>
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
