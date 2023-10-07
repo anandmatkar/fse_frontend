@@ -36,7 +36,6 @@ import ProjectList from './Componets/pages/Teachnician/viewProjectDetails';
 import NavbarManager from './Componets/pages/Manager/Navbar';
 import ManageTechnician from './Componets/pages/Manager/ManageTechnician';
 import CreateTechnician from './Componets/pages/Manager/CreateTechnician';
-//function
 import DetailofJobwaiting from './Componets/pages/Teachnician/DetailofJobwaiting';
 import DeatailofJobAssign from './Componets/pages/Teachnician/DeatailofJobAssign';
 import DetailofJobclosed from './Componets/pages/Teachnician/DetailofJobclosed';
