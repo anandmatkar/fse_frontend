@@ -25,7 +25,8 @@ function MainNavigation() {
         <img
               alt=""
               src="/assets/logofse.png"
-            width={75}
+            width={100}
+            height={70}
               className="d-inline-block align-top me-3"
 
             />{' '}

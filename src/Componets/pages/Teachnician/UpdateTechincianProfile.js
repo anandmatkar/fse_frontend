@@ -8,7 +8,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import * as formik from 'formik';
 import * as yup from 'yup';
-import { Card, Container, Image } from 'react-bootstrap';
+import { Card, ListGroup,  Table , Container } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -273,185 +273,166 @@ useEffect(() => {
 
   return (
     <React.Fragment>
-      <Container as={Card.Header} className="py-5">
-        <h1 className='text-center'>Edit Technician Profile</h1>
-        <Form noValidate onSubmit={updateTechDataSubmit}>
-          <Row className="mb-3">
-            <Col lg={6}>
-              <Form.Group controlId="validationFormik01">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="First Name"
-                  name="name"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  isValid={!!formData.name}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="validationFormik02">
-                <Form.Label>Surname</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Surname"
-                  name="surname"
-                  value={formData.surname}
-                  onChange={(e) =>
-                    setFormData({ ...formData, surname: e.target.value })
-                  }
-                  isValid={!!formData.surname}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="validationFormik03">
-              <Form.Label>Email Address</Form.Label>
-              <InputGroup hasValidation>
-                <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-                <Form.Control
-                  type="text"
-                  placeholder="Email Address"
-                  aria-describedby="inputGroupPrepend"
-                  name="emailAddress"
-                  value={formData.emailAddress}
-                  onChange={(e) =>
-                    setFormData({ ...formData, emailAddress: e.target.value })
-                  }
-                  isInvalid={!!formData.emailAddress}
-                />
-                <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-              </InputGroup>
-              </Form.Group>
-
-              <Form.Group controlId="validationFormik05">
-                <Form.Label>Phone</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Phone"
-                  name="phone"
-                  value={formData.phoneNumber}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phoneNumber: e.target.value })
-                  }
-                  isInvalid={!!formData.phone}
-                />
-                <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group controlId="validationFormik06">
-              <Form.Label>Nationality</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Nationality"
-                name="nationality"
-                value={formData.nationality}
-                onChange={(e) =>
-                  setFormData({ ...formData, nationality: e.target.value })
-                }
-                isInvalid={!!formData.nationality}
-              />
-              <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group controlId="validationFormik07">
-                <Form.Label>Qualification</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Qualification"
-                  name="qualification"
-                  value={formData.qualification}
-                  onChange={(e) =>
-                    setFormData({ ...formData, qualification: e.target.value })
-                  }
-                  isInvalid={!!formData.qualification}
-                />
-                <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group controlId="validationFormik08">
-                <Form.Label>Level</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Level"
-                  name="level"
-                  value={formData.level}
-                  onChange={(e) =>
-                    setFormData({ ...formData, level: e.target.value })
-                  }
-                  isInvalid={!!formData.level}
-                />
-                <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group controlId="validationFormik08">
-                <Form.Label>Upload Documents</Form.Label>
-                <Form.Control
-                  type="file"
-                  multiple  // Add the 'multiple' attribute to allow multiple file selection
-                  name="documents"
-                  onChange={submitFormWithDocuments}
-                  
-                />
-                <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-              </Form.Group>
-
-
-            </Col>
-            
-            <Col lg={6}>
-              <Row>
-                <Col className='mx-5'>
-                  {selectedImage && (
-                    <div className="circular-frame">
-                      <Image src={selectedImage} roundedCircle />
-                    </div>
-                  )}
-                </Col>
-              </Row>
-              <Row>
-                <Col className='mx-5'>
-                  <Form>
-                    <Form.Group>
-                      <Form.Label>Upload a Picture:</Form.Label>
-                      <Form.Control
-                        type="file"
-                        accept="image/*"
-
-                        onChange={handleImageUpload}
-                      />
-                    </Form.Group>
-                  </Form>
-                </Col>
-              </Row>
-
-             
-            </Col>
-
-          </Row>
-          <Button
-            variant="warning"
-            type="button"
-            onClick={() => {updateTechDataSubmit(formData);}}
-            className="my-3"
-            as={Col}
-            lg="3"
-          >
+    <Container className='my-3'>
+    {/* <Card.Header className='fs-3 fw-bold text-center my-3'>Edit Technician Profile</Card.Header> */}
+    <div className="d-flex justify-content-between mb-4">
+        <Button variant="success" type="submit" className="w-10" onClick={updateTechDataSubmit}>
             Update Technician Details
-          </Button>
-
-          <Button as={NavLink} to="/ChangePassword">
-              <Col className='mx-5'>
-
-                Change Password
-
+        </Button>
+        <Button as={NavLink} to="/ChangePassword">
+            Change Password
+        </Button>
+    </div>
+   
+        <Card>
+            <Row>
+                <Col lg={4}>
+                    <Card>
+                        <Card.Header className='fw-bold'>Profile Picture</Card.Header>
+                        <center>
+                            {selectedImage && (
+                                <Card.Img className='my-5' src={selectedImage} style={{ maxWidth: '240px', maxHeight: '320px' }} roundedCircle />
+                            )}
+                            <Form>
+                                <Form.Group className="mt-3">
+                                    <Form.Label className='fw-bold'>Upload a Picture:</Form.Label>
+                                    <Form.Control
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageUpload}
+                                    />
+                                </Form.Group>
+                            </Form>
+                        </center>
+                    </Card>
                 </Col>
+                <Col lg={8}>
+    <Form noValidate onSubmit={updateTechDataSubmit}>
+        <Card className='w-100 fw-bold'>
+            <Card.Header>Profile Details</Card.Header>
+            <ListGroup variant="flush">
 
-              </Button>
-        </Form>
-      </Container>
-    </React.Fragment>
+                <ListGroup.Item>
+                    <Row>
+                        <Col md={2}><b>Name:</b></Col>
+                        <Col md={10}>
+                            <Form.Control
+                                type="text"
+                                placeholder="First Name"
+                                name="name"
+                                value={formData.name}
+                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            />
+                        </Col>
+                    </Row>
+                </ListGroup.Item>
+
+                <ListGroup.Item>
+                    <Row>
+                        <Col md={2}><b>Surname:</b></Col>
+                        <Col md={10}>
+                            <Form.Control
+                                type="text"
+                                placeholder="Surname"
+                                name="surname"
+                                value={formData.surname}
+                                onChange={(e) => setFormData({ ...formData, surname: e.target.value })}
+                            />
+                        </Col>
+                    </Row>
+                </ListGroup.Item>
+
+                <ListGroup.Item>
+                    <Row>
+                        <Col md={2}><b>Email Address:</b></Col>
+                        <Col md={10}>
+                            <Form.Control
+                                type="email"
+                                placeholder="Email Address"
+                                name="emailAddress"
+                                value={formData.emailAddress}
+                                onChange={(e) => setFormData({ ...formData, emailAddress: e.target.value })}
+                            />
+                        </Col>
+                    </Row>
+                </ListGroup.Item>
+
+                <ListGroup.Item>
+                    <Row>
+                        <Col md={2}><b>Phone:</b></Col>
+                        <Col md={10}>
+                            <Form.Control
+                                type="tel"
+                                placeholder="Phone"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                            />
+                        </Col>
+                    </Row>
+                </ListGroup.Item>
+
+                <ListGroup.Item>
+                    <Row>
+                        <Col md={2}><b>Nationality:</b></Col>
+                        <Col md={10}>
+                            <Form.Control
+                                type="text"
+                                placeholder="Nationality"
+                                name="nationality"
+                                value={formData.nationality}
+                                onChange={(e) => setFormData({ ...formData, nationality: e.target.value })}
+                            />
+                        </Col>
+                    </Row>
+                </ListGroup.Item>
+
+                <ListGroup.Item>
+                    <Row>
+                        <Col md={2}><b>Qualification:</b></Col>
+                        <Col md={10}>
+                            <Form.Control
+                                type="text"
+                                placeholder="Qualification"
+                                name="qualification"
+                                value={formData.qualification}
+                                onChange={(e) => setFormData({ ...formData, qualification: e.target.value })}
+                            />
+                        </Col>
+                    </Row>
+                </ListGroup.Item>
+
+                <ListGroup.Item>
+                    <Row>
+                        <Col md={2}><b>Level:</b></Col>
+                        <Col md={10}>
+                            <Form.Control
+                                type="text"
+                                placeholder="Level"
+                                name="level"
+                                value={formData.level}
+                                onChange={(e) => setFormData({ ...formData, level: e.target.value })}
+                            />
+                        </Col>
+                    </Row>
+                </ListGroup.Item>
+
+            </ListGroup>
+        </Card>
+        {/* <Button variant="warning" type="submit" className="my-3 w-50">
+            Update Technician Details
+        </Button>
+        <Button as={NavLink} to="/ChangePassword" className="my-3">
+            Change Password
+        </Button> */}
+    </Form>
+</Col>
+
+            </Row>
+        </Card>
+    </Container>
+</React.Fragment>
+
   );
 }
  export default  UpdateTechincianProfile;
