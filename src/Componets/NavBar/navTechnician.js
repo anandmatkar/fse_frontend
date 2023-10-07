@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { NavLink, Link } from "react-router-dom";
+// import Button from "react-bootstrap/Button";
+// import Container from "react-bootstrap/Container";
+// import Form from "react-bootstrap/Form";
+// import Nav from "react-bootstrap/Nav";
+// import Navbar from "react-bootstrap/Navbar";
+// import NavDropdown from "react-bootstrap/NavDropdown";
+// import { NavLink, Link } from "react-router-dom";
 import AuthContext from "../auth-context/auth-context";
 
 function TechNavigation() {
@@ -18,59 +18,41 @@ function TechNavigation() {
 
     }
   return (
-    <Navbar bg="light" expand="lg">
-      <Container fluid>
-        <Navbar.Brand>FSE Report</Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: "100px" }}
-            navbarScroll
-          >
-            {isLoggedIn &&    <Nav.Link>
-              <Link to={"/"}>Home</Link>
-            </Nav.Link>}
-            {isLoggedIn && <Nav.Link>
-                <Link to={"/service"}>About</Link>
-              </Nav.Link>}
-              {!isLoggedIn && (
-                  <NavDropdown title="Login" id="navbarScrollingDropdown">
-                  <NavDropdown.Item>
-                    <Link to={"/admin"}>Admin Login</Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-    
-                  <NavDropdown.Item>
-                    <Link to={"/manager"}>Manager Login</Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-    
-                  <NavDropdown.Item>
-                    <Link to={"/tech"}>Teachnician Login</Link>
-                  </NavDropdown.Item>
-                </NavDropdown>
-
-              )}
-            <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link>
-          </Nav>
-          {isLoggedIn &&  <Button onClick={logoutHandler} variant="danger">Logout</Button>}
-          {isLoggedIn && (
-             <Form className="d-flex">
-             <Form.Control
-               type="search"
-               placeholder="Search"
-               className="me-2"
-               aria-label="Search"
-             />
-             <Button variant="outline-success">Search</Button>
-           </Form>
-          )}
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      {/* <!-- Logo --> */}
+      <a class="navbar-brand" href="#">
+        {/* <img src="https://preview.webpixels.io/web/img/logos/clever-light.svg" class="" alt="..."/> */}
+        <h1 style={{marginBottom:"0px"}}>FSE report</h1>
+      </a>
+      {/* <!-- Navbar toggle --> */}
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      {/* <!-- Collapse --> */}
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        {/* <!-- Nav --> */}
+        <div class="navbar-nav mx-lg-auto">
+          <a class="nav-item nav-link active" href="#" aria-current="page">Home</a>
+          <a class="nav-item nav-link" href="#">Product</a>
+          {/* <a class="nav-item nav-link" href="#">Features</a>
+          <a class="nav-item nav-link" href="#">Pricing</a> */}
+        </div>
+        {/* <!-- Right navigation --> */}
+        <div class="navbar-nav ms-lg-4">
+          {/* <a class="nav-item nav-link" href="#">Sign in</a> */}
+        </div>
+        {/* <!-- Action --> */}
+        <div class="d-flex align-items-lg-center mt-3 mt-lg-0">
+          {/* <a href="#" class="btn btn-sm btn-primary">
+            Logout
+          </a> */}
+        </div>
+      </div>
+    </div>
+  </nav>
+  </div>
   );
 }
 

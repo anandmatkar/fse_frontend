@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './NewCustomerScreen.css'; // Make sure to import your CSS file
-import axios from 'axios'
+import './NewCustomerScreen.css';
+import axios from 'axios';
 
 function NewAccount() {
   const [formData, setFormData] = useState({
@@ -41,7 +41,7 @@ function NewAccount() {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Handle the response from the server 
+        // Handle the response from the server
         console.log('Profile picture uploaded successfully', data);
       })
       .catch((error) => {
@@ -66,10 +66,13 @@ function NewAccount() {
     formDataToSend.append('profilePic', profilePic);
 
     try {
-      const response = await fetch('http://localhost:3003/api/v1/manager/createManager', {
-        method: 'POST',
-        body: formDataToSend,
-      });
+      const response = await fetch(
+        'http://localhost:3003/api/v1/manager/createManager',
+        {
+          method: 'POST',
+          body: formDataToSend,
+        }
+      );
 
       if (response.ok) {
         console.log('Data submitted successfully');
@@ -81,18 +84,17 @@ function NewAccount() {
     }
   };
 
+  const confirmEmail = async (token) => {
+    try {
+      const response = await axios.get(`/api/v1/manager/confirmEmail/${token}`);
+      console.log(response.data.message); // Display the confirmation message to the user
+    } catch (error) {
+      console.error('Error confirming email:', error);
+    }
+  };
 
-const confirmEmail = async (token) => {
-  try {
-    const response = await axios.get(`/api/v1/manager/confirmEmail/${token}`);
-    console.log(response.data.message); // Display the confirmation message to the user
-  } catch (error) {
-    console.error('Error confirming email:', error);
-  }
-};
-
-// Call the confirmEmail function with the token when the user clicks the confirmation link
-confirmEmail('your-confirmation-token');
+  // Call the confirmEmail function with the token when the user clicks the confirmation link
+  confirmEmail('your-confirmation-token');
 
   return (
     <div className="new-customer-screen">
@@ -189,7 +191,7 @@ confirmEmail('your-confirmation-token');
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="phone">profilePic:</label>
           <input
@@ -201,7 +203,7 @@ confirmEmail('your-confirmation-token');
             required
           />
         </div>
-       
+
         <div className="form-group">
           <button type="submit" className="submit-button">
             Validate

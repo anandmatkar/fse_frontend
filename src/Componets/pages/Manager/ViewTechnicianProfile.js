@@ -1,0 +1,78 @@
+import React, { useEffect, useState } from 'react';
+import { NavLink, useParams } from 'react-router-dom';
+import { Button, Card, Container, ListGroup, Row, Col, Table } from 'react-bootstrap'
+import axios from 'axios';
+
+export default function ViewTechnicianProfile() {
+
+  // Extract the 'technicianId' parameter from the URL
+  let { technicianID } = useParams();
+
+  const [ technicianProfile, setTechnicianProfile ] = useState({});
+
+  const fetchTechnicianProfile = async () => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+        console.error("Token not found in localStorage.");
+        return;
+        }
+        const config = {
+            headers: {
+                Authorization: token,
+            },
+        };
+        const response = await axios.get(`http://localhost:3003/api/v1/manager/technicianDetailsForManager?techId=${technicianID}`, config);
+        console.log(response.data);
+        setTechnicianProfile(response.data.data[0]);            
+    } catch (error) {
+        console.log(error.message);            
+    }
+}
+
+    useEffect(() => {
+        fetchTechnicianProfile();
+    }, [technicianID]);
+
+  return (
+    <React.Fragment>
+        <Container className='my-5'>
+
+        <h3 className='my-3'>View Technician Profile</h3>
+
+        <Card>
+            <Row>
+                <Col lg={4}>
+                    <Card>
+                        <Card.Header>Profile Picture</Card.Header>
+                        <center>
+                            <Card.Img className='my-5' variant="top" src={technicianProfile.avatar} style={{ maxWidth: '240px', maxHeight: '320px' }} />
+
+                        </center>
+
+                    </Card>
+                </Col>
+                <Col lg={8}>
+                    <Card>
+                        <Card.Header>Profile Details</Card.Header>
+                        <ListGroup variant="flush">
+                            <ListGroup.Item><b>Name : </b> {`${technicianProfile.name}`}</ListGroup.Item>
+                            <ListGroup.Item><b>Surname :</b> {`${technicianProfile.surname}`}</ListGroup.Item>
+                            <ListGroup.Item><b>Position :</b> {`${technicianProfile.position}`}</ListGroup.Item>
+                            <ListGroup.Item><b>Email Address :</b> {`${technicianProfile.email_address}`}</ListGroup.Item>
+                            <ListGroup.Item><b>Phone :</b> {`${technicianProfile.phone_number}`}</ListGroup.Item>
+                            <ListGroup.Item><b>Nationality :</b> {`${technicianProfile.nationality}`}</ListGroup.Item>
+                            <ListGroup.Item><b>Qualification :</b> {`${technicianProfile.qualification}`}</ListGroup.Item>
+                            <ListGroup.Item><b>Level :</b> {`${technicianProfile.level}`}</ListGroup.Item>
+
+                        </ListGroup>
+                    </Card>
+                </Col>
+            </Row>
+        </Card>
+
+        
+        </Container>
+    </React.Fragment>
+  );
+}

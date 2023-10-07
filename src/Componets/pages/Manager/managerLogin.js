@@ -2,13 +2,14 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../../auth-context/auth-context';
 import { useState, useRef, useContext } from 'react';
-import Layout from '../../Layout/Layout';
+// import Layout from '../../Layout/Layout';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import Spinner from '../Common/Spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie';
+import Navbar from '../../NavBar/navbarManager';
 
 // import Layout from "../../Layout/Layout";
 import { managerlogin_Api } from './../../../Api/Manager_Api';
@@ -27,10 +28,10 @@ function ManagerLogin() {
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
-  const buttonHandler = () => {
-    Navigate('/register');
-    Navigate('/newaccount');
-  };
+  // const buttonHandler = () => {
+  //   Navigate('/register');
+  //   Navigate('/newaccount');
+  // };
   const submitHandler = async (event) => {
     setIsLoading(true);
     event.preventDefault();
@@ -103,7 +104,8 @@ function ManagerLogin() {
   };
 
   return (
-    <Layout>
+    <div>
+      <Navbar />
       <section className="vh-100" style={{ backgroundColor: 'white' }}>
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -168,7 +170,7 @@ function ManagerLogin() {
                           <div className="pt-1 mb-4">
                             <button
                               className="btn btn-dark btn-lg btn-block"
-                              type="button"
+                              type="submit"
                               onClick={submitHandler}
                             >
                               Login
@@ -177,29 +179,15 @@ function ManagerLogin() {
                           <Link to={'/reset'} className="small text-muted">
                             Forgot password?
                           </Link>
-                          <p
-                            className="mb-5 pb-lg-2"
-                            style={{ color: '#393f81' }}
-                          >
-                            Don't have an account?{' '}
-                            <button
-                              onClick={buttonHandler}
-                              style={{ color: '#393f81' }}
-                            >
-                              Register here
-                            </button>
-                          </p>
+
                           <p
                             className="mb-5 pb-lg-2"
                             style={{ color: '#393f81' }}
                           >
                             New account?{' '}
-                            <button
-                              onClick={buttonHandler}
-                              style={{ color: '#393f81' }}
-                            >
+                            <Link to={'/register'} style={{ color: '#393f81' }}>
                               New Account
-                            </button>
+                            </Link>
                           </p>
                           <a href="#!" className="small text-muted">
                             Terms of use.
@@ -218,7 +206,7 @@ function ManagerLogin() {
         </div>
       </section>
       <ToastContainer />
-    </Layout>
+    </div>
   );
 }
 

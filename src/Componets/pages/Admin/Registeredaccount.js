@@ -1,5 +1,6 @@
 import React ,{useEffect,useState}from 'react'
 import axios from 'axios'
+import Table from 'react-bootstrap/Table';
 
 
 const Registeredaccount = () => {
@@ -43,36 +44,38 @@ const Registeredaccount = () => {
   
     return (
       <div className="user-table-container">
-        <table className="user-table">
-          <thead>
+        <h1 className='text-center text-info'>Account Registered</h1>
+        <Table responsive hover >
+          <thead className=''>
             <tr>
-              <th>Account ID</th>
-              <th>Name</th>
-              <th>Surname</th>
-              <th>Position</th>
-              <th>Company</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Date</th>
-              
+                <th>Account ID</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Position</th>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Date</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.surname}</td>
-                <td>{user.position}</td>
-                <td>{user.company}</td>
-                <td>{user.email_address}</td>
-                <td>{user.phone_number}</td>
-                <td>{user.created_at}</td>
-               
-              </tr>
-            ))}
+            {
+              users.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.surname}</td>
+                    <td>{user.position}</td>
+                    <td>{user.company}</td>
+                    <td>{user.email_address}</td>
+                    <td>{user.phone_number}</td>
+                    <td>{user.created_at}</td>
+                  
+                  </tr>
+                ))
+              }
           </tbody>
-        </table>
+      </Table>
       </div>
     );
   }

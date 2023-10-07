@@ -1,16 +1,16 @@
 import { useContext } from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { NavLink, Link } from "react-router-dom";
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Navigate, useNavigate } from "react-router-dom";
+
 import AuthContext from "../auth-context/auth-context";
 
 function MainNavigation() {
     const authCtx = useContext(AuthContext);
     const isLoggedIn = authCtx.isLoggedIn;
+    const navigate = useNavigate();
 
     const logoutHandler = () => {
       console.log("Logout SucessFull");
@@ -18,59 +18,36 @@ function MainNavigation() {
 
     }
   return (
-    <Navbar bg="light" expand="lg">
-      <Container fluid>
-        <Navbar.Brand>FSE Report</Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: "100px" }}
-            navbarScroll
-          >
-            {isLoggedIn &&    <Nav.Link>
-              <Link to={"/"}>Home</Link>
-            </Nav.Link>}
-            {isLoggedIn && <Nav.Link>
-                <Link to={"/service"}>About</Link>
-              </Nav.Link>}
-              {!isLoggedIn && (
-                  <NavDropdown title="Login" id="navbarScrollingDropdown">
-                  <NavDropdown.Item>
-                    <Link to={"/admin"}>Admin Login</Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-    
-                  <NavDropdown.Item>
-                    <Link to={"/manager"}>Manager Login</Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-    
-                  <NavDropdown.Item>
-                    <Link to={"/tech"}>Teachnician Login</Link>
-                  </NavDropdown.Item>
-                </NavDropdown>
+    <div>
+    <Navbar expand="lg" className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand href="#home">
+        <img
+              alt=""
+              src="/assets/logofse.png"
+            width={75}
+              className="d-inline-block align-top me-3"
 
-              )}
-            <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link>
+            />{' '}
+           <span style={{position: "relative" ,
+    top: "7px"}}> FSE Project</span></Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto">
+            <Nav.Link className="my-2 mx-4" href="#home">Home</Nav.Link>
+            <Nav.Link className="my-2 mx-4" href="#About">About</Nav.Link>
+            <Nav.Link className="my-2 mx-4" href="#Contact">Contact</Nav.Link>
+
+            <NavDropdown className="my-2 mx-4" title="Login" id="basic-nav-dropdown">
+            <NavDropdown.Item onClick={() => navigate("/adminLogin")}>Admin</NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => navigate("/mangerLogin")}>Manager</NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => navigate("/techLogin")}>Technician</NavDropdown.Item>
+            </NavDropdown>
           </Nav>
-          {isLoggedIn &&  <Button onClick={logoutHandler} variant="danger">Logout</Button>}
-          {isLoggedIn && (
-             <Form className="d-flex">
-             <Form.Control
-               type="search"
-               placeholder="Search"
-               className="me-2"
-               aria-label="Search"
-             />
-             <Button variant="outline-success">Search</Button>
-           </Form>
-          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>
+  </div>
   );
 }
 

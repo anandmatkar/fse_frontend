@@ -37,6 +37,21 @@ import NavbarManager from './Componets/pages/Manager/Navbar';
 import ManageTechnician from './Componets/pages/Manager/ManageTechnician';
 import CreateTechnician from './Componets/pages/Manager/CreateTechnician';
 //function
+import DetailofJobwaiting from './Componets/pages/Teachnician/DetailofJobwaiting';
+import DeatailofJobAssign from './Componets/pages/Teachnician/DeatailofJobAssign';
+import DetailofJobclosed from './Componets/pages/Teachnician/DetailofJobclosed';
+import ViewTechnicianProfile from './Componets/pages/Manager/ViewTechnicianProfile';
+import ShowManagerProfile from './Componets/pages/Manager/ShowManagerProfile';
+import ProjectStatusDetails from './Componets/pages/Manager/ProjectStatusDetails';
+import CustomerList from './Componets/pages/Manager/CustomerList';
+import CustomerEditedDetails from './Componets/pages/Manager/CustomerEditedDetails';
+import UpdateTechincianprofile from './Componets/pages/Teachnician/UpdateTechincianProfile.js';
+import TechnicianForgotPassword from './Componets/pages/Teachnician/TechnicianForgotPassword';
+import ChangePassword from './Componets/pages/Teachnician/ChangePassword';
+import TimeSheetForApproved from './Componets/pages/Manager/TimeSheetForApproved';
+import ProjectReportData from './Componets/pages/Manager/ProjectReportData';
+import ProjectRequestedForApproval from './Componets/pages/Manager/ProjectRequestedForApproval';
+
 function App() {
   const authCtx = useContext(AuthContext);
   return (
@@ -56,6 +71,11 @@ function App() {
       </Routes>
       <Routes>
         <Route path="/techLogin" element={<TechnicianLogin />}></Route>
+        <Route
+          path="/updateTechnicianprofile"
+          element={<UpdateTechincianprofile />}
+        ></Route>
+        <Route path="/ChangePassword" element={<ChangePassword />}></Route>
       </Routes>
       <Routes>
         <Route path="/reset" element={<Reset />}></Route>
@@ -69,13 +89,45 @@ function App() {
             )
           }
         ></Route>
+        {/* Manager Routes */}
         <Route path="/navbarmanager" element={<NavbarManager />}></Route>
         <Route path="/manager" element={<ManagerDashboard />}></Route>
+        <Route path="/managetechnician" element={<ManageTechnician />} />
+        <Route path="/createtechnician" element={<CreateTechnician />} />
+        <Route
+          path="/viewtechnicianprofile/:technicianID"
+          element={<ViewTechnicianProfile />}
+        />
         <Route path="/timeSheetss" element={<TimeSheet />}></Route>
+        <Route path="/customerlist" element={<CustomerList />}></Route>
+        <Route
+          path="/customerediteddetails/:customerID"
+          element={<CustomerEditedDetails />}
+        ></Route>
+        <Route
+          path="/projectstatusdetails/:projectId"
+          element={<ProjectStatusDetails />}
+        ></Route>
+        <Route
+          path="/timesheetforapproval/:techId/:projectId"
+          element={<TimeSheetForApproved />}
+        />
+        <Route
+          path="/ProjectReportData/:techId/:projectId"
+          element={<ProjectReportData />}
+        />
+        <Route
+          path="/projectRequestedForApprova"
+          element={<ProjectRequestedForApproval />}
+        />
       </Routes>
 
       <Routes>
         <Route path="/projectmanager" element={<ProjectManager />}></Route>
+        <Route
+          path="/showmanagerprofile"
+          element={<ShowManagerProfile />}
+        ></Route>
         <Route path="/createCustomer" element={<CreateCustomer />}></Route>
         <Route path="/assignTech" element={<AssignedProject />}></Route>
         <Route path="/createP" element={<NewProjectScreen />}></Route>
@@ -103,8 +155,24 @@ function App() {
         <Route path="registerdaccount" element={<Registeredaccount />}></Route>
         <Route path="techniciantable" element={<TechnicianTable />}></Route>
         <Route path="projectlist" element={<ProjectList />}></Route>
+        <Route
+          path="DetailofJobwaiting/:projectID"
+          element={<DetailofJobwaiting />}
+        ></Route>
+        <Route
+          path="DeatilsodJobAssign/:projectID"
+          element={<DeatailofJobAssign />}
+        ></Route>
+        <Route
+          path="DetailsofJobClosed/:projectID"
+          element={<DetailofJobclosed />}
+        ></Route>
+        <Route
+          path="TechnicianForgotPassword"
+          element={<TechnicianForgotPassword />}
+        ></Route>
       </Routes>
-
+      {/* jst for push */}
       <Routes></Routes>
     </React.Fragment>
   );

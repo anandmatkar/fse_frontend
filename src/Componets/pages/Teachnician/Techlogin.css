@@ -1,0 +1,213 @@
+.imgdropdown.dropdown{
+    position: relative;
+    left: 90%;
+}
+.loginContainer {
+    position: relative;
+    margin: 100px auto;
+    background: #fff;
+    box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+    width: 700px;
+    max-width: 800px;
+    min-height: 480px;
+    overflow: hidden;
+}
+
+.loginAnimateWidth {
+    animation: animateWidth 0.8s linear forwards;
+}
+
+@keyframes animateWidth {
+    0% {
+        width: 35%;
+    }
+    20% {
+        width: 50%;
+    }
+    100% {
+        width: 35%;
+    }
+}
+
+.loginForm__container {
+    position: absolute;
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 54%;
+    padding: 25px;
+    text-align: center;
+    background: #fff;
+    transition: all 0.6s ease-in;
+}
+
+.go-login .loginForm__container-login {
+    left: 35%;
+    opacity: 0;
+}
+
+.go-register .loginForm__container-login {
+    left: 0;
+    opacity: 1;
+    z-index: 0;
+}
+
+.go-login .loginForm__container-register {
+    left: 35%;
+    opacity: 1;
+    z-index: 0;
+}
+
+.go-register .loginForm__container-register {
+    left: 0;
+    opacity: 0;
+}
+
+.loginForm {
+    width: 100%;
+}
+
+.loginForm__heading {
+    font-size: 30px;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.loginForm__field {
+    width: 85%;
+    height: 35px;
+    line-height: 35px;
+    padding-left: 15px;
+    margin-bottom: 15px;
+    background: #f4f8f7;
+    border: none;
+}
+
+.loginForm__field:focus, .loginForm__field:active {
+    outline: 0;
+}
+
+.loginForm__text {
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.loginList {
+    padding-left: 0;
+}
+
+.loginList__inline {
+    margin-bottom: 15px;
+}
+
+.loginList__item {
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 1px solid #333;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.loginList__link {
+    color: #333;
+    text-decoration: none;
+}
+
+.loginList__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.loginOverlay-container {
+    position: absolute;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 40%;
+    text-align: center;
+    background: linear-gradient(45deg, #2980b9, #3498db);
+    transition: all 0.8s cubic-bezier(.67, .67, .34, .95);
+}
+
+.go-login .loginOverlay-container {
+    right: 65%;
+}
+
+.go-register .loginOverlay-container {
+    right: 0;
+}
+
+.loginOverlay {
+    padding: 25px;
+    color: #fff;
+    position: absolute;
+    width: 100%;
+}
+
+.loginOverlay__heading {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.loginOverlay__desc {
+    max-width: 230px;
+    width: 230px;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
+.go-login .loginOverlay--left {
+    z-index: 99;
+    opacity: 1;
+}
+
+.go-register .loginOverlay--left {
+    opacity: 0;
+    z-index: -1;
+}
+
+.go-login .loginOverlay--right {
+    opacity: 0;
+    z-index: -1;
+}
+
+.go-register .loginOverlay--right {
+    z-index: 99;
+    opacity: 1;
+}
+
+.loginBtn {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+}
+
+.loginBtn--main {
+    background: linear-gradient(45deg, #2980b9, #3498db);
+    color: #fff;
+}
+
+.loginBtn--main-outline {
+    border: 2px solid;
+    border-image-source: linear-gradient(45deg, #2980b9, #3498db);
+    border-image-slice: 1;
+    color: #2980b9;
+}
+
+.loginBtn:hover {
+    cursor: pointer;
+}
+
+.loginBtn:focus, .loginBtn:active {
+    outline: 0;
+}

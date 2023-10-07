@@ -24,80 +24,44 @@ function LoginFrontPage() {
         <br />
         <br />
 
-        <div className="section_our_solution">
-          <div className="row">
-            <div className="col-lg-12 col-md-12 col-sm-12">
-              <div className="our_solution_category">
-                <div className="solution_cards_box">
-                  <div className="solution_card" style={{ backgroundColor: "rgb(88, 128, 227)" }}>
-                    <div className="hover_color_bubble"></div>
-                    <div className="so_top_icon">
-                      {/* SVG icon or other content for the first card */}
-                    </div>
-                    <div className="solu_title">
-                      <h3>Admin Login</h3>
-                    </div>
-                    <div className="solu_description">
-                      <p>• If you are the Admin then Login Here!..</p>
-                      <DynamicButton
-                        className="read_more_btn"
-                        onClick={adminLoginTab}
-                      >
-                        Click Here
-                      </DynamicButton>
-                    </div>
-                  </div>
-                  <div className="solution_card" style={{ backgroundColor: "green" }}>
-                    <div className="hover_color_bubble"></div>
-                    <div className="so_top_icon">
-                      {/* SVG icon or other content for the second card */}
-                    </div>
-                    <div className="solu_title">
-                      <h3>Technician Login</h3>
-                    </div>
-                    <div className="solu_description">
-                      <p>
-                        • If you are a Technician then Click Here! for Login
-                        and Register
-                      </p>
-                      <DynamicButton
-                        className="read_more_btn"
-                        onClick={TloginAndRegister}
-                      >
-                        Click Here
-                      </DynamicButton>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="solution_cards_box sol_card_top_3">
-                  <div className="solution_card" style={{ backgroundColor:"tomato" }}>
-                    <div className="hover_color_bubble"></div>
-                    <div className="so_top_icon">
-                      {/* SVG icon or other content for the third card */}
-                    </div>
-                    <div className="solu_title">
-                      <h3>Manager Login</h3>
-                    </div>
-                    <div className="solu_description">
-                      <p>
-                        • If you are a manager Click Here! for Login and
-                        Register
-                      </p>
-                      <button
-                        type="button"
-                        className="read_more_btn"
-                        onClick={MloginAndRegister}
-                      >
-                        Click Here!
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Login</h6>
+                <h1 class="mb-5">Our Login's</h1>
             </div>
-          </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-sm-12 wow fadeInUp" data-wow-delay="0.1s" onClick={adminLoginTab}>
+                    <div class="service-item rounded pt-3">
+                        <div class="p-4">
+                            <i class="fa fa-3x fa-globe text-primary mb-4"></i>
+                            <h5>Admin Login</h5>
+                            <p>If you are Admin then Login Here!..</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12 wow fadeInUp" data-wow-delay="0.3s" onClick={TloginAndRegister}>
+                    <div class="service-item rounded pt-3">
+                        <div class="p-4">
+                            <i class="fa fa-3x fa-hotel text-primary mb-4"></i>
+                            <h5>Technician Login</h5>
+                            <p>If you are Technician then Login Here!..</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12 wow fadeInUp" data-wow-delay="0.5s" onClick={MloginAndRegister}>
+                    <div class="service-item rounded pt-3">
+                        <div class="p-4">
+                            <i class="fa fa-3x fa-user text-primary mb-4"></i>
+                            <h5>Manager Login</h5>
+                            <p>If you are Manager then Login Here!..</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+
       </div>
     </Layout>
   );
