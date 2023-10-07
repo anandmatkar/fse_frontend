@@ -8,13 +8,13 @@ const NavTechnicanProfile = () => {
     const navigate = useNavigate();
     const authCtx = useContext(AuthContext);
     const isLoggedIn = authCtx.isLoggedIn;
+
 const token = Cookies.get('token')
-console.log(token,"token")
+// console.log(token,"token")
     const logoutHandler = () => {
       Cookies.remove('token')
-      Navigate('/techLogin')
+      navigate('/techLogin')
       console.log("Logout SucessFull");
-      authCtx.logout();
     }
     
     const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
