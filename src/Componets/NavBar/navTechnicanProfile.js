@@ -47,7 +47,7 @@ const token = Cookies.get('token')
                     width={100}
                     className="d-inline-block align-top me-3"
                 />{' '} */}
-                <span style={{ position: "relative", top: "7px" }} className="h3 m-0">
+                <span style={{ }} className="h3 m-0">
                     {/* Get user name from localStorage */}
                     {localStorage.getItem('Name') || "FSE"} 
                 </span>
@@ -60,7 +60,7 @@ const token = Cookies.get('token')
                         {/* Get avatar from localStorage and set as src */}
                         <img src={localStorage.getItem('Profile') || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU"} 
                              alt="Profile" 
-                             style={{ width: '60px', borderRadius: '50%' }} />
+                             style={{ width: '60px', borderRadius: '50%' , height:"50px"}} />
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>

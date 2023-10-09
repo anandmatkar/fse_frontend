@@ -93,59 +93,59 @@ const handleSubmit = async (e) => {
 };
 
   return (
-    <div className='d-flex '>
-      <Button  className='btn btn-success'
-        style={{position: "relative", left: "345%"}} 
-        onClick={() => setShowModal(true)}>
-        Add new Timesheet
-      </Button>
+   <div className='d-flex '>
+<Button  className='btn btn-success'
+  style={{position: "relative", left: "345%"}} 
+  onClick={() => setShowModal(true)}>
+  Add new Timesheet
+</Button>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add New Timesheet</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form onSubmit={handleSubmit}> 
-            {/* Date Input */}
-            <label>
-              Date:
-              <input type="date" name="date" onChange={handleInputChange} required />
-            </label>
+<Modal show={showModal} onHide={() => setShowModal(false)}>
+  <Modal.Header closeButton>
+    <Modal.Title>Add New Timesheet</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <form onSubmit={handleSubmit}> 
+  
+    <div className="form-group">
+              <label for="date">Date:</label>
+              <input className="form-control" type="date" name="date" onChange={handleInputChange} required />
+            </div>
+   
+      <div className="form-group">
+              <label for="start_time">Start Time:</label>
+              <input className="form-control" type="time" name="start_time" onChange={handleInputChange} required />
+            </div>
 
-            {/* Start Time Input */}
-            <label>
-              Start Time:
-              <input type="time" name="start_time" className='mt-3' onChange={handleInputChange} required />
-            </label>
 
-            {/* End Time Input */}
-            <label>
-              End Time:
-              <input type="time" name="end_time"   className='mt-3'onChange={handleInputChange} required />
-            </label>
+      <div className="form-group">
+              <label for="end_time">End Time:</label>
+              <input className="form-control" type="time" name="end_time" onChange={handleInputChange} required />
+            </div>
 
-          
-            <label>
-    Comments:
-    <textarea name="comments" value={formData.comments} onChange={handleInputChange}   required ></textarea>
-</label>
+    
+      <div className="form-group">
+              <label for="comments">Comments:</label>
+              <textarea className="form-control" name="comments" value={formData.comments} onChange={handleInputChange} required></textarea>
+            </div>
 
-              {/* Attachment Input */}
-              <label>
-              Attachment:
-              <input type="file"name="files" onChange={handleFileUpload} multiple className='mt-3' />
-            </label>
-            <Button type="submit">Submit</Button> 
-            </form>
-      
-        </Modal.Body>
-        <Modal.Footer>
-          {/* <Button onClick={() => setShowModal(false)}>Close</Button> */}
-        
-        </Modal.Footer>
-      </Modal>     
-    </div>
+<div className="form-group">
+              <label for="files">Attachment:</label>
+              <input className="form-control" type="file" name="files" onChange={handleFileUpload} multiple />
+            </div>
+      <Button type="submit">Submit</Button> 
+      </form>
+
+  </Modal.Body>
+  <Modal.Footer>
+
+  
+  </Modal.Footer>
+</Modal>     
+</div>  
   )
 }
 
 export default TimeSheetModal
+
+

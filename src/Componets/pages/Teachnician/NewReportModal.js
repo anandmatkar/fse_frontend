@@ -100,22 +100,21 @@ const handleSubmit = async (e) => {
         <Modal.Body>
           <form onSubmit={handleSubmit}> 
             {/* Date Input */}
-            <label>
-              Date:
-              <input type="date" name="date" onChange={handleInputChange} required />
-            </label>
+            <div className='form-group'>
+               <label for="date">Date:</label>
+               <input className='form-control' type="date" name="date" onChange={handleInputChange} required />
+            </div>
 
-            {/* Description Input */}
-            <label className='mt-3'>
-              Description:
-              <textarea name="description" value={formData.description} onChange={handleInputChange} required></textarea>
-            </label>
+            <div className='form-group'>
+            <label for="description"> Description: </label>
+              <textarea className='form-control' name="description" value={formData.description} onChange={handleInputChange} required></textarea>
+           </div>
 
-            {/* Attachment Input */}
-            <label className='mt-3'>
-              Attachment:
-              <input type="file" name="attachment" onChange={handleFileUpload} multiple />
-            </label>
+          <div className='form-group'>
+            <label for="files"> Attachment:  </label>
+              <input className='form-control' type="file" name="attachment" onChange={handleFileUpload} multiple />
+              </div>
+          
             <Button className='mt-3' type="submit">Submit</Button> 
           </form>
         </Modal.Body>
