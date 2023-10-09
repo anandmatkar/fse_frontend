@@ -71,7 +71,7 @@ function JobAssigned() {
         <div className="bf-table-responsive">
 
         <Container fluid>
-    <Table responsive bordered hover className="bf-table">
+    <Table responsive  hover className="bf-table">
         <thead>
             <tr>
                 <th>Order ID</th>

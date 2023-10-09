@@ -68,7 +68,7 @@ const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
   <div className="card-body">
         <div className="bf-table-responsive">
         <Container fluid>
-    <Table responsive bordered hover className="bf-table">
+    <Table responsive hover className="bf-table">
 
 <thead>
   <tr>
