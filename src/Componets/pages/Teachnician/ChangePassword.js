@@ -14,7 +14,7 @@ export default function ChangePassword() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-  
+
   const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (e) => {
@@ -103,7 +103,7 @@ export default function ChangePassword() {
                                 <form onSubmit={handleSubmit}>
                                     <div className="mb-4">
                                     {!passwordsMatch && (
-                    <div className="alert alert-danger" role="alert">
+                    <div className="alert alert-danger" role="alert"> 
                       Passwords do not match.
                     </div>
                   )}
