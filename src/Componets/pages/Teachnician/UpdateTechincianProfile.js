@@ -365,8 +365,8 @@ useEffect(() => {
                                 type="tel"
                                 placeholder="Phone"
                                 name="phone"
-                                value={formData.phone}
-                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                value={formData.phoneNumber}
+                                onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
                             />
                         </Col>
                     </Row>

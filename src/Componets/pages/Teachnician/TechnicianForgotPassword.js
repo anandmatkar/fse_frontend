@@ -205,95 +205,111 @@ const Reset = async  () => {
 
   return (
     <React.Fragment>
-    <div className={classes.h1}>
-      <h1>FSE Report</h1>
-    </div>
-    <div className={classes.auth}>
-      {isForgotPassword && !isResetPassword && (
-        <form>
-          <div className={classes.control}>
-            <label>Enter the email you have registered with:</label>
-          </div>
-          <div className={classes.control}>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={classes.input}
-            />
-            {emailError && (
-              <p className={classes.error} style={{ color: 'red' }}>
-                {emailError}
-              </p>
-            )}{' '}
-          </div>
-          <div className={classes.actions}>
-            <button
-              type="button"
-              className={classes.actions}
-              onClick={sendResetEmail}
-            >
-              {isLoading ? <Spinner /> : 'Send Reset Email'}
-            </button>
-          </div>
-        </form>
-      )}
+    {/* <div className={classes.h1}>
+        <h1>FSE Report</h1>
+    </div> */}
 
-      {isResetPassword && !resetSuccess && (
-        <form>
-          <div className={classes.control}>
-            <p>
-              Email : <b>{submittedEmail}</b>
-            </p>
-          </div>
-          {/* <p>Reset email: {resetEmail}</p> */}
-          <div className="m-2">Please check your mail to find reset code</div>
-          <div className={classes.control}>
-            <label>Enter the reset code:</label>
-          </div>
-          <div className={classes.control}>
-            <input
-              type="text"
-              id="resetCode"
-              value={otp}
-              onChange={(e) => setOTP(e.target.value)}
-              className={classes.input}
-            />
-          </div>
+    <div className="container d-flex flex-column">
+        <div className="row align-items-center justify-content-center min-vh-100 g-0">
+            <div className="col-12 col-md-8 col-lg-4 border-top border-3 border-primary">
+                <div className="card shadow-sm">
+                    <div className="card-body">
 
-          <div className={classes.control}>
-            <label>Enter your new password:</label>
-          </div>
-          <div className={classes.control}>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className={classes.input}
-            />
-          </div>
-          <div className={classes.actions}>
-            <button
-              type="button"
-              className={classes.actions}
-              onClick={Reset}
-            >
-              Reset Password
-            </button>
-          </div>
-        </form>
-      )}
+                        {isForgotPassword && !isResetPassword && (
+                            <React.Fragment>
+                                <div className="mb-4">
+                                    <h5>Forgot Password?</h5>
+                                    <p className="mb-2">Enter your registered email ID to reset the password</p>
+                                </div>
+                                <form>
+                                    <div className="mb-3">
+                                        <label htmlFor="email" className="form-label">Email</label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className="form-control"
+                                            name="email"
+                                            placeholder="Enter Your Email"
+                                            required
+                                        />
+                                        {emailError && (
+                                            <div className="text-danger mt-2">
+                                                {emailError}
+                                            </div>
+                                        )}
+                                    </div>
 
-      {resetSuccess && (
-        <div>
-          <p>Password reset successfully!</p>
+                                    <div className="mb-3 d-grid">
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary"
+                                            onClick={sendResetEmail}
+                                        >
+                                            {isLoading ? <Spinner /> : 'Send Reset Email'}
+                                        </button>
+                                    </div>
+                                </form>
+                            </React.Fragment>
+                        )}
+
+                        {isResetPassword && !resetSuccess && (
+                            <React.Fragment>
+                             <h1>Reset Your Password</h1>
+                                <form>
+                                    <div className="mb-4">
+                                        <p>Email: <b>{submittedEmail}</b></p>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label className="form-label">Enter the reset code:</label>
+                                        <input
+                                            type="text"
+                                            id="resetCode"
+                                            value={otp}
+                                            onChange={(e) => setOTP(e.target.value)}
+                                            className="form-control"
+                                        />
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label className="form-label">Enter your new password:</label>
+                                        <input
+                                            type="password"
+                                            id="password"
+                                            value={password}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                            className="form-control"
+                                        />
+                                    </div>
+
+                                    <div className="mb-3 d-grid">
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary"
+                                            onClick={Reset}
+                                        >
+                                            Reset Password
+                                        </button>
+                                    </div>
+                                </form>
+                            </React.Fragment>
+                        )}
+
+                        {resetSuccess && (
+                            <div className="text-center">
+                                <p>Password reset successfully!</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
-      )}
-      <ToastContainer />
     </div>
-  </React.Fragment>
+    <ToastContainer />
+</React.Fragment>
+
   )
 }
 
