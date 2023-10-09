@@ -163,9 +163,11 @@ function ManagerLogin() {
                       Login
                     </button>{' '}
                     <br />
-                    <Link to="/reset" className="small text-muted">
-                      Forgot password?
-                    </Link>
+                    <br />
+                    <Link to="/reset">Forgot password?</Link>
+                    <br />
+                    Don't have an account?{' '}
+                    <Link to="/register">Create Account</Link>
                   </form>
                 )}
               </div>
