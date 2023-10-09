@@ -1,9 +1,8 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Navigate, useNavigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
+import './navBar.css';
 
 import AuthContext from "../auth-context/auth-context";
 
@@ -18,37 +17,36 @@ function MainNavigation() {
 
     }
   return (
-    <div>
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        <Navbar.Brand href="#home">
-        <img
+    <React.Fragment>
+      <Navbar expand="lg" className="main-nav-bar">
+        <Container>
+          <Navbar.Brand href="#home">
+            <img
               alt=""
               src="/assets/logofse.png"
-            width={100}
-            height={70}
+              width={100}
               className="d-inline-block align-top me-3"
-
             />{' '}
-           <span style={{position: "relative" ,
-    top: "7px"}}> FSE Project</span></Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
-            <Nav.Link className="my-2 mx-4" href="#home">Home</Nav.Link>
-            <Nav.Link className="my-2 mx-4" href="#About">About</Nav.Link>
-            <Nav.Link className="my-2 mx-4" href="#Contact">Contact</Nav.Link>
+            <span style={{ position: "relative", top: "7px" }} className="h1 m-0">FSE</span>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <Nav.Link href="#home" as={NavLink} to={'/'} className="nav-link-font">Home</Nav.Link>
+              <Nav.Link href="#About" as={NavLink} to={'/about'} className="nav-link-font">About</Nav.Link>
+              <Nav.Link href="#Contact" as={NavLink} to={'/contact'} className="nav-link-font">Contact</Nav.Link>
+              
+              <NavDropdown title="Login" id="basic-nav-dropdown" className="nav-link-font">
+                <NavDropdown.Item onClick={() => navigate("/adminLogin")}>Admin</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/mangerLogin")}>Manager</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/techLogin")}>Technician</NavDropdown.Item>
+              </NavDropdown>
 
-            <NavDropdown className="my-2 mx-4" title="Login" id="basic-nav-dropdown">
-            <NavDropdown.Item onClick={() => navigate("/adminLogin")}>Admin</NavDropdown.Item>
-                  <NavDropdown.Item onClick={() => navigate("/mangerLogin")}>Manager</NavDropdown.Item>
-                  <NavDropdown.Item onClick={() => navigate("/techLogin")}>Technician</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  </div>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+  </React.Fragment>
   );
 }
 

@@ -28,7 +28,7 @@ function AdminNavBar() {
           <Navbar.Brand href="#home">
             <img
               alt=""
-              src="https://as1.ftcdn.net/v2/jpg/05/10/52/14/1000_F_510521444_fWxOMclSHjEf0REfGmc61uIaGoRyw2H0.jpg"
+              src="assets/logofse.png"
               width="30"
               height="30"
               className="d-inline-block align-top"
