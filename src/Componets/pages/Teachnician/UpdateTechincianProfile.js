@@ -266,7 +266,7 @@ const handleImageUpload = async (e) => {
         return { success: false, message: 'An error occurred while updating the profile' };
       }
     };
-  
+   
 
 useEffect(() => {
     fetchTechnicianProfile();
@@ -278,7 +278,7 @@ useEffect(() => {
     <Container className='my-3'>
     {/* <Card.Header className='fs-3 fw-bold text-center my-3'>Edit Technician Profile</Card.Header> */}
     <div className="d-flex justify-content-between mb-4">
-        <Button variant="success" type="submit" className="w-10" onClick={updateTechDataSubmit}>
+        <Button variant="success" type="submit" className="w-10" onClick={()=>{updateTechDataSubmit(formData);}}>
             Update Technician Details
         </Button>
         <Button as={NavLink} to="/ChangePassword">
