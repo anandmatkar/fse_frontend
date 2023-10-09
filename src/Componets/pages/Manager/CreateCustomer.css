@@ -1,0 +1,65 @@
+/* .newCustomerContainer {
+  max-width: 1170px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1em;
+} */
+
+/* .brand {
+  text-align: center;
+} */
+/* .animated_bounceInLeft {
+  box-shadow: 0 0 20px 0 rgba(72, 94, 116, 0.7);
+} */
+.animated_bounceInLeft > * {
+  padding: 1em;
+}
+.company-info {
+  background: #1f864a;
+}
+
+/* .contact {
+  background: #7ccddd;
+} */
+.contact .newCustomerForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+/* .contact .newCustomerForm .newCustomerLabel {
+  display: block;
+} */
+/* .contact .newCustomerForm {
+  margin: 0;
+} */
+.full {
+  grid-column: 1/3;
+}
+/* .contact .newCustomerForm .submit-button, */
+/* .contact .newCustomerForm .newCustomerInput,
+.contact .newCustomerForm textarea {
+  width: 100%;
+  padding: 4px;
+  border: 1px solid #c9e6ff;
+} */
+/* .contact .newCustomerForm .submit-button {
+  width: 100%;
+  border: 1px solid #c9e6ff;
+} */
+
+.contact .newCustomerForm .submit-button:hover,
+.contact .newCustomerForm .submit-button:focus {
+  background: rgb(21, 22, 22);
+  color: #fff;
+  outline: 0;
+  transition: all 0.5s ease-out;
+}
+@media (min-width: 700px) {
+  .animated_bounceInLeft {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+  }
+  .animated_bounceInLeft > * {
+    padding: 2em;
+  }
+}

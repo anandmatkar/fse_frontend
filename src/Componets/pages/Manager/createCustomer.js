@@ -6,6 +6,8 @@ import axios from 'axios';
 import { Create_Customer_Api } from '../../../Api/Manager_Api';
 import { useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import Navbar from '../../NavBar/navbarManager';
+import './CreateCustomer.css';
 
 function NewCustomerScreen() {
   const [formData, setFormData] = useState({
@@ -36,6 +38,8 @@ function NewCustomerScreen() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log('Submit button clicked');
+
     const formErrors = validateForm(formData);
     setErrors(formErrors);
 
@@ -50,14 +54,14 @@ function NewCustomerScreen() {
     const axiosConfig = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('token'), // Assuming you store the token in localStorage
+        Authorization: token,
       },
     };
 
     console.log(axiosConfig, 'data to send');
     try {
       const response = await axios.post(
-        Create_Customer_Api,
+        '/api/v1/manager/createCustomer', // Updated API endpoint
         formData,
         axiosConfig
       );
@@ -148,159 +152,210 @@ function NewCustomerScreen() {
   };
 
   return (
-    <div className="new-customer-screen">
-      <h2>New Customer</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="customerName">Customer Name</label>
-          <input
-            type="text"
-            id="customerName"
-            name="customerName"
-            value={formData.customerName}
-            onChange={handleChange}
-          />
-          {errors.customerName && (
-            <span className="error" style={{ color: 'red' }}>
-              {errors.customerName}
-            </span>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="customerContact">Customer Contact</label>
-          <input
-            type="text"
-            id="customerContact"
-            name="customerContactName"
-            value={formData.customerContactName}
-            onChange={handleChange}
-          />
-          {errors.customerContact && (
-            <span className="error" style={{ color: 'red' }}>
-              {errors.customerContact}
-            </span>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="customerAccount">Customer Account</label>
-          <input
-            type="text"
-            id="customerAccount"
-            name="customerAccount"
-            value={formData.customerAccount}
-            onChange={handleChange}
-          />
-          {errors.customerAccount && (
-            <span className="error" style={{ color: 'red' }}>
-              {errors.customerAccount}
-            </span>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {errors.email && (
-            <span className="error" style={{ color: 'red' }}>
-              {errors.email}
-            </span>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="phone">Phone</label>
-          <input
-            type="text"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-          {errors.phone && (
-            <span className="error" style={{ color: 'red' }}>
-              {errors.phone}
-            </span>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="country">Country</label>
-          <select
-            id="country"
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-          >
-            <option value="" disabled>
-              Select Country
-            </option>
-            <option value="USA">USA</option>
-            <option value="Canada">Canada</option>
-            <option value="UK">UK</option>
-            <option value="Algeria">Algeria</option>
-            {/* Add more country options as needed */}
-          </select>
-          {errors.country && (
-            <span className="error" style={{ color: 'red' }}>
-              {errors.country}
-            </span>
-          )}
-        </div>
+    <>
+      <Navbar />
+      <div>
+        {isLoading && (
+          <div className="loading-spinner">
+            <Spinner />
+          </div>
+        )}
+        <div class="container newCustomerContainer">
+          <h1 class="brand text-center">New Customer</h1>
+          <div class="wrapper animated_bounceInLeft shadow-lg border border-1">
+            <div class="company-info text-center ">
+              <h3>Add new customer details</h3>
+              <img src="/assets/newcustomer.svg" className="mt-3"></img>
+            </div>
+            <div class="contact">
+              <form className="newCustomerForm">
+                <p>
+                  <label className="newCustomerLabel" htmlFor="customerName">
+                    Customer Name
+                  </label>
+                  <input
+                    type="text"
+                    className="newCustomerInput w-100 p-2 border border-1"
+                    id="customerName"
+                    name="customerName"
+                    value={formData.customerName}
+                    onChange={handleChange}
+                  />
+                  {errors.customerName && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {errors.customerName}
+                    </span>
+                  )}
+                </p>
+                <p>
+                  <label className="newCustomerLabel" htmlFor="customerName">
+                    Customer Contact Name
+                  </label>
+                  <input
+                    type="text"
+                    className="newCustomerInput w-100 p-2 border border-1"
+                    id="customerContactName"
+                    name="customerContactName"
+                    value={formData.customerContactName}
+                    onChange={handleChange}
+                  />
+                  {errors.customerName && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {errors.customerName}
+                    </span>
+                  )}
+                </p>
+                <p>
+                  <label className="newCustomerLabel" htmlFor="customerAccount">
+                    Customer Account
+                  </label>
+                  <input
+                    type="text"
+                    className="newCustomerInput w-100 p-2 border border-1"
+                    id="customerAccount"
+                    name="customerAccount"
+                    value={formData.customerAccount}
+                    onChange={handleChange}
+                  />
+                  {errors.customerAccount && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {errors.customerAccount}
+                    </span>
+                  )}
+                </p>
+                <p>
+                  <label className="newCustomerLabel" htmlFor="email">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    className="newCustomerInput w-100 p-2 border border-1"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                  {errors.email && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {errors.email}
+                    </span>
+                  )}
+                </p>
+                <p>
+                  <label className="newCustomerLabel" htmlFor="phone">
+                    Phone
+                  </label>
+                  <input
+                    type="text"
+                    className="newCustomerInput w-100 p-2 border border-1"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                  />
+                  {errors.phone && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {errors.phone}
+                    </span>
+                  )}
+                </p>
+                <p>
+                  <label className="newCustomerLabel" htmlFor="country">
+                    Country
+                  </label>
+                  <select
+                    id="country"
+                    className="newCustomerInput  w-100 p-2 border border-1"
+                    name="country"
+                    value={formData.country}
+                    onChange={handleChange}
+                  >
+                    <option value="" disabled>
+                      Select Country
+                    </option>
+                    <option value="USA">USA</option>
+                    <option value="Canada">Canada</option>
+                    <option value="UK">UK</option>
+                    <option value="Algeria">Algeria</option>
+                    <option value="India">India</option>
+                    {/* Add more country options as needed */}
+                  </select>
+                  {errors.country && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {errors.country}
+                    </span>
+                  )}
+                </p>
+                <p class="">
+                  <label className="newCustomerLabel" htmlFor="city">
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    className="newCustomerInput  w-100 p-2 border border-1"
+                    id="city"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                  />
+                  {errors.city && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {errors.city}
+                    </span>
+                  )}
+                </p>
+                <p class="">
+                  <label className="newCustomerLabel" htmlFor="address">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    className="newCustomerInput  w-100 p-2 border border-1"
+                    id="address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                  />
+                  {errors.address && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {errors.address}
+                    </span>
+                  )}
+                </p>
 
-        <div className="form-group">
-          <label htmlFor="city">City</label>
-          <input
-            type="text"
-            id="city"
-            name="city"
-            value={formData.city}
-            onChange={handleChange}
-          />
-          {errors.city && (
-            <span className="error" style={{ color: 'red' }}>
-              {errors.city}
-            </span>
-          )}
+                <p className="full">
+                  <label className="newCustomerLabel" htmlFor="scopeOfWork">
+                    Scope of Work
+                  </label>
+                  <textarea
+                    id="scopeOfWork"
+                    className="newCustomerInput  w-100 p-2 border border-1 "
+                    name="scopeOfWork"
+                    value={formData.scopeOfWork}
+                    onChange={handleChange}
+                  ></textarea>
+                  {errors.scopeOfWork && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {errors.scopeOfWork}
+                    </span>
+                  )}
+                </p>
+                <div className="full">
+                  <button
+                    type="button"
+                    onClick={handleSubmit}
+                    className="submit-button btn btn-success  border border-0 "
+                  >
+                    CREATE
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          {showPopup && <div className="popup">New customer created!</div>}
         </div>
-
-        <div className="form-group">
-          <label htmlFor="address">Address</label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-          />
-          {errors.address && (
-            <span className="error" style={{ color: 'red' }}>
-              {errors.address}
-            </span>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="scopeOfWork">Scope of Work</label>
-          <textarea
-            id="scopeOfWork"
-            name="scopeOfWork"
-            value={formData.scopeOfWork}
-            onChange={handleChange}
-          ></textarea>
-          {errors.scopeOfWork && (
-            <span className="error" style={{ color: 'red' }}>
-              {errors.scopeOfWork}
-            </span>
-          )}
-        </div>
-        <button type="submit" className="submit-button">
-          Validate
-        </button>
-      </form>
-      {showPopup && <div className="popup">New customer created!</div>}
-    </div>
+      </div>
+    </>
   );
 }
 
