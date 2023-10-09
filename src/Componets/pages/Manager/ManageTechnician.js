@@ -39,7 +39,7 @@ export default function ManageTechnician() {
 
             <h3 className='my-3'>Manage Technicians</h3>
 
-            <Table striped bordered hover responsive className='my-3'>
+            <Table bordered hover responsive className='my-3'>
                 <thead>
                     <tr>
                         <th>S. No.</th>

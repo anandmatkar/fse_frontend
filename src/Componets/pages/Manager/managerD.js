@@ -1,12 +1,14 @@
 import React from 'react';
-import './managerD.css';
+// import './managerD.css';
 import { useNavigate } from 'react-router-dom';
 import DynamicButton from '../../Model/DynamicButton';
 import NavbarManager from './Navbar';
 import NavBar from '../../NavBar/navbarManager';
+import { Card, Col, Container, Row } from 'react-bootstrap';
 
 export default function ManagerDashboard() {
   const navigate = useNavigate();
+
   const createCustomerHandler = () => {
     navigate('/customerlist');
   };
@@ -34,9 +36,12 @@ export default function ManagerDashboard() {
   const manageTechnicians = () => {
     navigate('/managetechnician');
   };
+  const manageMachineDetails = () => {
+    navigate('/managemachineinfo');
+  };
 
   return (
-    <>
+    <React.Fragment>
       <div
         className="imgBg"
         style={{
@@ -50,147 +55,61 @@ export default function ManagerDashboard() {
         {/* <NavbarManager /> */}
         <NavBar />
 
-        <div className="section_our_solution container-fluid">
-          <div className="row">
-            <div className="col-6"></div>
-            <div className="col-6 ">
-              <div className="our_solution_category">
-                <div className="solution_cards_box d-flex col-md-3 col-lg-3 col-6">
-                  <div className="solution_card ">
-                    <div className="hover_color_bubble"></div>
-                    <div className="so_top_icon">
-                      <img
-                        src="/assets/create_customer.png"
-                        style={{ width: '50px' }}
-                      />
-                    </div>
-                    <div className="solu_title">
-                      <h3>Create Customer</h3>
-                    </div>
-                    <div className="solu_description">
-                      <p>• Creating New Customer and Manageing them</p>
-                      {/* <button type="button" className="read_more_btn" onClick={createCustomerHandler}>
-                      Click Here
-                    </button> */}
-                      <DynamicButton
-                        className="read_more_btn"
-                        onClick={createCustomerHandler}
-                      ></DynamicButton>
-                    </div>
-                  </div>
-                  <div className="solution_card">
-                    <div className="hover_color_bubble"></div>
-                    <div className="so_top_icon">
-                      <img
-                        src="/assets/project.png"
-                        style={{ width: '50px' }}
-                      />
-                    </div>
-                    <div className="solu_title">
-                      <h3>Create Project</h3>
-                    </div>
-                    <div className="solu_description">
-                      <p>• Create and Manage Project with Ease</p>
-                      <DynamicButton
-                        className="read_more_btn"
-                        onClick={createProject}
-                      >
-                        Click Here
-                      </DynamicButton>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Addon on 28 Sep */}
-                <div className="solution_cards_box d-flex">
-                  <div className="solution_card">
-                    <div className="hover_color_bubble"></div>
-                    <div className="so_top_icon">
-                      <img
-                        src="/assets/technician.png"
-                        style={{ width: '50px' }}
-                      />
-                    </div>
-                    <div className="solu_title">
-                      <h3>Manage Technician</h3>
-                    </div>
-                    <div className="solu_description">
-                      <p>• Manage Technician </p>
-                      {/* <button type="button" className="read_more_btn" onClick={createCustomerHandler}>
-                      Click Here
-                    </button> */}
-                      <DynamicButton
-                        className="read_more_btn"
-                        onClick={manageTechnicians}
-                      ></DynamicButton>
-                    </div>
-                  </div>
-
-                  <div className="solution_card">
-                    <div className="hover_color_bubble"></div>
-                    <div className="so_top_icon">
-                      <img src="/assets/status.png" style={{ width: '50px' }} />
-                    </div>
-                    <div className="solu_title">
-                      <h3>Manage Status</h3>
-                    </div>
-                    <div className="solu_description">
-                      <p>• Approve or reject project time sheets and reports</p>
-                      <button
-                        type="button"
-                        className="read_more_btn"
-                        onClick={ManageProjectStatus}
-                      >
-                        Click Here!
-                      </button>
-
-                      {/* <button
-                          type="button"
-                          className="read_more_btn"
-                          onClick={showNewProject}
-                        >
-                          show new project!
-                        </button>
-
-                        <button
-                          type="button"
-                          className="read_more_btn"
-                          onClick={timeSheetHandler}
-                        >
-                          timeSheetHandler!
-                        </button>
-
-                        <button
-                          type="button"
-                          className="read_more_btn"
-                          onClick={ManageMachineInfo}
-                        >
-                          ManageMachineInfo!
-                        </button>
-
-                        <button
-                          type="button"
-                          className="read_more_btn"
-                          onClick={ManageCustomerInfo}
-                        >
-                          ManageCustomerInfo!
-                        </button>
-
-                        <button
-                          type="button"
-                          className="read_more_btn"
-                          onClick={AssignTechnician}
-                        >
-                          AssignTechnician!
-                        </button> */}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div className="container-xxl py-5">
+        <Container>
+          <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 className="section-title bg-white text-center text-primary px-3">Manager's Panel</h6>
+            <h1 className="mb-5">Our Services</h1>
           </div>
-        </div>
+          <Row>
+            <ServiceItem
+              icon="fa-globe"
+              title="Create Customer's"
+              text="Create Customer & Manage Their Profiles"
+              onClick={createCustomerHandler}
+            />
+            <ServiceItem
+              icon="fa-hotel"
+              title="Create Project's"
+              text="Create Project & Manage Project Details"
+              onClick={createProject}
+            />
+            <ServiceItem
+              icon="fa-user"
+              title="Manage Technician's"
+              text="Create Technician Profile & Manage Technicians Profiles"
+              onClick={manageTechnicians}
+            />
+            <ServiceItem
+              icon="fa-cog"
+              title="Manage Project's Status "
+              text="View Status Finished & Ongoing Project's"
+              onClick={ManageProjectStatus}
+            />
+            <ServiceItem
+              icon="fa-cog"
+              title="Manage Machine's Details"
+              text="View Manage Machines Details"
+              onClick={manageMachineDetails}
+            />
+          </Row>
+        </Container>
       </div>
-    </>
+      </div>
+    </React.Fragment>
+  );
+}
+
+function ServiceItem({ icon, title, text, onClick }) {
+  return (
+    <Col lg={3} md={12} className="wow fadeInUp my-3" data-wow-delay="0.1s">
+      <Card className="service-item rounded pt-3" onClick={onClick}>
+        <div className="p-4">
+          <i className={`fa fa-3x ${icon} text-primary mb-4`}></i>
+          <h5>{title}</h5>
+          <p>{text}</p>
+        </div>
+      </Card>
+    </Col>
   );
 }

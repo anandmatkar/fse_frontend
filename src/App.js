@@ -50,6 +50,9 @@ import ChangePassword from './Componets/pages/Teachnician/ChangePassword';
 import TimeSheetForApproved from './Componets/pages/Manager/TimeSheetForApproved';
 import ProjectReportData from './Componets/pages/Manager/ProjectReportData';
 import ProjectRequestedForApproval from './Componets/pages/Manager/ProjectRequestedForApproval';
+import ViewMachineInfo from './Componets/pages/Manager/ViewMachineInfo';
+import ViewProjectMachineInfo from './Componets/pages/Manager/ViewProjectMachineInfo';
+import EditProjectMachineInfo from './Componets/pages/Manager/EditProjectMachineInfo';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -97,6 +100,9 @@ function App() {
           path="/viewtechnicianprofile/:technicianID"
           element={<ViewTechnicianProfile />}
         />
+        <Route path='/managemachineinfo' element={<ViewMachineInfo/>} />
+        <Route path='/project-attached-machine-details/:projectID' element={<ViewProjectMachineInfo/>} />
+        <Route  path='/project-attached-machine-details/edit-machine/:machineID' element={<EditProjectMachineInfo/>} />
         <Route path="/timeSheetss" element={<TimeSheet />}></Route>
         <Route path="/customerlist" element={<CustomerList />}></Route>
         <Route
