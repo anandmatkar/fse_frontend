@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import Navbar from '../../NavBar/navbarManager';
 import './Registration.css';
@@ -39,14 +40,17 @@ const RegistrationPage = () => {
           const uploadedURL = response.data.data;
           console.log(uploadedURL);
           setProfilePicURL(uploadedURL);
+          toast.success(response.data.message);
         } else {
           console.error(
             'Profile Picture Upload Failed. Status Code:',
             response.status
           );
+          toast.error(response.data.message);
         }
       } catch (error) {
         console.error('API Error:', error);
+        toast.error(error.message);
       }
     }
   };
@@ -117,9 +121,7 @@ const RegistrationPage = () => {
         console.log(response.data);
         if (response.data.status === 201) {
           console.log('Registration Successful:', response.data);
-          alert(
-            'Registration Successful Please Verify your Email address through your Email...'
-          );
+          toast.success(response.data.message);
           localStorage.setItem(
             'registrationData',
             JSON.stringify(registrationData)
@@ -127,11 +129,12 @@ const RegistrationPage = () => {
 
           navigate('/verifyManager');
         } else if (response.data.status === 409) {
-          alert('Email already exists');
+          toast.error(response.data.message);
           console.error('Registration Failed. Status Code:', response.status);
         }
       } catch (error) {
         console.error('API Error:', error);
+        toast.error(error.message);
       }
     }
   };
@@ -143,8 +146,8 @@ const RegistrationPage = () => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress);
   };
   const validatePhone = (phone) => {
-    const indianMobileRegex = /^[6789]\d{9}$/;
-    return indianMobileRegex.test(phone);
+    const tenDigitRegex = /^\d{10}$/;
+    return tenDigitRegex.test(phone);
   };
 
   return (
@@ -353,161 +356,191 @@ const RegistrationPage = () => {
         </div>
       </div> */}
 
-      <div className="Registration ">
-        <h2> REGISTER HERE..</h2>
-        <div className="container">
-          <div>
-            <form onSubmit={submitHandler}>
-              {' '}
-              <div>
-                <label style={{ textAlign: 'left' }}>First Name </label>
-                <br />
-                <input
-                  type="text"
-                  id="firstName"
-                  className="form-control inputfieldresistration"
-                  value={name}
-                  name="name"
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <br />
-                {errors.name && (
-                  <span className="error" style={{ color: 'red' }}>
-                    {errors.name}
-                  </span>
-                )}
-                <label>Last Name:</label>
-                <br />
-                <input
-                  type="text"
-                  id="lastName"
-                  className="form-control inputfieldresistration"
-                  value={surname}
-                  name="surname"
-                  onChange={(e) => setSurname(e.target.value)}
-                />
-                <br />
-                {errors.surname && (
-                  <span className="error" style={{ color: 'red' }}>
-                    {errors.surname}
-                  </span>
-                )}
+      <div className="user-registration">
+        <div className="container registerManager">
+          <div className="row">
+            <div className="col-md-3 register-left">
+              <img
+                src="/assets/manager.svg"
+                alt=""
+                style={{ width: '220px' }}
+                className="managerImage"
+              />
+              <h3>Welcome</h3>
+              <p className="paraManager">Here manager Register yourself!</p>
+            </div>
+            <div className="col-md-9 register-right">
+              <div className="tab-content" id="myTabContent">
+                <div
+                  className="tab-pane fade show active"
+                  id="home"
+                  role="tabpanel"
+                  aria-labelledby="home-tab"
+                >
+                  <h3 className="register-heading">Register here</h3>
+                  <div className=" formDiv">
+                    <form onSubmit={submitHandler}>
+                      <div className="row register-form">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <input
+                              type="text"
+                              id="firstName"
+                              className="form-control inputfieldresistration"
+                              value={name}
+                              name="name"
+                              placeholder="First Name"
+                              onChange={(e) => setName(e.target.value)}
+                            />
+                            {errors.name && (
+                              <span className="error" style={{ color: 'red' }}>
+                                {errors.name}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <input
+                              type="text"
+                              id="lastName"
+                              className="form-control inputfieldresistration"
+                              value={surname}
+                              name="surname"
+                              placeholder="Last Name"
+                              onChange={(e) => setSurname(e.target.value)}
+                            />
+                            {errors.surname && (
+                              <span className="error" style={{ color: 'red' }}>
+                                {errors.surname}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <input
+                              type="text"
+                              id="company"
+                              className="form-control inputfieldresistration"
+                              value={company}
+                              placeholder="Company"
+                              name="company"
+                              onChange={(e) => setCompany(e.target.value)}
+                            />
+                            {errors.company && (
+                              <span className="error" style={{ color: 'red' }}>
+                                {errors.company}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <input
+                              type="text"
+                              id="email"
+                              className="form-control inputfieldresistration"
+                              value={emailAddress}
+                              placeholder="Email"
+                              name="emailAddress"
+                              onChange={(e) => setEmail(e.target.value)}
+                            />
+                            {errors.email && (
+                              <span className="error" style={{ color: 'red' }}>
+                                {errors.email}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <input
+                              type="password"
+                              id="password"
+                              className="form-control inputfieldresistration"
+                              value={password}
+                              placeholder="Password"
+                              name="password"
+                              onChange={(e) => setPassword(e.target.value)}
+                            />
+                            {errors.password && (
+                              <span className="error" style={{ color: 'red' }}>
+                                {errors.password}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <input
+                              type="password"
+                              id="confirmpass"
+                              className="form-control inputfieldresistration"
+                              value={confirmPass}
+                              placeholder="Re-enter Password"
+                              name="confirmpass"
+                              onChange={(e) => setConfirmPass(e.target.value)}
+                            />
+                            {errors.confirmPass && (
+                              <span className="error" style={{ color: 'red' }}>
+                                {errors.confirmPass}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <input
+                              type="text"
+                              id="phone"
+                              className="form-control inputfieldresistration"
+                              value={phone}
+                              placeholder="Phone"
+                              name="phone"
+                              onChange={(e) => setPhone(e.target.value)}
+                            />
+                            {errors.confirmPass && (
+                              <span className="error" style={{ color: 'red' }}>
+                                {errors.confirmPass}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <input
+                              type="file"
+                              id="file"
+                              className="form-control inputfieldresistration"
+                              onChange={handleProfilePicChange}
+                            />
+                            {errors.profilePic && (
+                              <span className="error" style={{ color: 'red' }}>
+                                {errors.profilePic}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col">
+                          <button className="btn btn-dark " type="submit">
+                            Register
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <p className="p-3 text-end">
+                  Already have an account? <Link to="/mangerLogin"> Login</Link>
+                </p>
               </div>
-              <label>Company :</label>
-              <br />
-              <input
-                type="text"
-                id="company"
-                className="form-control inputfieldresistration"
-                value={company}
-                name="company"
-                onChange={(e) => setCompany(e.target.value)}
-              />
-              <br />
-              {errors.comapny && (
-                <span className="error" style={{ color: 'red' }}>
-                  {errors.company}
-                </span>
-              )}
-              <label>Email: </label>
-              <br />
-              <input
-                type="text"
-                id="email"
-                className="form-control inputfieldresistration"
-                value={emailAddress}
-                name="emailAddress"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <br />
-              {errors.email && (
-                <span className="error" style={{ color: 'red' }}>
-                  {errors.email}
-                </span>
-              )}
-              <label>Phone Number:</label>
-              <br />
-              <input
-                type="text"
-                id="phone"
-                className="form-control inputfieldresistration"
-                value={phone}
-                name="phone"
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              <br />
-              {errors.phone && (
-                <span className="error" style={{ color: 'red' }}>
-                  {errors.phone}
-                </span>
-              )}
-              <label>Password: </label>
-              <br />
-              <input
-                type="password"
-                id="password"
-                className="form-control inputfieldresistration"
-                value={password}
-                name="password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <br />
-              {errors.password && (
-                <span className="error" style={{ color: 'red' }}>
-                  {errors.password}
-                </span>
-              )}
-              <label>Confirm Password: </label>
-              <br />
-              <input
-                type="password"
-                id="confirmpass"
-                className="form-control inputfieldresistration"
-                value={confirmPass}
-                name="confirmpass"
-                onChange={(e) => setConfirmPass(e.target.value)}
-              />
-              <br />
-              {errors.confirmPass && (
-                <span className="error" style={{ color: 'red' }}>
-                  {errors.confirmPass}
-                </span>
-              )}
-              <label>Phone: </label>
-              <br />
-              <input
-                type="text"
-                id="phone"
-                className="form-control inputfieldresistration"
-                value={phone}
-                name="phone"
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              <br />
-              {errors.confirmPass && (
-                <span className="error" style={{ color: 'red' }}>
-                  {errors.confirmPass}
-                </span>
-              )}
-              <label>Profile Pic: </label>
-              <br />
-              <input
-                type="file"
-                id="file"
-                className="form-control inputfieldresistration"
-                onChange={handleProfilePicChange}
-              />
-              <br />
-              {errors.profilePic && (
-                <span className="error" style={{ color: 'red' }}>
-                  {errors.profilePic}
-                </span>
-              )}
-              <input type="submit" />
-            </form>
+            </div>
           </div>
         </div>
       </div>
+      <div></div>
     </div>
   );
 };
