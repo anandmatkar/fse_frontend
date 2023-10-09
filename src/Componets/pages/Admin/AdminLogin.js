@@ -58,6 +58,7 @@ function AdminLogin() {
   };
   return (
     <React.Fragment>
+      <AdminNavBar/>
       <div style={style}>
        <div className="AdminloginContainer go-register">
          {/* <!-- Login Form Starts --> */}
