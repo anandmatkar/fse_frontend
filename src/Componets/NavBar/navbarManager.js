@@ -22,62 +22,36 @@ function ManagerNavigation() {
   };
 
   return (
-    <Navbar bg="light" expand="lg" className="navbar-container">
-      <Container fluid>
-        <Navbar.Brand>
-          <img src="/assets/logo.png" style={{ width: '100px' }}></img>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: '100px' }}
-            navbarScroll
-          >
-            {isLoggedIn && (
-              <Nav.Link>
-                <Link to={'/'}>Home</Link>
-              </Nav.Link>
-            )}
-            {isLoggedIn && (
-              <Nav.Link>
-                <Link to={'/service'}>About</Link>
-              </Nav.Link>
-            )}
-            {isLoggedIn && (
-              <Nav.Link>
-                <Link to={'/'}>About</Link>
-              </Nav.Link>
-            )}
-            {!isLoggedIn && (
-              <NavDropdown title="Login" id="navbarScrollingDropdown">
-                <NavDropdown.Item>
-                  <Link to={'/admin'}>Admin Login</Link>
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
+    <React.Fragment>
+      <Navbar expand="lg" className="main-nav-bar">
+        <Container>
+          <Navbar.Brand href="#home">
+            <img
+              alt=""
+              src="/assets/logofse.png"
+              width={100}
+              className="d-inline-block align-top me-3"
+            />{' '}
+            <span style={{ position: "relative", top: "7px" }} className="h1 m-0">FSE</span>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <Nav.Link href="#home" as={NavLink} to={'/'} className="nav-link-font">Home</Nav.Link>
+              <Nav.Link href="#About" as={NavLink} to={'/about'} className="nav-link-font">About</Nav.Link>
+              <Nav.Link href="#Contact" as={NavLink} to={'/contact'} className="nav-link-font">Contact</Nav.Link>
+              
+              {/* <NavDropdown title="Login" id="basic-nav-dropdown" className="nav-link-font">
+                <NavDropdown.Item onClick={() => navigate("/adminLogin")}>Admin</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/mangerLogin")}>Manager</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/techLogin")}>Technician</NavDropdown.Item>
+              </NavDropdown> */}
 
-                <NavDropdown.Item>
-                  <Link to={'/manager'}>Manager Login</Link>
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-
-                <NavDropdown.Item>
-                  <Link to={'/tech'}>Teachnician Login</Link>
-                </NavDropdown.Item>
-              </NavDropdown>
-            )}
-
-            {isLoggedIn && (
-              <Nav.Link>
-                <Button variant="outline-danger" onClick={logoutHandler}>
-                  Logout
-                </Button>
-              </Nav.Link>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+  </React.Fragment>
   );
 }
 
