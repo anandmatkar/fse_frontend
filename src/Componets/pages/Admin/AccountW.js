@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './AccountWA.css'
-import Spinner from './../Common/Spinner';
+import Spinner from '../Common/Spinner';
+import Table from 'react-bootstrap/Table';
+import { Button } from "react-bootstrap";
+
 function UserTable() {
   const [users, setUsers] = useState([]);
   const [loading,setLoading] = useState(false)
@@ -81,40 +84,50 @@ function UserTable() {
  }
   return (
     <div className="user-table-container">
-      <table className="user-table">
-        <thead>
-          <tr>
-            <th>Account ID</th>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Position</th>
-            <th>Company</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Date</th>
-            <th>Activation</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.name}</td>
-              <td>{user.surname}</td>
-              <td>{user.position}</td>
-              <td>{user.company}</td>
-              <td>{user.email_address}</td>
-              <td>{user.phone_number}</td>
-              <td>{user.created_at}</td>
-              <td>
-                <button onClick={() => toggleActivation(user.id)}>
-                  {user.status==2 ? "Active" : "Approved"}
-                </button>
-              </td>
+    <h1 className='text-center text-info'>Account Waiting Approval </h1>
+      <div className="card">
+        <div className="card-body">
+        <Table responsive hover >
+          <thead className=''>
+            <tr>
+                <th>Account ID</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Position</th>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Date</th>
+                <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {
+              users.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.surname}</td>
+                    <td>{user.position}</td>
+                    <td>{user.company}</td>
+                    <td>{user.email_address}</td>
+                    <td>{user.phone_number}</td>
+                    <td>{user.created_at}</td>
+                  <td>
+                    <Button onClick={() => toggleActivation(user.id)}>
+                    {user.status==2 ? "Active" : "Approved"}
+                    </Button>
+                  </td>
+                  </tr>
+                ))
+              }
+          </tbody>
+      </Table>
+        </div>
+      </div>
+      
+
+      
     </div>
   );
 }

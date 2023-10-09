@@ -2,7 +2,7 @@
     position: relative;
     left: 90%;
 }
-.loginContainer {
+.AdminloginContainer {
     position: relative;
     margin: 100px auto;
     background: #fff;
@@ -14,7 +14,7 @@
     overflow: hidden;
 }
 
-.loginAnimateWidth {
+.AdminloginAnimateWidth {
     animation: animateWidth 0.8s linear forwards;
 }
 
@@ -30,14 +30,14 @@
     }
 }
 
-.loginForm__container {
+.AdminloginForm__container {
     position: absolute;
     z-index: -1;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 54%;
+    width: 60%;
     padding: 25px;
     text-align: center;
     background: #fff;
@@ -66,18 +66,18 @@
     opacity: 0;
 }
 
-.loginForm {
+.AdminloginForm {
     width: 100%;
 }
 
-.loginForm__heading {
+.AdminloginForm__heading {
     font-size: 30px;
     margin-bottom: 15px;
     font-weight: 800;
 }
 
-.loginForm__field {
-    width: 85%;
+.AdminloginForm__field {
+    width: 75%;
     height: 35px;
     line-height: 35px;
     padding-left: 15px;
@@ -86,24 +86,24 @@
     border: none;
 }
 
-.loginForm__field:focus, .loginForm__field:active {
+.AdminloginForm__field:focus, .loginForm__field:active {
     outline: 0;
 }
 
-.loginForm__text {
+.AdminloginForm__text {
     margin-bottom: 15px;
     font-size: 14px;
 }
 
-.loginList {
+.AdminloginList {
     padding-left: 0;
 }
 
-.loginList__inline {
+.AdminloginList__inline {
     margin-bottom: 15px;
 }
 
-.loginList__item {
+.AdminloginList__item {
     display: inline-block;
     margin-left: 5px;
     margin-right: 5px;
@@ -113,12 +113,12 @@
     border-radius: 50%;
 }
 
-.loginList__link {
+.AdminloginList__link {
     color: #333;
     text-decoration: none;
 }
 
-.loginList__icon {
+.AdminloginList__icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -135,7 +135,7 @@
     width: 40%;
     text-align: center;
     transition: all 0.8s cubic-bezier(.67, .67, .34, .95);
-    background: rgb(12, 38, 64);
+    background:linear-gradient(45deg, #2980b9, #3498db);
   }
 
 .go-login .loginOverlay-container {
@@ -146,19 +146,19 @@
     right: 0;
 }
 
-.loginOverlay {
+.AdminloginOverlay {
     padding: 25px;
     color: #fff;
     position: absolute;
     width: 100%;
 }
 
-.loginOverlay__heading {
+.AdminloginOverlay__heading {
     font-size: 32px;
     margin-bottom: 15px;
 }
 
-.loginOverlay__desc {
+.AdminloginOverlay__desc {
     max-width: 230px;
     width: 230px;
     margin: auto;

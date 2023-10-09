@@ -126,10 +126,12 @@ const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
         <li className={`dt-item ${currentPage === 1 ? 'disabled': ''}`}><button className="dt-link" onClick={() => setCurrentPage(currentPage - 1)}>Prev</button></li>
         {arrOfCurrButtons.map((data, index) => {
             return (
-                <li key={index} className={`dt-item ${currentPage === data ? 'active' : ''}`}><button className="dt-link" onClick={() => setCurrentPage(data)}>{data}</button></li>
+                <li key={index} className={`dt-item ${currentPage === data ? 'active' : ''}`}>
+                  <button className="dt-link" onClick={() => setCurrentPage(data)}>{data}</button></li>
             )
         })}
-        <li className={`dt-item ${currentPage === totalPages ? 'disabled': ''}`}><button className="dt-link" onClick={() => setCurrentPage(currentPage + 1)}>Next</button></li>
+        <li className={`dt-item ${currentPage === totalPages ? 'disabled': ''}`}>
+          <button className="dt-link" onClick={() => setCurrentPage(currentPage + 1)}>Next</button></li>
     </ul>
 </nav>
 

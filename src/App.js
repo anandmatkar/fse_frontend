@@ -27,7 +27,7 @@ import JobEWaitingAprroval from './Componets/pages/Teachnician/JobWaitingApprova
 import JobClosed from './Componets/pages/Teachnician/JobClosed';
 import JobWaitingApprovalM from './Componets/pages/Manager/jobWaitingApproval';
 import ProjectManager from './Componets/pages/Manager/ProjectManager';
-import AccountWA from './Componets/pages/Admin/AccountWA';
+import AccountWA from './Componets/pages/Admin/AccountW';
 import NewAccount from './Componets/pages/Manager/customerInfo';
 import Userverified from './Componets/pages/Manager/Userverified';
 import Registeredaccount from './Componets/pages/Admin/Registeredaccount';

@@ -110,7 +110,8 @@ function AdminDashboard() {
               <div className="Admindashboard-container_copy">
                   <h3 className="Admindashboard-h3">Account Waiting Approval !</h3>
                   <p className="Admindashboard-p">View Waiting for Approval Accounts of Managers !</p>
-                  <Button onClick={handleAccountsApprovalClick}>Click Here !!</Button>
+                  <Button onClick={handleAccountsApprovalClick}>Click Here
+                   !!</Button>
               </div>
           </div>
 
