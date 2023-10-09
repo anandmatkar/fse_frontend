@@ -85,7 +85,7 @@ export default function ViewProjectMachineInfo() {
                       size="sm"
                       onClick={() =>
                         navigate(
-                          `/project-attached-machine-details/edit-machine/${machine.machine_id}`
+                          `/project-attached-machine-details/edit-machine/${projectID}/${machine.machine_id}`
                         )
                       }
                     >

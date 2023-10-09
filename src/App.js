@@ -102,7 +102,7 @@ function App() {
         />
         <Route path='/managemachineinfo' element={<ViewMachineInfo/>} />
         <Route path='/project-attached-machine-details/:projectID' element={<ViewProjectMachineInfo/>} />
-        <Route  path='/project-attached-machine-details/edit-machine/:machineID' element={<EditProjectMachineInfo/>} />
+        <Route  path='/project-attached-machine-details/edit-machine/:projectID/:machineID' element={<EditProjectMachineInfo/>} />
         <Route path="/timeSheetss" element={<TimeSheet />}></Route>
         <Route path="/customerlist" element={<CustomerList />}></Route>
         <Route
