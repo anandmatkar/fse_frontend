@@ -16,6 +16,7 @@ function TechnicianForgotPassword() {
     const [emailError, setEmailError] = useState('');
     const [otpError, setOTPTError] = useState('');
     const [password, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [submittedEmail, setSubmittedEmail] = useState('');
     const [resetSuccess, setResetSuccess] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -34,15 +35,13 @@ function TechnicianForgotPassword() {
   
     const sendResetEmail = async () => {
       if (!email) {
-        // Email is empty, display an error message or handle it as needed
         setEmailError('Email is required');
-        return; // Exit the function if email is empty
+        return; 
       }
   
       if (!isValidEmail(email)) {
-        // Invalid email format, display an error message or handle it as needed
         setEmailError('Invalid email format');
-        return; // Exit the function if email is invalid
+        return; 
       }
   
       setIsLoading(true);
@@ -64,29 +63,29 @@ function TechnicianForgotPassword() {
           // Handle success, you may show a message to the user
           toast.success(response.data.message, {
             position: 'top-right',
-            autoClose: 2000, // Notification will close automatically after 2 seconds
+            autoClose: 2000, 
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             onClose: () => {
-              setIsLoading(false); // Hide the spinner after the toast is closed
+              setIsLoading(false); 
             },
           });
           // console.log('Password reset email sent successfully!');
           setSubmittedEmail(email);
           setIsResetPassword(true);
         } else {
-          // Handle error, display a message to the user
+      
           toast.error(response.data.message, {
             position: 'top-right',
-            autoClose: 2000, // Notification will close automatically after 2 seconds
+            autoClose: 2000, 
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             onClose: () => {
-              setIsLoading(false); // Hide the spinner after the toast is closed
+              setIsLoading(false); 
             },
           });
           console.error('Error sending reset email.');
@@ -95,13 +94,13 @@ function TechnicianForgotPassword() {
         console.error('Error:', error);
         toast.error(error.message, {
           position: 'top-right',
-          autoClose: 2000, // Notification will close automatically after 2 seconds
+          autoClose: 2000, 
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           onClose: () => {
-            setIsLoading(false); // Hide the spinner after the toast is closed
+            setIsLoading(false); 
           },
         });
       }
@@ -109,18 +108,18 @@ function TechnicianForgotPassword() {
 const Reset = async  () => {
     // console.log(otp);
     if (!otp) {
-      // Email is empty, display an error message or handle it as needed
+    
       setEmailError('Email is required');
-      return; // Exit the function if email is empty
+      return; 
     }
     if (!isValidOTP(otp)) {
-      // Invalid OTP format, display an error message
+      
       setOTPTError('Invalid OTP format (4 digits required)');
       return;
     }
 
     if (!password) {
-      // Password is empty, display an error message
+    
       toast.error('Password is required', {
         position: 'top-right',
         autoClose: 2000,
@@ -131,6 +130,18 @@ const Reset = async  () => {
       });
       return;
     }
+    if (password !== confirmPassword) {
+      toast.error('Password and confirm password do not match', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+      });
+      return;
+  }
+
     try {
       const response = await axios.put(
         'http://localhost:3003/api/v1/technician/resetPassword',
@@ -150,29 +161,29 @@ const Reset = async  () => {
         // Handle success, you may show a message to the user
         toast.success(response.data.message, {
           position: 'top-right',
-          autoClose: 2000, // Notification will close automatically after 2 seconds
+          autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           onClose: () => {
-            setIsLoading(false); // Hide the spinner after the toast is closed
+            setIsLoading(false); 
           },
         });
         setResetSuccess(true);
         navigate('/techLogin');
       } else {
-        // Handle other error cases, display a generic error message
+        
         console.error('Error resetting password.');
         toast.error(response.data.message, {
           position: 'top-right',
-          autoClose: 2000, // Notification will close automatically after 2 seconds
+          autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           onClose: () => {
-            setIsLoading(false); // Hide the spinner after the toast is closed
+            setIsLoading(false); 
           },
         });
       }
@@ -180,13 +191,13 @@ const Reset = async  () => {
       console.error('Error:', error);
       toast.error(error.message, {
         position: 'top-right',
-        autoClose: 2000, // Notification will close automatically after 2 seconds
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         onClose: () => {
-          setIsLoading(false); // Hide the spinner after the toast is closed
+          setIsLoading(false); 
         },
       });
     }
@@ -279,9 +290,19 @@ const Reset = async  () => {
                                             id="password"
                                             value={password}
                                             onChange={(e) => setNewPassword(e.target.value)}
-                                            className="form-control"
-                                        />
+                                            className="form-control" />
                                     </div>
+
+                                    <div className="mb-3">
+                                     <label className="form-label">Confirm your new password:</label>
+                                     <input
+                                          type="password"
+                                          id="confirmPassword"
+                                          value={confirmPassword}
+                                          onChange={(e) => setConfirmPassword(e.target.value)}
+                                          className="form-control" />
+                                  </div>
+
 
                                     <div className="mb-3 d-grid">
                                         <button
