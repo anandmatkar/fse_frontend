@@ -12,6 +12,7 @@ import { Card, ListGroup,  Table , Container } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './UpdateTechincianProfile.css'
 import { NavLink } from "react-router-dom";
 
@@ -249,7 +250,8 @@ const handleImageUpload = async (e) => {
         if (response.status === 201) {
           // Profile updated successfully, you can show a success message or redirect
           console.log('Profile updated successfully');
-          toast.success("update technician profile succesfully");
+          toast.success('Technician Updated successfully');
+
           navigate('/techD')
           return { success: true, message: 'Profile updated successfully' };
         } else {
@@ -430,6 +432,7 @@ useEffect(() => {
 
             </Row>
         </Card>
+        <ToastContainer/>
     </Container>
 </React.Fragment>
 

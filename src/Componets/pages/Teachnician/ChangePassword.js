@@ -65,45 +65,67 @@ export default function ChangePassword() {
   };
 
   return (
-    <React.Fragment>
-      <Container as={Card.Header} className="py-5">
-        <h1 className='text-center'>Change Password</h1>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="oldPassword">
-            <Form.Label>Old Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter old password"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group controlId="newPassword">
-            <Form.Label>New Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter new password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group controlId="confirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Confirm new password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit" style={{width:"20%"}}>
-            Change Password
-          </Button>
-        </Form>
-      </Container>
-    </React.Fragment>
+    
+              <div className="container d-flex flex-column">
+        <div className="row align-items-center justify-content-center min-vh-100 g-0">
+            <div className="col-12 col-md-8 col-lg-4 border-top border-3 border-success">
+                <div className="card shadow-sm">
+                    <div className="card-body">
+                                              
+                            <React.Fragment>
+                             <h1>Change Your Password</h1>
+                                <form onSubmit={handleSubmit}>
+                                    <div className="mb-4">
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Enter Old Password:</label>
+                                        <input
+                                           type="password"
+                                           placeholder="Enter old password"
+                                           value={oldPassword}
+                                           className="form-control"
+                                           onChange={(e) => setOldPassword(e.target.value)}
+                                           required
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Enter New Password:</label>
+                                        <input
+                                           type="password"
+                                           placeholder="Enter new password"
+                                           value={newPassword}
+                                           className="form-control"
+                                           onChange={(e) => setNewPassword(e.target.value)}
+                                           required
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Enter Conform Password:</label>
+                                        <input
+                                            type="password"
+                                            placeholder="Confirm new password"
+                                            value={confirmPassword}
+                                            className="form-control"
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="mb-3 d-grid">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-success"
+                                        >
+                                            Change Password
+                                        </button>
+                                    </div>
+                                </form>
+                            </React.Fragment>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   );
 }
