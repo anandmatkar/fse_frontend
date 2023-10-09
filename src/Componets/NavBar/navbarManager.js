@@ -40,12 +40,6 @@ function ManagerNavigation() {
               <Nav.Link href="#home" as={NavLink} to={'/'} className="nav-link-font">Home</Nav.Link>
               <Nav.Link href="#About" as={NavLink} to={'/about'} className="nav-link-font">About</Nav.Link>
               <Nav.Link href="#Contact" as={NavLink} to={'/contact'} className="nav-link-font">Contact</Nav.Link>
-              
-              {/* <NavDropdown title="Login" id="basic-nav-dropdown" className="nav-link-font">
-                <NavDropdown.Item onClick={() => navigate("/adminLogin")}>Admin</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => navigate("/mangerLogin")}>Manager</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => navigate("/techLogin")}>Technician</NavDropdown.Item>
-              </NavDropdown> */}
 
             </Nav>
           </Navbar.Collapse>
