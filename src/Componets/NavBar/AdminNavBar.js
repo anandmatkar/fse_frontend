@@ -1,64 +1,42 @@
-import { useContext } from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { NavLink, Link } from "react-router-dom";
-import AuthContext from "../auth-context/auth-context";
-import "./AdminNav.css";
-import {useNavigate} from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import { NavLink, Link } from 'react-router-dom';
+import AuthContext from '../auth-context/auth-context';
+import Cookies from 'js-cookie';
 
 function AdminNavBar() {
     const authCtx = useContext(AuthContext);
     const isLoggedIn = authCtx.isLoggedIn;
-
-    const handleLogout = () => {
-      console.log("Logout SucessFull");
-      authCtx.logout();
-      // Cookies.remove('token');
-      navigate("/adminlogin");
-    }
-
-    const navigate = useNavigate();
   return (
-    <Navbar className="bg-body-tertiary">
+    <React.Fragment>
+      <Navbar expand="lg" className="main-nav-bar">
         <Container>
           <Navbar.Brand href="#home">
             <img
               alt=""
-              src="assets/logofse.png"
-              width="30"
-              height="30"
-              className="d-inline-block align-top"
+              src="/assets/logofse.png"
+              width={100}
+              className="d-inline-block align-top me-3"
             />{' '}
-            FSE Report
+            <span style={{ position: "relative", top: "7px" }} className="h1 m-0">FSE</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="ms-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#link">About</Nav.Link>
-                <Nav.Link href="#link">Contact</Nav.Link>
-                {isLoggedIn && (
-                  <Nav.Link className="ms-auto float-end" onClick={handleLogout} >Logout</Nav.Link> 
-                )}
-                {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
-                    Another action
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">
-                    Separated link
-                  </NavDropdown.Item>
-                </NavDropdown> */}
-              </Nav>
-            </Navbar.Collapse>
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <Nav.Link href="#home" as={NavLink} to={'/'} className="nav-link-font">Home</Nav.Link>
+              <Nav.Link href="#About" as={NavLink} to={'/about'} className="nav-link-font">About</Nav.Link>
+              <Nav.Link href="#Contact" as={NavLink} to={'/contact'} className="nav-link-font">Contact</Nav.Link>
+
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
+  </React.Fragment>
   );
 }
 
