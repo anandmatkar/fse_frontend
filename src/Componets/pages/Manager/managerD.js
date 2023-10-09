@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import DynamicButton from '../../Model/DynamicButton';
 import NavbarManager from './Navbar';
-import NavBar from '../../NavBar/navbarManager';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 
 export default function ManagerDashboard() {
@@ -53,7 +53,7 @@ export default function ManagerDashboard() {
         }}
       >
         {/* <NavbarManager /> */}
-        <NavBar />
+        <NavbarManagerDashboard/>
 
         <div className="container-xxl py-5">
         <Container>
