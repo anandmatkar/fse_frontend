@@ -135,7 +135,7 @@
     width: 40%;
     text-align: center;
     transition: all 0.8s cubic-bezier(.67, .67, .34, .95);
-    background:linear-gradient(45deg, #2980b9, #3498db);
+    background:#86b817;;
   }
 
 .go-login .loginOverlay-container {
@@ -185,29 +185,29 @@
     opacity: 1;
 }
 
-.loginBtn {
+.AdminloginBtn {
     padding: 10px 30px;
     border: none;
     border-radius: 30px;
     font-size: 16px;
 }
 
-.loginBtn--main {
+.AdminloginBtn--main {
     background: linear-gradient(45deg, #2980b9, #3498db);
     color: #fff;
 }
 
-.loginBtn--main-outline {
+.AdminloginBtn--main-outline {
     border: 2px solid;
     border-image-source: linear-gradient(45deg, #2980b9, #3498db);
     border-image-slice: 1;
     color: #2980b9;
 }
 
-.loginBtn:hover {
+.AdminloginBtn:hover {
     cursor: pointer;
 }
 
-.loginBtn:focus, .loginBtn:active {
+.AdminloginBtn:focus, .loginBtn:active {
     outline: 0;
 }
