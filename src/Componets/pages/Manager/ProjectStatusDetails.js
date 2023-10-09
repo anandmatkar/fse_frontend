@@ -3,11 +3,18 @@ import Table from 'react-bootstrap/Table';
 import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
+import { FormControl, Container } from 'react-bootstrap';
+
 const ProjectStatusDetails = () => {
   const navigate = useNavigate();
   const [jobData, setJobData] = useState([]);
   const [project, setProject] = useState(null);
+  const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const { projectId } = useParams();
+
   useEffect(() => {
     const token = Cookies.get('token');
     fetch(`/api/v1/manager/projectDetails?projectId=${projectId}`, {
@@ -34,6 +41,7 @@ const ProjectStatusDetails = () => {
         console.error('Error fetching data:', error);
       });
   }, [projectId]);
+
   const handleDeleteProject = async () => {
     const token = Cookies.get('token');
     try {
@@ -56,9 +64,36 @@ const ProjectStatusDetails = () => {
       console.error('Error deleting project:', error);
     }
   };
+
+  // Filter jobData based on the search input
+  const filteredJobData = jobData.filter((customer) =>
+    customer.customer_name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const lastIndex = currentPage * itemsPerPage;
+  const firstIndex = lastIndex - itemsPerPage;
+  const currentJobData = filteredJobData.slice(firstIndex, lastIndex);
+
+  const totalPages = Math.ceil(filteredJobData.length / itemsPerPage);
+
+  const renderPaginationButtons = () => {
+    const buttons = [];
+    for (let i = 1; i <= totalPages; i++) {
+      buttons.push(
+        <li key={i} className={`dt-item ${currentPage === i ? 'active' : ''}`}>
+          <button className="dt-link" onClick={() => setCurrentPage(i)}>
+            {i}
+          </button>
+        </li>
+      );
+    }
+    return buttons;
+  };
+
   return (
     <div className="job-progress">
-      <h2>Project Details</h2>
+      <h1 className="jobassigntext mb-4">Project Details</h1>
+
       <div>
         <div className="d-flex float-end mt-2 p-2">
           <button className="btn btn-danger" onClick={handleDeleteProject}>
@@ -86,87 +121,116 @@ const ProjectStatusDetails = () => {
           <p>Loading project details...</p>
         )}
       </div>
-      <Table striped bordered responsive>
-        <thead>
-          <h3>Technician Details</h3>
-          <tr>
-            <th>Qualification</th>
-            <th> Name</th>
-            <th> Email</th>
-            <th> Phone</th>
-            <th>Email</th>
-            <th>Scope</th>
-            <th>Start_date</th>
-            <th>Start_end</th>
-            <th>Tech Report</th>
-            <th>Time Sheet</th>
-            {/* <th>More</th> */}
-          </tr>
-        </thead>
-        <tbody>
-          {jobData.map((job) =>
-            job.technician_data.map((technician, index) => (
-              <tr key={index}>
-                <td>{technician.qualification || 'N/A'}</td>
-                <td>{`${technician.name} ${technician.surname}` || 'N/A'}</td>
-                <td>{job.email_address}</td>
-                <td>{job.phone_number}</td>
-                <td>{job.email_address}</td>
-                <td>{job.scope_of_work}</td>
-                <td>{job.start_date}</td>
-                <td>{job.end_date}</td>
-                <td className="text-center">
-                  {technician.project_report_data &&
-                  technician.project_report_data.length > 0 ? (
-                    <Link
-                      to={`/projectreportdata/${technician.id}/${job.project_id}`}
-                    >
-                      <i
-                        className="fa fa-address-book"
-                        style={{ fontSize: '20px' }}
-                      ></i>
-                    </Link>
-                  ) : (
-                    'No Report'
-                  )}
-                </td>
-                {/* <td>
-                  {technician.timesheet_data &&
-                  technician.timesheet_data.length > 0
-                    ? technician.timesheet_data.map(
-                        (timesheet, timesheetIndex) => (
-                          <Link to="/timesheetforapproval/${technician_data.id}">
-                            <i
-                              key={timesheetIndex}
-                              className="fa fa-book"
-                              style={{ fontSize: '20px' }}
-                            ></i>
-                          </Link>
-                        )
-                      )
-                    : 'No Timesheet'}
-                </td> */}
-                <td className="text-center">
-                  {technician.timesheet_data &&
-                  technician.timesheet_data.length > 0 ? (
-                    <Link
-                      to={`/timesheetforapproval/${technician.id}/${job.project_id}`}
-                    >
-                      <i
-                        className="fa fa-book"
-                        style={{ fontSize: '20px' }}
-                      ></i>
-                    </Link>
-                  ) : (
-                    'No Timesheet'
-                  )}
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </Table>
+      <div className="jobcontainer container mt-5">
+        <div className="card p-2">
+          <FormControl
+            type="text"
+            className="mb-4 "
+            placeholder="Search by Customer Name..."
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ width: '25%', border: '1px solid black', float: 'right' }}
+          />
+          <div className="card-body">
+            <div className="bf-table-responsive">
+              <Container fluid>
+                <h3>Technician Details</h3>
+                <Table responsive hover className="bf-table">
+                  <thead>
+                    <tr>
+                      <th>Qualification</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Email</th>
+                      <th>Scope</th>
+                      <th>Start_date</th>
+                      <th>End_date</th>
+                      <th>Tech Report</th>
+                      <th>Time Sheet</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentJobData.map((job) =>
+                      job.technician_data.map((technician, index) => (
+                        <tr key={`${job.project_id}-${technician.id}`}>
+                          <td>{technician.qualification || 'N/A'}</td>
+                          <td>
+                            {`${technician.name} ${technician.surname}` ||
+                              'N/A'}
+                          </td>
+                          <td>{job.email_address}</td>
+                          <td>{job.phone_number}</td>
+                          <td>{job.email_address}</td>
+                          <td>{job.scope_of_work}</td>
+                          <td>{job.start_date}</td>
+                          <td>{job.end_date}</td>
+                          <td className="text-center">
+                            {technician.project_report_data &&
+                            technician.project_report_data.length > 0 ? (
+                              <Link
+                                to={`/projectreportdata/${technician.id}/${job.project_id}`}
+                              >
+                                <i
+                                  className="fa fa-address-book"
+                                  style={{ fontSize: '20px' }}
+                                ></i>
+                              </Link>
+                            ) : (
+                              'No Report'
+                            )}
+                          </td>
+                          <td className="text-center">
+                            {technician.timesheet_data &&
+                            technician.timesheet_data.length > 0 ? (
+                              <Link
+                                to={`/timesheetforapproval/${technician.id}/${job.project_id}`}
+                              >
+                                <i
+                                  className="fa fa-book"
+                                  style={{ fontSize: '20px' }}
+                                ></i>
+                              </Link>
+                            ) : (
+                              'No Timesheet'
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </Table>
+              </Container>
+            </div>
+          </div>
+          <nav className="dt-pagination">
+            <ul className="dt-pagination-ul">
+              <li className={`dt-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button
+                  className="dt-link"
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                >
+                  Prev
+                </button>
+              </li>
+              {renderPaginationButtons()}
+              <li
+                className={`dt-item ${
+                  currentPage === totalPages ? 'disabled' : ''
+                }`}
+              >
+                <button
+                  className="dt-link"
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
     </div>
   );
 };
+
 export default ProjectStatusDetails;

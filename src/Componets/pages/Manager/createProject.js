@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './createProject.css';
 import Spinner from '../Common/Spinner';
 import Cookies from 'js-cookie';
-import { Navigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function CreateProject() {
@@ -26,6 +25,8 @@ function CreateProject() {
   const [techIds, setTechId] = useState([]);
   const [machineAttach, setMachineAttach] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedTechs, setSelectedTechs] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -92,15 +93,16 @@ function CreateProject() {
   //   Navigate('/manager');
   // };
 
-  const handleTechIdChange = (event) => {
-    const selectedIds = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
-    );
-    setTechId(selectedIds);
+  const handleTechCheckboxChange = (event) => {
+    const techId = event.target.value;
+    if (event.target.checked) {
+      setSelectedTechs([...selectedTechs, techId]);
+    } else {
+      setSelectedTechs(selectedTechs.filter((id) => id !== techId));
+    }
   };
 
-  const handleProfilePicChange = async (event) => {
+  const handleMachineDocuments = async (event) => {
     const files = event.target.files;
     const fileArray = Array.from(files); // Convert FileList to an array
     setMachineAttach(fileArray);
@@ -133,6 +135,39 @@ function CreateProject() {
     }
   };
 
+  const handleProjectAttachChange = async (event) => {
+    const files = event.target.files;
+    const fileArray = Array.from(files); // Convert FileList to an array
+    setProjectAttach(fileArray);
+
+    if (fileArray.length > 0) {
+      const formData = new FormData();
+
+      // Append each file to the formData with the same field name 'files'
+      fileArray.forEach((file, index) => {
+        formData.append('files', file);
+      });
+
+      try {
+        const response = await axios.post(
+          'http://localhost:3003/api/v1/manager/uploadProjectAttach',
+          formData
+        );
+
+        if (response.data.status === 201) {
+          // The API should return an array of URLs for the uploaded files
+          const uploadedURLs = response.data.data;
+          console.log(uploadedURLs);
+          setProjectAttach(uploadedURLs);
+        } else {
+          console.error('Files Upload Failed. Status Code:', response.status);
+        }
+      } catch (error) {
+        console.error('API Error:', error);
+      }
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -150,7 +185,7 @@ function CreateProject() {
           hourCount,
           nomSpeed,
           actSpeed,
-          techIds,
+          techIds: selectedTechs,
           machineAttach,
         },
       ],
@@ -169,6 +204,7 @@ function CreateProject() {
         // Handle success
         toast.success('Project created successfully');
         console.log('Project created successfully', response.data);
+        navigate('/manager');
       } else {
         // Handle API error (status code other than 201)
         toast.error('Error creating project');
@@ -293,18 +329,14 @@ function CreateProject() {
                   </label>
                   <input
                     type="file"
-                    name="projectAttach"
-                    id="projectAttach"
-                    value={projectAttach}
-                    onChange={(event) => setProjectAttach(event.target.value)}
                     class="form-control formcontrol"
+                    // accept="imafge/*"
+                    multiple
+                    onChange={handleProjectAttachChange}
                   />
                 </div>
               </div>
             </div>
-            {/* <header className="col-md-12 text-center fs-2">
-              Add Machine Details
-            </header> */}
             <div class="row p-2 colrow">
               <div class="col-md-4">
                 <div class="form-group formgroup">
@@ -389,22 +421,26 @@ function CreateProject() {
                     Technician
                   </label>
 
-                  <select
-                    id="techId"
-                    class="form-control formcontrol"
-                    multiple
-                    value={techIds}
-                    onChange={handleTechIdChange}
-                  >
-                    <option disabled selected value="">
-                      Select Teachnician
-                    </option>
+                  <div className="d-flex flex-wrap ">
                     {technician.map((technician, index) => (
-                      <option key={index} value={technician.id}>
-                        {technician.name}
-                      </option>
+                      <div key={index} className="form-check">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          id={`techCheckbox_${index}`}
+                          value={technician.id}
+                          onChange={handleTechCheckboxChange}
+                          checked={selectedTechs.includes(technician.id)}
+                        />
+                        <label
+                          className="form-check-label me-2"
+                          htmlFor={`techCheckbox_${index}`}
+                        >
+                          {technician.name}
+                        </label>
+                      </div>
                     ))}
-                  </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -416,7 +452,7 @@ function CreateProject() {
                   class="formcontrol"
                   // accept="imafge/*"
                   multiple
-                  onChange={handleProfilePicChange}
+                  onChange={handleMachineDocuments}
                 />
               </div>
             </div>
@@ -426,7 +462,6 @@ function CreateProject() {
           </form>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 }
