@@ -8,21 +8,47 @@ import { useNavigate } from 'react-router-dom';
 export default function ChangePassword() {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [oldPasswordError, setOldPasswordError] = useState('');
+  const [newPasswordError, setNewPasswordError] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+  
   const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    resetErrors(); // Reset previous errors
 
-    // Validate passwords here if needed
+    // Validate passwords here
+    let isValid = true;
+
+    if (!oldPassword) {
+      setOldPasswordError('Old password is required.');
+      isValid = false;
+    }
+
+    if (!newPassword) {
+      setNewPasswordError('New password is required.');
+      isValid = false;
+    }
+
+    if (!confirmPassword) {
+      setConfirmPasswordError('Confirm password is required.');
+      isValid = false;
+    }
 
     if (newPassword !== confirmPassword) {
-      alert('New password and confirm password do not match.');
+      setConfirmPasswordError('New password and confirm password do not match.');
+      isValid = false;
+    }
+
+    if (!isValid) {
       return;
     }
 
     try {
-      // Get the token from wherever you store it
       const token = Cookies.get("token");
 
       const response = await axios.put(
@@ -38,30 +64,30 @@ export default function ChangePassword() {
         }
       );
 
-      // Handle success response
       if (response.status === 200) {
         toast.success(response.data.message);
         console.log('Password changed successfully:');
   
-        // Clear form fields
         setOldPassword('');
         setNewPassword('');
         setConfirmPassword('');
 
         Cookies.remove('token');
-
-
-        // Navigate to the login page
-        navigate('/techlogin'); // Use navigate instead of history.push
-
+        navigate('/techlogin');
       } else {
         console.error('Failed to change password');
         toast.error(response.data.message);
       }
     } catch (error) {
-      // Handle error response
       console.error('Error changing password:', error);
+      toast.error('An error occurred while changing the password.');
     }
+  };
+
+  const resetErrors = () => {
+    setOldPasswordError('');
+    setNewPasswordError('');
+    setConfirmPasswordError('');
   };
 
   return (
@@ -76,6 +102,11 @@ export default function ChangePassword() {
                              <h1>Change Your Password</h1>
                                 <form onSubmit={handleSubmit}>
                                     <div className="mb-4">
+                                    {!passwordsMatch && (
+                    <div className="alert alert-danger" role="alert">
+                      Passwords do not match.
+                    </div>
+                  )}
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Enter Old Password:</label>
@@ -87,6 +118,7 @@ export default function ChangePassword() {
                                            onChange={(e) => setOldPassword(e.target.value)}
                                            required
                                         />
+                                          <div className="text-danger">{oldPasswordError}</div>
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Enter New Password:</label>
@@ -98,6 +130,7 @@ export default function ChangePassword() {
                                            onChange={(e) => setNewPassword(e.target.value)}
                                            required
                                         />
+                                        <div className="text-danger">{newPasswordError}</div>
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Enter Conform Password:</label>
@@ -109,6 +142,7 @@ export default function ChangePassword() {
                                             onChange={(e) => setConfirmPassword(e.target.value)}
                                             required
                                         />
+                                        <div className="text-danger">{confirmPasswordError}</div>
                                     </div>
 
                                     <div className="mb-3 d-grid">

@@ -247,7 +247,7 @@ const handleImageUpload = async (e) => {
 
         const response = await axios.post('/api/v1/technician/updateTechnicianProfile', newFormData, config);
   
-        if (response.status === 201) {
+        if (response.status === 200) {
           // Profile updated successfully, you can show a success message or redirect
           console.log('Profile updated successfully');
           toast.success('Technician Updated successfully');
