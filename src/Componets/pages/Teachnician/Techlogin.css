@@ -134,7 +134,7 @@
     height: 100%;
     width: 40%;
     text-align: center;
-    background: linear-gradient(45deg, #2980b9, #3498db);
+    background: #86b817;
     transition: all 0.8s cubic-bezier(.67, .67, .34, .95);
 }
 
@@ -193,7 +193,7 @@
 }
 
 .loginBtn--main {
-    background: linear-gradient(45deg, #2980b9, #3498db);
+    background: #86b817;
     color: #fff;
 }
 

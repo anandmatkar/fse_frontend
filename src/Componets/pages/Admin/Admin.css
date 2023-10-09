@@ -211,6 +211,3 @@
 .loginBtn:focus, .loginBtn:active {
     outline: 0;
 }
-.loginBtn.loginBtn--main {
-    background: rgb(12, 38, 64);
-  }

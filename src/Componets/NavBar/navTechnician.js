@@ -1,16 +1,19 @@
-import { useContext } from "react";
-// import Button from "react-bootstrap/Button";
-// import Container from "react-bootstrap/Container";
-// import Form from "react-bootstrap/Form";
-// import Nav from "react-bootstrap/Nav";
-// import Navbar from "react-bootstrap/Navbar";
-// import NavDropdown from "react-bootstrap/NavDropdown";
-// import { NavLink, Link } from "react-router-dom";
+import React, { useContext } from "react";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import AuthContext from "../auth-context/auth-context";
+import './navtechnician.css';
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 
 function TechNavigation() {
     const authCtx = useContext(AuthContext);
     const isLoggedIn = authCtx.isLoggedIn;
+    const navigate = useNavigate();
+
 
     const logoutHandler = () => {
       console.log("Logout SucessFull");
@@ -18,41 +21,36 @@ function TechNavigation() {
 
     }
   return (
-    <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-      {/* <!-- Logo --> */}
-      <a class="navbar-brand" href="#">
-        {/* <img src="https://preview.webpixels.io/web/img/logos/clever-light.svg" class="" alt="..."/> */}
-        <h1 style={{marginBottom:"0px"}}>FSE report</h1>
-      </a>
-      {/* <!-- Navbar toggle --> */}
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      {/* <!-- Collapse --> */}
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        {/* <!-- Nav --> */}
-        <div class="navbar-nav mx-lg-auto">
-          <a class="nav-item nav-link active" href="#" aria-current="page">Home</a>
-          <a class="nav-item nav-link" href="#">Product</a>
-          {/* <a class="nav-item nav-link" href="#">Features</a>
-          <a class="nav-item nav-link" href="#">Pricing</a> */}
-        </div>
-        {/* <!-- Right navigation --> */}
-        <div class="navbar-nav ms-lg-4">
-          {/* <a class="nav-item nav-link" href="#">Sign in</a> */}
-        </div>
-        {/* <!-- Action --> */}
-        <div class="d-flex align-items-lg-center mt-3 mt-lg-0">
-          {/* <a href="#" class="btn btn-sm btn-primary">
-            Logout
-          </a> */}
-        </div>
-      </div>
-    </div>
-  </nav>
-  </div>
+    <React.Fragment>
+      <Navbar expand="lg" className="main-nav-bar">
+        <Container>
+          <Navbar.Brand href="#home">
+            <img
+              alt=""
+              src="/assets/logofse.png"
+              width={100}
+              className="d-inline-block align-top me-3"
+            />{' '}
+            <span style={{ position: "relative", top: "7px" }} className="h1 m-0">FSE</span>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <Nav.Link href="#home" as={NavLink} to={'/'} className="nav-link-font">Home</Nav.Link>
+              <Nav.Link href="#About" as={NavLink} to={'/about'} className="nav-link-font">About</Nav.Link>
+              <Nav.Link href="#Contact" as={NavLink} to={'/contact'} className="nav-link-font">Contact</Nav.Link>
+              
+              {/* <NavDropdown title="Login" id="basic-nav-dropdown" className="nav-link-font">
+                <NavDropdown.Item onClick={() => navigate("/adminLogin")}>Admin</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/mangerLogin")}>Manager</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/techLogin")}>Technician</NavDropdown.Item>
+              </NavDropdown> */}
+
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+  </React.Fragment>
   );
 }
 

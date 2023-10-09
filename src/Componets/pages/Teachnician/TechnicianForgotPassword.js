@@ -211,7 +211,7 @@ const Reset = async  () => {
 
     <div className="container d-flex flex-column">
         <div className="row align-items-center justify-content-center min-vh-100 g-0">
-            <div className="col-12 col-md-8 col-lg-4 border-top border-3 border-primary">
+            <div className="col-12 col-md-8 col-lg-4 border-top border-3 border-success">
                 <div className="card shadow-sm">
                     <div className="card-body">
 
@@ -244,7 +244,7 @@ const Reset = async  () => {
                                     <div className="mb-3 d-grid">
                                         <button
                                             type="button"
-                                            className="btn btn-primary"
+                                            className="btn btn-success"
                                             onClick={sendResetEmail}
                                         >
                                             {isLoading ? <Spinner /> : 'Send Reset Email'}
@@ -287,7 +287,7 @@ const Reset = async  () => {
                                     <div className="mb-3 d-grid">
                                         <button
                                             type="button"
-                                            className="btn btn-primary"
+                                            className="btn btn-success"
                                             onClick={Reset}
                                         >
                                             Reset Password

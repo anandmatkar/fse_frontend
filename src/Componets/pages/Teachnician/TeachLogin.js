@@ -21,6 +21,8 @@ function TechnicianLogin() {
   const authCtx = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+
+
   const submitHandler = (event) => {
     event.preventDefault();
     const enteredEmail = emailInputRef.current.value;
@@ -41,6 +43,8 @@ function TechnicianLogin() {
                 const data = response.data.data;
                 if (data.token) {
                     Cookies.set('token', data.token, { expires: 2 });
+                    localStorage.setItem('Name' , data.name);
+                    localStorage.setItem('Profile' , data.avatar);
                     authCtx.login(data.token);
                     navigate("/techD");
                 } else {
