@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-import classes from '../Manager/forgetPassword.module.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from '../Common/Spinner';
