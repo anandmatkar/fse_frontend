@@ -8,6 +8,8 @@ import LayoutTech from "../../Layout/Layout3";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import './Techlogin.css'
+
+
 function TechnicianLogin() {
   const style = {
     // height:"100vh",
