@@ -1,56 +1,72 @@
-import React, { useContext, useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { NavLink, Link } from 'react-router-dom';
-import AuthContext from '../auth-context/auth-context';
-import {  useNavigate , Navigate} from "react-router-dom";
-import './managerdashboardnavbar.css';
+import React, { useContext } from 'react';
+import { Dropdown, Navbar, Nav, Container } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-// import './ManagerNavBar.css';
+import AuthContext from '../auth-context/auth-context';
 
 const NavbarManagerDashboard = () => {
     const navigate = useNavigate();
-  const authCtx = useContext(AuthContext);
-  const isLoggedIn = authCtx.isLoggedIn;
+    const authCtx = useContext(AuthContext);
 
-  const logoutHandler = () => {
-    Cookies.remove('token');
-    navigate('/mangerLogin')
+    const logoutHandler = () => {
+        Cookies.remove('token');
+        navigate('/mangerLogin');
+        authCtx.logout();
+    };
 
-    authCtx.logout();
-  };
+    const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+        <a
+            href=""
+            ref={ref}
+            onClick={(e) => {
+                e.preventDefault();
+                onClick(e);
+            }}
+        >
+            {children}
+        </a>
+    ));
 
-  return (
-    <React.Fragment>
-    <Navbar expand="lg" className="main-nav-bar">
-      <Container>
-        <Navbar.Brand href="#home">
-          <img
-            alt=""
-            src="/assets/logofse.png"
-            width={100}
-            className="d-inline-block align-top me-3"
-          />{' '}
-          <span style={{ position: "relative", top: "7px" }} className="h1 m-0">FSE</span>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
-            <Nav.Link href="#home" as={NavLink} to={'/'} className="nav-link-font">Home</Nav.Link>
-            <Nav.Link href="#About" as={NavLink} to={'/about'} className="nav-link-font">About</Nav.Link>
-            <Nav.Link href="#Contact" as={NavLink} to={'/contact'} className="nav-link-font">Contact</Nav.Link>
-            <Button className='managerdash-button btn btn-danger' onClick={logoutHandler}>Logout</Button>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-</React.Fragment>
-);
+    return (
+        <React.Fragment>
+            <Navbar expand="lg" className="main-nav-bar">
+                <Container>
+                    <Navbar.Brand href="#home">
+                        <img
+                            alt=""
+                            src="/assets/logofse.png"
+                            width={100}
+                            className="d-inline-block align-top me-3"
+                        />
+                        <span style={{ position: 'relative', top: '7px' }} className="h1 m-0">
+                            FSE
+                        </span>
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="ms-auto">
+                            <Dropdown className="imgdropdown">
+                                <Dropdown.Toggle as={CustomToggle}>
+                                    {/* Replace with manager profile picture if available */}
+                                    <img
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU"
+                                        alt="Profile"
+                                        style={{ width: '60px', borderRadius: '50%', height: '50px' }}
+                                    />
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    {/* Adjust navigation path as per requirement */}
+                                    <Dropdown.Item onClick={() => navigate("/ShowManagerProfile")}>Show Profile</Dropdown.Item>
+                                    <Dropdown.Item onClick={logoutHandler}>Logout</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        </React.Fragment>
+    );
 }
 
-export default NavbarManagerDashboard
-
+export default NavbarManagerDashboard;
