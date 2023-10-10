@@ -21,6 +21,7 @@ const DeatailofJobAssign = () => {
     const [project , setProject] = useState(null);
     const [timesheetData, setTimesheetData] = useState([]);
     const [NewReport, setNewReport] = useState([]);
+    
    
 
 
@@ -140,7 +141,8 @@ console.log(config, "config")
 
   // Update timesheetData
           const onNewTimesheetCallback = (newTimesheet) => {
-        setTimesheetData(prevData => [...prevData, newTimesheet]);
+            console.log(newTimesheet);
+        // setTimesheetData(prevData => [...prevData, newTimesheet]);
         // Update project
         setProject(prevProject => {
             const updatedTechnicianData = prevProject.technician_data.map(technician => {
@@ -158,7 +160,8 @@ console.log(config, "config")
    
     // update Report
     const onNewReportCallback = (newReport) => {
-      setNewReport(prevData => [...prevData, newReport]);
+        console.log(newReport);
+    //   setNewReport(prevData => [...prevData, newReport]);
       
       setProject(prevProject => {
           const updatedTechnicianData = prevProject.technician_data.map(technician => {
@@ -172,6 +175,7 @@ console.log(config, "config")
               technician_data: updatedTechnicianData
           };
       });
+
   }
 
  

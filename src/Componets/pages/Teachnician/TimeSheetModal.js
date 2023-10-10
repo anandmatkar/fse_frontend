@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const TimeSheetModal = ({ projectID , onNewTimesheet }) => { 
+
+  const navigate = useNavigate();
+
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
       projectID: projectID,
@@ -54,6 +58,7 @@ const TimeSheetModal = ({ projectID , onNewTimesheet }) => {
         }
     }
 };
+
 const handleSubmit = async (e) => {
   e.preventDefault();
   const token = Cookies.get('token');
@@ -74,6 +79,15 @@ const handleSubmit = async (e) => {
               attachment: attachments // Send the attachments array here
           })
       });
+      const newTimeSheetData = {
+        projectID: formData.projectID,
+              date: formData.date,
+              startTime: formData.start_time,
+              endTime: formData.end_time,
+              comments: formData.comments,
+              attachment: attachments // Send the attachments array here
+      }
+      
       const timesheetData = await timesheetResponse.json();
 
       if (!timesheetData.success) {
@@ -83,8 +97,9 @@ const handleSubmit = async (e) => {
       alert('Timesheet created successfully');
       setShowModal(false);
       // Here's the change: Pass the newly created timesheet data back to parent.
-      if (timesheetData.data) {
-        onNewTimesheet(timesheetData.data);
+      console.log(timesheetData);
+      if (timesheetData.success) {
+        onNewTimesheet(newTimeSheetData);
     }
   } catch (error) {
       console.error('Error:', error);

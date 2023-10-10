@@ -73,15 +73,21 @@ const handleSubmit = async (e) => {
                 attachment: attachments
             })
         });
+        const newReport = {
+          projectID: formData.projectID,
+                date: formData.date,
+                description: formData.description,
+                attachment: attachments
+        }
         const data = await response.json();
         if (!data.success) {
             throw new Error(data.message);
         }
-
+        console.log(response);
         alert('Report created successfully');
         setShowModal(false);
-        if(data.data) {
-          onNewReport(data.data);
+        if(response.status === 200) {
+          onNewReport(newReport);
         }
     } catch (error) {
         console.error('Error:', error);
