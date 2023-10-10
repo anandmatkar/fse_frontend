@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Row from 'react-bootstrap/Row';
+import React, { useState } from 'react'; 
 import * as formik from 'formik';
 import * as yup from 'yup';
-import { Card, Container } from 'react-bootstrap';
+import { Card, Container, Button,Row, Col, Form, InputGroup } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import {
   Create_Technician_Api,
@@ -40,44 +35,36 @@ function CreateTechnician() {
 
   const createTechnician = async (formData) => {
     try {
-      // const token = localStorage.getItem("token");
-      const token = Cookies.get('token');
-      if (!token) {
-        console.error('Token not found in localStorage.');
+        // const token = localStorage.getItem("token");
+        const token = Cookies.get("token");
+        if (!token) {
+        console.error("Token not found in localStorage.");
         return;
-      }
-      let config = {
-        headers: {
-          Authorization: token,
-        },
-      };
+        }
+        let config = {
+            headers: {
+                Authorization: token,
+            },
+        };
 
-      let technicianData = {
-        ...formData,
-        profilePic: profilePicPath,
-        documents: documentsPath,
-      };
-      console.log(technicianData);
-      const response = await axios.post(
-        Create_Technician_Api,
-        technicianData,
-        config
-      );
-      console.log(response.data);
-      if (response.data.status === 201) {
-        navigate('/managetechnician');
-        toast.success(response.data.message);
-      } else {
-        toast.error(response.data.message);
-      }
+        let technicianData = {...formData, profilePic: profilePicPath, documents: documentsPath};
+        console.log(technicianData);
+        const response = await axios.post(Create_Technician_Api, technicianData, config);
+        console.log(response.data);
+        if(response.data.status === 201) {
+          navigate('/managetechnician');
+          toast.success(response.data.message);
+        } else {
+          toast.error(response.data.message);           
+        }
     } catch (error) {
-      console.log(error.message);
-      toast.error('Error creating technician. Please try again.');
+        console.log(error.message);
+        toast.error('Error creating technician. Please try again.');           
     }
-  };
-
+}
+  
   const handleSubmit = (values, e) => {
-    console.log('Form Data:', values);
+    console.log("Form Data:", values);
     // console.log(selectedFile);
     createTechnician(values);
   };
@@ -89,32 +76,31 @@ function CreateTechnician() {
       console.log(profileImage);
 
       const token = Cookies.get('token');
-      if (!token) {
-        console.error('Token not found in localStorage.');
+        if (!token) {
+        console.error("Token not found in localStorage.");
         return;
-      }
-      let config = {
-        headers: {
-          Authorization: token,
-        },
-      };
-      let fileData = new FormData();
+        }
+        let config = {
+            headers: {
+                Authorization: token,
+            },
+        };
+        let fileData = new FormData();
 
-      // Append the profile image to the FormData
-      fileData.append('image', profileImage);
+        // Append the profile image to the FormData
+        fileData.append('image', profileImage);
 
-      const response = await axios.post(
-        Upload_Technician_Profile,
-        fileData,
-        config
-      );
+      const response = await axios.post(Upload_Technician_Profile, fileData, config);
 
       console.log(response.data);
 
       setProfilePicPath(response.data.data);
+
+
     } catch (error) {
       console.log(error.message);
     }
+
   };
 
   // Define your handleFileChange function
@@ -130,43 +116,41 @@ function CreateTechnician() {
     }
 
     const token = Cookies.get('token');
-    if (!token) {
-      console.error('Token not found in localStorage.');
-      return;
-    }
-    let config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-    console.log(docFormData);
+          if (!token) {
+          console.error("Token not found in localStorage.");
+          return;
+          }
+          let config = {
+              headers: {
+                  Authorization: token,
+              },
+          };
+          console.log(docFormData);
     // Make an HTTP POST request to your API to send the documents
     try {
-      const response = await axios.post(
-        Upload_Technician_Documents,
-        docFormData,
-        config
-      );
+      const response = await axios.post(Upload_Technician_Documents, docFormData, config);
 
-      if (response.data.status === 201) {
-        setDocumentsPath(response.data.data);
+      if(response.data.status === 201){
+        setDocumentsPath(response.data.data)
         toast.success(response.data.message);
         console.log(response.data.data);
       }
+      
     } catch (error) {
       console.log(error.message);
       toast.error(error.message);
     }
   };
-
+  
   return (
     <React.Fragment>
-      <h3 className="my-3 text-center">Create Technician</h3>
+
+      <h3 className='my-3 text-center'>Create Technician</h3>
 
       <Container as={Card.Header}>
-        <Formik
+      <Formik
           validationSchema={schema}
-          onSubmit={handleSubmit} // Use the custom handleSubmit function
+          onSubmit={handleSubmit}
           initialValues={{
             name: '',
             surname: '',
@@ -175,168 +159,168 @@ function CreateTechnician() {
             phone: '',
             nationality: '',
             qualification: '',
-            level: '',
+            level:'',
             profilePic: '',
           }}
         >
           {({ handleSubmit, handleChange, values, touched, errors }) => (
             <Form noValidate onSubmit={handleSubmit}>
-              <Row className="mb-3">
-                <Form.Group controlId="validationFormik01" className="my-2">
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="First Name"
-                    name="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    isValid={touched.name && !errors.name}
-                  />
-                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="validationFormik02" className="my-2">
-                  <Form.Label>Surname</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Surname"
-                    name="surname"
-                    value={values.surname}
-                    onChange={handleChange}
-                    isValid={touched.surname && !errors.surname}
-                  />
-
-                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group
-                  controlId="validationFormikUsername"
-                  className="my-2"
-                >
-                  <Form.Label>Email Address</Form.Label>
-                  <InputGroup hasValidation>
-                    <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
+              <Row>
+                <Col lg={6} className="mb-3">
+                  <Form.Group controlId="validationFormik01" className='my-2'>
+                    <Form.Label>Name</Form.Label>
                     <Form.Control
-                      type="text"
-                      placeholder="Email Address"
-                      aria-describedby="inputGroupPrepend"
-                      name="emailAddress"
-                      value={values.emailAddress}
+                      placeholder='First Name'
+                      name="name"
+                      value={values.name}
                       onChange={handleChange}
-                      isInvalid={!!errors.emailAddress}
+                      isValid={touched.name && !errors.name}
+                    />
+                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col lg={6} className="mb-3">
+                  <Form.Group controlId="validationFormik02" className='my-2'>
+                    <Form.Label>Surname</Form.Label>
+                    <Form.Control
+                      placeholder='Surname'
+                      name="surname"
+                      value={values.surname}
+                      onChange={handleChange}
+                      isValid={touched.surname && !errors.surname}
+                    />
+                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col lg={6} className="mb-3">
+                  <Form.Group controlId="validationFormikUsername" className='my-2'>
+                    <Form.Label>Email Address</Form.Label>
+                    <InputGroup hasValidation>
+                      <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
+                      <Form.Control
+                        placeholder="Email Address"
+                        aria-describedby="inputGroupPrepend"
+                        name="emailAddress"
+                        value={values.emailAddress}
+                        onChange={handleChange}
+                        isInvalid={!!errors.emailAddress}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.emailAddress}
+                      </Form.Control.Feedback>
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+                <Col lg={6} className="mb-3">
+                  <Form.Group controlId="validationFormik03" className='my-2'>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      placeholder="Password"
+                      name="password"
+                      value={values.password}
+                      onChange={handleChange}
+                      isInvalid={!!errors.password}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.emailAddress}
+                      {errors.password}
                     </Form.Control.Feedback>
-                  </InputGroup>
-                </Form.Group>
-                <Form.Group controlId="validationFormik03" className="my-2">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Password"
-                    name="password"
-                    value={values.password}
-                    onChange={handleChange}
-                    isInvalid={!!errors.password}
-                  />
-
-                  <Form.Control.Feedback type="invalid">
-                    {errors.password}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="validationFormik04" className="my-2">
-                  <Form.Label>Phone</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Phone"
-                    name="phone"
-                    value={values.phone}
-                    onChange={handleChange}
-                    isInvalid={!!errors.phone}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.phone}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="validationFormik05" className="my-2">
-                  <Form.Label>Nationality</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Nationality"
-                    name="nationality"
-                    value={values.nationality}
-                    onChange={handleChange}
-                    isInvalid={!!errors.nationality}
-                  />
-
-                  <Form.Control.Feedback type="invalid">
-                    {errors.nationality}
-                  </Form.Control.Feedback>
-                </Form.Group>
-
-                <Form.Group controlId="validationFormik06" className="my-2">
-                  <Form.Label>Qualification</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Qualification"
-                    name="qualification"
-                    value={values.qualification}
-                    onChange={handleChange}
-                    isInvalid={!!errors.qualification}
-                  />
-
-                  <Form.Control.Feedback type="invalid">
-                    {errors.qualification}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="validationFormik07" className="my-2">
-                  <Form.Label>Level</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Level"
-                    name="level"
-                    value={values.level}
-                    onChange={handleChange}
-                    isInvalid={!!errors.level}
-                  />
-
-                  <Form.Control.Feedback type="invalid">
-                    {errors.level}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="validationFormik08" className="my-2">
-                  <Form.Label>Profile Picture</Form.Label>
-                  <Form.Control
-                    type="file" // Use type "file" for file input
-                    name="profilePic"
-                    onChange={handleFileChange} // Handle file input change
-                    isInvalid={!!errors.profilePic}
-                  />
-
-                  <Form.Control.Feedback type="invalid">
-                    {errors.profilePic}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="validationFormik09" className="my-2">
-                  <Form.Label>Documents</Form.Label>
-                  <Form.Control
-                    type="file" // Use type "file" for file input
-                    name="documents"
-                    onChange={handleDocFileChange} // Handle file input change
-                    isInvalid={!!errors.documents}
-                    multiple // Allow multiple file selection
-                  />
-
-                  <Form.Control.Feedback type="invalid">
-                    {errors.documents}
-                  </Form.Control.Feedback>
-                </Form.Group>
+                  </Form.Group>
+                </Col>
+                <Col lg={6} className="mb-3">
+                  <Form.Group controlId="validationFormik04" className='my-2'>
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control
+                      placeholder="Phone"
+                      name="phone"
+                      value={values.phone}
+                      onChange={handleChange}
+                      isInvalid={!!errors.phone}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.phone}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col lg={6} className="mb-3">
+                  <Form.Group controlId="validationFormik05" className='my-2'>
+                    <Form.Label>Nationality</Form.Label>
+                    <Form.Control
+                      placeholder="Nationality"
+                      name="nationality"
+                      value={values.nationality}
+                      onChange={handleChange}
+                      isInvalid={!!errors.nationality}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.nationality}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col lg={6} className="mb-3">
+                  <Form.Group controlId="validationFormik06" className='my-2'>
+                    <Form.Label>Qualification</Form.Label>
+                    <Form.Control
+                      placeholder="Qualification"
+                      name="qualification"
+                      value={values.qualification}
+                      onChange={handleChange}
+                      isInvalid={!!errors.qualification}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.qualification}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col lg={6} className="mb-3">
+                  <Form.Group controlId="validationFormik07" className='my-2'>
+                    <Form.Label>Level</Form.Label>
+                    <Form.Control
+                      placeholder="Level"
+                      name="level"
+                      value={values.level}
+                      onChange={handleChange}
+                      isInvalid={!!errors.level}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.level}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col lg={6} className="mb-3">
+                  <Form.Group controlId="validationFormik08" className='my-2'>
+                    <Form.Label>Profile Picture</Form.Label>
+                    <Form.Control
+                      type="file"
+                      name="profilePic"
+                      onChange={handleFileChange}
+                      isInvalid={!!errors.profilePic}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.profilePic}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col lg={6} className="mb-3">
+                  <Form.Group controlId="validationFormik09" className='my-2'>
+                    <Form.Label>Documents</Form.Label>
+                    <Form.Control
+                      type="file"
+                      name="documents"
+                      onChange={handleDocFileChange}
+                      isInvalid={!!errors.documents}
+                      multiple
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.documents}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
               </Row>
-
               <Button
-                variant="warning"
+                variant='warning'
                 type="button"
                 onClick={handleSubmit}
-                className="my-3"
+                className='my-3'
                 as={Col}
                 lg="3"
               >
