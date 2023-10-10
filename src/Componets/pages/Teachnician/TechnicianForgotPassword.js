@@ -48,7 +48,7 @@ function TechnicianForgotPassword() {
   
       try {
         const response = await axios.post(
-          'http://localhost:3003/api/v1/technician/forgotPassword',
+          'http://3.110.86.245/api/v1/technician/forgotPassword',
           {
             emailAddress: email,
           },
@@ -144,7 +144,7 @@ const Reset = async  () => {
 
     try {
       const response = await axios.put(
-        'http://localhost:3003/api/v1/technician/resetPassword',
+        'http://3.110.86.245/api/v1/technician/resetPassword',
         {
          emailAddress: email,
           otp: otp,

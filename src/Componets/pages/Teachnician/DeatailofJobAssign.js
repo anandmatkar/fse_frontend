@@ -46,7 +46,7 @@ console.log(token,"token")
               },
             };
 console.log(config, "config")
-            let url = `http://localhost:3003/api/v1/technician/deleteTimesheet?projectId=${project_id}&timeSheetId=${id}`
+            let url = `http://3.110.86.245/api/v1/technician/deleteTimesheet?projectId=${project_id}&timeSheetId=${id}`
             
             const response = await axios.get(url, config);            
 
@@ -90,7 +90,7 @@ console.log(config, "config")
               },
             };
               console.log(config, "config")
-            let url = `http://localhost:3003/api/v1/technician/deleteReport?projectId=${project_id}&reportId=${id}`
+            let url = `http://3.110.86.245/api/v1/technician/deleteReport?projectId=${project_id}&reportId=${id}`
             
             const response = await axios.get(url, config);            
 
@@ -114,7 +114,7 @@ console.log(config, "config")
 };
         useEffect(() => {
           const token = Cookies.get('token');
-          fetch(`/api/v1/technician/assignedProjectDetails?projectId=${projectID}`, {
+          fetch(`http://3.110.86.245/api/v1/technician/assignedProjectDetails?projectId=${projectID}`, {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: token,
@@ -363,7 +363,8 @@ console.log(config, "config")
                             <td>{index + 1}</td>
                             <td>
                                 <a href={item.file_path} target="_blank" rel="noreferrer" title={item.file_path.split('/').pop()}>
-                                    <i className="fa fa-cloud-upload fa-2x" style={{color: "black"}}></i>
+                                    {/* <i className="fa fa-cloud-upload fa-2x" style={{color: "black"}}></i> */}
+                                    <AiFillProfile size="30px"  color="black"/>
                                     <div className='inn' style={{position:"relative", left:"10px", display:"inline-block"}}>
                                         File {index + 1}
                                     </div>

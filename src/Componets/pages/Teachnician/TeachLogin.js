@@ -31,7 +31,7 @@ function TechnicianLogin() {
     setIsLoading(true);
     
     if (isLogin) {
-        axios.post("http://localhost:3003/api/v1/technician/techLogin", {
+        axios.post("http://3.110.86.245/api/v1/technician/techLogin", {
             email: enteredEmail,
             password: enteredPassword,
             returnSecureToken: true,
@@ -102,3 +102,5 @@ function TechnicianLogin() {
   );
 }
 export default TechnicianLogin;
+
+

@@ -27,7 +27,7 @@ function JobAssigned() {
             Authorization: token, // Assuming you use Bearer token format
           },
         };
-        fetch('/api/v1/technician/assignedProjectList', axiosConfig)
+        fetch('http://3.110.86.245/api/v1/technician/assignedProjectList', axiosConfig)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

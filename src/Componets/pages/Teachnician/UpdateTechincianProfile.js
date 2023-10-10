@@ -85,7 +85,7 @@ const handleImageUpload = async (e) => {
       
       // Make an API request to upload the image and get the path
       const response = await axios.post(
-        'http://localhost:3003/api/v1/technician/uploadProfilePic',
+        'http://3.110.86.245/api/v1/technician/uploadProfilePic',
         formData,
         config
       );
@@ -128,7 +128,7 @@ const handleImageUpload = async (e) => {
           Authorization: token,
         },
       };
-      const response = await axios.get('http://localhost:3003/api/v1/technician/showProfile', config);
+      const response = await axios.get('http://3.110.86.245/api/v1/technician/showProfile', config);
       const profileData = response.data.data[0];
       console.log(profileData);
 
@@ -200,7 +200,7 @@ const handleImageUpload = async (e) => {
       };
   
       const response = await axios.post(
-        'http://localhost:3003/api/v1/technician/uploadTechnicianDocuments',
+        'http://3.110.86.245/api/v1/technician/uploadTechnicianDocuments',
         docsFormData,
         config
       );
@@ -245,7 +245,7 @@ const handleImageUpload = async (e) => {
       console.log(newFormData);
       console.log(config);
 
-        const response = await axios.post('/api/v1/technician/updateTechnicianProfile', newFormData, config);
+        const response = await axios.post('http://3.110.86.245/api/v1/technician/updateTechnicianProfile', newFormData, config);
   
         if (response.status === 200) {
           // Profile updated successfully, you can show a success message or redirect

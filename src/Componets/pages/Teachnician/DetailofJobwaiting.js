@@ -26,7 +26,7 @@ const { projectID } = useParams();
 
     useEffect(() => {
         const token = Cookies.get('token');
-        fetch(`/api/v1/technician/assignedProjectDetails?projectId=${projectID}`, {
+        fetch(`http://3.110.86.245/api/v1/technician/assignedProjectDetails?projectId=${projectID}`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: token,
@@ -228,7 +228,8 @@ const { projectID } = useParams();
                             <td>{index + 1}</td>
                             <td>
                                 <a href={item.file_path} target="_blank" rel="noreferrer" title={item.file_path.split('/').pop()}>
-                                    <i className="fa fa-cloud-upload fa-2x" style={{color: "black"}}></i>
+                                    {/* <i className="fa fa-cloud-upload fa-2x" style={{color: "black"}}></i> */}
+                                    <AiFillProfile size="30px"  color="black"/>
                                     <div className='inn' style={{position:"relative", left:"10px", display:"inline-block"}}>
                                         File {index + 1}
                                     </div>

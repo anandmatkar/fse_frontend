@@ -33,7 +33,7 @@ function TechnicianDashboard() {
     useEffect(() => {
         const token = Cookies.get('token');
         // Fetch the data from the API when the component mounts
-        fetch("http://localhost:3003/api/v1/technician/assignedProjectCounts", {
+        fetch("http://3.110.86.245/api/v1/technician/assignedProjectCounts", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

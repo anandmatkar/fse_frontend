@@ -10,7 +10,7 @@ const TimeSheetApprovalModal = ({ projectID, onNewTimesheet }) => {
 
   const handleRequestApproveModal = async () => {
     const token = Cookies.get('token');
-    const approvalEndpoint = `http://localhost:3003/api/v1/technician/requestForTimesheetApproval?projectId=${projectID}`;
+    const approvalEndpoint = `http://3.110.86.245/api/v1/technician/requestForTimesheetApproval?projectId=${projectID}`;
 
     try {
       const response = await fetch(approvalEndpoint, {

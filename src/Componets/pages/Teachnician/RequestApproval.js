@@ -8,7 +8,7 @@ const RequestApproval = ({projectID}) => {
 
     const handleApproval = async () => {
         try {
-            let response = await fetch(`http://localhost:3003/api/v1/technician/submitReportForApproval?projectId=${projectID}`, {
+            let response = await fetch(`http://3.110.86.245/api/v1/technician/submitReportForApproval?projectId=${projectID}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': token,

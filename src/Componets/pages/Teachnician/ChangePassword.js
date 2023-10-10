@@ -52,7 +52,7 @@ export default function ChangePassword() {
       const token = Cookies.get("token");
 
       const response = await axios.put(
-        'http://localhost:3003/api/v1/technician/changePassword',
+        'http://3.110.86.245/api/v1/technician/changePassword',
         {
           oldPassword,
           newPassword,
