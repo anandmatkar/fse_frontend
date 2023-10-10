@@ -6,6 +6,8 @@ import Layout from "../../Layout/Layout";
 import Cookies from 'js-cookie';
 import LayoutTech from "../../Layout/Layout3";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import './Techlogin.css'
 
@@ -27,11 +29,13 @@ function TechnicianLogin() {
 
   const submitHandler = (event) => {
     event.preventDefault();
+
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
     localStorage.setItem("enteredEmail", JSON.stringify(enteredEmail));
+
     setIsLoading(true);
-    
+
     if (isLogin) {
         axios.post("http://3.110.86.245/api/v1/technician/techLogin", {
             email: enteredEmail,
@@ -40,15 +44,15 @@ function TechnicianLogin() {
         })
         .then((response) => {
             setIsLoading(false);
-            console.log(response.data, 'response data');
             if (response.data.status === 200) {
                 const data = response.data.data;
                 if (data.token) {
                     Cookies.set('token', data.token, { expires: 2 });
-                    localStorage.setItem('Name' , data.name);
-                    localStorage.setItem('Profile' , data.avatar);
+                    localStorage.setItem('Name', data.name);
+                    localStorage.setItem('Profile', data.avatar);
                     authCtx.login(data.token);
                     navigate("/techD");
+                    toast.success("Login successful!"); 
                 } else {
                     throw new Error("Invalid response from the server");
                 }
@@ -60,10 +64,11 @@ function TechnicianLogin() {
         })
         .catch((err) => {
             setIsLoading(false);
-            alert(err.message);
+            toast.error(err.message); // Toast notification for errors
         });
-    } // end of isLogin check
-}; 
+    }
+};
+
   return (
     <LayoutTech>
      <div style={style}>
