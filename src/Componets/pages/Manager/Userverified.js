@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Verify_Manager_Api } from '../../../Api/Manager_Api';
 
 const OTPVerification = () => {
   const [otp, setOTP] = useState(['', '', '', '']);
@@ -43,7 +44,7 @@ const OTPVerification = () => {
 
     console.log('Email Address:', emailAddress);
 
-    fetch('/api/v1/manager/verifyManager', {
+    fetch(Verify_Manager_Api, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

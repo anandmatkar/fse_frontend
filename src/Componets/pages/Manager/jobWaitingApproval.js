@@ -1,34 +1,33 @@
-import React, { useState } from "react";
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileAlt, faClipboard } from "@fortawesome/free-solid-svg-icons";
-import JobWaitingApproval from "../Teachnician/JobWaitingApproval";
+import React, { useState } from 'react';
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileAlt, faClipboard } from '@fortawesome/free-solid-svg-icons';
 
 const JobWaitingApprovalM = () => {
   const jobData = [
     {
-      orderNumber: "12345",
-      customerName: "Shbham",
-      customerAccount: "789456",
-      countryName: "United States",
-      jobDescription: "Job 1 Description",
-      dateFrom: "2023-07-01",
-      dateTo: "2023-07-10",
-      technicalReport: "Technical Report 1",
-      timeSheet: "Time Sheet 1",
+      orderNumber: '12345',
+      customerName: 'Shbham',
+      customerAccount: '789456',
+      countryName: 'United States',
+      jobDescription: 'Job 1 Description',
+      dateFrom: '2023-07-01',
+      dateTo: '2023-07-10',
+      technicalReport: 'Technical Report 1',
+      timeSheet: 'Time Sheet 1',
     },
     {
-      orderNumber: "67890",
-      customerName: "Jane Smith",
-      customerAccount: "987654",
-      countryName: "Canada",
-      jobDescription: "Job 2 Description",
-      dateFrom: "2023-07-15",
-      dateTo: "2023-07-25",
-      technicalReport: "Technical Report 2",
-      timeSheet: "Time Sheet 2",
+      orderNumber: '67890',
+      customerName: 'Jane Smith',
+      customerAccount: '987654',
+      countryName: 'Canada',
+      jobDescription: 'Job 2 Description',
+      dateFrom: '2023-07-15',
+      dateTo: '2023-07-25',
+      technicalReport: 'Technical Report 2',
+      timeSheet: 'Time Sheet 2',
     },
   ];
 
@@ -44,7 +43,7 @@ const JobWaitingApprovalM = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setShowTimeSheetModal(false); 
+    setShowTimeSheetModal(false);
   };
 
   const handleShowTimeSheetModal = () => {
@@ -56,10 +55,10 @@ const JobWaitingApprovalM = () => {
   };
   const handleShowReportModal = () => {
     setShoeReportModal(true);
-  }
+  };
   const handleCloseReportModal = () => {
     setShoeReportModal(false);
-  }
+  };
 
   return (
     <div className="job-progress">
@@ -139,18 +138,18 @@ const JobWaitingApprovalM = () => {
                   <td>End Date 1</td>
                   <td>
                     <FontAwesomeIcon
-                     icon={faFileAlt}
+                      icon={faFileAlt}
                       size="lg"
                       onClick={handleShowReportModal}
-                      style={{ cursor: "pointer", color:"#FFC9A2"}}
-                       />
+                      style={{ cursor: 'pointer', color: '#FFC9A2' }}
+                    />
                   </td>
                   <td>
                     <FontAwesomeIcon
                       icon={faClipboard}
                       size="lg"
                       onClick={handleShowTimeSheetModal}
-                      style={{ cursor: "pointer",color:"red" }}
+                      style={{ cursor: 'pointer', color: 'red' }}
                     />
                   </td>
                 </tr>
@@ -160,7 +159,7 @@ const JobWaitingApprovalM = () => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-        {/* <Button variant="success" onClick={handleCloseModal}>
+          {/* <Button variant="success" onClick={handleCloseModal}>
             Approve
           </Button> */}
 
@@ -189,7 +188,7 @@ const JobWaitingApprovalM = () => {
                 <th>Ending Time</th>
                 <th>Comments</th>
                 {/* <th>Approve or Reject TimwSheet</th> */}
-              
+
                 {/* Add more fields as needed */}
               </tr>
             </thead>
@@ -240,11 +239,11 @@ const JobWaitingApprovalM = () => {
           </Table>
         </Modal.Body>
         <Modal.Footer>
-        {/* <Button variant="primary">Validate</Button> */}
-        <Button variant="success" onClick={handleCloseModal}>
+          {/* <Button variant="primary">Validate</Button> */}
+          <Button variant="success" onClick={handleCloseModal}>
             Approve TimeSheet
           </Button>
-         
+
           <Button variant="secondary" onClick={handleCloseTimeSheetModal}>
             Close
           </Button>
@@ -255,5 +254,3 @@ const JobWaitingApprovalM = () => {
 };
 
 export default JobWaitingApprovalM;
-
-

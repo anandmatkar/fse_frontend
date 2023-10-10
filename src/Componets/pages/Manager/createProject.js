@@ -4,8 +4,15 @@ import Spinner from '../Common/Spinner';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import {
+  Create_Project_Api,
+  Upload_File_Attach,
+  Upload_Machine_Files,
+  Teachnician_List_Api,
+  Customer_List_Api,
+} from './../../../Api/Manager_Api';
 import axios from 'axios';
-import Navbar from '../../NavBar/navbarManager';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 
 function CreateProject() {
   const [customerList, setCustomerList] = useState([]);
@@ -39,7 +46,7 @@ function CreateProject() {
     }
 
     axios
-      .get('/api/v1/manager/customerList')
+      .get(Customer_List_Api)
       .then((response) => {
         // Assuming the response contains an array of customer objects
         const customersData = response.data.data;
@@ -69,7 +76,7 @@ function CreateProject() {
     }
 
     axios
-      .get('http://localhost:3003/api/v1/manager/technicianLists')
+      .get(Teachnician_List_Api)
       .then((response) => {
         // Assuming the response contains an array of customer objects
         const techniciansData = response.data.data;
@@ -117,10 +124,7 @@ function CreateProject() {
       });
 
       try {
-        const response = await axios.post(
-          '/api/v1/manager/uploadMachineFiles',
-          formData
-        );
+        const response = await axios.post(Upload_Machine_Files, formData);
 
         if (response.data.status === 201) {
           // The API should return an array of URLs for the uploaded files
@@ -150,10 +154,7 @@ function CreateProject() {
       });
 
       try {
-        const response = await axios.post(
-          'http://localhost:3003/api/v1/manager/uploadProjectAttach',
-          formData
-        );
+        const response = await axios.post(Upload_File_Attach, formData);
 
         if (response.data.status === 201) {
           // The API should return an array of URLs for the uploaded files
@@ -195,10 +196,7 @@ function CreateProject() {
     console.log(projectData);
 
     try {
-      const response = await axios.post(
-        '/api/v1/manager/createProject',
-        projectData
-      );
+      const response = await axios.post(Create_Project_Api, projectData);
       console.log(projectData);
 
       if (response.data.status === 200) {
@@ -228,7 +226,7 @@ function CreateProject() {
 
   return (
     <>
-      <Navbar />
+      <NavbarManagerDashboard />
       <div>
         <div class="container newproject">
           <header class="headernewproject">

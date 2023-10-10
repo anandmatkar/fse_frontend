@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import './NewCustomerScreen.css';
 import axios from 'axios';
+import {
+  Upload_ProfilePic_Manager,
+  Create_Manager_Api,
+} from './../../../Api/Manager_Api';
 
 function NewAccount() {
   const [formData, setFormData] = useState({
@@ -35,7 +39,7 @@ function NewAccount() {
     const formDataToSend = new FormData();
     formDataToSend.append('profilePic', file);
 
-    fetch('http://localhost:3003/api/v1/manager/uploadProfilePic', {
+    fetch(Upload_ProfilePic_Manager, {
       method: 'POST',
       body: formDataToSend,
     })
@@ -66,13 +70,10 @@ function NewAccount() {
     formDataToSend.append('profilePic', profilePic);
 
     try {
-      const response = await fetch(
-        'http://localhost:3003/api/v1/manager/createManager',
-        {
-          method: 'POST',
-          body: formDataToSend,
-        }
-      );
+      const response = await fetch(Create_Manager_Api, {
+        method: 'POST',
+        body: formDataToSend,
+      });
 
       if (response.ok) {
         console.log('Data submitted successfully');
@@ -86,7 +87,9 @@ function NewAccount() {
 
   const confirmEmail = async (token) => {
     try {
-      const response = await axios.get(`/api/v1/manager/confirmEmail/${token}`);
+      const response = await axios.get(
+        `http://3.110.86.245/api/v1/manager/confirmEmail/${token}`
+      );
       console.log(response.data.message); // Display the confirmation message to the user
     } catch (error) {
       console.error('Error confirming email:', error);

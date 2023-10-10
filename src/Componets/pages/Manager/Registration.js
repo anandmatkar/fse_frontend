@@ -4,6 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import {
+  Create_Manager_Api,
+  Profile_Upload_Manager,
+} from './../../../Api/Manager_Api';
 import Navbar from '../../NavBar/navbarManager';
 import './Registration.css';
 
@@ -30,10 +34,7 @@ const RegistrationPage = () => {
       formData.append('image', file);
 
       try {
-        const response = await axios.post(
-          '/api/v1/manager/uploadProfilePic',
-          formData
-        );
+        const response = await axios.post(Profile_Upload_Manager, formData);
         console.log(response.data.data);
         if (response.data.status === 201) {
           // The API should return the URL of the uploaded profile picture
@@ -114,10 +115,7 @@ const RegistrationPage = () => {
       console.log(registrationData);
 
       try {
-        const response = await axios.post(
-          '/api/v1/manager/createManager',
-          registrationData
-        );
+        const response = await axios.post(Create_Manager_Api, registrationData);
         console.log(response.data);
         if (response.data.status === 201) {
           console.log('Registration Successful:', response.data);
@@ -153,208 +151,6 @@ const RegistrationPage = () => {
   return (
     <div>
       <Navbar />
-      {/* <div className="container">
-        <div className="card">
-          <div className="card-body p-4 p-lg-5 text-black">
-            <form onSubmit={submitHandler}>
-              <div className="d-flex align-items-center mb-3 pb-1"></div>
-              <h3
-                className="fw-normal mb-3 pb-3"
-                style={{ letterSpacing: '1px' }}
-              >
-                Register an account
-              </h3>
-              <div className="row mb-4">
-                <div className="col">
-                  <div className="form-outline">
-                    <input
-                      type="text"
-                      id="firstName"
-                      className="form-control inputfieldresistration"
-                      value={name}
-                      name="name"
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                    <label className="form-label" htmlFor="firstName">
-                      First Name
-                    </label>
-                  </div>
-                  {errors.name && (
-                    <span className="error" style={{ color: 'red' }}>
-                      {errors.name}
-                    </span>
-                  )}
-                </div>
-                <div className="col">
-                  <div className="form-outline">
-                    <input
-                      type="text"
-                      id="lastName"
-                      className="form-control inputfieldresistration"
-                      value={surname}
-                      name="surname"
-                      onChange={(e) => setSurname(e.target.value)}
-                    />
-                    <label className="form-label" htmlFor="lastName">
-                      Last Name
-                    </label>
-                    {errors.surname && (
-                      <span className="error" style={{ color: 'red' }}>
-                        {errors.surname}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="row mb-4">
-                <div className="col">
-                  <div className="form-outline">
-                    <input
-                      type="text"
-                      id="company"
-                      className="form-control inputfieldresistration"
-                      value={company}
-                      name="company"
-                      onChange={(e) => setCompany(e.target.value)}
-                    />
-                    <label className="form-label" htmlFor="company">
-                      Company
-                    </label>
-                  </div>
-                  {errors.company && (
-                    <span className="error" style={{ color: 'red' }}>
-                      {errors.company}
-                    </span>
-                  )}
-                </div>
-                <div className="col">
-                  <div className="form-outline">
-                    <input
-                      type="text"
-                      id="email"
-                      className="form-control inputfieldresistration"
-                      value={emailAddress}
-                      name="emailAddress"
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <label className="form-label" htmlFor="email">
-                      Email Address
-                    </label>
-                    {errors.emailAddress && (
-                      <span className="error" style={{ color: 'red' }}>
-                        {errors.emailAddress}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="row mb-4">
-                <div className="col">
-                  <div className="form-outline">
-                    <input
-                      type="password"
-                      id="password"
-                      className="form-control inputfieldresistration"
-                      value={password}
-                      name="password"
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <label className="form-label" htmlFor="password">
-                      Password
-                    </label>
-                  </div>
-                  {errors.password && (
-                    <span className="error" style={{ color: 'red' }}>
-                      {errors.password}
-                    </span>
-                  )}
-                </div>
-                <div className="col">
-                  <div className="form-outline">
-                    <input
-                      type="password"
-                      id="confirmPassword"
-                      className="form-control inputfieldresistration"
-                      value={confirmPass}
-                      name="confirmPass"
-                      onChange={(e) => setConfirmPass(e.target.value)}
-                    />
-                    <label className="form-label" htmlFor="confirmpass">
-                      Confirm Password
-                    </label>
-                    {errors.confirmPass && (
-                      <span className="error" style={{ color: 'red' }}>
-                        {errors.confirmPass}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col">
-                  <div className="form-outline">
-                    <input
-                      type="text"
-                      id="phone"
-                      className="form-control inputfieldresistration"
-                      value={phone}
-                      name="phone"
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
-                    <label className="form-label" htmlFor="phone">
-                      Phone
-                    </label>
-                  </div>
-                  {errors.phone && (
-                    <span className="error" style={{ color: 'red' }}>
-                      {errors.phone}
-                    </span>
-                  )}
-                </div>
-                <div className="col">
-                  <div className="form-outline">
-                    <input
-                      type="file"
-                      id="file"
-                      className="form-control inputfieldresistration"
-                      onChange={handleProfilePicChange}
-                    />
-                    <label className="form-label" htmlFor="profilePic">
-                      Profile Pic
-                    </label>
-                    {errors.profilePic && (
-                      <span className="error" style={{ color: 'red' }}>
-                        {errors.profilePic}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-8">
-                <button className="btn btn-dark " type="submit">
-                  Register
-                </button>
-              </div>
-              <p className="mb-5 pb-lg-2" style={{ color: '#393f81' }}>
-                Already have an account?{' '}
-                <Link to={'/mangerLogin'} style={{ color: '#393f81' }}>
-                  Sign in here
-                </Link>
-              </p>
-              <a href="#!" className="small text-muted">
-                Terms of use.
-              </a>
-              <a href="#!" className="small text-muted">
-                Privacy policy
-              </a>
-            </form>
-          </div>
-        </div>
-      </div> */}
 
       <div className="user-registration">
         <div className="container registerManager">

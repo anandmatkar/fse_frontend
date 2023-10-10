@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { FormControl, Container } from 'react-bootstrap';
-import Navbar from '../../NavBar/navbarManager';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 
 const ProjectStatusDetails = () => {
   const navigate = useNavigate();
@@ -114,7 +114,7 @@ const ProjectStatusDetails = () => {
 
   return (
     <>
-      <Navbar />
+      <NavbarManagerDashboard />
       <div className="job-progress mt-2">
         <h1 className="jobassigntext mb-4">Project Details</h1>
 

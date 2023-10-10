@@ -1,7 +1,8 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Button, Container, Table } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Button, Container, Table } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Project_Machine_Details } from '../../../Api/Manager_Api';
 
 export default function ViewProjectMachineInfo() {
   const navigate = useNavigate();
@@ -13,10 +14,10 @@ export default function ViewProjectMachineInfo() {
 
   const fetchMachineDetails = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
 
       if (!token) {
-        console.error("Token not found in localStorage.");
+        console.error('Token not found in localStorage.');
         return;
       }
 
@@ -26,10 +27,7 @@ export default function ViewProjectMachineInfo() {
         },
       };
 
-      const response = await axios.get(
-        "http://localhost:3003/api/v1/manager/machineDetails",
-        config
-      );
+      const response = await axios.get(Project_Machine_Details, config);
 
       console.log(response.data.data);
       setMachineInfoDetails(response.data.data);
@@ -94,14 +92,13 @@ export default function ViewProjectMachineInfo() {
         <Table bordered hover responsive>
           <thead>
             <tr>
-
-                <th>Serial No.</th>
-                <th>Machine Type</th>
-                <th>Hour Count</th>
-                <th>Nominal Speed</th>
-                <th>Actual Speed</th>
-                <th>Description</th>
-                <th></th>
+              <th>Serial No.</th>
+              <th>Machine Type</th>
+              <th>Hour Count</th>
+              <th>Nominal Speed</th>
+              <th>Actual Speed</th>
+              <th>Description</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

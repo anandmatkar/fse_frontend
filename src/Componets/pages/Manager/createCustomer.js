@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Create_Customer_Api } from '../../../Api/Manager_Api';
 import { useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import Navbar from '../../NavBar/navbarManager';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import './CreateCustomer.css';
 
 function NewCustomerScreen() {
@@ -61,7 +61,7 @@ function NewCustomerScreen() {
     console.log(axiosConfig, 'data to send');
     try {
       const response = await axios.post(
-        '/api/v1/manager/createCustomer', // Updated API endpoint
+        Create_Customer_Api, // Updated API endpoint
         formData,
         axiosConfig
       );
@@ -153,7 +153,7 @@ function NewCustomerScreen() {
 
   return (
     <>
-      <Navbar />
+      <NavbarManagerDashboard />
       <div>
         {isLoading && (
           <div className="loading-spinner">

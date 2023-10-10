@@ -2,7 +2,8 @@ import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Table, FormControl, Pagination, Container } from 'react-bootstrap';
-import Navbar from '../../NavBar/navbarManager';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import {} from '../../../Api/Manager_Api';
 
 const TimeSheetForApproved = () => {
   const { techId, projectId } = useParams();
@@ -16,7 +17,7 @@ const TimeSheetForApproved = () => {
     try {
       const token = Cookies.get('token');
       const response = await fetch(
-        `/api/v1/manager/timesheetDetails?techId=${techId}&projectId=${projectId}`,
+        `http://3.110.86.245/api/v1/manager/timesheetDetails?techId=${techId}&projectId=${projectId}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -61,7 +62,7 @@ const TimeSheetForApproved = () => {
     try {
       const token = Cookies.get('token');
       const response = await fetch(
-        `http://localhost:3003/api/v1/manager/acceptTimesheetRequest?projectId=${projectId}&techId=${techId}`,
+        `http://3.110.86.245/api/v1/manager/acceptTimesheetRequest?projectId=${projectId}&techId=${techId}`,
         {
           method: 'PUT',
           headers: {
@@ -100,7 +101,7 @@ const TimeSheetForApproved = () => {
 
   return (
     <>
-      <Navbar />
+      <NavbarManagerDashboard />
       <div className="jobcontainer container mt-5">
         <h1 className="jobassigntext mb-4">Time Sheet</h1>
         <div className="card">

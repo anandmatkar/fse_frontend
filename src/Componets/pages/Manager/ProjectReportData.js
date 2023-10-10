@@ -2,7 +2,8 @@ import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Table, FormControl, Container } from 'react-bootstrap';
-import Navbar from '../../NavBar/navbarManager';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import {} from '../../../Api/Manager_Api';
 
 function ProjectReportData() {
   const { techId, projectId } = useParams();
@@ -17,7 +18,7 @@ function ProjectReportData() {
     try {
       const token = Cookies.get('token');
       const response = await fetch(
-        `/api/v1/manager/reportDetails?techId=${techId}&projectId=${projectId}`,
+        `http://3.110.86.245/api/v1/manager/reportDetails?techId=${techId}&projectId=${projectId}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -58,7 +59,7 @@ function ProjectReportData() {
     try {
       const token = Cookies.get('token');
       const response = await fetch(
-        `http://localhost:3003/api/v1/manager/validateReport?projectId=${projectId}&techId=${techId}`,
+        `http://3.110.86.245/api/v1/manager/validateReport?projectId=${projectId}&techId=${techId}`,
         {
           method: 'PUT',
           headers: {
@@ -144,7 +145,7 @@ function ProjectReportData() {
 
   return (
     <>
-      <Navbar />
+      <NavbarManagerDashboard />
       <div className="jobcontainer container mt-5">
         <h1 className="jobassigntext mb-4">Project Report Data</h1>
         <div className="card">

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Table, FormControl, Container } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
-import Navbar from '../../NavBar/navbarManager';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import { Project_List_Manager } from './../../../Api/Manager_Api';
 
 const JobProgress = () => {
   const [jobData, setJobData] = useState([]);
@@ -19,7 +20,7 @@ const JobProgress = () => {
         Authorization: token, // Assuming you use Bearer token format
       },
     };
-    fetch('/api/v1/manager/projectList', axiosConfig)
+    fetch(Project_List_Manager, axiosConfig)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -100,7 +101,7 @@ const JobProgress = () => {
 
   return (
     <>
-      <Navbar />
+      <NavbarManagerDashboard />
       <div className="jobcontainer container mt-5">
         <h1 className="jobassigntext mb-4">Job Progress</h1>
         <div className="card">

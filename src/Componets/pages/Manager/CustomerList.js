@@ -3,7 +3,8 @@ import Cookies from 'js-cookie';
 import { Table, Container, Button, FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Navbar from '../../NavBar/navbarManager';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import { Customer_List_Api } from './../../../Api/Manager_Api';
 
 function CustomerList() {
   const [customerData, setCustomerData] = useState([]);
@@ -20,7 +21,7 @@ function CustomerList() {
       },
     };
 
-    fetch('/api/v1/manager/customerList', axiosConfig)
+    fetch(Customer_List_Api, axiosConfig)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -52,40 +53,19 @@ function CustomerList() {
 
   const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
 
-  // const handleDelete = (customerId) => {
-  //   const token = Cookies.get('token');
-
-  //   fetch(`/api/v1/manager/deleteCustomer?customerId=${customerId}`, {
-  //     method: 'PUT',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: token,
-  //     },
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! Status: ${response.status}`);
-  //       }
-  //       // Remove the deleted customer from the state
-  //       setCustomerData((prevCustomerData) =>
-  //         prevCustomerData.filter((customer) => customer.id !== customerId)
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error deleting customer:', error);
-  //     });
-  // };
-
   const handleDelete = (customerId) => {
     const token = Cookies.get('token');
 
-    fetch(`/api/v1/manager/deleteCustomer?customerId=${customerId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-    })
+    fetch(
+      `http://3.110.86.245/api/v1/manager/deleteCustomer?customerId=${customerId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -166,7 +146,7 @@ function CustomerList() {
 
   return (
     <>
-      <Navbar />
+      <NavbarManagerDashboard />
       <div className="jobcontainer container mt-5">
         <h1 className="jobassigntext mb-4">Customer List</h1>
 

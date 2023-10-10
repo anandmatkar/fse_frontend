@@ -1,8 +1,5 @@
 import React from 'react';
-// import './managerD.css';
 import { useNavigate } from 'react-router-dom';
-import DynamicButton from '../../Model/DynamicButton';
-import NavbarManager from './Navbar';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 
@@ -42,7 +39,7 @@ export default function ManagerDashboard() {
 
   return (
     <React.Fragment>
-      <div
+      {/* <div
         className="imgBg"
         style={{
           background: `url(${'/assets/CurveLine.svg'})`,
@@ -51,14 +48,16 @@ export default function ManagerDashboard() {
           // maxHeight: '100vh',
           height: '100vh',
         }}
-      >
-        {/* <NavbarManager /> */}
-        <NavbarManagerDashboard/>
+      > */}
+      {/* <NavbarManager /> */}
+      <NavbarManagerDashboard />
 
-        <div className="container-xxl py-5">
+      <div className="container-xxl py-5">
         <Container>
           <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h6 className="section-title bg-white text-center text-primary px-3">Manager's Panel</h6>
+            <h6 className="section-title bg-white text-center text-primary px-3">
+              Manager's Panel
+            </h6>
             <h1 className="mb-5">Our Services</h1>
           </div>
           <Row>
@@ -95,7 +94,7 @@ export default function ManagerDashboard() {
           </Row>
         </Container>
       </div>
-      </div>
+      {/* </div> */}
     </React.Fragment>
   );
 }

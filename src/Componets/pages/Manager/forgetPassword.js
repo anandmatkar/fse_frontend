@@ -1,10 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import './forgetPassword.css';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from '../Common/Spinner';
 import { toast } from 'react-toastify';
 import Navbar from '../../NavBar/navbarManager';
+import {
+  Manager_Forget_Password,
+  Reset_Password_Api,
+} from './../../../Api/Manager_Api';
 
 function Reset() {
   const navigate = useNavigate();
@@ -49,7 +53,7 @@ function Reset() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3003/api/v1/manager/forgotPassword',
+        Manager_Forget_Password,
         {
           emailAddress: email,
         },
@@ -134,7 +138,7 @@ function Reset() {
     }
     try {
       const response = await axios.put(
-        'http://localhost:3003/api/v1/manager/resetPassword',
+        Reset_Password_Api,
         {
           email: email,
           otp: otp,

@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Navbar from '../../NavBar/navbarManager';
-import { Nav } from 'react-bootstrap';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import { Update_Customer_Details } from './../../../Api/Manager_Api';
 
 function CustomerEditedDetails() {
   const navigate = useNavigate();
@@ -26,12 +26,15 @@ function CustomerEditedDetails() {
   useEffect(() => {
     const token = Cookies.get('token');
     // Fetch data from the API endpoint using the customerId
-    fetch(`/api/v1/manager/customerDetails?customerId=${customerID}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-    })
+    fetch(
+      `http://3.110.86.245/api/v1/manager/customerDetails?customerId=${customerID}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -61,7 +64,7 @@ function CustomerEditedDetails() {
     const token = Cookies.get('token');
 
     // Send a PUT request to update customer details
-    fetch(`/api/v1/manager/updateCustomer`, {
+    fetch(Update_Customer_Details, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -90,7 +93,7 @@ function CustomerEditedDetails() {
 
   return (
     <>
-      <Navbar />
+      <NavbarManagerDashboard />
       <div className="container ">
         <div class="container border border-dark mt-5 rounded p-4">
           <div class="row justify-content-center">

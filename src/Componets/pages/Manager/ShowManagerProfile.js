@@ -4,6 +4,8 @@ import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+
 function ShowManagerProfile() {
   const navigate = useNavigate();
   const { customerID } = useParams();
@@ -113,114 +115,120 @@ function ShowManagerProfile() {
       });
   };
   return (
-    <div className="container ">
-      <Link to="/manager" className="">
-        <button className="btn btn-primary">
-          <i className="fa fa-home"></i> Back
-        </button>
-      </Link>
-      <div class="container border border-dark mt-5 rounded p-4">
-        <div class="row justify-content-center">
-          <div class="col-lg-9">
-            <h1 class="mb-3"> Customer Details Update</h1>
-            <form onSubmit={handleSubmit}>
-              <div>
-                {(profilePicURL || managerData.avatar) && (
-                  <img
-                    src={profilePicURL || managerData.avatar}
-                    alt="Profile Picture"
-                    className="img-fluid mb-3"
-                    style={{ maxWidth: '150px' }}
-                  />
-                )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleProfilePicChange}
-                />
-              </div>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label for="your-name" class="form-label">
-                    First Name
-                  </label>
+    <>
+      <NavbarManagerDashboard />
+      <div className="container ">
+        <Link to="/manager" className="">
+          <button className="btn btn-primary">
+            <i className="fa fa-home"></i> Back
+          </button>
+        </Link>
+        <div class="container border border-dark mt-5 rounded p-4">
+          <div class="row justify-content-center">
+            <div class="col-lg-9">
+              <h1 class="mb-3"> Customer Details Update</h1>
+              <form onSubmit={handleSubmit}>
+                <div>
+                  {(profilePicURL || managerData.avatar) && (
+                    <img
+                      src={profilePicURL || managerData.avatar}
+                      alt="Profile Picture"
+                      className="img-fluid mb-3"
+                      style={{ maxWidth: '150px' }}
+                    />
+                  )}
                   <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    name="name"
-                    value={managerData.name}
-                    onChange={handleChange}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleProfilePicChange}
                   />
                 </div>
-                <div class="col-md-6">
-                  <label for="your-surname" class="form-label">
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="surname"
-                    name="surname"
-                    value={managerData.surname}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="your-subject" class="form-label">
-                    Company
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="company"
-                    name="company"
-                    value={managerData.company}
-                    // onChange={handleChange}
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="your-subject" class="form-label">
-                    Email{' '}
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="email_address"
-                    name="email_address"
-                    value={managerData.email_address}
-                    // onChange={handleChange}
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="your-subject" class="form-label">
-                    Phone
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="phone_number"
-                    name="phone_number"
-                    value={managerData.phone_number}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <button type="submit" class="btn btn-dark w-100 fw-bold">
-                        Update & Save Changes
-                      </button>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="your-name" class="form-label">
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      name="name"
+                      value={managerData.name}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="your-surname" class="form-label">
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="surname"
+                      name="surname"
+                      value={managerData.surname}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="your-subject" class="form-label">
+                      Company
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="company"
+                      name="company"
+                      value={managerData.company}
+                      // onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="your-subject" class="form-label">
+                      Email{' '}
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="email_address"
+                      name="email_address"
+                      value={managerData.email_address}
+                      // onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="your-subject" class="form-label">
+                      Phone
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="phone_number"
+                      name="phone_number"
+                      value={managerData.phone_number}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <button
+                          type="submit"
+                          class="btn btn-dark w-100 fw-bold"
+                        >
+                          Update & Save Changes
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
-    </div>
+    </>
   );
 }
 export default ShowManagerProfile;
