@@ -10,7 +10,7 @@ import Navbar from '../../NavBar/navbarManager';
 import { managerlogin_Api } from './../../../Api/Manager_Api';
 
 function ManagerLogin() {
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   // const confirmpasswordInputRef = useRef();
@@ -56,6 +56,8 @@ function ManagerLogin() {
 
         authCtx.login(idToken, expirationTime.toISOString());
 
+        navigate('/manager');
+
         toast.success(response.data.message, {
           position: 'top-right',
           autoClose: 2000, // Notification will close automatically after 2 seconds
@@ -65,7 +67,6 @@ function ManagerLogin() {
           draggable: true,
           onClose: () => {
             setIsLoading(false);
-            Navigate('/manager');
           },
         });
       } else {

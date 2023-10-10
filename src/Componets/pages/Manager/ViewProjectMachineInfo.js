@@ -47,6 +47,41 @@ export default function ViewProjectMachineInfo() {
     }
   };
 
+  const handleDeleteMachineDetails = async (machineID, projectID) => {
+    try {
+      const token = localStorage.getItem("token");
+  
+      if (!token) {
+        console.error("Token not found in localStorage.");
+        return;
+      }
+  
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+  
+      // Send a DELETE request to your API endpoint for machine deletion
+      const response = await axios.put(
+        `http://localhost:3003/api/v1/manager/deleteMachine?machineId=${machineID}&projectId=${projectID}`,
+        {},
+        config
+      );
+  
+      if (response.status === 200) {
+        // Machine deletion was successful
+        // You can also update the local state or re-fetch the machine details
+        fetchMachineDetails();
+      } else {
+        console.error("Failed to delete the machine.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+
   useEffect(() => {
     fetchMachineDetails();
   }, [projectID]);
@@ -54,7 +89,7 @@ export default function ViewProjectMachineInfo() {
   return (
     <>
       <Container>
-        <h1>Machine Info Details</h1>
+        <h1 className="text-center">Machine Info Details</h1>
 
         <Table bordered hover responsive>
           <thead>
@@ -72,7 +107,7 @@ export default function ViewProjectMachineInfo() {
           <tbody>
             {projectSpecificDetails.map((machine, i) => (
               <>
-                <tr key={machine.id}>
+                <tr key={machine.machine_id}>
                   <td>{machine.serial}</td>
                   <td>{machine.machine_type}</td>
                   <td>{machine.hour_count}</td>
@@ -90,6 +125,14 @@ export default function ViewProjectMachineInfo() {
                       }
                     >
                       Edit Machine
+                    </Button>
+
+                    <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => handleDeleteMachineDetails(machine.machine_id, projectID)}
+                        >
+                        Delete Machine
                     </Button>
                   </td>
                 </tr>

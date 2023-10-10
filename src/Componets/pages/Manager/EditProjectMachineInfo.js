@@ -145,7 +145,7 @@ export default function EditProjectMachineInfo() {
 
   return (
     <>
-      <h1>Edit Project Specific Machine Details</h1>
+      <h1 className="text-center">Edit Project Specific Machine Details</h1>
 
       <Container>
       {editMode ? (

@@ -42,7 +42,7 @@ export default function ViewMachineInfo() {
   return (
     <React.Fragment>
         <Container>
-            <h1>Machine Info Details</h1>        
+            <h1 className='text-center'>Machine Info Details</h1>        
 
                 <Table bordered hover responsive>
                     <thead>
