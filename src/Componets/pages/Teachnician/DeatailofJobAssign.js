@@ -6,6 +6,7 @@ import NewReportModal from './NewReportModal';
 import axios from 'axios';
 import TimeSheetApprovalModal from './TimeSheetApprovalModal';
 import RequestApproval from './RequestApproval';
+import {AiFillProfile} from 'react-icons/ai'
 import { Card, ListGroup, Row , Table , Button , Container } from 'react-bootstrap';
 
 const DeatailofJobAssign = () => {
@@ -284,7 +285,8 @@ console.log(config, "config")
                         <td>
                             {timesheet.timesheet_attach_data && timesheet.timesheet_attach_data.map(attachment => (
                                 <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
-                                    <i className="fa fa-cloud-upload fa-2x" style={{ marginRight: '5px', color: "black" }}></i>
+                                    {/* <i className="fa fa-cloud-upload fa-2x" style={{ marginRight: '5px', color: "black" }}></i> */}
+                                    <AiFillProfile size="30px"  color="black"/>
                                 </a>
                             ))}
                         </td>
@@ -327,7 +329,8 @@ console.log(config, "config")
                                     <td>
                                         {report.report_attach_data && report.report_attach_data.map(attachment => (
                                             <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" style={{ margin: '0 5px' }}>
-                                                <i className="fa fa-cloud-upload fa-2x" style={{color:"black"}}></i>
+                                                {/* <i className="fa fa-cloud-upload fa-2x" style={{color:"black"}}></i> */}
+                                                <AiFillProfile size="30px"  color="black"/>
                                             </a>
                                         ))}
                                     </td>
@@ -405,7 +408,8 @@ console.log(config, "config")
                                     <td>
                                         {machine.machine_attach_data.map(attachment => (
                                             <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
-                                                <i className="fa fa-cloud-upload fa-2x" style={{ marginRight: '5px', color: "black" }}></i>
+                                                {/* <i className="fa fa-cloud-upload fa-2x" style={{ marginRight: '5px', color: "black" }}></i> */}
+                                                <AiFillProfile size="30px"  color="black"/>
                                             </a>
                                         ))}
                                     </td>
