@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Table, FormControl, Container } from 'react-bootstrap';
-import Cookies from 'js-cookie';
+import { Table, Container, FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import Navbar from '../../NavBar/navbarManager';
 
-const JobProgress = () => {
-  const [jobData, setJobData] = useState([]);
+const CompletedProjects = () => {
+  const [completedProjects, setCompletedProjects] = useState([]);
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -19,6 +19,7 @@ const JobProgress = () => {
         Authorization: token, // Assuming you use Bearer token format
       },
     };
+
     fetch('/api/v1/manager/projectList', axiosConfig)
       .then((response) => {
         if (!response.ok) {
@@ -27,10 +28,12 @@ const JobProgress = () => {
         return response.json();
       })
       .then((data) => {
-        if (Array.isArray(data.data.projectInProgress)) {
-          setJobData(data.data.projectInProgress);
+        if (data.success) {
+          // Check if the API response is successful
+          const completedProjectsData = data.data.completedProjects;
+          setCompletedProjects(completedProjectsData);
         } else {
-          console.error('API response is not in the expected format:', data);
+          console.error('API request was not successful:', data.message);
         }
       })
       .catch((error) => {
@@ -38,15 +41,15 @@ const JobProgress = () => {
       });
   }, []);
 
-  const filteredCustomers = jobData.filter((customer) =>
-    customer.customer_name.toLowerCase().includes(search.toLowerCase())
+  const filteredProjects = completedProjects.filter((project) =>
+    project.customer_name.toLowerCase().includes(search.toLowerCase())
   );
 
   const lastIndex = currentPage * itemsPerPage;
   const firstIndex = lastIndex - itemsPerPage;
-  const currentCustomers = filteredCustomers.slice(firstIndex, lastIndex);
+  const currentProjects = filteredProjects.slice(firstIndex, lastIndex);
 
-  const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 
   const renderPaginationButtons = () => {
     const buttons = [];
@@ -62,47 +65,44 @@ const JobProgress = () => {
     return buttons;
   };
 
-  const renderCustomerRows = () => {
-    if (currentCustomers.length === 0) {
+  const renderProjectRows = () => {
+    if (currentProjects.length === 0) {
       return (
         <tr>
-          <td colSpan="11" className="text-center">
+          <td colSpan="9" className="text-center">
             No data found
           </td>
         </tr>
       );
     }
 
-    return (
-      <tbody>
-        {currentCustomers.map((job, index) => (
-          <tr key={index}>
-            <td>{job.order_id}</td>
-            <td>{job.customer_account}</td>
-            <td>{job.customer_name}</td>
-            <td>{job.country}</td>
-            <td>{job.description}</td>
-            <td>{job.start_date}</td>
-            <td>{job.end_date}</td>
-            <td>
-              <Link
-                to={`/projectstatusdetails/${job.project_id}`}
-                className="btn btn-primary"
-              >
-                Details
-              </Link>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    );
+    return currentProjects.map((project, index) => (
+      <tr key={index}>
+        <td>{project.order_id}</td>
+        <td>{project.customer_account}</td>
+        <td>{project.customer_name}</td>
+        <td>{project.country}</td>
+        <td>{project.city}</td>
+        <td>{project.description}</td>
+        <td>{project.start_date}</td>
+        <td>{project.end_date}</td>
+        <td>
+          <Link
+            to={`/projectstatusdetails/${project.project_id}`}
+            className="btn btn-primary"
+          >
+            Details
+          </Link>
+        </td>
+      </tr>
+    ));
   };
 
   return (
     <>
       <Navbar />
       <div className="jobcontainer container mt-5">
-        <h1 className="jobassigntext mb-4">Job Progress</h1>
+        <h1 className="jobassigntext mb-4">Completed Projects</h1>
         <div className="card">
           <FormControl
             type="text"
@@ -114,24 +114,24 @@ const JobProgress = () => {
             }}
             style={{ width: '25%', border: '1px solid black', float: 'right' }}
           />
-
           <div className="card-body">
             <div className="bf-table-responsive">
               <Container fluid>
-                <Table responsive hover className="bf-table">
+                <Table striped bordered responsive>
                   <thead>
                     <tr>
                       <th>Order_ID</th>
                       <th>customer_account</th>
                       <th>customer_name</th>
                       <th>country</th>
+                      <th>city</th>
                       <th>description</th>
                       <th>start_date</th>
                       <th>end_date</th>
                       <th>More</th>
                     </tr>
                   </thead>
-                  {renderCustomerRows()}
+                  {renderProjectRows()}
                 </Table>
               </Container>
             </div>
@@ -167,4 +167,4 @@ const JobProgress = () => {
   );
 };
 
-export default JobProgress;
+export default CompletedProjects;

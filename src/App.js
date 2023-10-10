@@ -53,6 +53,7 @@ import ProjectRequestedForApproval from './Componets/pages/Manager/ProjectReques
 import ViewMachineInfo from './Componets/pages/Manager/ViewMachineInfo';
 import ViewProjectMachineInfo from './Componets/pages/Manager/ViewProjectMachineInfo';
 import EditProjectMachineInfo from './Componets/pages/Manager/EditProjectMachineInfo';
+import CompletedProjects from './Componets/pages/Manager/CompletedProjects';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -122,9 +123,10 @@ function App() {
           element={<ProjectReportData />}
         />
         <Route
-          path="/projectRequestedForApprova"
+          path="/projectRequestedForApproval"
           element={<ProjectRequestedForApproval />}
         />
+        <Route path="/completedprojects" element={<CompletedProjects />} />
       </Routes>
 
       <Routes>

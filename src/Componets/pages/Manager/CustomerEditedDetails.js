@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from '../../NavBar/navbarManager';
+import { Nav } from 'react-bootstrap';
 
 function CustomerEditedDetails() {
   const navigate = useNavigate();
@@ -87,149 +89,155 @@ function CustomerEditedDetails() {
   };
 
   return (
-    <div className="container ">
-      <div class="container border border-dark mt-5 rounded p-4">
-        <div class="row justify-content-center">
-          <div class="col-lg-9">
-            <h1 class="mb-3"> Customer Details Update</h1>
+    <>
+      <Navbar />
+      <div className="container ">
+        <div class="container border border-dark mt-5 rounded p-4">
+          <div class="row justify-content-center">
+            <div class="col-lg-9">
+              <h1 class="mb-3"> Customer Details Update</h1>
 
-            <form onSubmit={handleSubmit}>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label for="your-name" class="form-label">
-                    customer_name
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="customer_name"
-                    name="customer_name"
-                    value={customerData.customer_name}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="your-surname" class="form-label">
-                    customer_contact
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="customer_contact"
-                    name="customer_contact"
-                    value={customerData.customer_contact}
-                    onChange={handleChange}
-                  />
-                </div>
+              <form onSubmit={handleSubmit}>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="your-name" class="form-label">
+                      customer_name
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="customer_name"
+                      name="customer_name"
+                      value={customerData.customer_name}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="your-surname" class="form-label">
+                      customer_contact
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="customer_contact"
+                      name="customer_contact"
+                      value={customerData.customer_contact}
+                      onChange={handleChange}
+                    />
+                  </div>
 
-                <div class="col-md-6">
-                  <label for="your-subject" class="form-label">
-                    customer_account{' '}
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="customer_account"
-                    name="customer_account"
-                    value={customerData.customer_account}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="your-subject" class="form-label">
-                    email_address{' '}
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="email_address"
-                    name="email_address"
-                    value={customerData.email_address}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="your-subject" class="form-label">
-                    phone_number{' '}
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="phone_number"
-                    name="phone_number"
-                    value={customerData.phone_number}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="your-subject" class="form-label">
-                    country{' '}
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="country"
-                    name="country"
-                    value={customerData.country}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="your-subject" class="form-label">
-                    city{' '}
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="city"
-                    name="city"
-                    value={customerData.city}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="your-subject" class="form-label">
-                    address{' '}
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="address"
-                    name="address"
-                    value={customerData.address}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="your-subject" class="form-label">
-                    scope_of_work{' '}
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="scope_of_work"
-                    name="scope_of_work"
-                    value={customerData.scope_of_work}
-                    onChange={handleChange}
-                  />
-                </div>
+                  <div class="col-md-6">
+                    <label for="your-subject" class="form-label">
+                      customer_account{' '}
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="customer_account"
+                      name="customer_account"
+                      value={customerData.customer_account}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="your-subject" class="form-label">
+                      email_address{' '}
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="email_address"
+                      name="email_address"
+                      value={customerData.email_address}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="your-subject" class="form-label">
+                      phone_number{' '}
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="phone_number"
+                      name="phone_number"
+                      value={customerData.phone_number}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="your-subject" class="form-label">
+                      country{' '}
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="country"
+                      name="country"
+                      value={customerData.country}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="your-subject" class="form-label">
+                      city{' '}
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="city"
+                      name="city"
+                      value={customerData.city}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="your-subject" class="form-label">
+                      address{' '}
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="address"
+                      name="address"
+                      value={customerData.address}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="your-subject" class="form-label">
+                      scope_of_work{' '}
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="scope_of_work"
+                      name="scope_of_work"
+                      value={customerData.scope_of_work}
+                      onChange={handleChange}
+                    />
+                  </div>
 
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <button type="submit" class="btn btn-dark w-100 fw-bold">
-                        Save Changes
-                      </button>
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <button
+                          type="submit"
+                          class="btn btn-dark w-100 fw-bold"
+                        >
+                          Save Changes
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
-    </div>
+    </>
   );
 }
 

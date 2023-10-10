@@ -1,7 +1,7 @@
 import React from 'react';
-import classes from './ProjectStatusss.module.css'; // Import the CSS module
-import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Card } from 'react-bootstrap';
+import Navbar from '../../NavBar/navbarManager';
 
 function ProjectStatus() {
   const Navigate = useNavigate();
@@ -14,42 +14,81 @@ function ProjectStatus() {
     Navigate('/projectRequestedForApproval');
   };
 
+  const completedHandelerM = () => {
+    console.log('Successfully Updated');
+    Navigate('/completedprojects');
+  };
+
   return (
-    <div className={classes.cardContainer}>
-      <div className={classes.card1}>
-        <div className={classes.cardBody}>
-          <div className={classes.cardTitle}>Project in Progress</div>
-          <div className={classes.cardText}>
-            Project in Progress, you can find more details here.
+    <>
+      <Navbar />
+      <Container className="container-xxl py-5">
+        <Container>
+          <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 className="section-title bg-white text-center text-primary px-3">
+              Project Status
+            </h6>
+            <h1 className="mb-5">Our Projects Status</h1>
           </div>
-          <button className={classes.cardButton} onClick={progrssHandler}>
-            click Here
-          </button>
-        </div>
-      </div>
-      <div className={classes.card2}>
-        <div className={classes.cardBody}>
-          <div className={classes.cardTitle}>Project Waiting for Approval</div>
-          <div className={classes.cardText}>
-            Project for Approval, you can see more details here.
-          </div>
-          <button className={classes.cardButton} onClick={progrssHandlerM}>
-            Click Here
-          </button>
-        </div>
-      </div>
-      <div className={classes.card3}>
-        <div className={classes.cardBody}>
-          <div className={classes.cardTitle}>Finished Project</div>
-          <div className={classes.cardText}>
-            Finished Project, you can see more details here. Ples click Here
-          </div>
-          <Button variant="Danger" className={classes.cardButton}>
-            Click Here
-          </Button>
-        </div>
-      </div>
-    </div>
+          <Row xs={1} lg={3} className="g-4">
+            <Col
+              lg={4}
+              sm={12}
+              className="wow fadeInUp"
+              data-wow-delay="0.1s"
+              onClick={progrssHandler}
+            >
+              <Card className="service-item rounded pt-3">
+                <Card.Body>
+                  <i className="fa fa-3x fa-globe text-primary mb-4"></i>
+                  <Card.Title>Project Progress</Card.Title>
+                  <Card.Text>
+                    {' '}
+                    Project in Progress, you can find more details here
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col
+              lg={4}
+              sm={12}
+              className="wow fadeInUp"
+              data-wow-delay="0.3s"
+              onClick={progrssHandlerM}
+            >
+              <Card className="service-item rounded pt-3">
+                <Card.Body>
+                  <i className="fa fa-3x fa-hotel text-primary mb-4"></i>
+                  <Card.Title>Projects for Approval</Card.Title>
+                  <Card.Text>
+                    Project for Approval, you can see more details here.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col
+              lg={4}
+              sm={12}
+              className="wow fadeInUp"
+              data-wow-delay="0.5s"
+              onClick={completedHandelerM}
+            >
+              <Card className="service-item rounded pt-3">
+                <Card.Body>
+                  <i className="fa fa-3x fa-user text-primary mb-4"></i>
+                  <Card.Title>Complete Projects</Card.Title>
+                  <Card.Text>
+                    {' '}
+                    Completed Project, you can see more details here. Please
+                    click Here...
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </Container>
+    </>
   );
 }
 

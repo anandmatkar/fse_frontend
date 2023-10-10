@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { Table, Container, Button, FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Navbar from '../../NavBar/navbarManager';
 
 function CustomerList() {
   const [customerData, setCustomerData] = useState([]);
@@ -50,11 +52,35 @@ function CustomerList() {
 
   const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
 
+  // const handleDelete = (customerId) => {
+  //   const token = Cookies.get('token');
+
+  //   fetch(`/api/v1/manager/deleteCustomer?customerId=${customerId}`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: token,
+  //     },
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
+  //       // Remove the deleted customer from the state
+  //       setCustomerData((prevCustomerData) =>
+  //         prevCustomerData.filter((customer) => customer.id !== customerId)
+  //       );
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error deleting customer:', error);
+  //     });
+  // };
+
   const handleDelete = (customerId) => {
     const token = Cookies.get('token');
 
     fetch(`/api/v1/manager/deleteCustomer?customerId=${customerId}`, {
-      method: 'DELETE',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
@@ -64,6 +90,12 @@ function CustomerList() {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        // Show a success toast message
+        toast.success('Customer deleted successfully', {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+
         // Remove the deleted customer from the state
         setCustomerData((prevCustomerData) =>
           prevCustomerData.filter((customer) => customer.id !== customerId)
@@ -71,6 +103,11 @@ function CustomerList() {
       })
       .catch((error) => {
         console.error('Error deleting customer:', error);
+
+        // Show an error toast message
+        toast.error('Error deleting customer', {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       });
   };
 
@@ -128,72 +165,75 @@ function CustomerList() {
   };
 
   return (
-    <div className="jobcontainer container mt-5">
-      <h1 className="jobassigntext mb-4">Customer List</h1>
+    <>
+      <Navbar />
+      <div className="jobcontainer container mt-5">
+        <h1 className="jobassigntext mb-4">Customer List</h1>
 
-      <Link to={'/createCustomer'} className="float-end p-2 btn btn-primary">
-        Create Customer
-      </Link>
+        <Link to={'/createCustomer'} className="float-end p-2 btn btn-primary">
+          Create Customer
+        </Link>
 
-      <div className="card">
-        <FormControl
-          type="text"
-          className="mb-4"
-          placeholder="Search by Customer Name..."
-          onChange={(e) => setSearch(e.target.value)}
-          style={{ width: '25%', border: '1px solid black', float: 'right' }}
-        />
-        <div className="card-body">
-          <div className="bf-table-responsive">
-            <Container fluid>
-              <Table responsive hover className="bf-table">
-                <thead>
-                  <tr>
-                    <th>Customer Name</th>
-                    <th>Customer Contact</th>
-                    <th>Customer Account</th>
-                    <th>Email Address</th>
-                    <th>Phone Number</th>
-                    <th>Country</th>
-                    <th>City</th>
-                    <th>Address</th>
-                    <th>Scope of Work</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                  </tr>
-                </thead>
-                <tbody>{renderCustomerRows()}</tbody>
-              </Table>
-            </Container>
+        <div className="card">
+          <FormControl
+            type="text"
+            className="mb-4"
+            placeholder="Search by Customer Name..."
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ width: '25%', border: '1px solid black', float: 'right' }}
+          />
+          <div className="card-body">
+            <div className="bf-table-responsive">
+              <Container fluid>
+                <Table responsive hover className="bf-table">
+                  <thead>
+                    <tr>
+                      <th>Customer Name</th>
+                      <th>Customer Contact</th>
+                      <th>Customer Account</th>
+                      <th>Email Address</th>
+                      <th>Phone Number</th>
+                      <th>Country</th>
+                      <th>City</th>
+                      <th>Address</th>
+                      <th>Scope of Work</th>
+                      <th>Edit</th>
+                      <th>Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>{renderCustomerRows()}</tbody>
+                </Table>
+              </Container>
+            </div>
           </div>
         </div>
+        <nav className="dt-pagination">
+          <ul className="dt-pagination-ul">
+            <li className={`dt-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button
+                className="dt-link"
+                onClick={() => setCurrentPage(currentPage - 1)}
+              >
+                Prev
+              </button>
+            </li>
+            {renderPaginationButtons()}
+            <li
+              className={`dt-item ${
+                currentPage === totalPages ? 'disabled' : ''
+              }`}
+            >
+              <button
+                className="dt-link"
+                onClick={() => setCurrentPage(currentPage + 1)}
+              >
+                Next
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <nav className="dt-pagination">
-        <ul className="dt-pagination-ul">
-          <li className={`dt-item ${currentPage === 1 ? 'disabled' : ''}`}>
-            <button
-              className="dt-link"
-              onClick={() => setCurrentPage(currentPage - 1)}
-            >
-              Prev
-            </button>
-          </li>
-          {renderPaginationButtons()}
-          <li
-            className={`dt-item ${
-              currentPage === totalPages ? 'disabled' : ''
-            }`}
-          >
-            <button
-              className="dt-link"
-              onClick={() => setCurrentPage(currentPage + 1)}
-            >
-              Next
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
+    </>
   );
 }
 

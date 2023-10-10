@@ -4,12 +4,13 @@ import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { FormControl, Container } from 'react-bootstrap';
+import Navbar from '../../NavBar/navbarManager';
 
 const ProjectStatusDetails = () => {
   const navigate = useNavigate();
   const [jobData, setJobData] = useState([]);
   const [project, setProject] = useState(null);
-  const [search, setSearch] = useState('');
+  const [searchTechnician, setSearchTechnician] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -65,9 +66,16 @@ const ProjectStatusDetails = () => {
     }
   };
 
-  // Filter jobData based on the search input
   const filteredJobData = jobData.filter((customer) =>
-    customer.customer_name.toLowerCase().includes(search.toLowerCase())
+    customer.technician_data.some(
+      (technician) =>
+        technician.name
+          .toLowerCase()
+          .includes(searchTechnician.toLowerCase()) ||
+        technician.surname
+          .toLowerCase()
+          .includes(searchTechnician.toLowerCase())
+    )
   );
 
   const lastIndex = currentPage * itemsPerPage;
@@ -90,146 +98,173 @@ const ProjectStatusDetails = () => {
     return buttons;
   };
 
-  return (
-    <div className="job-progress">
-      <h1 className="jobassigntext mb-4">Project Details</h1>
+  const canGoToNextPage = currentPage < totalPages;
 
-      <div>
-        <div className="d-flex float-end mt-2 p-2">
-          <button className="btn btn-danger" onClick={handleDeleteProject}>
-            Delete
-          </button>
-        </div>
-        {project ? (
-          <div className="">
-            <p>
-              <b>Order ID:</b> {project.order_id}
-            </p>
-            <p>
-              <b>Customer Name:</b> {project.customer_name}
-            </p>
-            <p>
-              <b>Customer Account ID: </b>
-              {project.customer_account}
-            </p>
-            <p>
-              <b>Description: </b>
-              {project.description}
-            </p>
+  const renderCustomerRows = () => {
+    if (currentJobData.length === 0) {
+      return (
+        <tr>
+          <td colSpan="10" className="text-center">
+            No data found
+          </td>
+        </tr>
+      );
+    }
+  };
+
+  return (
+    <>
+      <Navbar />
+      <div className="job-progress mt-2">
+        <h1 className="jobassigntext mb-4">Project Details</h1>
+
+        <div>
+          <div className="d-flex float-end mt-2 p-2">
+            <button className="btn btn-danger" onClick={handleDeleteProject}>
+              Delete
+            </button>
           </div>
-        ) : (
-          <p>Loading project details...</p>
-        )}
-      </div>
-      <div className="jobcontainer container mt-5">
-        <div className="card p-2">
-          <FormControl
-            type="text"
-            className="mb-4 "
-            placeholder="Search by Customer Name..."
-            onChange={(e) => setSearch(e.target.value)}
-            style={{ width: '25%', border: '1px solid black', float: 'right' }}
-          />
-          <div className="card-body">
-            <div className="bf-table-responsive">
-              <Container fluid>
-                <h3>Technician Details</h3>
-                <Table responsive hover className="bf-table">
-                  <thead>
-                    <tr>
-                      <th>Qualification</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Email</th>
-                      <th>Scope</th>
-                      <th>Start_date</th>
-                      <th>End_date</th>
-                      <th>Tech Report</th>
-                      <th>Time Sheet</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentJobData.map((job) =>
-                      job.technician_data.map((technician, index) => (
-                        <tr key={`${job.project_id}-${technician.id}`}>
-                          <td>{technician.qualification || 'N/A'}</td>
-                          <td>
-                            {`${technician.name} ${technician.surname}` ||
-                              'N/A'}
-                          </td>
-                          <td>{job.email_address}</td>
-                          <td>{job.phone_number}</td>
-                          <td>{job.email_address}</td>
-                          <td>{job.scope_of_work}</td>
-                          <td>{job.start_date}</td>
-                          <td>{job.end_date}</td>
-                          <td className="text-center">
-                            {technician.project_report_data &&
-                            technician.project_report_data.length > 0 ? (
-                              <Link
-                                to={`/projectreportdata/${technician.id}/${job.project_id}`}
-                              >
-                                <i
-                                  className="fa fa-address-book"
-                                  style={{ fontSize: '20px' }}
-                                ></i>
-                              </Link>
-                            ) : (
-                              'No Report'
-                            )}
-                          </td>
-                          <td className="text-center">
-                            {technician.timesheet_data &&
-                            technician.timesheet_data.length > 0 ? (
-                              <Link
-                                to={`/timesheetforapproval/${technician.id}/${job.project_id}`}
-                              >
-                                <i
-                                  className="fa fa-book"
-                                  style={{ fontSize: '20px' }}
-                                ></i>
-                              </Link>
-                            ) : (
-                              'No Timesheet'
-                            )}
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </Table>
-              </Container>
+          {project ? (
+            <div className="">
+              <p>
+                <b>Order ID:</b> {project.order_id}
+              </p>
+              <p>
+                <b>Customer Name:</b> {project.customer_name}
+              </p>
+              <p>
+                <b>Customer Account ID: </b>
+                {project.customer_account}
+              </p>
+              <p>
+                <b>Description: </b>
+                {project.description}
+              </p>
             </div>
+          ) : (
+            <p>Loading project details...</p>
+          )}
+        </div>
+        <div className="jobcontainer container mt-5">
+          <div className="card p-2">
+            <FormControl
+              type="text"
+              className="mb-4 "
+              placeholder="Search by Customer Name..."
+              onChange={(e) => setSearchTechnician(e.target.value)}
+              style={{
+                width: '25%',
+                border: '1px solid black',
+                float: 'right',
+              }}
+            />
+            <div className="card-body">
+              <div className="bf-table-responsive">
+                <Container fluid>
+                  <h3>Technician Details</h3>
+                  <Table responsive hover className="bf-table">
+                    <thead>
+                      <tr>
+                        <th>Qualification</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Scope</th>
+                        <th>Start_date</th>
+                        <th>End_date</th>
+                        <th>Tech Report</th>
+                        <th>Time Sheet</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {currentJobData.map((job) =>
+                        job.technician_data.map((technician, index) => (
+                          <tr key={`${job.project_id}-${technician.id}`}>
+                            <td>{technician.qualification || 'N/A'}</td>
+                            <td>
+                              {`${technician.name} ${technician.surname}` ||
+                                'N/A'}
+                            </td>
+                            <td>{technician.email_address}</td>
+                            <td>{technician.phone_number}</td>
+                            <td>{technician.email_address}</td>
+                            <td>{job.scope_of_work}</td>
+                            <td>{job.start_date}</td>
+                            <td>{job.end_date}</td>
+
+                            <td className="text-center">
+                              {technician.project_report_data &&
+                              technician.project_report_data.length > 0 ? (
+                                <Link
+                                  to={`/projectreportdata/${technician.id}/${job.project_id}`}
+                                >
+                                  <i
+                                    className="fa fa-address-book"
+                                    style={{ fontSize: '20px' }}
+                                  ></i>
+                                </Link>
+                              ) : (
+                                'No Report'
+                              )}
+                            </td>
+                            <td className="text-center">
+                              {technician.timesheet_data &&
+                              technician.timesheet_data.length > 0 ? (
+                                <Link
+                                  to={`/timesheetforapproval/${technician.id}/${job.project_id}`}
+                                >
+                                  <i
+                                    className="fa fa-book"
+                                    style={{ fontSize: '20px' }}
+                                  ></i>
+                                </Link>
+                              ) : (
+                                'No Timesheet'
+                              )}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                      {renderCustomerRows()}
+                    </tbody>
+                  </Table>
+                </Container>
+              </div>
+            </div>
+            <nav className="dt-pagination">
+              <ul className="dt-pagination-ul">
+                <li
+                  className={`dt-item ${currentPage === 1 ? 'disabled' : ''}`}
+                >
+                  <button
+                    className="dt-link"
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                  >
+                    Prev
+                  </button>
+                </li>
+                {renderPaginationButtons()}
+                <li className={`dt-item ${!canGoToNextPage ? 'disabled' : ''}`}>
+                  {/* Disable the "Next" button if there's no more data */}
+                  {canGoToNextPage ? (
+                    <button
+                      className="dt-link"
+                      onClick={() => setCurrentPage(currentPage + 1)}
+                    >
+                      Next
+                    </button>
+                  ) : (
+                    <span>No data found</span>
+                  )}
+                </li>
+              </ul>
+            </nav>
           </div>
-          <nav className="dt-pagination">
-            <ul className="dt-pagination-ul">
-              <li className={`dt-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                <button
-                  className="dt-link"
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                >
-                  Prev
-                </button>
-              </li>
-              {renderPaginationButtons()}
-              <li
-                className={`dt-item ${
-                  currentPage === totalPages ? 'disabled' : ''
-                }`}
-              >
-                <button
-                  className="dt-link"
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                >
-                  Next
-                </button>
-              </li>
-            </ul>
-          </nav>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
