@@ -13,7 +13,8 @@ function ProjectStatus() {
 
   useEffect(() => {
     // Fetch project counts data
-    Project_Count_Manager({
+    fetch('http://3.110.86.245/api/v1/manager/projectCount', {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
@@ -33,6 +34,7 @@ function ProjectStatus() {
       });
   }, [token]); // Include token in the dependency array
 
+ 
   const progrssHandler = () => {
     console.log('Successfully Updated');
     Navigate('/projectprogress');
