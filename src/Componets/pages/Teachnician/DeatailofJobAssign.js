@@ -259,7 +259,7 @@ console.log(config, "config")
     <div className='d-flex '>
     <Card.Header className='fs-5 fw-bold'>Timesheet Data:</Card.Header>
         <TimeSheetModal projectID={projectID} onNewTimesheet={onNewTimesheetCallback} />
-        <TimeSheetApprovalModal projectID={projectID} />
+        {project && project.technician_data && project.technician_data.some(technician =>  technician.timesheet_data.length > 0) && <TimeSheetApprovalModal projectID={projectID} />}
     </div>
     <Card style={{ marginTop: '20px' }}>
      <Card.Body>
