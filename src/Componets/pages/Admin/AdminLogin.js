@@ -6,6 +6,9 @@ import axios from "axios";
 import "./Admin.css"
 import { Link } from "react-router-dom";
 import AdminNavBar from "../../NavBar/AdminNavBar";
+import { Container } from "react-bootstrap";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AdminLogin() {
   const navigate = useNavigate();
@@ -28,7 +31,7 @@ function AdminLogin() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3003/api/v1/companyAdmin/adminLogin",
+        "http://3.110.86.245/api/v1/companyAdmin/adminLogin",
         {
           email: enteredEmail,
           password: enteredPassword,
@@ -48,18 +51,22 @@ function AdminLogin() {
       // You can set an arbitrary expiration time (e.g., 1 hour from now)
       const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
       localStorage.setItem('token',idToken)
+      toast.success("Login successful!");
       console.log(idToken,'id token')
 
       authCtx.login(idToken, expirationTime.toISOString());
       navigate("/AdminD");
     } catch (error) {
-      alert(error.message);
+      console.log(error.message);
+      toast.error(error.message);
     }
   };
   return (
     <React.Fragment>
       <AdminNavBar/>
-      <div style={style}>
+      <Container className="container-xxl py-5">
+        <Container>
+<div style={style}>
        <div className="AdminloginContainer go-register">
          {/* <!-- Login Form Starts --> */}
          <div className="AdminloginForm__container loginForm__container-login">
@@ -93,6 +100,10 @@ function AdminLogin() {
          </div>
        </div>
      </div>
+        </Container>
+      
+      </Container>
+      
 
     </React.Fragment>
     // <Layout>

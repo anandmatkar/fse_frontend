@@ -25,7 +25,7 @@ function UserTable() {
     };
   
     try {
-      const response = await axios.put(`http://localhost:3003/api/v1/companyAdmin/approveManager?managerId=${userId}`, null, config);
+      const response = await axios.put(`http://3.110.86.245/api/v1/companyAdmin/approveManager?managerId=${userId}`, null, config);
       console.log("Response:", response.data);
     } catch (error) {
       console.error("Error:", error);
@@ -47,7 +47,7 @@ function UserTable() {
     };
     
     axios
-      .get("http://localhost:3003/api/v1/companyAdmin/managerListForApproval", config)
+      .get("http://3.110.86.245/api/v1/companyAdmin/managerListForApproval", config)
       .then((response) => {
         // Assuming the response data is an array of user objects
         const apiUsers = response.data;
