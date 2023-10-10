@@ -79,5 +79,30 @@
     }
   }
   
- 
-  
+  .countBox {
+    background-color: rgba(255, 255, 255, 0.2); /* Adjust this as per your design */
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.countNumber {
+    font-weight: bold;
+    font-size: 24px; /* Adjust as per your requirement */
+    color: #333; /* Adjust as per your requirement */
+}
+
+.badgePosition {
+  top: -15px;
+  right: -15px;
+  border-radius: 50%;
+  width: 65px;
+  height: 61px;
+  line-height: 52px;
+  font-size: 22px;
+  padding-right: 25px;
+}
+
+.service-item {
+  overflow: visible; /* Ensure that badge isn't clipped */
+}

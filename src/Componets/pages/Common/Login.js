@@ -3,6 +3,7 @@ import Layout from "../../Layout/Layout";
 import { useNavigate } from "react-router-dom";
 import DynamicButton from "../../Model/DynamicButton";
 import { Container, Row, Col, Card } from 'react-bootstrap';
+import './LoginMain.css'
 
 
 function LoginFrontPage() {
@@ -19,9 +20,9 @@ function LoginFrontPage() {
   return (
     <Layout>
       
-        <Container className="container-xxl py-5">
+        <Container className="admin-container-main container-xxl py-5 mt-5">
         <Container>
-        <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
+        <div className="admin-data text-center wow fadeInUp" data-wow-delay="0.1s">
           <h6 className="section-title bg-white text-center text-primary px-3">Login</h6>
           <h1 className="mb-5">Our Login's</h1>
         </div>

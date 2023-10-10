@@ -1,5 +1,5 @@
-import React from "react";
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Card , Badge } from 'react-bootstrap';
 import Layout4 from "../../Layout/Layout4";
 import classes from "./techdashboard.module.css";
 import { Button } from "react-bootstrap";
@@ -24,6 +24,32 @@ function TechnicianDashboard() {
         console.log("Successfully Updated");
     };
 
+    const [projectCounts, setProjectCounts] = useState({
+        assignedProjectCount: 0,
+        completedProjectCount: 0,
+        projectWaitingApprovalCount: 0
+    });
+
+    useEffect(() => {
+        const token = Cookies.get('token');
+        // Fetch the data from the API when the component mounts
+        fetch("http://localhost:3003/api/v1/technician/assignedProjectCounts", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+                // Add any other necessary headers such as authentication tokens if required
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                setProjectCounts(data.data);
+            }
+        })
+        .catch(error => console.error("Error fetching the project counts:", error));
+    }, []);
+
     return (
         <Layout4>
             <Container className="container-xxl py-5">
@@ -33,7 +59,8 @@ function TechnicianDashboard() {
                 </div>
                 <Row xs={1} lg={3} className="g-4">
                     <Col onClick={JobAssigned}>
-                        <Card className="service-item rounded pt-3">
+                        <Card className="service-item rounded pt-3 position-relative">
+                        <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.assignedProjectCount}</Badge>
                             <Card.Body className="text-center">
                                 <i className="fa fa-3x fa-globe text-primary mb-4"></i>
                                 <Card.Title className="fs-3">Job Assign</Card.Title>
@@ -42,8 +69,10 @@ function TechnicianDashboard() {
                             </Card.Body>
                         </Card>
                     </Col>
+
                     <Col onClick={JobEWaitingAprroval}>
-                        <Card className="service-item rounded pt-3">
+                        <Card className="service-item rounded pt-3 position-relative">
+                        <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.projectWaitingApprovalCount}</Badge>
                             <Card.Body className="text-center">
                                 <i className="fa fa-3x fa-hotel text-primary mb-4"></i>
                                 <Card.Title  className="fs-3">Job waiting Approval</Card.Title>
@@ -52,8 +81,10 @@ function TechnicianDashboard() {
                             </Card.Body>
                         </Card>
                     </Col>
+
                     <Col onClick={JobClosed}>
-                        <Card className="service-item rounded pt-3">
+                        <Card className="service-item rounded pt-3 position-relative">
+                        <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.completedProjectCount}</Badge>
                             <Card.Body className="text-center">
                                 <i className="fa fa-3x fa-user text-primary mb-4"></i>
                                 <Card.Title  className="fs-3">Job Closed</Card.Title>
@@ -62,6 +93,7 @@ function TechnicianDashboard() {
                             </Card.Body>
                         </Card>
                     </Col>
+                    
                 </Row>
             </Container>
         </Layout4>
