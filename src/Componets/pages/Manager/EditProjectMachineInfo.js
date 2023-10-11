@@ -4,6 +4,7 @@ import { Button, Container, Table, Form, Row, Col, InputGroup } from "react-boot
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Project_Machine_Details } from "../../../Api/Manager_Api";
+import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
 
 export default function EditProjectMachineInfo() {
 
@@ -146,7 +147,14 @@ export default function EditProjectMachineInfo() {
 
   return (
     <>
-      <h1>Edit Project Specific Machine Details</h1>
+    <NavbarManagerDashboard/>
+
+      <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
+        <h6 className="section-title bg-white text-center text-primary px-3">
+          Manager's Panel
+        </h6>
+        <h1 className="mb-5">Edit Project Specific Machine Details</h1>
+      </div>
 
       <Container>
       {editMode ? (

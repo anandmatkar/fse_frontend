@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Container, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Project_Machine_Details } from '../../../Api/Manager_Api';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 
 export default function ViewMachineInfo() {
   const navigate = useNavigate();
@@ -40,8 +41,17 @@ export default function ViewMachineInfo() {
 
   return (
     <React.Fragment>
+      
+      <NavbarManagerDashboard/>
+
         <Container>
-            <h1 className='text-center'>Machine Info Details</h1>        
+
+          <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 className="section-title bg-white text-center text-primary px-3">
+              Manager's Panel
+            </h6>
+            <h1 className="mb-5">Machine Info Details</h1>
+          </div>
 
                 <Table bordered hover responsive>
                     <thead>
