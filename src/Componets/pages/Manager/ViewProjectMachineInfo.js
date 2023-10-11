@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Table } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Project_Machine_Details } from '../../../Api/Manager_Api';
+import { Manager_Base_Url, Project_Machine_Details } from '../../../Api/Manager_Api';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 
 export default function ViewProjectMachineInfo() {
@@ -63,7 +63,7 @@ export default function ViewProjectMachineInfo() {
   
       // Send a DELETE request to your API endpoint for machine deletion
       const response = await axios.put(
-        `http://localhost:3003/api/v1/manager/deleteMachine?machineId=${machineID}&projectId=${projectID}`,
+        `${Manager_Base_Url}deleteMachine?machineId=${machineID}&projectId=${projectID}`,
         {},
         config
       );

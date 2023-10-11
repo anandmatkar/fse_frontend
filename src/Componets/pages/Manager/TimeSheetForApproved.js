@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Table, FormControl, Pagination, Container } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import {} from '../../../Api/Manager_Api';
+import { Manager_Base_Url } from '../../../Api/Manager_Api';
 
 const TimeSheetForApproved = () => {
   const { techId, projectId } = useParams();
@@ -17,7 +17,7 @@ const TimeSheetForApproved = () => {
     try {
       const token = Cookies.get('token');
       const response = await fetch(
-        `http://3.110.86.245/api/v1/manager/timesheetDetails?techId=${techId}&projectId=${projectId}`,
+        `${Manager_Base_Url}timesheetDetails?techId=${techId}&projectId=${projectId}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const TimeSheetForApproved = () => {
     try {
       const token = Cookies.get('token');
       const response = await fetch(
-        `http://3.110.86.245/api/v1/manager/acceptTimesheetRequest?projectId=${projectId}&techId=${techId}`,
+        `${Manager_Base_Url}acceptTimesheetRequest?projectId=${projectId}&techId=${techId}`,
         {
           method: 'PUT',
           headers: {

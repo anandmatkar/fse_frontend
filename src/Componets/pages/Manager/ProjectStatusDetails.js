@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { BiSolidShow } from 'react-icons/bi';
 import { FormControl, Container } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import { Manager_Base_Url } from '../../../Api/Manager_Api';
 
 const ProjectStatusDetails = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const ProjectStatusDetails = () => {
   useEffect(() => {
     const token = Cookies.get('token');
     fetch(
-      `http://3.110.86.245/api/v1/manager/projectDetails?projectId=${projectId}`,
+      `${Manager_Base_Url}projectDetails?projectId=${projectId}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -51,7 +52,7 @@ const ProjectStatusDetails = () => {
     const token = Cookies.get('token');
     try {
       const response = await fetch(
-        `http://3.110.86.245/api/v1/manager/deleteProject?projectId=${projectId}`,
+        `${Manager_Base_Url}deleteProject?projectId=${projectId}`,
         {
           method: 'PUT',
           headers: {

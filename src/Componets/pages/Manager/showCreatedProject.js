@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import Modal from 'react-modal';
 import axios from 'axios'; // Import Axios
+import { Manager_Base_Url } from '../../../Api/Manager_Api';
 
 export default function ShowCreatedProject({ customerId }) {
   const [customerData, setCustomerData] = useState([]);
@@ -12,7 +13,7 @@ export default function ShowCreatedProject({ customerId }) {
 
   useEffect(() => {
     // Fetch data from API using Axios
-    axios.get(`http://localhost:3003/api/v1/manager/customerDetails?customerId=${ customerId }`)
+    axios.get(`${Manager_Base_Url}customerDetails?customerId=${ customerId }`)
       .then((response) => {
         // Convert the response data into an array of customer objects
         const customers = Object.keys(response.data).map((key) => ({
@@ -28,7 +29,7 @@ export default function ShowCreatedProject({ customerId }) {
 
   const handleDeleteCustomer = (id) => {
     // Delete the customer from API using Axios
-    axios.delete(`http://localhost:3003/api/v1/manager/deleteCustomer?customerId=${ customerId }`)
+    axios.delete(`${Manager_Base_Url}deleteCustomer?customerId=${ customerId }`)
       .then(() => {
         // Update the local state by removing the deleted customer
         const updatedCustomers = customerData.filter((customer) => customer.id !== id);

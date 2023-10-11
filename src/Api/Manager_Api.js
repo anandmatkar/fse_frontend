@@ -1,6 +1,8 @@
 import Base from 'antd/es/typography/Base';
 import { Base_Url } from './Base_Url';
 
+export const Manager_Base_Url = `http://3.110.86.245/api/v1/manager/`;
+
 /////////////////////////Manager Creation Api////////////////////////////////////////////
 export const Create_Manager_Api = `${Base_Url}api/v1/manager/createManager`;
 export const managerlogin_Api = `${Base_Url}api/v1/manager/managerLogin`;

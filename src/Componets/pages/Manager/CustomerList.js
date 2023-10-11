@@ -4,7 +4,7 @@ import { Table, Container, Button, FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import { Customer_List_Api } from './../../../Api/Manager_Api';
+import { Customer_List_Api, Manager_Base_Url } from './../../../Api/Manager_Api';
 
 function CustomerList() {
   const [customerData, setCustomerData] = useState([]);
@@ -57,7 +57,7 @@ function CustomerList() {
     const token = Cookies.get('token');
 
     fetch(
-      `http://3.110.86.245/api/v1/manager/deleteCustomer?customerId=${customerId}`,
+      `${Manager_Base_Url}deleteCustomer?customerId=${customerId}`,
       {
         method: 'PUT',
         headers: {
