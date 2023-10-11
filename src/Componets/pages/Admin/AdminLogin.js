@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../auth-context/auth-context";
 import Layout from "../../Layout/Layout";
@@ -15,7 +15,13 @@ function AdminLogin() {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
+  const [emailError, setEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
 
+  const isValidEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return regex.test(email);
+  };
   const style = {
     // height:"100vh",
     marginTop:"90px",
@@ -28,7 +34,29 @@ function AdminLogin() {
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
+    localStorage.setItem("enteredEmail", JSON.stringify(enteredEmail));
 
+
+    if (!enteredEmail) {
+      setEmailError("Please provide an email.");
+      return;
+  }
+
+  // 2. Validate email format
+  if (!isValidEmail(enteredEmail)) {
+      setEmailError("Invalid email format");
+      return;
+  } else {
+      setEmailError(null);
+  }
+
+  // 3. Check if password is filled out
+  if (!enteredPassword) {
+      setPasswordError("Please provide a password.");
+      return;
+  } else {
+      setPasswordError(null);
+  }
     try {
       const response = await axios.post(
         "http://3.110.86.245/api/v1/companyAdmin/adminLogin",
@@ -51,14 +79,15 @@ function AdminLogin() {
       // You can set an arbitrary expiration time (e.g., 1 hour from now)
       const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
       localStorage.setItem('token',idToken)
-      toast.success("Login successful!");
+      toast.success("Login successfull!");
       console.log(idToken,'id token')
+      
 
       authCtx.login(idToken, expirationTime.toISOString());
       navigate("/AdminD");
     } catch (error) {
       console.log(error.message);
-      toast.error(error.message);
+      toast.error("Incorrect email or password. Please try again.");
     }
   };
   return (
@@ -75,7 +104,10 @@ function AdminLogin() {
                  <h3 className="AdminloginForm__heading">Sign In</h3>
                  <p className="AdminloginForm__text">Or Use Your Account</p>
                  <input type="email" placeholder="Email" className="AdminloginForm__field" ref={emailInputRef} />
+                 {emailError && <p className="error-text">{emailError}</p>}
                  <input type="password" placeholder="Password" className="AdminloginForm__field" ref={passwordInputRef} />
+                {passwordError && <p className="error-text">{passwordError}</p>}
+
                  <div className="row mt-4 mb-4">
     
                      <div className="col-md-12">
