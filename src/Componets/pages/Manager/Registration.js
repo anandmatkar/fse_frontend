@@ -96,7 +96,44 @@ const RegistrationPage = () => {
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
-      // Rest of your code
+      let registrationData = {
+        emailAddress,
+        password,
+        confirmPass,
+        position: 'Manager',
+        name,
+        surname,
+        company,
+        phone,
+      };
+
+      registrationData = {
+        ...registrationData,
+        profilePic: profilePicURL,
+      };
+
+      console.log(registrationData);
+
+      try {
+        const response = await axios.post(Create_Manager_Api, registrationData);
+        console.log(response.data);
+        if (response.data.status === 201) {
+          console.log('Registration Successful:', response.data);
+          toast.success(response.data.message);
+          localStorage.setItem(
+            'registrationData',
+            JSON.stringify(registrationData)
+          );
+
+          navigate('/verifyManager');
+        } else if (response.data.status === 409) {
+          toast.error(response.data.message);
+          console.error('Registration Failed. Status Code:', response.status);
+        }
+      } catch (error) {
+        console.error('API Error:', error);
+        toast.error(error.message);
+      }
     }
   };
 
