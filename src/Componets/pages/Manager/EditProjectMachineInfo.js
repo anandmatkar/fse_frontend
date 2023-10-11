@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Table, Form, Row, Col, InputGroup } from "react-bootstrap";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Project_Machine_Details } from "../../../Api/Manager_Api";
+import { Edit_Project_Machine_Details, Project_Machine_Details } from "../../../Api/Manager_Api";
 import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
 
 export default function EditProjectMachineInfo() {
@@ -64,7 +64,7 @@ export default function EditProjectMachineInfo() {
   
         // Make a PUT request to update the machine data
         const response = await axios.put(
-          `http://localhost:3003/api/v1/manager/editMachineDetails`,
+          Edit_Project_Machine_Details,
           formData,
           config
         );
