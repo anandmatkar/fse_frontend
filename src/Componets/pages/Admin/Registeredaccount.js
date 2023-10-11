@@ -1,7 +1,7 @@
 import React ,{useEffect,useState}from 'react'
 import axios from 'axios'
 import Table from 'react-bootstrap/Table';
-
+import { Base_Url } from '../../../Api/Base_Url';
 
 const Registeredaccount = () => {
 
@@ -46,7 +46,7 @@ const Registeredaccount = () => {
           };
           
           axios
-            .get("http://3.110.86.245/api/v1/companyAdmin/managerListForApproval", config)
+            .get(`${Base_Url}api/v1/companyAdmin/managerListForApproval`, config)
             .then((response) => {
               // Assuming the response data is an array of user objects
               const apiUsers = response.data;
