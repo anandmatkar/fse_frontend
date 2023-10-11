@@ -43,7 +43,9 @@ function ManagerLogin() {
       if (response.data.status === 200) {
         setIsLoading(false);
         const token = response.data.data.token;
-        Cookies.set('token', token, { expires: 1 });
+        Cookies.set('token', response.data.data.token, { expires: 1 });
+        localStorage.setItem('Name', response.data.data.name);
+        localStorage.setItem('Profile', response.data.data.avatar);
 
         // Assume you receive an 'idToken' for authentication
         const idToken = response.data.data.token;

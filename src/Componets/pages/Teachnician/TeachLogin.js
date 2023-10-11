@@ -21,7 +21,6 @@ function TechnicianLogin() {
   const navigate = useNavigate();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-  // const confirmpasswordInputRef = useRef();
   const authCtx = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,18 +41,25 @@ function TechnicianLogin() {
     const enteredPassword = passwordInputRef.current.value;
     localStorage.setItem("enteredEmail", JSON.stringify(enteredEmail));
 
-     if (!isValidEmail(enteredEmail)) {
-      setEmailError("Invalid email format");
-      return;
-    } else {
-      setEmailError(null);
+    if (!enteredEmail) {
+        setEmailError("Please provide an email.");
+        return;
     }
 
-    if (!enteredPassword) {
-      setPasswordError("Password cannot be empty");
-      return;
+    // 2. Validate email format
+    if (!isValidEmail(enteredEmail)) {
+        setEmailError("Invalid email format");
+        return;
     } else {
-      setPasswordError(null);
+        setEmailError(null);
+    }
+
+    // 3. Check if password is filled out
+    if (!enteredPassword) {
+        setPasswordError("Please provide a password.");
+        return;
+    } else {
+        setPasswordError(null);
     }
 
     setIsLoading(true);
@@ -86,7 +92,7 @@ function TechnicianLogin() {
         })
         .catch((err) => {
             setIsLoading(false);
-            toast.error(err.message); // Toast notification for errors
+            toast.error(err.message); 
         });
     }
 };

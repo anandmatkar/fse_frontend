@@ -10,8 +10,11 @@ const NavbarManagerDashboard = () => {
 
     const logoutHandler = () => {
         Cookies.remove('token');
+        localStorage.removeItem('Name');
+        localStorage.removeItem('Profile');
         navigate('/mangerLogin');
-        authCtx.logout();
+        console.log("Logout SucessFull");
+    
     };
 
     const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -32,14 +35,14 @@ const NavbarManagerDashboard = () => {
             <Navbar expand="lg" className="main-nav-bar">
                 <Container>
                     <Navbar.Brand href="#" as={NavLink} to="/">
-                        <img
-                            alt=""
-                            src="/assets/logofse.png"
+                        {/* <img
+                            alt="Profile Avatar"
+                            src={localStorage.getItem('Profile') || "/assets/logofse.png"} // If avatar is not present, use default
                             width={100}
                             className="d-inline-block align-top me-3"
-                        />
-                        <span style={{ position: 'relative', top: '7px' }} className="h1 m-0">
-                            FSE
+                        /> */}
+                        <span style={{ }} className="h1 m-0">
+                            {localStorage.getItem('Name') || "FSE"} 
                         </span>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -47,9 +50,9 @@ const NavbarManagerDashboard = () => {
                         <Nav className="ms-auto">
                             <Dropdown className="imgdropdown">
                                 <Dropdown.Toggle as={CustomToggle}>
-                                    {/* Replace with manager profile picture if available */}
+                                    {/* Retrieve manager profile picture from localStorage */}
                                     <img
-                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU"
+                                        src={localStorage.getItem('Profile') || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU"}
                                         alt="Profile"
                                         style={{ width: '60px', borderRadius: '50%', height: '50px' }}
                                     />

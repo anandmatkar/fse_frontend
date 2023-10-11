@@ -37,7 +37,7 @@ const TimeSheetModal = ({ projectID , onNewTimesheet }) => {
         fileFormData.append('projectID', projectID); // Add projectID here
 
         try {
-            const response = await fetch('http://localhost:3003/api/v1/technician/uploadTimesheetAttachements', {
+            const response = await fetch('http://3.110.86.245/api/v1/technician/uploadTimesheetAttachements', {
                 method: 'POST',
                 headers: {
                     'Authorization': token
@@ -64,7 +64,7 @@ const handleSubmit = async (e) => {
   const token = Cookies.get('token');
 
   try {
-      const timesheetResponse = await fetch('http://localhost:3003/api/v1/technician/createTimesheet', {
+      const timesheetResponse = await fetch('http://3.110.86.245/api/v1/technician/createTimesheet', {
           method: 'POST',
           headers: {
               'Authorization': token,

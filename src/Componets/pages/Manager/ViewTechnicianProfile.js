@@ -9,6 +9,7 @@ import {
   Col,
   Table,
 } from 'react-bootstrap';
+import { BsFiletypeDoc } from 'react-icons/bs'
 import axios from 'axios';
 
 export default function ViewTechnicianProfile() {
@@ -16,6 +17,7 @@ export default function ViewTechnicianProfile() {
   let { technicianID } = useParams();
 
   const [technicianProfile, setTechnicianProfile] = useState({});
+  const [technicianDocs, setTechnicianDocs] = useState([]);
 
   const fetchTechnicianProfile = async () => {
     try {
@@ -35,6 +37,7 @@ export default function ViewTechnicianProfile() {
       );
       console.log(response.data);
       setTechnicianProfile(response.data.data[0]);
+      setTechnicianDocs(response.data.data[0].tech_documents);
     } catch (error) {
       console.log(error.message);
     }
@@ -58,7 +61,7 @@ export default function ViewTechnicianProfile() {
                   <Card.Img
                     className="my-5"
                     variant="top"
-                    src={technicianProfile.avatar}
+                    src={technicianProfile.profilepic}
                     style={{ maxWidth: '240px', maxHeight: '320px' }}
                   />
                 </center>
@@ -93,6 +96,15 @@ export default function ViewTechnicianProfile() {
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <b>Level :</b> {`${technicianProfile.level}`}
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <b>Documents :</b> {
+                      technicianDocs.map( document => (
+                        <>
+                        <NavLink as={NavLink} to={document.file_path} target="_blank"><BsFiletypeDoc className='fs-3 mx-2'>Document</BsFiletypeDoc></NavLink>
+                        </>
+                      ))
+                    }
                   </ListGroup.Item>
                 </ListGroup>
               </Card>
