@@ -120,6 +120,7 @@ const ProjectStatusDetails = () => {
   return (
     <>
       <NavbarManagerDashboard />
+
       <div className="job-progress mt-2">
         <h1 className="jobassigntext mb-4">Project Details</h1>
 
@@ -180,7 +181,7 @@ const ProjectStatusDetails = () => {
                         <th>End_date</th>
                         <th>Tech Report</th>
                         <th>Time Sheet</th>
-                        <th>Details</th>
+                        <th>Machine Details</th>
                       </tr>
                     </thead>
 
@@ -231,13 +232,13 @@ const ProjectStatusDetails = () => {
                               )}
                             </td>
                             <td className="text-center">
-                              {technician.machine_data.id ? (
+                              {technician.machine_data.length > 0 ? (
                                 <Link
-                                  to={`/detailsOfMachineData/${technician.machine_data.id}`}
+                                  to={`/detailsOfMachineData/${technician.machine_data[0].id}/${job.project_id}`}
                                 >
                                   <BiSolidShow
                                     color="black"
-                                    className="border border-0 btn fs-1  btn-success"
+                                    className="border border-0 btn fs-1  btn-info"
                                   />
                                 </Link>
                               ) : (

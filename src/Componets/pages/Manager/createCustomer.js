@@ -104,38 +104,76 @@ function NewCustomerScreen() {
     );
   }
 
+  // const validateForm = (data) => {
+  //   const errors = {};
+
+  //   if (!data.customerName) {
+  //     errors.customerName = 'Please enter customer name';
+  //   }
+  //   if (!data.customerContactName) {
+  //     errors.customerContactName = 'Please enter customer contact name';
+  //   }
+  //   if (!data.customerAccount) {
+  //     errors.customerAccount = 'Please enter customer account number';
+  //   }
+  //   if (!data.email) {
+  //     errors.email = 'Please enter your email';
+  //   } else if (!validateEmail(data.email)) {
+  //     errors.email = 'Please enter a valid email address';
+  //   }
+  //   if (!data.phone) {
+  //     errors.phone = 'Please enter your phone number';
+  //   } else if (!validatePhone(data.phone)) {
+  //     errors.phone = 'Please enter a valid phone number';
+  //   }
+  //   if (!data.country) {
+  //     errors.country = 'Please enter country';
+  //   }
+  //   if (!data.city) {
+  //     errors.city = 'Please enter city';
+  //   }
+  //   if (!data.address) {
+  //     errors.address = 'Please enter address';
+  //   }
+  //   if (!data.scopeOfWork) {
+  //     errors.scopeOfWork = 'Please enter scope of work';
+  //   }
+
+  //   return errors;
+  // };
+
   const validateForm = (data) => {
     const errors = {};
 
-    if (!data.customerName) {
+    if (!data.customerName.trim()) {
       errors.customerName = 'Please enter customer name';
     }
-    if (!data.customerContactName) {
+    if (!data.customerContactName.trim()) {
       errors.customerContactName = 'Please enter customer contact name';
     }
-    if (!data.customerAccount) {
+    if (!data.customerAccount.trim()) {
       errors.customerAccount = 'Please enter customer account number';
     }
-    if (!data.email) {
+    if (!data.email.trim()) {
       errors.email = 'Please enter your email';
-    } else if (!validateEmail(data.email)) {
+    } else if (!validateEmail(data.email.trim())) {
       errors.email = 'Please enter a valid email address';
     }
-    if (!data.phone) {
+    if (!data.phone.trim()) {
       errors.phone = 'Please enter your phone number';
-    } else if (!validatePhone(data.phone)) {
+    } else if (!validatePhone(data.phone.trim())) {
       errors.phone = 'Please enter a valid phone number';
     }
-    if (!data.country) {
+    if (!data.country.trim()) {
       errors.country = 'Please enter country';
     }
-    if (!data.city) {
+    if (!data.city.trim()) {
       errors.city = 'Please enter city';
     }
-    if (!data.address) {
+    if (!data.address.trim()) {
       errors.address = 'Please enter address';
     }
-    if (!data.scopeOfWork) {
+    if (!data.scopeOfWork.trim()) {
       errors.scopeOfWork = 'Please enter scope of work';
     }
 
@@ -145,10 +183,9 @@ function NewCustomerScreen() {
   const validateEmail = (emailAddress) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress);
   };
-
   const validatePhone = (phone) => {
-    const indianMobileRegex = /^[6789]\d{9}$/;
-    return indianMobileRegex.test(phone);
+    const tenDigitRegex = /^\d{10}$/;
+    return tenDigitRegex.test(phone);
   };
 
   return (
