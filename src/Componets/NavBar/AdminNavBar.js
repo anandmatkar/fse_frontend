@@ -16,7 +16,7 @@ function AdminNavBar() {
     <React.Fragment>
       <Navbar expand="lg" className="main-nav-bar">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="#" as={NavLink} to="/">
             <img
               alt=""
               src="/assets/logofse.png"

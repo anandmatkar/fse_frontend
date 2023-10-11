@@ -39,7 +39,7 @@ const token = Cookies.get('token')
     <React.Fragment>
     <Navbar expand="lg" className="main-nav-bar">
         <Container>
-            <Navbar.Brand href="#home">
+            <Navbar.Brand href="#" as={NavLink} to="/">
                 {/* Get avatar from localStorage and set as src */}
                 {/* <img
                     alt="Profile Avatar"

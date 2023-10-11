@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Dropdown, Navbar, Nav, Container } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import AuthContext from '../auth-context/auth-context';
 
@@ -31,7 +31,7 @@ const NavbarManagerDashboard = () => {
         <React.Fragment>
             <Navbar expand="lg" className="main-nav-bar">
                 <Container>
-                    <Navbar.Brand href="#home">
+                    <Navbar.Brand href="#" as={NavLink} to="/">
                         <img
                             alt=""
                             src="/assets/logofse.png"
