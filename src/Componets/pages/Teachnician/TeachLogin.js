@@ -26,6 +26,14 @@ function TechnicianLogin() {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [emailError, setEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+
+  const isValidEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return regex.test(email);
+  };
+
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -33,6 +41,20 @@ function TechnicianLogin() {
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
     localStorage.setItem("enteredEmail", JSON.stringify(enteredEmail));
+
+     if (!isValidEmail(enteredEmail)) {
+      setEmailError("Invalid email format");
+      return;
+    } else {
+      setEmailError(null);
+    }
+
+    if (!enteredPassword) {
+      setPasswordError("Password cannot be empty");
+      return;
+    } else {
+      setPasswordError(null);
+    }
 
     setIsLoading(true);
 
@@ -80,7 +102,9 @@ function TechnicianLogin() {
                 <h3 className="loginForm__heading">Sign In</h3>
                 <p className="loginForm__text">Or Use Your Account</p>
                 <input type="Email" placeholder="Email" className="loginForm__field" ref={emailInputRef}/>
+                {emailError && <p className="error-text">{emailError}</p>}
                 <input type="Password" placeholder="Password" className="loginForm__field" ref={passwordInputRef}/>
+                {passwordError && <p className="error-text">{passwordError}</p>}
                 <div className="row mt-4 mb-4">
     
                     <div className="col-md-12">

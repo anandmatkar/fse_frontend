@@ -211,3 +211,10 @@
 .loginBtn:focus, .loginBtn:active {
     outline: 0;
 }
+
+
+.error-text {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
