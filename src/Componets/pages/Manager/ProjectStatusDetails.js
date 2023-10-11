@@ -3,6 +3,7 @@ import Table from 'react-bootstrap/Table';
 import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
+import { BiSolidShow } from 'react-icons/bi';
 import { FormControl, Container } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 
@@ -18,12 +19,15 @@ const ProjectStatusDetails = () => {
 
   useEffect(() => {
     const token = Cookies.get('token');
-    fetch(`/api/v1/manager/projectDetails?projectId=${projectId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-    })
+    fetch(
+      `http://3.110.86.245/api/v1/manager/projectDetails?projectId=${projectId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -47,7 +51,7 @@ const ProjectStatusDetails = () => {
     const token = Cookies.get('token');
     try {
       const response = await fetch(
-        `/api/v1/manager/deleteProject?projectId=${projectId}`,
+        `http://3.110.86.245/api/v1/manager/deleteProject?projectId=${projectId}`,
         {
           method: 'PUT',
           headers: {
@@ -175,6 +179,7 @@ const ProjectStatusDetails = () => {
                         <th>End_date</th>
                         <th>Tech Report</th>
                         <th>Time Sheet</th>
+                        <th>Details</th>
                       </tr>
                     </thead>
 
@@ -222,6 +227,20 @@ const ProjectStatusDetails = () => {
                                 </Link>
                               ) : (
                                 'No Timesheet'
+                              )}
+                            </td>
+                            <td className="text-center">
+                              {technician.machine_data.id ? (
+                                <Link
+                                  to={`/detailsOfMachineData/${technician.machine_data.id}`}
+                                >
+                                  <BiSolidShow
+                                    color="black"
+                                    className="border border-0 btn fs-1  btn-success"
+                                  />
+                                </Link>
+                              ) : (
+                                'No Details '
                               )}
                             </td>
                           </tr>
