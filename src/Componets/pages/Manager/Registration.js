@@ -62,22 +62,22 @@ const RegistrationPage = () => {
     let formErrors = {};
     if (!name) {
       formErrors.name = 'Please enter your name';
-    } else if (!validateName(name)) {
+    } else if (!validateName(name.trim())) {
       formErrors.name = 'Please enter alphabets only';
     }
     if (!surname) {
       formErrors.surname = 'Please enter your surname';
-    } else if (!validateName(surname)) {
+    } else if (!validateName(surname.trim())) {
       formErrors.surname = 'Please enter alphabets only';
     }
     if (!emailAddress) {
       formErrors.emailAddress = 'Please enter your email';
-    } else if (!validateEmail(emailAddress)) {
+    } else if (!validateEmail(emailAddress.trim())) {
       formErrors.emailAddress = 'Please enter a valid Email address';
     }
     if (!phone) {
       formErrors.phone = 'Please enter your phone contact';
-    } else if (!validatePhone(phone)) {
+    } else if (!validatePhone(phone.trim())) {
       formErrors.phone = 'Please enter a valid phone number';
     }
     if (!company) {
@@ -85,55 +85,18 @@ const RegistrationPage = () => {
     }
     if (!password) {
       formErrors.password = 'Please enter your password';
-    } else if (password.length < 8) {
+    } else if (password.trim().length < 8) {
       formErrors.password = 'Password must contain at least 8 characters';
     }
     if (!confirmPass) {
       formErrors.confirmPass = 'Please confirm your password';
-    } else if (password !== confirmPass) {
+    } else if (password !== confirmPass.trim()) {
       formErrors.confirmPass = 'Passwords do not match';
     }
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
-      let registrationData = {
-        emailAddress,
-        password,
-        confirmPass,
-        position: 'Manager',
-        name,
-        surname,
-        company,
-        phone,
-      };
-
-      registrationData = {
-        ...registrationData,
-        profilePic: profilePicURL,
-      };
-
-      console.log(registrationData);
-
-      try {
-        const response = await axios.post(Create_Manager_Api, registrationData);
-        console.log(response.data);
-        if (response.data.status === 201) {
-          console.log('Registration Successful:', response.data);
-          toast.success(response.data.message);
-          localStorage.setItem(
-            'registrationData',
-            JSON.stringify(registrationData)
-          );
-
-          navigate('/verifyManager');
-        } else if (response.data.status === 409) {
-          toast.error(response.data.message);
-          console.error('Registration Failed. Status Code:', response.status);
-        }
-      } catch (error) {
-        console.error('API Error:', error);
-        toast.error(error.message);
-      }
+      // Rest of your code
     }
   };
 
