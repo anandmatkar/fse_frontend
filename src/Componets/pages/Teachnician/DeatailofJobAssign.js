@@ -258,50 +258,52 @@ console.log(config, "config")
 </div>
 <div className="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
     <div className='d-flex '>
-    <Card.Header className='fs-5 fw-bold'>Timesheet Data:</Card.Header>
+        <Card.Header className='fs-5 fw-bold'>Timesheet Data:</Card.Header>
         <TimeSheetModal projectID={projectID} onNewTimesheet={onNewTimesheetCallback} />
-        {project && project.technician_data && project.technician_data.some(technician =>  technician.timesheet_data.length > 0) && <TimeSheetApprovalModal projectID={projectID} />}
+        {project && project.technician_data && project.technician_data.some(technician => technician.timesheet_data.length > 0) && <TimeSheetApprovalModal projectID={projectID} />}
     </div>
     <Card style={{ marginTop: '20px' }}>
-     <Card.Body>
-    <Table striped bordered hover style={{marginTop: '20px'}}>
-        <thead>
-            <tr>
-                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Comments</th>
-                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Start Time</th>
-                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>End Time</th>
-                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Date</th>
-                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th> {/* New Column */}
-                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {project.technician_data.flatMap(technician => (
-                technician.timesheet_data.map(timesheet => (
-                    <tr key={timesheet.id}>
-                        <td>{timesheet.comments}</td>
-                        <td>{timesheet.start_time}</td>
-                        <td>{timesheet.end_time}</td>
-                        <td>{timesheet.date}</td>
-                        <td>
-                            {timesheet.timesheet_attach_data && timesheet.timesheet_attach_data.map(attachment => (
-                                <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
-                                    {/* <i className="fa fa-cloud-upload fa-2x" style={{ marginRight: '5px', color: "black" }}></i> */}
-                                    <AiFillProfile size="30px"  color="black"/>
-                                </a>
-                            ))}
-                        </td>
-                        <td>
-                            <Button className='job-delete-timesheet-btn' variant="danger" size="sm" onClick={() => deleteTimeSheet(timesheet.id, projectID)}>Delete</Button>
-                        </td>
-                    </tr>
-                ))
-            ))}
-        </tbody>
-    </Table>
-    </Card.Body>
+        <Card.Body>
+            <Container fluid>
+                <Table responsive striped bordered hover style={{ marginTop: '20px' }}>
+                    <thead>
+                        <tr>
+                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Comments</th>
+                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Start Time</th>
+                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>End Time</th>
+                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Date</th>
+                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th>
+                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {project.technician_data.flatMap(technician => (
+                            technician.timesheet_data.map(timesheet => (
+                                <tr key={timesheet.id}>
+                                    <td>{timesheet.comments}</td>
+                                    <td>{timesheet.start_time}</td>
+                                    <td>{timesheet.end_time}</td>
+                                    <td>{timesheet.date}</td>
+                                    <td>
+                                        {timesheet.timesheet_attach_data && timesheet.timesheet_attach_data.map(attachment => (
+                                            <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
+                                                <AiFillProfile size="30px" color="black" />
+                                            </a>
+                                        ))}
+                                    </td>
+                                    <td>
+                                        <Button className='job-delete-timesheet-btn' variant="danger" size="sm" onClick={() => deleteTimeSheet(timesheet.id, projectID)}>Delete</Button>
+                                    </td>
+                                </tr>
+                            ))
+                        ))}
+                    </tbody>
+                </Table>
+            </Container>
+        </Card.Body>
     </Card>
 </div>
+
 
 <div className="tab-pane fade" id="v-pills-Report" role="tabpanel" aria-labelledby="v-pills-Report-tab">
     <div className='d-flex'>
@@ -312,7 +314,7 @@ console.log(config, "config")
     {project && project.technician_data && (
         <Card style={{ marginTop: '20px' }}>
             <Card.Body>
-                <Table striped bordered hover>
+                <Table responsive striped bordered hover>
                     <thead>
                         <tr>
                             <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Date</th>
@@ -347,6 +349,8 @@ console.log(config, "config")
         </Card>
     )}
 </div>
+
+
 <div className="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
 <Card.Header className='fs-5 fw-bold'>Project attachments:</Card.Header>
     <Card> 
@@ -381,45 +385,47 @@ console.log(config, "config")
 
 
 <div className="tab-pane fade" id="v-pills-machine" role="tabpanel" aria-labelledby="v-pills-machine-tab">
-<Card.Header className='fs-5 fw-bold'>Machine Data:</Card.Header>
+    <Card.Header className='fs-5 fw-bold'>Machine Data:</Card.Header>
     {project && (
         <Card style={{ marginTop: '20px' }}>
             <Card.Body>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Type</th>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Hour Count</th>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Serial</th>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Nominal Speed</th>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Actual Speed</th>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Description</th>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {project.technician_data.flatMap(technician => 
-                            technician.machine_data.map(machine => (
-                                <tr key={machine.id}>
-                                    <td>{machine.machine_type}</td>
-                                    <td>{machine.hour_count}</td>
-                                    <td>{machine.serial}</td>
-                                    <td>{machine.nom_speed}</td>
-                                    <td>{machine.act_speed}</td>
-                                    <td>{machine.description}</td>
-                                    <td>
-                                        {machine.machine_attach_data.map(attachment => (
-                                            <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
-                                                {/* <i className="fa fa-cloud-upload fa-2x" style={{ marginRight: '5px', color: "black" }}></i> */}
-                                                <AiFillProfile size="30px"  color="black"/>
-                                            </a>
-                                        ))}
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </Table>
+                <Container fluid>
+                    <Table responsive striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Type</th>
+                                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Hour Count</th>
+                                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Serial</th>
+                                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Nominal Speed</th>
+                                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Actual Speed</th>
+                                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Description</th>
+                                <th style={{ padding: '10px', borderBottom: '2px solid #000' }}>Attachments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {project.technician_data.flatMap(technician => 
+                                technician.machine_data.map(machine => (
+                                    <tr key={machine.id}>
+                                        <td>{machine.machine_type}</td>
+                                        <td>{machine.hour_count}</td>
+                                        <td>{machine.serial}</td>
+                                        <td>{machine.nom_speed}</td>
+                                        <td>{machine.act_speed}</td>
+                                        <td>{machine.description}</td>
+                                        <td>
+                                            {machine.machine_attach_data.map(attachment => (
+                                                <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
+                                                    {/* <i className="fa fa-cloud-upload fa-2x" style={{ marginRight: '5px', color: "black" }}></i> */}
+                                                    <AiFillProfile size="30px"  color="black"/>
+                                                </a>
+                                            ))}
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </Table>
+                </Container>
             </Card.Body>
         </Card>
     )}
