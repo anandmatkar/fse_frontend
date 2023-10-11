@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Base_Url } from '../../../Api/Base_Url';
 import { Technician_Timesheet_Approval } from '../../../Api/Technicians_Api';
 
@@ -37,13 +39,13 @@ const TimeSheetApprovalModal = ({ projectID, onNewTimesheet }) => {
       setShowModal(false);
 
       // Show a success message or perform any other actions
-      alert('Timesheet Sent for approved successfully');
+      toast.success("Timesheet sent approval successfully!");
 
       navigate('/JobAssigned');
 
     } catch (error) {
       console.error('Error:', error);
-      alert('Error approving timesheet: ' + error.message);
+      toast.error('Error sending request: ' + error.message);
     }
   };
 

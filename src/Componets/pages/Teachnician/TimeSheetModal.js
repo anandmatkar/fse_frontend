@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { Base_Url } from '../../../Api/Base_Url';
 import { Technician_TimesheetAttach } from '../../../Api/Technicians_Api';
@@ -96,7 +98,7 @@ const handleSubmit = async (e) => {
           throw new Error(timesheetData.message);
       }
 
-      alert('Timesheet created successfully');
+      toast.success("Timesheet created successfully!");
       setShowModal(false);
       // Here's the change: Pass the newly created timesheet data back to parent.
       console.log(timesheetData);
@@ -105,7 +107,7 @@ const handleSubmit = async (e) => {
     }
   } catch (error) {
       console.error('Error:', error);
-      alert('Error creating timesheet: ' + error.message);
+      toast.error('Error creating timesheet: ' + error.message);
   }
 };
 

@@ -1,6 +1,8 @@
 import React , { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Technician_NewCreateReport, Technician_ReportAttach } from '../../../Api/Technicians_Api';
 
 const NewReportModal = ({projectID, onNewReport}) => {
@@ -85,14 +87,14 @@ const handleSubmit = async (e) => {
             throw new Error(data.message);
         }
         console.log(response);
-        alert('Report created successfully');
+        toast.success("Report created successfully!");
         setShowModal(false);
         if(response.status === 200) {
           onNewReport(newReport);
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Error creating report: ' + error.message);
+        toast.error('Error creating Report: ' + error.message);
     }
 };
   return (

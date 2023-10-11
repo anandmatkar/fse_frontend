@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import { Button, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Technician_ReportRequestApproval } from '../../../Api/Technicians_Api';
 
 const RequestApproval = ({projectID}) => {
@@ -21,11 +23,11 @@ const RequestApproval = ({projectID}) => {
                 throw new Error(data.message);
             }
 
-            alert('Request for approval sent successfully');
+            toast.success("Report sent approval successfully!");
             setShowApprovalModal(false);
         } catch (error) {
             console.error('Error:', error);
-            alert('Error sending request for approval: ' + error.message);
+            toast.error('Error sending request: ' + error.message);
         }
     };
   return (
