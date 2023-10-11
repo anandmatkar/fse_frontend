@@ -29,6 +29,7 @@ export const Create_Technician_Api = `${Base_Url}api/v1/manager/createTechnician
 export const Upload_Technician_Profile = `${Base_Url}api/v1/technician/uploadProfilePic`;
 export const Upload_Technician_Documents = `${Base_Url}api/v1/manager/uploadTechnicianDocuments`;
 export const Project_Machine_Details = `${Base_Url}api/v1/manager/machineDetails`;
+export const Edit_Project_Machine_Details = `${Base_Url}api/v1/manager/editMachineDetails`;
 export const Manager_Forget_Password = `${Base_Url}api/v1/manager/forgotPassword`;
 export const Verify_Manager_Api = `${Base_Url}api/v1/manager/verifyManager`;
 export const Upload_Manager_Profile = `${Base_Url}api/v1/manager/uploadProfilePic`
