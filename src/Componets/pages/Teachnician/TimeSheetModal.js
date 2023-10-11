@@ -112,7 +112,7 @@ const handleSubmit = async (e) => {
   return (
    <div className='d-flex '>
 <Button  className='btn btn-success'
-  style={{position: "relative", left: "345%"}} 
+  style={{}} 
   onClick={() => setShowModal(true)}>
   Add new Timesheet
 </Button>

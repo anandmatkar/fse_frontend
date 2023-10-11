@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Table, FormControl, Container } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import {} from '../../../Api/Manager_Api';
+import { Manager_Base_Url } from '../../../Api/Manager_Api';
 
 function ProjectReportData() {
   const { techId, projectId } = useParams();
@@ -18,7 +18,7 @@ function ProjectReportData() {
     try {
       const token = Cookies.get('token');
       const response = await fetch(
-        `http://3.110.86.245/api/v1/manager/reportDetails?techId=${techId}&projectId=${projectId}`,
+        `${Manager_Base_Url}reportDetails?techId=${techId}&projectId=${projectId}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ function ProjectReportData() {
     try {
       const token = Cookies.get('token');
       const response = await fetch(
-        `http://3.110.86.245/api/v1/manager/validateReport?projectId=${projectId}&techId=${techId}`,
+        `${Manager_Base_Url}validateReport?projectId=${projectId}&techId=${techId}`,
         {
           method: 'PUT',
           headers: {

@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import { Update_Customer_Details } from './../../../Api/Manager_Api';
+import { Manager_Base_Url, Update_Customer_Details } from './../../../Api/Manager_Api';
 
 function CustomerEditedDetails() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ function CustomerEditedDetails() {
     const token = Cookies.get('token');
     // Fetch data from the API endpoint using the customerId
     fetch(
-      `http://3.110.86.245/api/v1/manager/customerDetails?customerId=${customerID}`,
+      `${Manager_Base_Url}customerDetails?customerId=${customerID}`,
       {
         headers: {
           'Content-Type': 'application/json',

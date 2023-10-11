@@ -4,6 +4,7 @@ import axios from 'axios';
 import {
   Upload_ProfilePic_Manager,
   Create_Manager_Api,
+  Manager_Base_Url,
 } from './../../../Api/Manager_Api';
 
 function NewAccount() {
@@ -88,7 +89,7 @@ function NewAccount() {
   const confirmEmail = async (token) => {
     try {
       const response = await axios.get(
-        `http://3.110.86.245/api/v1/manager/confirmEmail/${token}`
+        `${Manager_Base_Url}confirmEmail/${token}`
       );
       console.log(response.data.message); // Display the confirmation message to the user
     } catch (error) {

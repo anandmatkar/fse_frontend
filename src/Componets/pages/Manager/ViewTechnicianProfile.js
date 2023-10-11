@@ -12,6 +12,7 @@ import {
 import { BsFiletypeDoc } from 'react-icons/bs'
 import axios from 'axios';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import { Manager_Base_Url } from '../../../Api/Manager_Api';
 
 export default function ViewTechnicianProfile() {
   // Extract the 'technicianId' parameter from the URL
@@ -33,7 +34,7 @@ export default function ViewTechnicianProfile() {
         },
       };
       const response = await axios.get(
-        `http://3.110.86.245/api/v1/manager/technicianDetailsForManager?techId=${technicianID}`,
+        `${Manager_Base_Url}technicianDetailsForManager?techId=${technicianID}`,
         config
       );
       console.log(response.data);
