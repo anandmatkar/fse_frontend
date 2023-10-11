@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Card, ListGroup, Row , Table , Button , Container } from 'react-bootstrap';
 import {AiFillProfile} from 'react-icons/ai'
+import { Technician_DetailJobAssign } from '../../../Api/Technicians_Api';
 // import TimeSheetModal from './TimeSheetModal';
 // import NewReportModal from './NewReportModal';
 // import axios from 'axios';
@@ -26,7 +27,7 @@ const { projectID } = useParams();
 
     useEffect(() => {
         const token = Cookies.get('token');
-        fetch(`http://3.110.86.245/api/v1/technician/assignedProjectDetails?projectId=${projectID}`, {
+        fetch(`${Technician_DetailJobAssign}?projectId=${projectID}`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: token,

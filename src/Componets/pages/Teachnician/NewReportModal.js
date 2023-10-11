@@ -1,6 +1,7 @@
 import React , { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
+import { Technician_NewCreateReport, Technician_ReportAttach } from '../../../Api/Technicians_Api';
 
 const NewReportModal = ({projectID, onNewReport}) => {
 
@@ -32,7 +33,7 @@ const NewReportModal = ({projectID, onNewReport}) => {
          fileFormData.append('projectID', projectID);
 
         try {
-            const response = await fetch('http://3.110.86.245/api/v1/technician/uploadReportAttach', {
+            const response = await fetch(Technician_ReportAttach, {
                 method: 'POST',
                 headers: {
                     'Authorization': token
@@ -60,7 +61,7 @@ const handleSubmit = async (e) => {
     const token = Cookies.get('token');
 
     try {
-        const response = await fetch('http://3.110.86.245/api/v1/technician/createReport', {
+        const response = await fetch(`${Technician_NewCreateReport}`, {
             method: 'POST',
             headers: {
                 'Authorization': token,

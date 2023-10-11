@@ -5,6 +5,7 @@ import classes from "./techdashboard.module.css";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Base_Url } from "../../../Api/Base_Url";
 
 function TechnicianDashboard() {
     const Navigate = useNavigate();
@@ -33,7 +34,7 @@ function TechnicianDashboard() {
     useEffect(() => {
         const token = Cookies.get('token');
         // Fetch the data from the API when the component mounts
-        fetch("http://3.110.86.245/api/v1/technician/assignedProjectCounts", {
+        fetch(`${Base_Url}api/v1/technician/assignedProjectCounts`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

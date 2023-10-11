@@ -6,6 +6,7 @@ import { Card, ListGroup, Row , Table , Button , Container } from 'react-bootstr
 // import NewReportModal from './NewReportModal';
 import {AiFillProfile} from 'react-icons/ai'
 import axios from 'axios';
+import { Technician_DetailJobAssign } from '../../../Api/Technicians_Api';
 
 const DetailofJobclosed = () => {
     const style = {
@@ -26,7 +27,7 @@ const DetailofJobclosed = () => {
 
     useEffect(() => {
         const token = Cookies.get('token');
-        fetch(`http://3.110.86.245/api/v1/technician/assignedProjectDetails?projectId=${projectID}`, {
+        fetch(`${Technician_DetailJobAssign}?projectId=${projectID}`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: token,

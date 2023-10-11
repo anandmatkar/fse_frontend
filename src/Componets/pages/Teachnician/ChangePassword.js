@@ -4,6 +4,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { Technician_ChnagePassword } from '../../../Api/Technicians_Api';
 
 export default function ChangePassword() {
   const [oldPassword, setOldPassword] = useState('');
@@ -52,7 +53,7 @@ export default function ChangePassword() {
       const token = Cookies.get("token");
 
       const response = await axios.put(
-        'http://3.110.86.245/api/v1/technician/changePassword',
+        Technician_ChnagePassword,
         {
           oldPassword,
           newPassword,
