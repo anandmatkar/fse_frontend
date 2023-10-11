@@ -12,29 +12,34 @@ function ProjectStatus() {
   const token = Cookies.get('token');
 
   useEffect(() => {
-    // Fetch project counts data
-    fetch('http://3.110.86.245/api/v1/manager/projectCount', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
+    // Retrieve the token from cookies
+    const token = Cookies.get('token'); // Replace 'yourTokenCookieName' with your actual cookie name
+  
+    if (token) {
+      // Fetch project counts data with the Authorization header
+      fetch(Project_Count_Manager, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
       })
-      .then((data) => {
-        setProjectCounts(data.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching project counts:', error);
-      });
-  }, [token]); // Include token in the dependency array
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setProjectCounts(data.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching project counts:', error);
+        });
+    } else {
+      console.error('Token not found in cookies');
+    }
+  }, []);
 
- 
   const progrssHandler = () => {
     console.log('Successfully Updated');
     Navigate('/projectprogress');
@@ -80,7 +85,7 @@ function ProjectStatus() {
                         style={{ height: '40px', lineHeight: '24px' }}
                       >
                         {projectCounts && (
-                          <Badge>{projectCounts.projectInProgressCount}</Badge>
+                          <Badge>{projectCounts.projectInProgressCount || 0} </Badge>
                         )}
                       </Col>
                     </Row>
@@ -114,7 +119,7 @@ function ProjectStatus() {
                       >
                         {projectCounts && (
                           <Badge>
-                            {projectCounts.projectRequestedForApprovalCount}
+                            {projectCounts.projectRequestedForApprovalCount || 0}
                           </Badge>
                         )}
                       </Col>
@@ -146,7 +151,7 @@ function ProjectStatus() {
                         style={{ height: '40px', lineHeight: '24px' }}
                       >
                         {projectCounts && (
-                          <Badge>{projectCounts.completedProjectsCount}</Badge>
+                          <Badge>{projectCounts.completedProjectsCount || 0}</Badge>
                         )}
                       </Col>
                     </Row>
@@ -154,8 +159,7 @@ function ProjectStatus() {
                   <Card.Title>Complete Projects</Card.Title>
                   <Card.Text>
                     {' '}
-                    Completed Project, you can see more details here. Please
-                    click Here...
+                    Completed Project, you can see more details here.
                   </Card.Text>
                 </Card.Body>
               </Card>

@@ -5,6 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import {Upload_Manager_Profile, Show_Manager_Profile, Update_Manager_Profile} from '../../../Api/Manager_Api'
 
 function ShowManagerProfile() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ function ShowManagerProfile() {
   useEffect(() => {
     const token = Cookies.get('token');
     // Fetch data from the API endpoint using the customerId
-    fetch(`/api/v1/manager/showProfile`, {
+    fetch(Show_Manager_Profile, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
@@ -58,8 +59,7 @@ function ShowManagerProfile() {
       const formData = new FormData();
       formData.append('image', file);
       try {
-        const response = await axios.post(
-          '/api/v1/manager/uploadProfilePic',
+        const response = await axios.post(Upload_Manager_Profile,
           formData
         );
         if (response.data.status === 201) {
@@ -81,7 +81,7 @@ function ShowManagerProfile() {
     e.preventDefault();
     const token = Cookies.get('token');
     // Send a PUT request to update customer details
-    fetch(`/api/v1/manager/updateProfile`, {
+    fetch(Update_Manager_Profile, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
