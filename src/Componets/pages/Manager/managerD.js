@@ -58,37 +58,37 @@ export default function ManagerDashboard() {
             <h6 className="section-title bg-white text-center text-primary px-3">
               Manager's Panel
             </h6>
-            <h1 className="mb-5">Our Services</h1>
+            <h1 className="mb-5">Services</h1>
           </div>
           <Row>
             <ServiceItem
               icon="fa-globe"
-              title="Create Customer's"
+              title="Create Customer"
               text="Create Customer & Manage Their Profiles"
               onClick={createCustomerHandler}
             />
             <ServiceItem
               icon="fa-hotel"
-              title="Create Project's"
+              title="Create Project"
               text="Create Project & Manage Project Details"
               onClick={createProject}
             />
             <ServiceItem
               icon="fa-user"
-              title="Manage Technician's"
-              text="Create Technician Profile & Manage Technicians Profiles"
+              title="Manage Technicians"
+              text="Create Technician & Manage Technicians Profiles"
               onClick={manageTechnicians}
             />
             <ServiceItem
               icon="fa-cog"
-              title="Manage Project's Status "
+              title="Manage Projects"
               text="View Status Finished & Ongoing Project's"
               onClick={ManageProjectStatus}
             />
             <ServiceItem
               icon="fa-cog"
-              title="Manage Machine's Details"
-              text="View Manage Machines Details"
+              title="Manage Machines"
+              text="View Manage & Edit Machines Details"
               onClick={manageMachineDetails}
             />
           </Row>
@@ -101,7 +101,7 @@ export default function ManagerDashboard() {
 
 function ServiceItem({ icon, title, text, onClick }) {
   return (
-    <Col lg={3} md={12} className="wow fadeInUp my-3" data-wow-delay="0.1s">
+    <Col lg={4} md={12} className="wow fadeInUp my-3" data-wow-delay="0.1s">
       <Card className="service-item rounded pt-3" onClick={onClick}>
         <div className="p-4">
           <i className={`fa fa-3x ${icon} text-primary mb-4`}></i>
