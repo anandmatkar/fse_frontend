@@ -135,7 +135,7 @@ function App() {
         />
         <Route path="/completedprojects" element={<CompletedProjects />} />
         <Route
-          path="/detailsOfMachineData/"
+          path="/detailsOfMachineData/:machineId/:projectId"
           element={<DetailsOfMachineData />}
         />
       </Routes>
