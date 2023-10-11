@@ -68,31 +68,38 @@ function DetailsOfMachineData() {
                     </tr>
                   </thead>
                   <tbody>
-                    <td>{machineData.order_id}</td>
-                    <td>{machineData.machine_type}</td>
-                    <td>{machineData.serial}</td>
-                    <td>{machineData.hour_count}</td>
-                    <td>{machineData.nom_speed}</td>
-                    <td>{machineData.act_speed}</td>
-                    <td>{machineData.description}</td>
-                    <td className="d-flex justify-content-center">
-                      {filteredMachineAttach.length > 0
-                        ? filteredMachineAttach.map((attachment) => (
-                            <a
-                              key={attachment.id}
-                              href={attachment.file_path}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <LuDownload
-                                color="black"
-                                className="border border-0 btn fs-1 btn-info d-flex justify-content-center me-2"
-                              />{' '}
-                              {/* Add your icon here */}
-                            </a>
-                          ))
-                        : 'No attachments'}
-                    </td>
+                    {machineData ? (
+                      <tr>
+                        <td>{machineData.order_id}</td>
+                        <td>{machineData.machine_type}</td>
+                        <td>{machineData.serial}</td>
+                        <td>{machineData.hour_count}</td>
+                        <td>{machineData.nom_speed}</td>
+                        <td>{machineData.act_speed}</td>
+                        <td>{machineData.description}</td>
+                        <td className="d-flex justify-content-center">
+                          {filteredMachineAttach.length > 0
+                            ? filteredMachineAttach.map((attachment) => (
+                                <a
+                                  key={attachment.id}
+                                  href={attachment.file_path}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <LuDownload
+                                    color="black"
+                                    className="border border-0 btn fs-1 btn-info d-flex justify-content-center me-2"
+                                  />
+                                </a>
+                              ))
+                            : 'No attachments'}
+                        </td>
+                      </tr>
+                    ) : (
+                      <tr>
+                        <td colSpan="8">Loading machine data...</td>
+                      </tr>
+                    )}
                   </tbody>
                 </Table>
               </Container>
