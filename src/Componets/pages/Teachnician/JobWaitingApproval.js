@@ -50,7 +50,7 @@ function JobWaitingApproval() {
 const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 
   return (
-    <div className="container mt-5">
+    <div className="jobcontainer container mt-5">
 <h1 className="jobassigntext mb-4">Technician Job waiting approval </h1>
 <input
         type="text"
