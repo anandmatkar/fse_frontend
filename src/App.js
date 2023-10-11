@@ -54,6 +54,7 @@ import ViewMachineInfo from './Componets/pages/Manager/ViewMachineInfo';
 import ViewProjectMachineInfo from './Componets/pages/Manager/ViewProjectMachineInfo';
 import EditProjectMachineInfo from './Componets/pages/Manager/EditProjectMachineInfo';
 import CompletedProjects from './Componets/pages/Manager/CompletedProjects';
+import DetailsOfMachineData from './Componets/pages/Manager/DetailsOfMachineData';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -101,9 +102,15 @@ function App() {
           path="/viewtechnicianprofile/:technicianID"
           element={<ViewTechnicianProfile />}
         />
-        <Route path='/managemachineinfo' element={<ViewMachineInfo/>} />
-        <Route path='/project-attached-machine-details/:projectID' element={<ViewProjectMachineInfo/>} />
-        <Route  path='/project-attached-machine-details/edit-machine/:projectID/:machineID' element={<EditProjectMachineInfo/>} />
+        <Route path="/managemachineinfo" element={<ViewMachineInfo />} />
+        <Route
+          path="/project-attached-machine-details/:projectID"
+          element={<ViewProjectMachineInfo />}
+        />
+        <Route
+          path="/project-attached-machine-details/edit-machine/:projectID/:machineID"
+          element={<EditProjectMachineInfo />}
+        />
         <Route path="/timeSheetss" element={<TimeSheet />}></Route>
         <Route path="/customerlist" element={<CustomerList />}></Route>
         <Route
@@ -127,6 +134,10 @@ function App() {
           element={<ProjectRequestedForApproval />}
         />
         <Route path="/completedprojects" element={<CompletedProjects />} />
+        <Route
+          path="/detailsOfMachineData/"
+          element={<DetailsOfMachineData />}
+        />
       </Routes>
 
       <Routes>

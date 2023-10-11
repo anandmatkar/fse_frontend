@@ -4,6 +4,7 @@ import Spinner from '../Common/Spinner';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
   Create_Project_Api,
   Upload_File_Attach,
@@ -11,114 +12,142 @@ import {
   Teachnician_List_Api,
   Customer_List_Api,
 } from './../../../Api/Manager_Api';
-import axios from 'axios';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
+
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 
 function CreateProject() {
   const [customerList, setCustomerList] = useState([]);
   const [techList, setTechList] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const [technician, setTechnicians] = useState([]);
+  const [technicians, setTechnicians] = useState([]);
   const [customerId, setCustomerId] = useState('');
   const [projectType, setProjectType] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [projectAttach, setProjectAttach] = useState([]);
-  const [MachineType, setMachineType] = useState('');
-  const [MachineSerial, setMachineSerial] = useState('');
-  const [hourCount, setHourCount] = useState('');
-  const [nomSpeed, setNomSpeed] = useState('');
-  const [actSpeed, setActSpeed] = useState('');
-  const [techIds, setTechId] = useState([]);
-  const [machineAttach, setMachineAttach] = useState([]);
+  const [addedMachineDetails, setAddedMachineDetails] = useState([]);
+  const [machineDetails, setMachineDetails] = useState([
+    {
+      MachineType: '',
+      MachineSerial: '',
+      hourCount: '',
+      nomSpeed: '',
+      actSpeed: '',
+      techIds: [],
+      machineAttach: [],
+    },
+  ]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedTechs, setSelectedTechs] = useState([]);
   const navigate = useNavigate();
+
+  const [errors, setErrors] = useState({
+    customerId: '',
+    projectType: '',
+    description: '',
+    startDate: '',
+    endDate: '',
+    projectAttach: '',
+    machineDetails: '',
+  });
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!customerId) {
+      newErrors.customerId = 'Customer is required';
+    }
+
+    if (!projectType) {
+      newErrors.projectType = 'Project Type is required';
+    }
+
+    if (!description) {
+      newErrors.description = 'Project Description is required';
+    }
+
+    if (!startDate) {
+      newErrors.startDate = 'Start Date is required';
+    }
+
+    if (!endDate) {
+      newErrors.endDate = 'End Date is required';
+    }
+
+    if (projectAttach.length === 0) {
+      newErrors.projectAttach = 'At least one file is required';
+    } else {
+      newErrors.projectAttach = ''; // Clear the error if files are selected
+    }
+    if (!machineDetails) {
+      newErrors.machineDetails = 'All Machine Details are required';
+    }
+    setErrors(newErrors);
+
+    // Check if there are any errors
+    return Object.values(newErrors).every((error) => !error);
+  };
 
   useEffect(() => {
     const token = Cookies.get('token');
 
-    // Check if a token is available
     if (token) {
-      // Set the token in Axios headers
       axios.defaults.headers.common['Authorization'] = token;
     }
 
+    // Fetch customer data
     axios
-      .get(Customer_List_Api)
+      .get(Customer_List_Api) // You need to replace this with your API endpoint
       .then((response) => {
-        // Assuming the response contains an array of customer objects
         const customersData = response.data.data;
-
-        // Extract customer names from the data
         const names = customersData.map((customer) => customer.customer_name);
-
-        // Update the state with customer names
         setCustomerList(names);
-
-        // Optionally, you can also set the entire customer data
         setCustomers(customersData);
       })
       .catch((error) => {
         console.error('Error fetching customer data:', error);
       });
-  }, []);
 
-  useEffect(() => {
-    // Fetch customer data from the API using Axios or your preferred HTTP library
-    const token = Cookies.get('token');
-
-    // Check if a token is available
-    if (token) {
-      // Set the token in Axios headers
-      axios.defaults.headers.common['Authorization'] = token;
-    }
-
+    // Fetch technician data
     axios
-      .get(Teachnician_List_Api)
+      .get(Teachnician_List_Api) // You need to replace this with your API endpoint
       .then((response) => {
-        // Assuming the response contains an array of customer objects
         const techniciansData = response.data.data;
-
-        // Extract customer names from the data
         const technicianNames = techniciansData.map(
-          (technician) => technician.customer_name
+          (technician) => technician.name
         );
-
-        // Update the state with customer names
         setTechList(technicianNames);
-
-        // Optionally, you can also set the entire customer data
         setTechnicians(techniciansData);
       })
       .catch((error) => {
-        console.error('Error fetching customer data:', error);
+        console.error('Error fetching technician data:', error);
       });
   }, []);
 
-  // const goBackHandler = () => {
-  //   Navigate('/manager');
-  // };
-
-  const handleTechCheckboxChange = (event) => {
+  const handleTechCheckboxChange = (event, machineIndex) => {
     const techId = event.target.value;
+    const updatedMachineDetails = [...machineDetails];
     if (event.target.checked) {
-      setSelectedTechs([...selectedTechs, techId]);
+      updatedMachineDetails[machineIndex].techIds.push(techId);
     } else {
-      setSelectedTechs(selectedTechs.filter((id) => id !== techId));
+      updatedMachineDetails[machineIndex].techIds = updatedMachineDetails[
+        machineIndex
+      ].techIds.filter((id) => id !== techId);
     }
+    setMachineDetails(updatedMachineDetails);
   };
 
-  const handleMachineDocuments = async (event) => {
+  const handleMachineDocuments = async (event, machineIndex) => {
     const files = event.target.files;
-    const fileArray = Array.from(files); // Convert FileList to an array
-    setMachineAttach(fileArray);
+    const fileArray = Array.from(files);
+    const updatedMachineDetails = [...machineDetails];
+    updatedMachineDetails[machineIndex].machineAttach = fileArray;
+    setMachineDetails(updatedMachineDetails);
 
     if (fileArray.length > 0) {
       const formData = new FormData();
 
-      // Append each file to the formData with the same field name 'files'
       fileArray.forEach((file, index) => {
         formData.append('files', file);
       });
@@ -127,10 +156,10 @@ function CreateProject() {
         const response = await axios.post(Upload_Machine_Files, formData);
 
         if (response.data.status === 201) {
-          // The API should return an array of URLs for the uploaded files
           const uploadedURLs = response.data.data;
-          console.log(uploadedURLs);
-          setMachineAttach(uploadedURLs);
+          const updatedMachineDetails = [...machineDetails];
+          updatedMachineDetails[machineIndex].machineAttach = uploadedURLs;
+          setMachineDetails(updatedMachineDetails);
         } else {
           console.error('Files Upload Failed. Status Code:', response.status);
         }
@@ -140,15 +169,28 @@ function CreateProject() {
     }
   };
 
+  const addMachineDetail = () => {
+    const newMachineDetail = {
+      MachineType: '',
+      MachineSerial: '',
+      hourCount: '',
+      nomSpeed: '',
+      actSpeed: '',
+      techIds: [],
+      machineAttach: [],
+    };
+
+    setMachineDetails([...machineDetails, newMachineDetail]);
+  };
+
   const handleProjectAttachChange = async (event) => {
     const files = event.target.files;
-    const fileArray = Array.from(files); // Convert FileList to an array
+    const fileArray = Array.from(files);
     setProjectAttach(fileArray);
 
     if (fileArray.length > 0) {
       const formData = new FormData();
 
-      // Append each file to the formData with the same field name 'files'
       fileArray.forEach((file, index) => {
         formData.append('files', file);
       });
@@ -157,9 +199,7 @@ function CreateProject() {
         const response = await axios.post(Upload_File_Attach, formData);
 
         if (response.data.status === 201) {
-          // The API should return an array of URLs for the uploaded files
           const uploadedURLs = response.data.data;
-          console.log(uploadedURLs);
           setProjectAttach(uploadedURLs);
         } else {
           console.error('Files Upload Failed. Status Code:', response.status);
@@ -170,49 +210,47 @@ function CreateProject() {
     }
   };
 
+  const handleMachineDetailChange = (event, index, fieldName) => {
+    const updatedMachineDetails = [...machineDetails];
+    updatedMachineDetails[index][fieldName] = event.target.value;
+    setMachineDetails(updatedMachineDetails);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const projectData = {
-      customerId,
-      projectType,
-      description,
-      startDate,
-      endDate,
-      projectAttach,
-      machineDetails: [
-        {
-          MachineType,
-          MachineSerial,
-          hourCount,
-          nomSpeed,
-          actSpeed,
-          techIds: selectedTechs,
-          machineAttach,
-        },
-      ],
-      // techIds, // Add techIds directly to the object
-    };
-    console.log(projectData);
+    const isFormValid = validateForm();
 
-    try {
-      const response = await axios.post(Create_Project_Api, projectData);
-      console.log(projectData);
+    if (isFormValid) {
+      const finalMachineDetails = [...machineDetails, ...addedMachineDetails];
 
-      if (response.data.status === 200) {
-        // Handle success
-        toast.success('Project created successfully');
-        console.log('Project created successfully', response.data);
-        navigate('/manager');
-      } else {
-        // Handle API error (status code other than 201)
-        toast.error('Error creating project');
-        console.error('Error creating project. Status Code:', response.status);
+      const projectData = {
+        customerId,
+        projectType,
+        description,
+        startDate,
+        endDate,
+        projectAttach,
+        machineDetails: finalMachineDetails, // Include machine details in the request
+      };
+
+      try {
+        const response = await axios.post(Create_Project_Api, projectData);
+
+        if (response.data.status === 200) {
+          toast.success('Project created successfully');
+          navigate('/manager');
+        } else {
+          toast.error('Error creating project');
+          console.error(
+            'Error creating project. Status Code:',
+            response.status
+          );
+        }
+      } catch (error) {
+        toast.error('An error occurred while creating the project');
+        console.error('API Error:', error);
       }
-    } catch (error) {
-      // Handle network or other errors
-      toast.error('An error occurred while creating the project');
-      console.error('API Error:', error);
     }
   };
 
@@ -227,243 +265,320 @@ function CreateProject() {
   return (
     <>
       <NavbarManagerDashboard />
-      <div>
-        <div class="container newproject">
-          <header class="headernewproject">
-            <h1 id="title" class="text-center heading1">
-              Create new Project
-            </h1>
-          </header>
-          <div class="form-wrap newprojectform">
-            <form onSubmit={handleSubmit}>
-              <div class="row colrow">
-                <div class="col-md-4">
-                  <div class="form-group formgroupinput">
-                    <label htmlFor="customer" className="labeltag">
-                      Customer
-                    </label>
-                    <select
-                      id="customerId"
-                      class="form-control formcontrolinput"
-                      value={customerId}
-                      onChange={(event) => setCustomerId(event.target.value)}
-                    >
-                      <option disabled selected value="">
-                        Select Customer
-                      </option>
-                      {customers.map((customer, index) => (
-                        <option key={index} value={customer.id}>
-                          {customer.customer_name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group formgroup">
-                    <label htmlFor="projectType" className="labeltag">
-                      Project Type
-                    </label>
-                    <input
-                      type="text"
-                      name="projectType"
-                      id="projectType"
-                      placeholder="Project type"
-                      class="form-control formcontrolinput"
-                      value={projectType}
-                      onChange={(event) => setProjectType(event.target.value)}
-                    />
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group formgroup">
-                    <label htmlFor="projectDescription" className="labeltag">
-                      Project description
-                    </label>
-                    <input
-                      type="text"
-                      name="description"
-                      id="description"
-                      value={description}
-                      onChange={(event) => setDescription(event.target.value)}
-                      placeholder="Project description"
-                      class="form-control formcontrolinput"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row colrow">
-                <div class="col-md-4">
-                  <div class="form-group ">
-                    <label htmlFor="startDate" className="labeltag">
-                      Start Date
-                    </label>
-                    <input
-                      type="date"
-                      name="startDate"
-                      id="startDate"
-                      value={startDate}
-                      onChange={(event) => setStartDate(event.target.value)}
-                      class="form-control formcontrolinput"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group formgroup">
-                    <label htmlFor="endDate" className="labeltag">
-                      End Date
-                    </label>
-                    <input
-                      type="date"
-                      name="endDate"
-                      id="endDate"
-                      value={endDate}
-                      onChange={(event) => setEndDate(event.target.value)}
-                      class="form-control formcontrolinput"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group formgroup">
-                    <label htmlFor="projectAttach" className="labeltag">
-                      Project Documents
-                    </label>
-                    <input
-                      type="file"
-                      class="form-control formcontrolinput"
-                      // accept="imafge/*"
-                      multiple
-                      onChange={handleProjectAttachChange}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row p-2 colrow">
-                <div class="col-md-4">
-                  <div class="form-group formgroup">
-                    <label id="name-label" className="labeltag">
-                      Machine Type
-                    </label>
-                    <input
-                      type="text"
-                      name="MachineType"
-                      value={MachineType}
-                      onChange={(event) => setMachineType(event.target.value)}
-                      placeholder="Machine type"
-                      class="form-control formcontrolinput"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group formgroup">
-                    <label id="email-label" className="labeltag">
-                      Serial Number
-                    </label>
-                    <input
-                      type="text"
-                      name="MachineSerial"
-                      value={MachineSerial}
-                      onChange={(event) => setMachineSerial(event.target.value)}
-                      placeholder="Machine Serial number"
-                      class="form-control formcontrolinput"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group formgroup">
-                    <label id="email-label" className="labeltag">
-                      Hour Count
-                    </label>
-                    <input
-                      type="text"
-                      name="hourCount"
-                      value={hourCount}
-                      onChange={(event) => setHourCount(event.target.value)}
-                      placeholder="Hour Count"
-                      class="form-control formcontrolinput"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row colrow">
-                <div class="col-md-4">
-                  <div class="form-group formgroup">
-                    <label id="number-label" className="labeltag">
-                      Nominal Speed
-                    </label>
-                    <input
-                      type="text"
-                      name="nomSpeed"
-                      value={nomSpeed}
-                      onChange={(event) => setNomSpeed(event.target.value)}
-                      placeholder="Nominal Speed"
-                      class="form-control formcontrolinput"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group formgroup">
-                    <label id="number-label" className="labeltag">
-                      Actual Speed
-                    </label>
-                    <input
-                      type="text"
-                      name="actSpeed"
-                      placeholder="Actual Speed"
-                      value={actSpeed}
-                      onChange={(event) => setActSpeed(event.target.value)}
-                      class="form-control formcontrolinput"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group formgroup">
-                    <label id="number-label" for="number">
-                      Technician
-                    </label>
+      <div class="container newproject">
+        <header class="headernewproject">
+          <h1 id="title" class="text-center heading1">
+            Create new Project
+          </h1>
+        </header>
+        <div class="form-wrap newprojectform">
+          <form onSubmit={handleSubmit}>
+            <div class="row colrow">
+              <div class="col-md-4">
+                <div class="form-group formgroupinput">
+                  <label htmlFor="customer" className="labeltag">
+                    Customer
+                  </label>
 
-                    <div className="d-flex flex-wrap ">
-                      {technician.map((technician, index) => (
-                        <div key={index} className="form-check">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id={`techCheckbox_${index}`}
-                            value={technician.id}
-                            onChange={handleTechCheckboxChange}
-                            checked={selectedTechs.includes(technician.id)}
-                          />
-                          <label
-                            className="form-check-label me-2"
-                            htmlFor={`techCheckbox_${index}`}
-                          >
-                            {technician.name}
-                          </label>
-                        </div>
-                      ))}
+                  <select
+                    id="customerId"
+                    class="form-control formcontrolinput"
+                    value={customerId}
+                    onChange={(event) => setCustomerId(event.target.value)}
+                  >
+                    <option disabled selected value="">
+                      Select Customer
+                    </option>
+                    {customers.map((customer, index) => (
+                      <option key={index} value={customer.id}>
+                        {customer.customer_name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.customerId && (
+                    <p className="error-message text-danger">
+                      {errors.customerId}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label htmlFor="projectType" className="labeltag">
+                    Project Type
+                  </label>
+                  <input
+                    type="text"
+                    name="projectType"
+                    id="projectType"
+                    placeholder="Project type"
+                    class="form-control formcontrolinput"
+                    value={projectType}
+                    onChange={(event) => setProjectType(event.target.value)}
+                  />
+                  {errors.projectType && (
+                    <p className="error-message text-danger">
+                      {errors.projectType}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label htmlFor="projectDescription" className="labeltag">
+                    Project description
+                  </label>
+                  <input
+                    type="text"
+                    name="description"
+                    id="description"
+                    value={description}
+                    onChange={(event) => setDescription(event.target.value)}
+                    placeholder="Project description"
+                    class="form-control formcontrolinput"
+                  />
+                  {errors.description && (
+                    <p className="error-message text-danger">
+                      {errors.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div class="row colrow">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label htmlFor="startDate" className="labeltag">
+                    Start Date
+                  </label>
+                  <input
+                    type="date"
+                    name="startDate"
+                    id="startDate"
+                    value={startDate}
+                    onChange={(event) => setStartDate(event.target.value)}
+                    class="form-control formcontrolinput"
+                  />
+                  {errors.startDate && (
+                    <p className="error-message text-danger">
+                      {errors.startDate}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group formgroup">
+                  <label htmlFor="endDate" className="labeltag">
+                    End Date
+                  </label>
+                  <input
+                    type="date"
+                    name="endDate"
+                    id="endDate"
+                    value={endDate}
+                    onChange={(event) => setEndDate(event.target.value)}
+                    class="form-control formcontrolinput"
+                  />
+                  {errors.endDate && (
+                    <p className="error-message text-danger">
+                      {errors.endDate}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="form-group formgroup col-md-4">
+                <label htmlFor="projectAttach" className="labeltag">
+                  Project Documents
+                </label>
+                <input
+                  type="file"
+                  className={`form-control formcontrolinput ${
+                    errors.projectAttach ? 'is-invalid' : ''
+                  }`}
+                  multiple
+                  onChange={handleProjectAttachChange}
+                />
+                {errors.projectAttach && (
+                  <p className="error-message text-danger">
+                    {errors.projectAttach}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="col-12">
+              {errors.machineDetails && (
+                <p className="error-message text-danger">
+                  {errors.machineDetails}
+                </p>
+              )}
+            </div>
+
+            {machineDetails.map((machine, index) => (
+              <div key={index}>
+                <div class="row p-2 colrow">
+                  <div className="col-12">
+                    {errors.machineDetails && (
+                      <p className="error-message text-danger">
+                        {errors.machineDetails}
+                      </p>
+                    )}
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group formgroup">
+                      <label htmlFor="MachineType" className="labeltag">
+                        Machine Type
+                      </label>
+                      <input
+                        type="text"
+                        name="MachineType"
+                        value={machine.MachineType}
+                        onChange={(event) =>
+                          handleMachineDetailChange(event, index, 'MachineType')
+                        }
+                        placeholder="Machine type"
+                        class="form-control formcontrolinput"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group formgroup">
+                      <label htmlFor="MachineSerial" className="labeltag">
+                        Serial Number
+                      </label>
+                      <input
+                        type="text"
+                        name="MachineSerial"
+                        value={machine.MachineSerial}
+                        onChange={(event) =>
+                          handleMachineDetailChange(
+                            event,
+                            index,
+                            'MachineSerial'
+                          )
+                        }
+                        placeholder="Machine Serial number"
+                        class="form-control formcontrolinput"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group formgroup">
+                      <label htmlFor="hourCount" className="labeltag">
+                        Hour Count
+                      </label>
+                      <input
+                        type="text"
+                        name="hourCount"
+                        value={machine.hourCount}
+                        onChange={(event) =>
+                          handleMachineDetailChange(event, index, 'hourCount')
+                        }
+                        placeholder="Hour Count"
+                        class="form-control formcontrolinput"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group formgroup">
+                      <label htmlFor="nomSpeed" className="labeltag">
+                        Nominal Speed
+                      </label>
+                      <input
+                        type="text"
+                        name="nomSpeed"
+                        value={machine.nomSpeed}
+                        onChange={(event) =>
+                          handleMachineDetailChange(event, index, 'nomSpeed')
+                        }
+                        placeholder="Nominal Speed"
+                        class="form-control formcontrolinput"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group formgroup">
+                      <label htmlFor="actSpeed" className="labeltag">
+                        Actual Speed
+                      </label>
+                      <input
+                        type="text"
+                        name="actSpeed"
+                        value={machine.actSpeed}
+                        onChange={(event) =>
+                          handleMachineDetailChange(event, index, 'actSpeed')
+                        }
+                        placeholder="Actual Speed"
+                        class="form-control formcontrolinput"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group formgroup">
+                      <label htmlFor="techIds" className="labeltag">
+                        Technician
+                      </label>
+                      <div className="d-flex flex-wrap">
+                        {technicians.map((technician, techIndex) => (
+                          <div key={techIndex} className="form-check">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              id={`techCheckbox_${index}_${techIndex}`}
+                              value={technician.id}
+                              onChange={(event) =>
+                                handleTechCheckboxChange(event, index)
+                              }
+                              checked={machine.techIds.includes(technician.id)}
+                            />
+                            <label
+                              className="form-check-label me-2"
+                              htmlFor={`techCheckbox_${index}_${techIndex}`}
+                            >
+                              {technician.name}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group formgroup">
+                      <label
+                        htmlFor={`machineAttach_${index}`}
+                        className="labeltag"
+                      >
+                        Machine Attachments
+                      </label>
+                      <input
+                        type="file"
+                        class="form-control formcontrolinput"
+                        multiple
+                        onChange={(event) =>
+                          handleMachineDocuments(event, index)
+                        }
+                      />
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-md-12 ">
-                <label className="labeltag">Machine Attachments</label>
-                <div class="form-control formcontrolinput">
-                  <input
-                    type="file"
-                    class="formcontrolinput"
-                    // accept="imafge/*"
-                    multiple
-                    onChange={handleMachineDocuments}
-                  />
-                </div>
-              </div>
-              <div className="col-12 d-flex justify-content-end">
-                <button className="btn btn-dark buttonFocus mt-2 p-2 fs-5 ">
-                  Submit
-                </button>
-              </div>{' '}
-            </form>
-          </div>
+            ))}
+            <div>
+              <AiOutlinePlusCircle
+                // size="30px"
+                color="black"
+                className="border border-0 btn fs-1  btn-success"
+                onClick={addMachineDetail}
+              />{' '}
+              Add Machine Details
+            </div>
+            <div class="col-12 d-flex justify-content-end">
+              <button className="btn btn-dark buttonFocus mt-2 p-2 fs-5">
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </>
