@@ -129,16 +129,17 @@ export default function ManageTechnician() {
         
         <NavbarManagerDashboard/>
 
-        <Container className='my-5'>
-
-            <Button variant='warning' as={NavLink} to={'/createtechnician'}>Create Technician</Button>
-
             <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h6 className="section-title bg-white text-center text-primary px-3">
                 Manager's Panel
                 </h6>
                 <h1 className="mb-5">Manage Technicians</h1>
             </div>
+
+        <Container className='my-5'>
+
+            <Button variant='warning' as={NavLink} to={'/createtechnician'} className='my-3'>Create Technician</Button>
+
 
             <InputGroup className="mb-3">
                 <InputGroup.Text id="basic-addon1"><FaSearch/></InputGroup.Text>
