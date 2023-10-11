@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import { Base_Url } from '../../../Api/Base_Url';
+import { Technician_Timesheet_Approval } from '../../../Api/Technicians_Api';
 
 const TimeSheetApprovalModal = ({ projectID, onNewTimesheet }) => {
   const [showModal, setShowModal] = useState(false);
@@ -10,7 +12,7 @@ const TimeSheetApprovalModal = ({ projectID, onNewTimesheet }) => {
 
   const handleRequestApproveModal = async () => {
     const token = Cookies.get('token');
-    const approvalEndpoint = `http://3.110.86.245/api/v1/technician/requestForTimesheetApproval?projectId=${projectID}`;
+    const approvalEndpoint = `${Technician_Timesheet_Approval}?projectId=${projectID}`
 
     try {
       const response = await fetch(approvalEndpoint, {

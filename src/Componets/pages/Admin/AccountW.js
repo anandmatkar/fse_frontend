@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './AccountWA.css'
-import Spinner from '../Common/Spinner';
 import Table from 'react-bootstrap/Table';
 import { Button } from "react-bootstrap";
+import { Base_Url } from "../../../Api/Base_Url";
 
 function UserTable() {
   const [users, setUsers] = useState([]);
   const [loading,setLoading] = useState(false)
 
   const toggleActivation = async (userId) => {
-    setLoading(true)
     const token = localStorage.getItem("token");
   
     if (!token) {
@@ -25,13 +24,12 @@ function UserTable() {
     };
   
     try {
-      const response = await axios.put(`http://3.110.86.245/api/v1/companyAdmin/approveManager?managerId=${userId}`, null, config);
+      const response = await axios.put(`${Base_Url}api/v1/companyAdmin/approveManager?managerId=${userId}`, null, config);
       console.log("Response:", response.data);
     } catch (error) {
       console.error("Error:", error);
     }
 
-    setLoading(false)
     window.location.href = "/AccountWA"
     
   };
@@ -39,7 +37,6 @@ function UserTable() {
 
   useEffect(() => {
     // Fetch data from the API
-    setLoading(true)
     const config = {
       headers: {
         Authorization: `${localStorage.getItem("token")}`, // Add the token to the headers
@@ -47,7 +44,7 @@ function UserTable() {
     };
     
     axios
-      .get("http://3.110.86.245/api/v1/companyAdmin/managerListForApproval", config)
+      .get(`${Base_Url}api/v1/companyAdmin/managerListForApproval`, config)
       .then((response) => {
         // Assuming the response data is an array of user objects
         const apiUsers = response.data;
@@ -78,7 +75,6 @@ function UserTable() {
   }, []); // Empty dependency array to run the effect only once
  if(loading){
   return <div>
-    <Spinner/>
   </div>;
 
  }

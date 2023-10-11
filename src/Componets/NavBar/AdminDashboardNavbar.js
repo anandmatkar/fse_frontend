@@ -37,9 +37,9 @@ const AdminDashboardNavbar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="#home" as={NavLink} to={'/'} className="nav-link-font">Home</Nav.Link>
-            <Nav.Link href="#About" as={NavLink} to={'/about'} className="nav-link-font">About</Nav.Link>
-            <Nav.Link href="#Contact" as={NavLink} to={'/contact'} className="nav-link-font">Contact</Nav.Link>
+            <Nav.Link href="#home" as={NavLink} to={'/adminD'} className="nav-link-font">Home</Nav.Link>
+            {/* <Nav.Link href="#About" as={NavLink} to={'/adminD'} className="nav-link-font">About</Nav.Link>
+            <Nav.Link href="#Contact" as={NavLink} to={'/adminD'} className="nav-link-font">Contact</Nav.Link> */}
             <Button className='managerdash-button btn btn-danger' onClick={logoutHandler}>Logout</Button>
           </Nav>
         </Navbar.Collapse>

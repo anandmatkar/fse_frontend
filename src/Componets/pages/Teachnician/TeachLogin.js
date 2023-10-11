@@ -8,6 +8,7 @@ import LayoutTech from "../../Layout/Layout3";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Base_Url } from "../../../Api/Base_Url";
 import axios from "axios";
 import './Techlogin.css'
 
@@ -65,7 +66,7 @@ function TechnicianLogin() {
     setIsLoading(true);
 
     if (isLogin) {
-        axios.post("http://3.110.86.245/api/v1/technician/techLogin", {
+        axios.post(`${Base_Url}api/v1/technician/techLogin`, {
             email: enteredEmail,
             password: enteredPassword,
             returnSecureToken: true,

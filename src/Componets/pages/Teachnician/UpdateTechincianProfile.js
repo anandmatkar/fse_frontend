@@ -15,6 +15,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './UpdateTechincianProfile.css'
 import { NavLink } from "react-router-dom";
+import { Base_Url } from '../../../Api/Base_Url';
+import { Technician_upload_Profile_Pic } from '../../../Api/Technicians_Api';
 
 
 function UpdateTechincianProfile() {
@@ -84,11 +86,10 @@ const handleImageUpload = async (e) => {
       };
       
       // Make an API request to upload the image and get the path
-      const response = await axios.post(
-        'http://3.110.86.245/api/v1/technician/uploadProfilePic',
+      const response = await axios.post(Technician_upload_Profile_Pic,
         formData,
         config
-      );
+      );                  
 
       if (response.status === 200) {
         const imagePath = response.data.data;
@@ -128,7 +129,7 @@ const handleImageUpload = async (e) => {
           Authorization: token,
         },
       };
-      const response = await axios.get('http://3.110.86.245/api/v1/technician/showProfile', config);
+      const response = await axios.get(`${Base_Url}api/v1/technician/showProfile`, config);
       const profileData = response.data.data[0];
       console.log(profileData);
 
@@ -200,7 +201,7 @@ const handleImageUpload = async (e) => {
       };
   
       const response = await axios.post(
-        'http://3.110.86.245/api/v1/technician/uploadTechnicianDocuments',
+        `${Base_Url}api/v1/technician/uploadTechnicianDocuments`,
         docsFormData,
         config
       );
@@ -245,7 +246,7 @@ const handleImageUpload = async (e) => {
       console.log(newFormData);
       console.log(config);
 
-        const response = await axios.post('http://3.110.86.245/api/v1/technician/updateTechnicianProfile', newFormData, config);
+        const response = await axios.post(`${Base_Url}api/v1/technician/updateTechnicianProfile`, newFormData, config);
   
         if (response.status === 200) {
           // Profile updated successfully, you can show a success message or redirect

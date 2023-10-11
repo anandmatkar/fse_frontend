@@ -8,6 +8,7 @@ import TimeSheetApprovalModal from './TimeSheetApprovalModal';
 import RequestApproval from './RequestApproval';
 import {AiFillProfile} from 'react-icons/ai'
 import { Card, ListGroup, Row , Table , Button , Container } from 'react-bootstrap';
+import { Technician_DeleteReport, Technician_DeleteTimesheet, Technician_DetailJobAssign } from '../../../Api/Technicians_Api';
 
 const DeatailofJobAssign = () => {
     const style = {
@@ -46,7 +47,7 @@ console.log(token,"token")
               },
             };
 console.log(config, "config")
-            let url = `http://3.110.86.245/api/v1/technician/deleteTimesheet?projectId=${project_id}&timeSheetId=${id}`
+            let url = `${Technician_DeleteTimesheet}?projectId=${project_id}&timeSheetId=${id}`
             
             const response = await axios.get(url, config);            
 
@@ -90,7 +91,7 @@ console.log(config, "config")
               },
             };
               console.log(config, "config")
-            let url = `http://3.110.86.245/api/v1/technician/deleteReport?projectId=${project_id}&reportId=${id}`
+            let url = `${Technician_DeleteReport}?projectId=${project_id}&reportId=${id}`
             
             const response = await axios.get(url, config);            
 
@@ -114,7 +115,7 @@ console.log(config, "config")
 };
         useEffect(() => {
           const token = Cookies.get('token');
-          fetch(`http://3.110.86.245/api/v1/technician/assignedProjectDetails?projectId=${projectID}`, {
+          fetch(`${Technician_DetailJobAssign}?projectId=${projectID}`, {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: token,

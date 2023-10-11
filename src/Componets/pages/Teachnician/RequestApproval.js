@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { Button, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
+import { Technician_ReportRequestApproval } from '../../../Api/Technicians_Api';
 
 const RequestApproval = ({projectID}) => {
     const [showApprovalModal, setShowApprovalModal] = useState(false);
@@ -8,7 +9,7 @@ const RequestApproval = ({projectID}) => {
 
     const handleApproval = async () => {
         try {
-            let response = await fetch(`http://3.110.86.245/api/v1/technician/submitReportForApproval?projectId=${projectID}`, {
+            let response = await fetch(`${Technician_ReportRequestApproval}?projectId=${projectID}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': token,

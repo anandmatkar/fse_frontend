@@ -2,6 +2,7 @@ import React,{useState , useEffect} from "react";
 import { Table, Container, Button } from 'react-bootstrap';
 import Cookies from 'js-cookie' 
 import { Link } from "react-router-dom";
+import { Technician_ProjectList } from "../../../Api/Technicians_Api";
 
 function JobWaitingApproval() {
   const [projectList, setProjectList] = useState([]);
@@ -28,7 +29,7 @@ function JobWaitingApproval() {
         Authorization: token, // Assuming you use Bearer token format
       },
     };
-    fetch('http://3.110.86.245/api/v1/technician/assignedProjectList', axiosConfig)
+    fetch(`${Technician_ProjectList}`, axiosConfig)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

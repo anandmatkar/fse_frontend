@@ -4,6 +4,7 @@ import axios from 'axios';
 import Spinner from '../Common/Spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Base_Url } from '../../../Api/Base_Url';
 
 function TechnicianForgotPassword() {
     const NewPassRef = useRef();
@@ -48,7 +49,7 @@ function TechnicianForgotPassword() {
   
       try {
         const response = await axios.post(
-          'http://3.110.86.245/api/v1/technician/forgotPassword',
+          `${Base_Url}api/v1/technician/forgotPassword`,
           {
             emailAddress: email,
           },
@@ -144,7 +145,7 @@ const Reset = async  () => {
 
     try {
       const response = await axios.put(
-        'http://3.110.86.245/api/v1/technician/resetPassword',
+        `${Base_Url}api/v1/technician/resetPassword`,
         {
          emailAddress: email,
           otp: otp,

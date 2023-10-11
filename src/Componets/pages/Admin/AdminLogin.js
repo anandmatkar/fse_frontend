@@ -9,6 +9,7 @@ import AdminNavBar from "../../NavBar/AdminNavBar";
 import { Container } from "react-bootstrap";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Base_Url } from "../../../Api/Base_Url";
 
 function AdminLogin() {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ function AdminLogin() {
   }
     try {
       const response = await axios.post(
-        "http://3.110.86.245/api/v1/companyAdmin/adminLogin",
+        `${Base_Url}api/v1/companyAdmin/adminLogin`,
         {
           email: enteredEmail,
           password: enteredPassword,
