@@ -33,8 +33,8 @@ function MainNavigation() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               <Nav.Link href="#home" as={NavLink} to={'/'} className="nav-link-font">Home</Nav.Link>
-              <Nav.Link href="#About" as={NavLink} to={'/about'} className="nav-link-font">About</Nav.Link>
-              <Nav.Link href="#Contact" as={NavLink} to={'/contact'} className="nav-link-font">Contact</Nav.Link>
+              {/* <Nav.Link href="#About" as={NavLink} to={'/'} className="nav-link-font">About</Nav.Link>
+              <Nav.Link href="#Contact" as={NavLink} to={'/'} className="nav-link-font">Contact</Nav.Link> */}
               
               <NavDropdown title="Login" id="basic-nav-dropdown" className="nav-link-font">
                 <NavDropdown.Item onClick={() => navigate("/adminLogin")}>Admin</NavDropdown.Item>
