@@ -11,6 +11,7 @@ import {
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 
 function CreateTechnician() {
   const { Formik } = formik;
@@ -144,33 +145,40 @@ function CreateTechnician() {
   
   return (
     <React.Fragment>
+      
+      <NavbarManagerDashboard/>
 
-      <h3 className='my-3 text-center'>Create Technician</h3>
+      <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
+        <h6 className="section-title bg-white text-center text-primary px-3">
+          Manager's Panel
+        </h6>
+        <h1 className="mb-5">Create Technician</h1>
+      </div>
 
       <Container as={Card.Header}>
-      <Formik
+        <Formik
           validationSchema={schema}
           onSubmit={handleSubmit}
           initialValues={{
-            name: '',
-            surname: '',
-            emailAddress: '',
-            password: '',
-            phone: '',
-            nationality: '',
-            qualification: '',
-            level:'',
-            profilePic: '',
+            name: "",
+            surname: "",
+            emailAddress: "",
+            password: "",
+            phone: "",
+            nationality: "",
+            qualification: "",
+            level: "",
+            profilePic: "",
           }}
         >
           {({ handleSubmit, handleChange, values, touched, errors }) => (
             <Form noValidate onSubmit={handleSubmit}>
               <Row>
                 <Col lg={6} className="mb-3">
-                  <Form.Group controlId="validationFormik01" className='my-2'>
+                  <Form.Group controlId="validationFormik01" className="my-2">
                     <Form.Label>Name</Form.Label>
                     <Form.Control
-                      placeholder='First Name'
+                      placeholder="First Name"
                       name="name"
                       value={values.name}
                       onChange={handleChange}
@@ -180,10 +188,10 @@ function CreateTechnician() {
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">
-                  <Form.Group controlId="validationFormik02" className='my-2'>
+                  <Form.Group controlId="validationFormik02" className="my-2">
                     <Form.Label>Surname</Form.Label>
                     <Form.Control
-                      placeholder='Surname'
+                      placeholder="Surname"
                       name="surname"
                       value={values.surname}
                       onChange={handleChange}
@@ -193,10 +201,15 @@ function CreateTechnician() {
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">
-                  <Form.Group controlId="validationFormikUsername" className='my-2'>
+                  <Form.Group
+                    controlId="validationFormikUsername"
+                    className="my-2"
+                  >
                     <Form.Label>Email Address</Form.Label>
                     <InputGroup hasValidation>
-                      <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
+                      <InputGroup.Text id="inputGroupPrepend">
+                        @
+                      </InputGroup.Text>
                       <Form.Control
                         placeholder="Email Address"
                         aria-describedby="inputGroupPrepend"
@@ -212,7 +225,7 @@ function CreateTechnician() {
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">
-                  <Form.Group controlId="validationFormik03" className='my-2'>
+                  <Form.Group controlId="validationFormik03" className="my-2">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                       placeholder="Password"
@@ -227,7 +240,7 @@ function CreateTechnician() {
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">
-                  <Form.Group controlId="validationFormik04" className='my-2'>
+                  <Form.Group controlId="validationFormik04" className="my-2">
                     <Form.Label>Phone</Form.Label>
                     <Form.Control
                       placeholder="Phone"
@@ -242,7 +255,7 @@ function CreateTechnician() {
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">
-                  <Form.Group controlId="validationFormik05" className='my-2'>
+                  <Form.Group controlId="validationFormik05" className="my-2">
                     <Form.Label>Nationality</Form.Label>
                     <Form.Control
                       placeholder="Nationality"
@@ -257,7 +270,7 @@ function CreateTechnician() {
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">
-                  <Form.Group controlId="validationFormik06" className='my-2'>
+                  <Form.Group controlId="validationFormik06" className="my-2">
                     <Form.Label>Qualification</Form.Label>
                     <Form.Control
                       placeholder="Qualification"
@@ -272,7 +285,7 @@ function CreateTechnician() {
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">
-                  <Form.Group controlId="validationFormik07" className='my-2'>
+                  <Form.Group controlId="validationFormik07" className="my-2">
                     <Form.Label>Level</Form.Label>
                     <Form.Control
                       placeholder="Level"
@@ -287,7 +300,7 @@ function CreateTechnician() {
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">
-                  <Form.Group controlId="validationFormik08" className='my-2'>
+                  <Form.Group controlId="validationFormik08" className="my-2">
                     <Form.Label>Profile Picture</Form.Label>
                     <Form.Control
                       type="file"
@@ -301,7 +314,7 @@ function CreateTechnician() {
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">
-                  <Form.Group controlId="validationFormik09" className='my-2'>
+                  <Form.Group controlId="validationFormik09" className="my-2">
                     <Form.Label>Documents</Form.Label>
                     <Form.Control
                       type="file"
@@ -317,10 +330,10 @@ function CreateTechnician() {
                 </Col>
               </Row>
               <Button
-                variant='warning'
+                variant="warning"
                 type="button"
                 onClick={handleSubmit}
-                className='my-3'
+                className="my-3"
                 as={Col}
                 lg="3"
               >

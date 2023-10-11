@@ -4,6 +4,7 @@ import { Button, Container, Table, Form, Pagination, InputGroup } from 'react-bo
 import { FaSearch, FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import { Technician_Lists_Manager } from './../../../Api/Manager_Api';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 
 export default function ManageTechnician() {
 
@@ -125,11 +126,19 @@ export default function ManageTechnician() {
 
   return (
     <React.Fragment>
+        
+        <NavbarManagerDashboard/>
+
         <Container className='my-5'>
 
             <Button variant='warning' as={NavLink} to={'/createtechnician'}>Create Technician</Button>
 
-            <h3 className='my-3'>Manage Technicians</h3>
+            <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 className="section-title bg-white text-center text-primary px-3">
+                Manager's Panel
+                </h6>
+                <h1 className="mb-5">Manage Technicians</h1>
+            </div>
 
             <InputGroup className="mb-3">
                 <InputGroup.Text id="basic-addon1"><FaSearch/></InputGroup.Text>

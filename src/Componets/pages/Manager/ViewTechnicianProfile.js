@@ -11,6 +11,7 @@ import {
 } from 'react-bootstrap';
 import { BsFiletypeDoc } from 'react-icons/bs'
 import axios from 'axios';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 
 export default function ViewTechnicianProfile() {
   // Extract the 'technicianId' parameter from the URL
@@ -49,8 +50,17 @@ export default function ViewTechnicianProfile() {
 
   return (
     <React.Fragment>
+
+      <NavbarManagerDashboard/>
+      
       <Container className="my-5">
-        <h3 className="my-3">View Technician Profile</h3>
+
+        <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
+          <h6 className="section-title bg-white text-center text-primary px-3">
+            Manager's Panel
+          </h6>
+          <h1 className="mb-5">View Technician Profile</h1>
+        </div>
 
         <Card>
           <Row>
