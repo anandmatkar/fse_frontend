@@ -7,7 +7,7 @@ const Registeredaccount = () => {
 
     const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
+    const itemsPerPage = 10;
 
     const toggleActivation = (userId) => {
       setUsers((prevUsers) =>

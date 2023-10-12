@@ -40,7 +40,7 @@ const AdminDashboardNavbar = () => {
             <Nav.Link href="#home" as={NavLink} to={'/adminD'} className="nav-link-font">Home</Nav.Link>
             {/* <Nav.Link href="#About" as={NavLink} to={'/adminD'} className="nav-link-font">About</Nav.Link>
             <Nav.Link href="#Contact" as={NavLink} to={'/adminD'} className="nav-link-font">Contact</Nav.Link> */}
-            <Button className='managerdash-button btn btn-danger' onClick={logoutHandler}>Logout</Button>
+            <Button className='managerdash-button btn btn-primary m-auto' onClick={logoutHandler}>Logout</Button>
           </Nav>
         </Navbar.Collapse>
       </Container>
