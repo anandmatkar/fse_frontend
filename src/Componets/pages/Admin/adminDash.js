@@ -25,13 +25,17 @@ function AdminDashboard() {
   return (
     <React.Fragment>
     <AdminDashboardNavbar/>
-    <Container className="container-xxl py-5">
+    <Container className="container-xxl py-5 mt-5">
+    <div className="text-center mb-5">
+                    <h6 className="section-title bg-white text-center text-primary px-3">Dashboard</h6>
+                    <h1>Your Requet Overview</h1>
+                </div>
       <Container>
       <Row xs={1} lg={3} className="g-4">
       <Col lg={6} sm={12} className="wow fadeInUp" data-wow-delay="0.1s" >
       <Card className="service-item rounded pt-3"> 
         <Card.Body>
-                <i className="fa fa-3x fa-globe text-primary mb-4"src="https://img.freepik.com/free-vector/man-search-hiring-job-online-from-laptop_1150-52728.jpg?w=1380&t=st=1696506931~exp=1696507531~hmac=50499c7a5872e2fc93126b4f2534b7087d0d95d84897b3f64be8542e79e484a6" alt="random image" ></i>
+        {/* <i className="fa fa-3x fa-hotel text-primary mb-4"></i> */}
             <Card.Title><h3 className="Admindashboard-h3">Accounts Registered !</h3></Card.Title>  
                 <h1 className="Admindashboard-h1"></h1>
                 <Card.Text><p className="Admindashboard-p">View Registered Accounts of Managers !</p></Card.Text>  
@@ -41,10 +45,10 @@ function AdminDashboard() {
         </Card>
       </Col>
        
-      <Col lg={6} sm={12} className="wow fadeInUp" data-wow-delay="0.3s">
+      <Col lg={6} sm={12} className="wow fadeInUp" data-wow-delay="0.3s">   
       <Card  className="service-item rounded pt-3">
           <Card.Body>
-                          <i className="fa fa-3x fa-globe text-primary mb-4" src="https://img.freepik.com/free-vector/elegant-businessman-waiting-room_24877-57777.jpg?size=626&ext=jpg&ga=GA1.1.1085728591.1696533906&semt=ais" alt="random image" ></i>
+          {/* <i className="fa fa-3x fa-globe text-primary mb-4"></i> */}
                       <Card.Title>   <h3 className="Admindashboard-h3">Account Waiting Approval !</h3></Card.Title>
                       <Card.Text> <p className="Admindashboard-p">View Waiting for Approval Accounts of Managers !</p></Card.Text> 
                           <Button onClick={handleAccountsApprovalClick}>Click Here
