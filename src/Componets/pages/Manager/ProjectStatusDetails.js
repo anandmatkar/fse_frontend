@@ -121,9 +121,14 @@ const ProjectStatusDetails = () => {
     <>
       <NavbarManagerDashboard />
 
-      <div className="job-progress mt-2">
-        <h1 className="jobassigntext mb-4">Project Details</h1>
+      <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
+          <h6 className="section-title bg-white text-center text-primary px-3">
+            Manager's Panel
+          </h6>
+          <h1 className="mb-5">Project Details</h1>
+        </div>
 
+      <div className="job-progress mt-2">
         <div>
           <div className="d-flex float-end mt-2 p-2">
             <button className="btn btn-danger" onClick={handleDeleteProject}>
@@ -131,7 +136,7 @@ const ProjectStatusDetails = () => {
             </button>
           </div>
           {project ? (
-            <div className="">
+            <div className="mx-5">
               <p>
                 <b>Order ID:</b> {project.order_id}
               </p>
@@ -155,8 +160,8 @@ const ProjectStatusDetails = () => {
           <div className="card p-2">
             <FormControl
               type="text"
-              className="mb-4 "
-              placeholder="Search by Customer Name..."
+              className="mx-4 mt-4"
+              placeholder="Search Technicians"
               onChange={(e) => setSearchTechnician(e.target.value)}
               style={{
                 width: '25%',

@@ -94,12 +94,18 @@ function CustomerEditedDetails() {
   return (
     <>
       <NavbarManagerDashboard />
+
+        <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
+          <h6 className="section-title bg-white text-center text-primary px-3">
+            Manager's Panel
+          </h6>
+          <h1 className="mb-5">Edit Customer Details</h1>
+        </div>
+
       <div className="container ">
         <div class="container border border-dark mt-5 rounded p-4">
           <div class="row justify-content-center">
             <div class="col-lg-9">
-              <h1 class="mb-3"> Customer Details Update</h1>
-
               <form onSubmit={handleSubmit}>
                 <div class="row g-3">
                   <div class="col-md-6">
