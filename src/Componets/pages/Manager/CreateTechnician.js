@@ -1,17 +1,17 @@
-import React, { useState } from 'react'; 
-import * as formik from 'formik';
-import * as yup from 'yup';
-import { Card, Container, Button,Row, Col, Form, InputGroup } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { useState } from "react";
+import * as formik from "formik";
+import * as yup from "yup";
+import { Card, Container, Button, Row, Col, Form, InputGroup } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
 import {
   Create_Technician_Api,
   Upload_Technician_Profile,
   Upload_Technician_Documents,
-} from './../../../Api/Manager_Api';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
-import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+} from "./../../../Api/Manager_Api";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
 
 function CreateTechnician() {
   const { Formik } = formik;
@@ -20,11 +20,23 @@ function CreateTechnician() {
   const schema = yup.object().shape({
     name: yup.string().required(),
     surname: yup.string().required(),
-    emailAddress: yup.string().required(),
-    password: yup.string().required(),
+    emailAddress: yup
+      .string()
+      .required("Email is required")
+      .matches(
+        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+        "Invalid email address"
+      ),
+    password: yup
+      .string()
+      .required("Password is required")
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d).{8,}$/,
+        "Password must be at least 8 characters and contain both letters and numbers"
+      ),
     phone: yup
       .string()
-      .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits')
+      .matches(/^[0-9]{10}$/, "Phone number must be 10 digits")
       .required(),
     nationality: yup.string().required(),
     qualification: yup.string().required(),
@@ -33,40 +45,48 @@ function CreateTechnician() {
     documents: yup.string(),
   });
 
-  const [selectedFile, setSelectedFile] = useState(''); // State to hold the selected file
-  const [profilePicPath, setProfilePicPath] = useState(''); // State to hold the profile picture path
+  const [selectedFile, setSelectedFile] = useState(""); // State to hold the selected file
+  const [profilePicPath, setProfilePicPath] = useState(""); // State to hold the profile picture path
   const [documentsPath, setDocumentsPath] = useState([]); // State to hold the documents path
 
   const createTechnician = async (formData) => {
     try {
-        // const token = localStorage.getItem("token");
-        const token = Cookies.get("token");
-        if (!token) {
+      // const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
+      if (!token) {
         console.error("Token not found in localStorage.");
         return;
-        }
-        let config = {
-            headers: {
-                Authorization: token,
-            },
-        };
+      }
+      let config = {
+        headers: {
+          Authorization: token,
+        },
+      };
 
-        let technicianData = {...formData, profilePic: profilePicPath, documents: documentsPath};
-        console.log(technicianData);
-        const response = await axios.post(Create_Technician_Api, technicianData, config);
-        console.log(response.data);
-        if(response.data.status === 201) {
-          navigate('/managetechnician');
-          toast.success(response.data.message);
-        } else {
-          toast.error(response.data.message);           
-        }
+      let technicianData = {
+        ...formData,
+        profilePic: profilePicPath,
+        documents: documentsPath,
+      };
+      console.log(technicianData);
+      const response = await axios.post(
+        Create_Technician_Api,
+        technicianData,
+        config
+      );
+      console.log(response.data);
+      if (response.data.status === 201) {
+        navigate("/managetechnician");
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
     } catch (error) {
-        console.log(error.message);
-        toast.error('Error creating technician. Please try again.');           
+      console.log(error.message);
+      toast.error("Error creating technician. Please try again.");
     }
-}
-  
+  };
+
   const handleSubmit = (values, e) => {
     console.log("Form Data:", values);
     // console.log(selectedFile);
@@ -79,32 +99,33 @@ function CreateTechnician() {
       const profileImage = e.target.files[0];
       console.log(profileImage);
 
-      const token = Cookies.get('token');
-        if (!token) {
+      const token = Cookies.get("token");
+      if (!token) {
         console.error("Token not found in localStorage.");
         return;
-        }
-        let config = {
-            headers: {
-                Authorization: token,
-            },
-        };
-        let fileData = new FormData();
+      }
+      let config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+      let fileData = new FormData();
 
-        // Append the profile image to the FormData
-        fileData.append('image', profileImage);
+      // Append the profile image to the FormData
+      fileData.append("image", profileImage);
 
-      const response = await axios.post(Upload_Technician_Profile, fileData, config);
+      const response = await axios.post(
+        Upload_Technician_Profile,
+        fileData,
+        config
+      );
 
       console.log(response.data);
 
       setProfilePicPath(response.data.data);
-
-
     } catch (error) {
       console.log(error.message);
     }
-
   };
 
   // Define your handleFileChange function
@@ -116,40 +137,42 @@ function CreateTechnician() {
 
     // Append each selected file to the FormData object
     for (let i = 0; i < selectedFiles.length; i++) {
-      docFormData.append('files', selectedFiles[i]);
+      docFormData.append("files", selectedFiles[i]);
     }
 
-    const token = Cookies.get('token');
-          if (!token) {
-          console.error("Token not found in localStorage.");
-          return;
-          }
-          let config = {
-              headers: {
-                  Authorization: token,
-              },
-          };
-          console.log(docFormData);
+    const token = Cookies.get("token");
+    if (!token) {
+      console.error("Token not found in localStorage.");
+      return;
+    }
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    console.log(docFormData);
     // Make an HTTP POST request to your API to send the documents
     try {
-      const response = await axios.post(Upload_Technician_Documents, docFormData, config);
+      const response = await axios.post(
+        Upload_Technician_Documents,
+        docFormData,
+        config
+      );
 
-      if(response.data.status === 201){
-        setDocumentsPath(response.data.data)
+      if (response.data.status === 201) {
+        setDocumentsPath(response.data.data);
         toast.success(response.data.message);
         console.log(response.data.data);
       }
-      
     } catch (error) {
       console.log(error.message);
       toast.error(error.message);
     }
   };
-  
+
   return (
     <React.Fragment>
-      
-      <NavbarManagerDashboard/>
+      <NavbarManagerDashboard />
 
       <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
         <h6 className="section-title bg-white text-center text-primary px-3">
