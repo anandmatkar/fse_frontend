@@ -20,8 +20,8 @@
       margin-right: 8px;
       border: 1px solid #fff;
       font-size: 12px;
-      font-weight: 500;
-      color: #8A93A6;
+      font-weight: 700;
+      color:white;
       display: inline-block;
       text-align: center;
       cursor: pointer;
@@ -39,6 +39,7 @@
   
   .dt-pagination .dt-item:first-child .dt-link, .dt-pagination .dt-item:last-child .dt-link {
       background-color: black;
+      color: white;
   }
   
   .dt-pagination .dt-item.active .dt-link {

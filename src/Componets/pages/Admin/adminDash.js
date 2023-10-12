@@ -14,7 +14,7 @@ function AdminDashboard() {
 
   useEffect(() => {
       // Fetch the data for number of accounts waiting for approval
-      axios.get(`${Base_Url}/api/v1/companyAdmin/waitingManagerCount`)
+      axios.get(`${Base_Url}api/v1/companyAdmin/waitingManagerCount`)
           .then(response => {
               if (response.data.success) {
                   setNumberOfAccounts(response.data.data[0].count);
@@ -40,7 +40,7 @@ function AdminDashboard() {
     <Container className="container-xxl py-5 mt-5">
     <div className="text-center mb-5">
                     <h6 className="section-title bg-white text-center text-primary px-3">Dashboard</h6>
-                    <h1>Your Requet Overview</h1>
+                    <h1>Your Request Overview</h1>
                 </div>
       <Container>
       <Row xs={1} lg={3} className="g-4">
