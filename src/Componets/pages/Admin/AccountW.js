@@ -7,6 +7,7 @@ import { Base_Url } from "../../../Api/Base_Url";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FcApprove, FcDisapprove } from 'react-icons/fc'
+import AdminDashboardNavbar from "../../NavBar/AdminDashboardNavbar";
 
 function UserTable() {
   const [users, setUsers] = useState([]);
@@ -73,8 +74,15 @@ function UserTable() {
   }, []);
 
   return (
+    <>
+    <AdminDashboardNavbar/>
+    <div className="text-center mb-5 mt-5">
+                    <h6 className="section-title bg-white text-center text-primary px-3">Approval/Waiting Panel</h6>
+                    <h1>Manager Request  Overview</h1>
+                </div>
+    
     <div className="user-table-container">
-      <h1 className='text-center text-info'>Account Waiting Approval </h1>
+      {/* <h1 className='text-center text-info'>Account Waiting Approval </h1> */}
       <div className="card">
         <div className="card-body">
           <Table responsive hover>
@@ -128,6 +136,7 @@ function UserTable() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

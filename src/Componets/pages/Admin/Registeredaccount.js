@@ -72,6 +72,10 @@ const Registeredaccount = () => {
     return (
       <>
       <AdminDashboardNavbar/>
+      <div className="text-center mb-5 mt-5">
+                    <h6 className="section-title bg-white text-center text-primary px-3">Registerd Account Panel</h6>
+                    <h1>Registerd Account  Overview</h1>
+                </div>
       <div className="user-table-container">
         <h1 className='text-center text-info'>Account Registered</h1>
         <div className='card'>

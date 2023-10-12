@@ -61,7 +61,7 @@ function TechnicianDashboard() {
                 <Row xs={1} lg={3} className="g-4">
                     <Col onClick={JobAssigned}>
                         <Card className="service-item rounded pt-3 position-relative">
-                        <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.assignedProjectCount}</Badge>
+                        {/* <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.assignedProjectCount}</Badge> */}
                             <Card.Body className="text-center">
                                 <i className="fa fa-3x fa-globe text-primary mb-4"></i>
                                 <Card.Title className="fs-3">Job Assign</Card.Title>
@@ -73,7 +73,7 @@ function TechnicianDashboard() {
 
                     <Col onClick={JobEWaitingAprroval}>
                         <Card className="service-item rounded pt-3 position-relative">
-                        <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.projectWaitingApprovalCount}</Badge>
+                        {/* <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.projectWaitingApprovalCount}</Badge> */}
                             <Card.Body className="text-center">
                                 <i className="fa fa-3x fa-hotel text-primary mb-4"></i>
                                 <Card.Title  className="fs-3">Job waiting Approval</Card.Title>
@@ -85,7 +85,7 @@ function TechnicianDashboard() {
 
                     <Col onClick={JobClosed}>
                         <Card className="service-item rounded pt-3 position-relative">
-                        <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.completedProjectCount}</Badge>
+                        {/* <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.completedProjectCount}</Badge> */}
                             <Card.Body className="text-center">
                                 <i className="fa fa-3x fa-user text-primary mb-4"></i>
                                 <Card.Title  className="fs-3">Job Closed</Card.Title>
