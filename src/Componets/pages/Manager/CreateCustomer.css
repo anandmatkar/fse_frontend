@@ -4,6 +4,9 @@
 .company-info {
   background: #86b817;
 }
+.createCustomer {
+  margin: 0 !important;
+}
 
 .contact .newCustomerForm {
   display: grid;

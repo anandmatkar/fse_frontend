@@ -202,7 +202,7 @@ function NewCustomerScreen() {
             <h6 className="section-title bg-white text-center text-primary px-3">
               Manager's Panel
             </h6>
-            <h1 className="mb-5">Create Customer</h1>
+            <h1 className="createCustomer">Create Customer</h1>
           </div>
 
           <div class="wrapper animated_bounceInLeft mb-2 shadow-lg border border-1">
@@ -212,7 +212,7 @@ function NewCustomerScreen() {
             </div>
             <div class="contact">
               <form className="newCustomerForm">
-                <p>
+                <p className="createCustomer">
                   <label className="newCustomerLabel" htmlFor="customerName">
                     Customer Name
                   </label>
@@ -230,7 +230,7 @@ function NewCustomerScreen() {
                     </span>
                   )}
                 </p>
-                <p>
+                <p className="createCustomer">
                   <label className="newCustomerLabel" htmlFor="customerName">
                     Customer Contact Name
                   </label>
@@ -248,7 +248,7 @@ function NewCustomerScreen() {
                     </span>
                   )}
                 </p>
-                <p>
+                <p className="createCustomer">
                   <label className="newCustomerLabel" htmlFor="customerAccount">
                     Customer Account
                   </label>
@@ -266,7 +266,7 @@ function NewCustomerScreen() {
                     </span>
                   )}
                 </p>
-                <p>
+                <p className="createCustomer">
                   <label className="newCustomerLabel" htmlFor="email">
                     Email
                   </label>
@@ -284,7 +284,7 @@ function NewCustomerScreen() {
                     </span>
                   )}
                 </p>
-                <p>
+                <p className="createCustomer">
                   <label className="newCustomerLabel" htmlFor="phone">
                     Phone
                   </label>
@@ -302,7 +302,7 @@ function NewCustomerScreen() {
                     </span>
                   )}
                 </p>
-                <p>
+                <p className="createCustomer">
                   <label className="newCustomerLabel" htmlFor="country">
                     Country
                   </label>
@@ -329,7 +329,7 @@ function NewCustomerScreen() {
                     </span>
                   )}
                 </p>
-                <p class="">
+                <p className="createCustomer">
                   <label className="newCustomerLabel" htmlFor="city">
                     City
                   </label>
@@ -347,7 +347,7 @@ function NewCustomerScreen() {
                     </span>
                   )}
                 </p>
-                <p class="">
+                <p className="createCustomer">
                   <label className="newCustomerLabel" htmlFor="address">
                     Address
                   </label>
@@ -366,7 +366,7 @@ function NewCustomerScreen() {
                   )}
                 </p>
 
-                <p className="full">
+                <p className="full createCustomer">
                   <label className="newCustomerLabel" htmlFor="scopeOfWork">
                     Scope of Work
                   </label>

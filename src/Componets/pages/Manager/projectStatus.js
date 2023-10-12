@@ -4,6 +4,9 @@ import { Container, Row, Col, Card, Badge } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import Cookies from 'js-cookie';
 import { Project_Count_Manager } from './../../../Api/Manager_Api';
+import { GiProgression } from 'react-icons/gi';
+import { MdAppRegistration } from 'react-icons/md';
+import { MdOutlineIncompleteCircle } from 'react-icons/md';
 
 function ProjectStatus() {
   const Navigate = useNavigate();
@@ -14,7 +17,7 @@ function ProjectStatus() {
   useEffect(() => {
     // Retrieve the token from cookies
     const token = Cookies.get('token'); // Replace 'yourTokenCookieName' with your actual cookie name
-  
+
     if (token) {
       // Fetch project counts data with the Authorization header
       fetch(Project_Count_Manager, {
@@ -78,14 +81,16 @@ function ProjectStatus() {
                   <Container>
                     <Row>
                       <Col>
-                        <i className="fa fa-3x fa-globe text-primary mb-4"></i>
+                        <GiProgression className="fa fa-3x fa-globe text-primary mb-4"></GiProgression>
                       </Col>
                       <Col
                         className="col fs-3 d-flex justify-content-end"
                         style={{ height: '40px', lineHeight: '24px' }}
                       >
                         {projectCounts && (
-                          <Badge>{projectCounts.projectInProgressCount || 0} </Badge>
+                          <Badge>
+                            {projectCounts.projectInProgressCount || 0}{' '}
+                          </Badge>
                         )}
                       </Col>
                     </Row>
@@ -111,7 +116,7 @@ function ProjectStatus() {
                   <Container>
                     <Row>
                       <Col>
-                        <i className="fa fa-3x fa-hotel text-primary mb-4"></i>
+                        <MdAppRegistration className="fa fa-3x fa-hotel text-primary mb-4"></MdAppRegistration>
                       </Col>
                       <Col
                         className="col fs-3 d-flex justify-content-end"
@@ -119,7 +124,8 @@ function ProjectStatus() {
                       >
                         {projectCounts && (
                           <Badge>
-                            {projectCounts.projectRequestedForApprovalCount || 0}
+                            {projectCounts.projectRequestedForApprovalCount ||
+                              0}
                           </Badge>
                         )}
                       </Col>
@@ -144,14 +150,16 @@ function ProjectStatus() {
                   <Container>
                     <Row>
                       <Col>
-                        <i className="fa fa-3x fa-user text-primary mb-4"></i>
+                        <MdOutlineIncompleteCircle className="fa fa-3x fa-user text-primary mb-4"></MdOutlineIncompleteCircle>
                       </Col>
                       <Col
                         className="col fs-3 d-flex justify-content-end"
                         style={{ height: '40px', lineHeight: '24px' }}
                       >
                         {projectCounts && (
-                          <Badge>{projectCounts.completedProjectsCount || 0}</Badge>
+                          <Badge>
+                            {projectCounts.completedProjectsCount || 0}
+                          </Badge>
                         )}
                       </Col>
                     </Row>
