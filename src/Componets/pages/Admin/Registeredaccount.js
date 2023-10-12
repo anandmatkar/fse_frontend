@@ -77,13 +77,13 @@ const Registeredaccount = () => {
                     <h1>Registerd Account  Overview</h1>
                 </div>
       <div className="user-table-container">
-        <h1 className='text-center text-info'>Account Registered</h1>
+        {/* <h1 className='text-center text-info'>Account Registered</h1> */}
         <div className='card'>
           <div className='card-body'>
           <Table responsive hover >
           <thead className=''>
             <tr>
-                <th>Account ID</th>
+                {/* <th>Account ID</th> */}
                 <th>Name</th>
                 <th>Surname</th>
                 <th>Position</th>
@@ -97,7 +97,7 @@ const Registeredaccount = () => {
             {
               currentUsers.map((currentUsers) => (
                   <tr key={currentUsers.id}>
-                    <td>{currentUsers.id}</td>
+                    {/* <td>{currentUsers.id}</td> */}
                     <td>{currentUsers.name}</td>
                     <td>{currentUsers.surname}</td>
                     <td>{currentUsers.position}</td>
