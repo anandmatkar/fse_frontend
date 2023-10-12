@@ -3,7 +3,7 @@ import { Dropdown, Navbar, Nav, Container, ListGroup } from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import AuthContext from '../auth-context/auth-context';
-import { MdArrowDropDownCircle } from 'react-icons/md';
+import { MdArrowDropDownCircle, MdArrowDropDown } from 'react-icons/md';
 
 const NavbarManagerDashboard = () => {
   const navigate = useNavigate();
@@ -71,10 +71,7 @@ const NavbarManagerDashboard = () => {
                         height: '55px',
                       }}
                     />
-                    <MdArrowDropDownCircle
-                      color="white"
-                      className="border border-0 fs-4"
-                    />
+                     <MdArrowDropDown style={{color:"black"}} size={20}/>
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
