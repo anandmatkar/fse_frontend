@@ -5,6 +5,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Edit_Project_Machine_Details, Project_Machine_Details } from "../../../Api/Manager_Api";
 import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
+import { BsFiletypeDoc } from "react-icons/bs";
 
 export default function EditProjectMachineInfo() {
 
@@ -144,10 +145,9 @@ export default function EditProjectMachineInfo() {
     fetchMachineDetails();
   }, [projectID, machineID]);
   
-
   return (
     <>
-    <NavbarManagerDashboard/>
+      <NavbarManagerDashboard />
 
       <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
         <h6 className="section-title bg-white text-center text-primary px-3">
@@ -157,80 +157,98 @@ export default function EditProjectMachineInfo() {
       </div>
 
       <Container>
-      {editMode ? (
+        {editMode ? (
           <Form onSubmit={handleEditMachineDetails}>
             {/* Editable input fields */}
             <InputGroup className="mb-3">
-            <InputGroup.Text id="basic-addon1">Serial No.</InputGroup.Text>
-            <Form.Control
-            placeholder="Serial No."
-            aria-label="Serial No."
-            aria-describedby="basic-addon1"
-            name="serial" // Ensure that the name matches the state property
-            value={formData.serial}
-            onChange={handleChange}
-            />
+              <InputGroup.Text id="basic-addon1">Serial No.</InputGroup.Text>
+              <Form.Control
+                placeholder="Serial No."
+                aria-label="Serial No."
+                aria-describedby="basic-addon1"
+                name="serial" // Ensure that the name matches the state property
+                value={formData.serial}
+                onChange={handleChange}
+              />
             </InputGroup>
             <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon2">Machine Type</InputGroup.Text>
-                <Form.Control
+              <InputGroup.Text id="basic-addon2">Machine Type</InputGroup.Text>
+              <Form.Control
                 placeholder="Machine Type"
                 aria-label="Machine Type"
                 aria-describedby="basic-addon2"
                 name="machine_type"
                 value={formData.machine_type}
                 onChange={handleChange}
-                />
+              />
             </InputGroup>
             <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon3">Hour Count</InputGroup.Text>
-                <Form.Control
+              <InputGroup.Text id="basic-addon3">Hour Count</InputGroup.Text>
+              <Form.Control
                 placeholder="Hour Count"
                 aria-label="Hour Count"
                 aria-describedby="basic-addon3"
                 name="hour_count"
                 value={formData.hour_count}
                 onChange={handleChange}
-                />
+              />
             </InputGroup>
             <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon4">Nominal Speed</InputGroup.Text>
-                <Form.Control
+              <InputGroup.Text id="basic-addon4">Nominal Speed</InputGroup.Text>
+              <Form.Control
                 placeholder="Nominal Speed"
                 aria-label="Nominal Speed"
                 aria-describedby="basic-addon4"
                 name="nom_speed"
                 value={formData.nom_speed}
                 onChange={handleChange}
-                />
+              />
             </InputGroup>
             <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon5">Actual Speed</InputGroup.Text>
-                <Form.Control
+              <InputGroup.Text id="basic-addon5">Actual Speed</InputGroup.Text>
+              <Form.Control
                 placeholder="Actual Speed"
                 aria-label="Actual Speed"
                 aria-describedby="basic-addon5"
                 name="act_speed"
                 value={formData.act_speed}
                 onChange={handleChange}
-                />
+              />
             </InputGroup>
 
-            <InputGroup>
-                <InputGroup.Text>Description</InputGroup.Text>
-                <Form.Control 
-                as="textarea" 
-                aria-label="With textarea" 
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Description</InputGroup.Text>
+              <Form.Control
+                as="textarea"
+                aria-label="With textarea"
                 placeholder="Machine Description"
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                />
+              />
             </InputGroup>
+
+            <InputGroup>
+              <InputGroup.Text className="me-4">Attachments</InputGroup.Text>
+              {machineAttachDetails.map((document) => (
+                <>
+                  <NavLink as={NavLink} to={document.file_path} target="_blank">
+                    <BsFiletypeDoc className="fs-3 mx-3">
+                      Document
+                    </BsFiletypeDoc>
+                  </NavLink>
+                </>
+              ))}
+            </InputGroup>
+
             <Button type="submit" variant="success" className="my-4 mx-2">
               Update Machine Details
             </Button>
-            <Button variant="danger" onClick={handleCancel} className="my-4 mx-2">
+            <Button
+              variant="danger"
+              onClick={handleCancel}
+              className="my-4 mx-2"
+            >
               Cancel
             </Button>
           </Form>
@@ -238,71 +256,85 @@ export default function EditProjectMachineInfo() {
           // View mode with non-editable input fields
           <>
             <InputGroup className="mb-3">
-            <InputGroup.Text id="basic-addon1">Serial No.</InputGroup.Text>
-            <Form.Control
-            placeholder="Serial No."
-            aria-label="Serial No."
-            aria-describedby="basic-addon1"
-            value={formData.serial}
-            onChange={handleChange}
-            />
+              <InputGroup.Text id="basic-addon1">Serial No.</InputGroup.Text>
+              <Form.Control
+                placeholder="Serial No."
+                aria-label="Serial No."
+                aria-describedby="basic-addon1"
+                value={formData.serial}
+                onChange={handleChange}
+              />
             </InputGroup>
             <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon2">Machine Type</InputGroup.Text>
-                <Form.Control
+              <InputGroup.Text id="basic-addon2">Machine Type</InputGroup.Text>
+              <Form.Control
                 placeholder="Machine Type"
                 aria-label="Machine Type"
                 aria-describedby="basic-addon2"
                 value={formData.machine_type}
                 onChange={handleChange}
-                />
+              />
             </InputGroup>
             <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon3">Hour Count</InputGroup.Text>
-                <Form.Control
+              <InputGroup.Text id="basic-addon3">Hour Count</InputGroup.Text>
+              <Form.Control
                 placeholder="Hour Count"
                 aria-label="Hour Count"
                 aria-describedby="basic-addon3"
                 value={formData.hour_count}
                 onChange={handleChange}
-                />
+              />
             </InputGroup>
             <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon4">Nominal Speed</InputGroup.Text>
-                <Form.Control
+              <InputGroup.Text id="basic-addon4">Nominal Speed</InputGroup.Text>
+              <Form.Control
                 placeholder="Nominal Speed"
                 aria-label="Nominal Speed"
                 aria-describedby="basic-addon4"
                 value={formData.nom_speed}
                 onChange={handleChange}
-                />
+              />
             </InputGroup>
             <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon5">Actual Speed</InputGroup.Text>
-                <Form.Control
+              <InputGroup.Text id="basic-addon5">Actual Speed</InputGroup.Text>
+              <Form.Control
                 placeholder="Actual Speed"
                 aria-label="Actual Speed"
                 aria-describedby="basic-addon5"
                 value={formData.act_speed}
                 onChange={handleChange}
-                />
+              />
             </InputGroup>
 
-            <InputGroup>
-                <InputGroup.Text>Description</InputGroup.Text>
-                <Form.Control 
-                as="textarea" 
-                aria-label="With textarea" 
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Description</InputGroup.Text>
+              <Form.Control
+                as="textarea"
+                aria-label="With textarea"
                 placeholder="Machine Description"
                 value={formData.description}
                 onChange={handleChange}
-                />
+              />
             </InputGroup>
-            {/* Add more input fields here */}
-            <Button variant="info" className="my-4" onClick={handleEdit}>Edit Machine Info</Button>
+            
+            <InputGroup>
+              <InputGroup.Text className="me-4">Attachments</InputGroup.Text>
+              {machineAttachDetails.map((document) => (
+                <>
+                  <NavLink as={NavLink} to={document.file_path} target="_blank">
+                    <BsFiletypeDoc className="fs-3 mx-3">
+                      Document
+                    </BsFiletypeDoc>
+                  </NavLink>
+                </>
+              ))}
+            </InputGroup>
+
+            <Button variant="info" className="my-4" onClick={handleEdit}>
+              Edit Machine Info
+            </Button>
           </>
         )}
-      
       </Container>
     </>
   );
