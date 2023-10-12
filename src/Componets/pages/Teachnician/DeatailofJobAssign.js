@@ -6,6 +6,7 @@ import NewReportModal from './NewReportModal';
 import axios from 'axios';
 import TimeSheetApprovalModal from './TimeSheetApprovalModal';
 import RequestApproval from './RequestApproval';
+import Layout4 from '../../Layout/Layout4';
 import {AiFillProfile} from 'react-icons/ai'
 import { Card, ListGroup, Row , Table , Button , Container } from 'react-bootstrap';
 import { Technician_DeleteReport, Technician_DeleteTimesheet, Technician_DetailJobAssign } from '../../../Api/Technicians_Api';
@@ -184,6 +185,11 @@ console.log(config, "config")
   
       
   return (
+    <Layout4>
+          <div className="text-center mb-5 mt-5">
+                    <h6 className="section-title bg-white text-center text-primary px-3">Detail Panel</h6>
+                    <h1>Your Assign Tasks Details</h1>
+                </div>
     <div>
        <Container fluid>
       <div className="container border border-dark  mt-5 rounded p-4">
@@ -441,6 +447,7 @@ console.log(config, "config")
     </Container>
    
     </div>
+    </Layout4>
   )
 }
 

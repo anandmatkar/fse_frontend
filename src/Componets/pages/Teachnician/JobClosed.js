@@ -2,6 +2,7 @@ import React,{useState , useEffect} from "react";
 import { Table, Container, Button } from 'react-bootstrap';
 import Cookies from 'js-cookie'
 import {Link} from 'react-router-dom'
+import Layout4 from "../../Layout/Layout4";
 import { Technician_ProjectList } from "../../../Api/Technicians_Api";
 
 function JobClosed() {
@@ -50,6 +51,11 @@ function JobClosed() {
 const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 
   return (
+    <Layout4>
+       <div className="text-center mb-5 mt-5">
+                    <h6 className="section-title bg-white text-center text-primary px-3">Completed Panel</h6>
+                    <h1>Your Completed Tasks Overview</h1>
+                </div>
          <div class="container mt-5">
 	<h1 className="jobassigntext mb-4">Technician Job Completed </h1>
   <input
@@ -133,6 +139,7 @@ const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 	</div>
     )}
 </div>
+</Layout4>
   );
 }
 

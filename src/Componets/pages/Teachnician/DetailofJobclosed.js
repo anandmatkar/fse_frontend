@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { Card, ListGroup, Row , Table , Button , Container } from 'react-bootstrap';
 // import TimeSheetModal from './TimeSheetModal';
 // import NewReportModal from './NewReportModal';
+import Layout4 from '../../Layout/Layout4';
 import {AiFillProfile} from 'react-icons/ai'
 import axios from 'axios';
 import { Technician_DetailJobAssign } from '../../../Api/Technicians_Api';
@@ -52,6 +53,11 @@ const DetailofJobclosed = () => {
         });
       }, [projectID]);
   return (
+    <Layout4>
+         <div className="text-center mb-5 mt-5">
+                    <h6 className="section-title bg-white text-center text-primary px-3">Detail Panel</h6>
+                    <h1>Your Complete Tasks Details</h1>
+                </div>
     <div>
        <Container fluid>
     <div className="container border border-dark mt-5 rounded p-4">
@@ -295,6 +301,7 @@ const DetailofJobclosed = () => {
     </div>
     </Container>
   </div>
+  </Layout4>
   )
 }
 

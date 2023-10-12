@@ -1,5 +1,6 @@
 import React,{useState , useEffect} from "react";
 import { Table, Container, Button } from 'react-bootstrap';
+import Layout4 from "../../Layout/Layout4";
 import Cookies from 'js-cookie' 
 import { Link } from "react-router-dom";
 import { Technician_ProjectList } from "../../../Api/Technicians_Api";
@@ -51,6 +52,11 @@ function JobWaitingApproval() {
 const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 
   return (
+    <Layout4>
+       <div className="text-center mb-5 mt-5">
+                    <h6 className="section-title bg-white text-center text-primary px-3">Waiting Panel</h6>
+                    <h1>Your Wating Tasks Overview</h1>
+                </div>
     <div className="jobcontainer container mt-5">
 <h1 className="jobassigntext mb-4">Technician Job waiting approval </h1>
 <input
@@ -140,6 +146,7 @@ const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 </div>
       )}
 </div>
+</Layout4>
   );
 }
 
