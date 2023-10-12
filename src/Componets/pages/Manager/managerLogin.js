@@ -13,26 +13,48 @@ function ManagerLogin() {
   const navigate = useNavigate();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+
   // const confirmpasswordInputRef = useRef();
 
   const authCtx = useContext(AuthContext);
 
-  const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
-  const switchAuthModeHandler = () => {
-    setIsLogin((prevState) => !prevState);
+  const validateEmail = (email) => {
+    // Implement your email validation logic here, for example:
+    const validEmail = /\S+@\S+\.\S+/;
+    return validEmail.test(email);
   };
-  // const buttonHandler = () => {
-  //   Navigate('/register');
-  //   Navigate('/newaccount');
-  // };
+
   const submitHandler = async (event) => {
-    setIsLoading(true);
     event.preventDefault();
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
+
+    setEmailError('');
+    setPasswordError('');
+
+    let hasError = false;
+
+    if (enteredEmail.trim() === '') {
+      setEmailError('Email is required.');
+      hasError = true;
+    } else if (!validateEmail(enteredEmail)) {
+      setEmailError('Please enter a valid email.');
+      hasError = true;
+    }
+    if (enteredPassword.trim() === '') {
+      setPasswordError('Password is required.');
+      hasError = true;
+    }
+
+    if (!hasError) {
+      setIsLoading(true);
+    }
+
     let body = {
       email: enteredEmail,
       password: enteredPassword,
@@ -42,7 +64,6 @@ function ManagerLogin() {
 
       if (response.data.status === 200) {
         setIsLoading(false);
-        const token = response.data.data.token;
         Cookies.set('token', response.data.data.token, { expires: 1 });
         localStorage.setItem('Name', response.data.data.name);
         localStorage.setItem('Profile', response.data.data.avatar);
@@ -142,8 +163,12 @@ function ManagerLogin() {
                           className="form-control form-control-lg"
                           ref={emailInputRef}
                         />
-                        <div className="input-group-append"></div>
                       </div>
+                      {emailError && (
+                        <span className="error" style={{ color: 'red' }}>
+                          {emailError}
+                        </span>
+                      )}{' '}
                     </div>
                     <div className="form-group password-input-container">
                       <label htmlFor="form2Example27">Password:</label>
@@ -154,8 +179,12 @@ function ManagerLogin() {
                           className="form-control form-control-lg"
                           ref={passwordInputRef}
                         />
-                        <div className="input-group-append"></div>
                       </div>
+                      {passwordError && (
+                        <span className="error" style={{ color: 'red' }}>
+                          {passwordError}
+                        </span>
+                      )}
                     </div>
                     <br />
                     <button
