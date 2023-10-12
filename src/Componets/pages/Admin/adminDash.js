@@ -1,26 +1,38 @@
-import React, { useState } from "react";
-import DynamicButton from "../../Model/DynamicButton";
-import { Button,Container,Dropdown,Row, Card ,Col} from "react-bootstrap";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { NavLink, Link } from "react-router-dom";
+import React, { useState,useEffect } from "react";
+import { Container, Row, Col, Card, Button, Badge } from "react-bootstrap";
 import AdminDashboardNavbar from "../../NavBar/AdminDashboardNavbar";
+import { Base_Url } from "../../../Api/Base_Url";
+import { useNavigate } from "react-router-dom";
 import "./AdminDasboard.css";
+import classes from "../Teachnician/techdashboard.module.css";
+import axios from "axios";
+
+
 function AdminDashboard() {
-    const [numberOfAccounts,setnumberOfAccounts] = useState(13)
-    const navigate = useNavigate(); // Initialize useNavigate
+  const Navigate = useNavigate();
+  const [numberOfAccounts, setNumberOfAccounts] = useState(0); // initialize to 0
 
+  useEffect(() => {
+      // Fetch the data for number of accounts waiting for approval
+      axios.get(`${Base_Url}/api/v1/companyAdmin/waitingManagerCount`)
+          .then(response => {
+              if (response.data.success) {
+                  setNumberOfAccounts(response.data.data[0].count);
+              }
+          })
+          .catch(error => {
+              console.error("Error fetching the waiting managers count:", error);
+          });
+  }, []);
 
-      // Function to handle the click event for Registered accounts
   const handleRegisteredAccountsClick = () => {
-    // Redirect to the "Registered Account" page when the button is clicked
-    navigate("/registerdaccount"); // Use the route path
+      Navigate("/registerdaccount");
   };
 
-    // Function to handle the click event
-    const handleAccountsApprovalClick = () => {
-      // Redirect to the desired page when the button is clicked
-      navigate("/AccountWA"); // Use the route path
-    };
+  const handleAccountsApprovalClick = () => {
+      Navigate("/AccountWA");
+  };
+
 
   return (
     <React.Fragment>
@@ -45,9 +57,15 @@ function AdminDashboard() {
         </Card>
       </Col>
        
-      <Col lg={6} sm={12} className="wow fadeInUp" data-wow-delay="0.3s">   
-      <Card  className="service-item rounded pt-3">
+      <Col lg={6} sm={12} className="wow fadeInUp" data-wow-delay="0.3s" >
+      <Card  className="service-item rounded pt-3 position-relative">
           <Card.Body>
+          <Badge 
+                        pill 
+                        variant="danger" 
+                        className={`position-absolute ${classes.badgePosition}`}>
+                        {numberOfAccounts}
+                    </Badge>
           {/* <i className="fa fa-3x fa-globe text-primary mb-4"></i> */}
                       <Card.Title>   <h3 className="Admindashboard-h3">Account Waiting Approval !</h3></Card.Title>
                       <Card.Text> <p className="Admindashboard-p">View Waiting for Approval Accounts of Managers !</p></Card.Text> 

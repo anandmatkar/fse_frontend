@@ -39,3 +39,8 @@
     background-color: #0056b3;
   }
   
+  .button-hover-effect:hover {
+    background-color: #5ab339; /* Change this to your desired hover color */
+    transform: scale(1.05); /* This adds a zoom effect on hover */
+    transition: all 0.3s ease; /* This ensures smooth transition */
+}
