@@ -80,7 +80,7 @@ function UserTable() {
           <Table responsive hover>
             <thead className=''>
               <tr>
-                <th>Account ID</th>
+                {/* <th>Account ID</th> */}
                 <th>Name</th>
                 <th>Surname</th>
                 <th>Position</th>
@@ -95,7 +95,7 @@ function UserTable() {
               {
                 users.map((user) => (
                   <tr key={user.id}>
-                    <td>{user.id}</td>
+                    {/* <td>{user.id}</td> */}
                     <td>{user.name}</td>
                     <td>{user.surname}</td>
                     <td>{user.position}</td>

@@ -2,6 +2,7 @@ import React ,{useEffect,useState}from 'react'
 import axios from 'axios'
 import Table from 'react-bootstrap/Table';
 import { Base_Url } from '../../../Api/Base_Url';
+import AdminDashboardNavbar from '../../NavBar/AdminDashboardNavbar';
 
 const Registeredaccount = () => {
 
@@ -69,6 +70,8 @@ const Registeredaccount = () => {
  // Calculate total pages based on the number of items and items per page
   
     return (
+      <>
+      <AdminDashboardNavbar/>
       <div className="user-table-container">
         <h1 className='text-center text-info'>Account Registered</h1>
         <div className='card'>
@@ -120,6 +123,7 @@ const Registeredaccount = () => {
         </nav>
 
               </div>
+              </>
     );
   }
 

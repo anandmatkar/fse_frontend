@@ -28,7 +28,7 @@ function AdminNavBar() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link href="#home" as={NavLink} to={'/adminD'} className="nav-link-font">Home</Nav.Link>
+              <Nav.Link href="#home" as={NavLink} className="nav-link-font">Home</Nav.Link>
               {/* <Nav.Link href="#About" as={NavLink} to={'/adminD'} className="nav-link-font">About</Nav.Link>
               <Nav.Link href="#Contact" as={NavLink} to={'/adminD'} className="nav-link-font">Contact</Nav.Link> */}
 
