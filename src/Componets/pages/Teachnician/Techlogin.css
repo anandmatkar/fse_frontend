@@ -64,17 +64,30 @@
     background-color: #86B817;
     color:#fff;
 }
+.technician-login .company__info .company__logo h2 {
+    font-size: 150px; /* Adjusts the size of your <h2> and indirectly the contained SVG icon */
+}
 
 @media screen and (max-width: 640px) {
     .technician-login .main-content {
         width: 90%;
+        flex-direction: column-reverse; /* This reverses the order of flex items */
     }
     .technician-login .company__info {
-        display: none;
+        display: block; /* This makes the company info visible again on small screens */
+        order: 2; /* This places the company info above */
     }
     .technician-login .login_form {
         border-top-left-radius:20px;
         border-bottom-left-radius:20px;
+        order: 1; /* This places the login form below */
+    }
+    .technician-login .company__info .company__logo h2 {
+        font-size: 70px; /* Adjusts the size of your <h2> and the contained SVG icon for smaller screens */
+    }
+    
+    .technician-login .company__info .company_title {
+        font-size: 1.1rem; /* Makes the text a bit smaller on smaller screens */
     }
 }
 
@@ -83,6 +96,7 @@
         width: 70%;
     }
 }
+
 
 .error-text {
     color: red;

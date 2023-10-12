@@ -102,9 +102,9 @@ function TechnicianLogin() {
   return (
     <LayoutTech>
     <div className="container-xxl py-3 technician-login">
-        <div className="row main-content text-center bg-success">
+        <div className="row main-content text-center">
             {/* Logo & Company Info */}
-            <div className="col-md-4 text-center company__info">
+            <div className="col-md-4  col-xs-12 col-sm-12 text-center company__info">
                 <span className="company__logo">
                     <h2><CgProfile size={150} style={{ color: "black" }} /></h2>
                 </span>
