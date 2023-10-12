@@ -22,7 +22,10 @@ function CreateTechnician() {
     surname: yup.string().required(),
     emailAddress: yup.string().required(),
     password: yup.string().required(),
-    phone: yup.string().required(),
+    phone: yup
+      .string()
+      .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits')
+      .required(),
     nationality: yup.string().required(),
     qualification: yup.string().required(),
     level: yup.string().required(),
@@ -228,6 +231,7 @@ function CreateTechnician() {
                   <Form.Group controlId="validationFormik03" className="my-2">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
+                      type="password" // Set the type to "password"
                       placeholder="Password"
                       name="password"
                       value={values.password}
