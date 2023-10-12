@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "./AdminDasboard.css";
 import classes from "../Teachnician/techdashboard.module.css";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 
 function AdminDashboard() {
@@ -13,17 +14,22 @@ function AdminDashboard() {
   const [numberOfAccounts, setNumberOfAccounts] = useState(0); // initialize to 0
 
   useEffect(() => {
-      // Fetch the data for number of accounts waiting for approval
-      axios.get(`${Base_Url}api/v1/companyAdmin/waitingManagerCount`)
-          .then(response => {
-              if (response.data.success) {
-                  setNumberOfAccounts(response.data.data[0].count);
-              }
-          })
-          .catch(error => {
-              console.error("Error fetching the waiting managers count:", error);
-          });
-  }, []);
+    const token = Cookies.get('token');
+    axios.get(`${Base_Url}api/v1/companyAdmin/waitingManagerCount`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+        }
+    })
+    .then(response => {
+        if (response.data.success) {
+            setNumberOfAccounts(response.data.data[0].count);
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching the waiting managers count:", error);
+    });
+}, []);
 
   const handleRegisteredAccountsClick = () => {
       Navigate("/registerdaccount");

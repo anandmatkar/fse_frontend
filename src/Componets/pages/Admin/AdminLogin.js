@@ -10,6 +10,7 @@ import { Container } from "react-bootstrap";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Base_Url } from "../../../Api/Base_Url";
+import Cookies from "js-cookie";
 
 function AdminLogin() {
   const navigate = useNavigate();
@@ -20,77 +21,70 @@ function AdminLogin() {
   const [passwordError, setPasswordError] = useState(null);
 
   const isValidEmail = (email) => {
-    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    return regex.test(email);
+      const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      return regex.test(email);
   };
+
   const style = {
-    // height:"100vh",
-    marginTop:"90px",
-    color: "#3A3E42 !important"
-  }
+      marginTop: "90px",
+      color: "#3A3E42 !important"
+  };
+
   const authCtx = useContext(AuthContext);
 
   const submitHandler = async (event) => {
-    event.preventDefault();
+      event.preventDefault();
 
-    const enteredEmail = emailInputRef.current.value;
-    const enteredPassword = passwordInputRef.current.value;
-    localStorage.setItem("enteredEmail", JSON.stringify(enteredEmail));
+      const enteredEmail = emailInputRef.current.value;
+      const enteredPassword = passwordInputRef.current.value;
 
-
-    if (!enteredEmail) {
-      setEmailError("Please provide an email.");
-      return;
-  }
-
-  // 2. Validate email format
-  if (!isValidEmail(enteredEmail)) {
-      setEmailError("Invalid email format");
-      return;
-  } else {
-      setEmailError(null);
-  }
-
-  // 3. Check if password is filled out
-  if (!enteredPassword) {
-      setPasswordError("Please provide a password.");
-      return;
-  } else {
-      setPasswordError(null);
-  }
-    try {
-      const response = await axios.post(
-        `${Base_Url}api/v1/companyAdmin/adminLogin`,
-        {
-          email: enteredEmail,
-          password: enteredPassword,
-        }
-      );
-
-      if (response.status !== 200) {
-        throw new Error("Authentication failed");
+      if (!enteredEmail) {
+          setEmailError("Please provide an email.");
+          return;
       }
 
-      const data = response.data;
+      if (!isValidEmail(enteredEmail)) {
+          setEmailError("Invalid email format");
+          return;
+      } else {
+          setEmailError(null);
+      }
 
-      // Assume you receive an 'idToken' for authentication
-      const idToken = data.data.token;
-      console.log(data,'data')
+      if (!enteredPassword) {
+          setPasswordError("Please provide a password.");
+          return;
+      } else {
+          setPasswordError(null);
+      }
 
-      // You can set an arbitrary expiration time (e.g., 1 hour from now)
-      const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
-      localStorage.setItem('token',idToken)
-      toast.success("Login successfull!");
-      console.log(idToken,'id token')
-      
+      try {
+          const response = await axios.post(
+              `${Base_Url}api/v1/companyAdmin/adminLogin`,
+              {
+                  email: enteredEmail,
+                  password: enteredPassword,
+              }
+          );
 
-      authCtx.login(idToken, expirationTime.toISOString());
-      navigate("/AdminD");
-    } catch (error) {
-      console.log(error.message);
-      toast.error("Incorrect email or password. Please try again.");
-    }
+          if (response.status !== 200) {
+              throw new Error("Authentication failed");
+          }
+          const data = response.data;
+          const idToken = data.data.token;
+          toast.success("Login successfull!");
+
+          // Save the token in cookies
+          const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+          Cookies.set('token', idToken, { expires: expirationTime });
+
+          authCtx.login(idToken, expirationTime.toISOString());
+          navigate("/AdminD");
+      } catch (error) {
+          console.log(error.message);
+          toast.error("Incorrect email or password. Please try again.");
+      }
   };
+
   return (
     <React.Fragment>
       <AdminNavBar/>
