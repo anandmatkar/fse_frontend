@@ -115,12 +115,19 @@ const ProjectRequestedForApprovalProgress = () => {
     <>
       <NavbarManagerDashboard />
       <div className="jobcontainer container mt-5">
-        <h1 className="jobassigntext mb-4">Project Requested For Approval</h1>
+
+        <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
+          <h6 className="section-title bg-white text-center text-primary px-3">
+            Manager's Panel
+          </h6>
+          <h1 className="mb-5">Project Requested For Approval</h1>
+        </div>
+
         <div className="card">
           <FormControl
             type="text"
-            placeholder="Search by customer name"
-            className="mb-3"
+            placeholder="Search Projects"
+            className="mx-4 my-4"
             onChange={(e) => {
               console.log('Search input:', e.target.value);
               setSearch(e.target.value);

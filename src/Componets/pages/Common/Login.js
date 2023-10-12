@@ -5,6 +5,8 @@ import DynamicButton from "../../Model/DynamicButton";
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import './LoginMain.css'
 
+import PageSpinner from './PageSpinner'
+
 
 function LoginFrontPage() {
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ function LoginFrontPage() {
   };
   return (
     <Layout>
-      
+        
         <Container className="admin-container-main container-xxl py-5 mt-5">
         <Container>
         <div className="admin-data text-center wow fadeInUp" data-wow-delay="0.1s">

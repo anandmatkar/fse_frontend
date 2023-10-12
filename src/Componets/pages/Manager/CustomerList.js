@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { Table, Container, Button, FormControl } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Customer_List_Api, Manager_Base_Url } from './../../../Api/Manager_Api';
@@ -147,18 +147,23 @@ function CustomerList() {
   return (
     <>
       <NavbarManagerDashboard />
+
+        <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
+          <h6 className="section-title bg-white text-center text-primary px-3">
+            Manager's Panel
+          </h6>
+          <h1 className="mb-5">Customer's List</h1>
+        </div>
+
       <div className="jobcontainer container mt-5">
-        <h1 className="jobassigntext mb-4">Customer List</h1>
+      
+      <Button variant='success' as={NavLink} to={'/createCustomer'} className='my-2'> Create Customer </Button>
 
-        <Link to={'/createCustomer'} className="float-end p-2 btn btn-primary">
-          Create Customer
-        </Link>
-
-        <div className="card">
+        <div className="card" >
           <FormControl
             type="text"
-            className="mb-4"
-            placeholder="Search by Customer Name..."
+            className="mb-2 mt-4 ms-4"
+            placeholder="Search Customer"
             onChange={(e) => setSearch(e.target.value)}
             style={{ width: '25%', border: '1px solid black', float: 'right' }}
           />

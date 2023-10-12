@@ -198,7 +198,14 @@ function NewCustomerScreen() {
           </div>
         )}
         <div class="container newCustomerContainer">
-          <h1 class="brand text-center">New Customer</h1>
+
+        <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
+          <h6 className="section-title bg-white text-center text-primary px-3">
+            Manager's Panel
+          </h6>
+          <h1 className="mb-5">Create Customer</h1>
+        </div>
+        
           <div class="wrapper animated_bounceInLeft shadow-lg border border-1">
             <div class="company-info text-center ">
               <h3>Add new customer details</h3>

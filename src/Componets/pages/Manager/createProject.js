@@ -267,9 +267,12 @@ function CreateProject() {
       <NavbarManagerDashboard />
       <div class="container newproject">
         <header class="headernewproject">
-          <h1 id="title" class="text-center heading1">
-            Create new Project
-          </h1>
+          <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
+            <h6 className="section-title bg-white text-center text-primary px-3">
+              Manager's Panel
+            </h6>
+            <h1 className="mb-5">Create Project</h1>
+          </div>
         </header>
         <div class="form-wrap newprojectform">
           <form onSubmit={handleSubmit}>
