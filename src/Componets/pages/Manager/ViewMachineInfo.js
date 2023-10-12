@@ -61,7 +61,7 @@ export default function ViewMachineInfo() {
                         <th>Description</th>
                         <th>Start Date</th>
                         <th>End Date</th>
-                        <th></th>
+                        <th>View Machines</th>
                         </tr>
                     </thead>
                     <tbody>

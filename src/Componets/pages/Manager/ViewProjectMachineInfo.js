@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Table } from 'react-bootstrap';
+import { Button, Container, Dropdown, Table } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Manager_Base_Url, Project_Machine_Details } from '../../../Api/Manager_Api';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
@@ -107,7 +107,7 @@ export default function ViewProjectMachineInfo() {
               <th>Nominal Speed</th>
               <th>Actual Speed</th>
               <th>Description</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -121,25 +121,25 @@ export default function ViewProjectMachineInfo() {
                   <td>{machine.act_speed}</td>
                   <td>{machine.description}</td>
                   <td>
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      onClick={() =>
-                        navigate(
-                          `/project-attached-machine-details/edit-machine/${projectID}/${machine.machine_id}`
-                        )
-                      }
-                    >
-                      Edit Machine
-                    </Button>
-
-                    <Button
-                        variant="danger"
-                        size="sm"
+                  <Dropdown drop='centered'>
+                    <Dropdown.Toggle variant="secondary" size="sm" id="machine-actions-dropdown">
+                      Actions
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item  size="sm" className='edit-machine-action'
+                        onClick={() =>
+                          navigate(`/project-attached-machine-details/edit-machine/${projectID}/${machine.machine_id}`)
+                        }
+                      >
+                        Edit Machine
+                      </Dropdown.Item>
+                      <Dropdown.Item size="sm" className='delete-machine-action'
                         onClick={() => handleDeleteMachineDetails(machine.machine_id, projectID)}
-                        >
+                      >
                         Delete Machine
-                    </Button>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                   </td>
                 </tr>
               </>
