@@ -54,16 +54,16 @@ const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
     <Layout4>
        <div className="text-center mb-5 mt-5">
                     <h6 className="section-title bg-white text-center text-primary px-3">Completed Panel</h6>
-                    <h1>Your Completed Tasks Overview</h1>
+                    <h1>Technician Job Completed Overview</h1>
                 </div>
          <div class="container mt-5">
-	<h1 className="jobassigntext mb-4">Technician Job Completed </h1>
+	{/* <h1 className="jobassigntext mb-4">Technician Job Completed </h1> */}
   <input
         type="text"
         className="form-control mb-4"
         placeholder="Search by Project Type..."
         onChange={e => setSearch(e.target.value)}
-        style={{width:"25%" , border:"1px solid black",float:"inline-end",marginTop:"10px"}}
+        style={{width:"25%" , border:"1px solid black"}}
       />
 
 {filteredProjects.length === 0 ? (
