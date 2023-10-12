@@ -4,6 +4,7 @@ import AuthContext from "../../auth-context/auth-context";
 import { useState, useRef, useContext } from "react";
 import Layout from "../../Layout/Layout";
 import Cookies from 'js-cookie';
+import {CgProfile} from 'react-icons/cg'
 import LayoutTech from "../../Layout/Layout3";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
@@ -100,43 +101,32 @@ function TechnicianLogin() {
 
   return (
     <LayoutTech>
-     <div style={style}>
-      <div className="loginContainer go-register">
-        {/* <!-- Login Form Starts --> */}
-        <div className="loginForm__container loginForm__container-login">
-            <h1 className="loginForm__heading">Technician Login</h1>
-            <form action="" className="loginForm">
-                <h3 className="loginForm__heading">Sign In</h3>
-                <p className="loginForm__text">Or Use Your Account</p>
-                <input type="Email" placeholder="Email" className="loginForm__field" ref={emailInputRef}/>
-                {emailError && <p className="error-text">{emailError}</p>}
-                <input type="Password" placeholder="Password" className="loginForm__field" ref={passwordInputRef}/>
-                {passwordError && <p className="error-text">{passwordError}</p>}
-                <div className="row mt-4 mb-4">
-    
-                    <div className="col-md-12">
-                        <Link to="/TechnicianForgotPassword" className="text-muted">
-                            Forgot password?
-                        </Link>
-                    </div>
-                </div>
-                <button type="submit" className="loginBtn loginBtn--main" onClick={submitHandler}>
-                    Sign In
-                </button>
-            </form>
+    <div className="container-xxl py-3 technician-login">
+        <div className="row main-content text-center bg-success">
+            {/* Logo & Company Info */}
+            <div className="col-md-4 text-center company__info">
+                <span className="company__logo">
+                    <h2><CgProfile size={150} style={{ color: "black" }} /></h2>
+                </span>
+                <h5 className="company_title"><span style={{color:"black", fontSize:"30px"}}>Hello Technician!!</span><br/><br/>Enter Your Details And Start Journey With Us</h5>
+            </div>
+            
+            {/* Login Form */}
+            <div className="col-md-8 col-xs-12 col-sm-12 login_form">
+                <h2 style={{ fontSize: "40px", fontWeight: "500" }}>Technician Login</h2>
+                <form className="form-group">
+                    <h3 className="TechnicianloginForm__heading">Sign In</h3>
+                    <p className="TechnicianloginForm__text">Or Use Your Account</p>
+                    <input type="email" placeholder="Email" className="form__input" ref={emailInputRef} />
+                    {emailError && <p className="error-text">{emailError}</p>}
+                    <input type="password" placeholder="Password" className="form__input" ref={passwordInputRef} />
+                    {passwordError && <p className="error-text">{passwordError}</p>}
+                    <button type="submit" className="btn" onClick={submitHandler}>Sign In</button>
+                </form>
+            </div>
         </div>
-        {/* <!-- Login Form Ends --> */}
-        <div className="loginOverlay-container">
-            {/* <!-- Right Overlay Starts --> */}
-            <div className="loginOverlay loginOverlay--right">
-                <img src='https://img.freepik.com/premium-photo/cute-happy-male-teacher-white-background-ai-generated_971652-235.jpg?size=626&ext=jpg&ga=GA1.1.1085728591.1696533906&semt=ais' alt='' height={250} width={200} style={{borderRadius:"50%"}}/>
-                <h3 className="loginOverlay__heading">Hello Technician</h3>
-                <p className="loginOverlay__desc">Enter Your Details And Start Journey With Us</p>
-            </div>           
-        </div>
-      </div>
     </div>
-    </LayoutTech>
+</LayoutTech>
   );
 }
 export default TechnicianLogin;

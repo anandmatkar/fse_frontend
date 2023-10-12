@@ -4,6 +4,7 @@ import AuthContext from "../../auth-context/auth-context";
 import Layout from "../../Layout/Layout";
 import axios from "axios";
 import "./Admin.css"
+import {CgProfile} from 'react-icons/cg'
 import { Link } from "react-router-dom";
 import AdminNavBar from "../../NavBar/AdminNavBar";
 import { Container } from "react-bootstrap";
@@ -21,121 +22,102 @@ function AdminLogin() {
   const [passwordError, setPasswordError] = useState(null);
 
   const isValidEmail = (email) => {
-      const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-      return regex.test(email);
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return regex.test(email);
   };
-
   const style = {
-      marginTop: "90px",
-      color: "#3A3E42 !important"
-  };
-
+    // height:"100vh",
+    marginTop:"90px",
+    color: "#3A3E42 !important"
+  }
   const authCtx = useContext(AuthContext);
 
   const submitHandler = async (event) => {
-      event.preventDefault();
+    event.preventDefault();
 
-      const enteredEmail = emailInputRef.current.value;
-      const enteredPassword = passwordInputRef.current.value;
+    const enteredEmail = emailInputRef.current.value;
+    const enteredPassword = passwordInputRef.current.value;
+    localStorage.setItem("enteredEmail", JSON.stringify(enteredEmail));
 
-      if (!enteredEmail) {
-          setEmailError("Please provide an email.");
-          return;
-      }
 
-      if (!isValidEmail(enteredEmail)) {
-          setEmailError("Invalid email format");
-          return;
-      } else {
-          setEmailError(null);
-      }
+    if (!enteredEmail) {
+      setEmailError("Please provide an email.");
+      return;
+  }
 
-      if (!enteredPassword) {
-          setPasswordError("Please provide a password.");
-          return;
-      } else {
-          setPasswordError(null);
-      }
+  // 2. Validate email format
+  if (!isValidEmail(enteredEmail)) {
+      setEmailError("Invalid email format");
+      return;
+  } else {
+      setEmailError(null);
+  }
 
-      try {
-          const response = await axios.post(
-              `${Base_Url}api/v1/companyAdmin/adminLogin`,
-              {
-                  email: enteredEmail,
-                  password: enteredPassword,
-              }
-          );
+  // 3. Check if password is filled out
+  if (!enteredPassword) {
+      setPasswordError("Please provide a password.");
+      return;
+  } else {
+      setPasswordError(null);
+  }
+    try {
+      const response = await axios.post(
+        `${Base_Url}api/v1/companyAdmin/adminLogin`,
+        {
+          email: enteredEmail,
+          password: enteredPassword,
+        }
+      );
 
-          if (response.status !== 200) {
-              throw new Error("Authentication failed");
-          }
-          const data = response.data;
-          const idToken = data.data.token;
-          toast.success("Login successfull!");
+      if (response.status !== 200) {
+                throw new Error("Authentication failed");
+            }
+            const data = response.data;
+            const idToken = data.data.token;
+            toast.success("Login successfull!");
+            
+            // Save the token in cookies
+            const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+            Cookies.set('token', idToken, { expires: expirationTime });
 
-          // Save the token in cookies
-          const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
-          Cookies.set('token', idToken, { expires: expirationTime });
-
-          authCtx.login(idToken, expirationTime.toISOString());
-          navigate("/AdminD");
-      } catch (error) {
-          console.log(error.message);
-          toast.error("Incorrect email or password. Please try again.");
-      }
-  };
-
+            authCtx.login(idToken, expirationTime.toISOString());
+            navigate("/AdminD");
+        } catch (error) {
+            console.log(error.message);
+            toast.error("Incorrect email or password. Please try again.");
+        }
+    };
   return (
     <React.Fragment>
-      <AdminNavBar/>
-      <Container className="container-xxl py-5">
-        <Container>
-<div style={style}>
-       <div className="AdminloginContainer go-register">
-         {/* <!-- Login Form Starts --> */}
-         <div className="AdminloginForm__container loginForm__container-login">
-             <h1 className="AdminloginForm__heading">Admin Login</h1>
-             <form action="" className="AdminloginForm">
-                 <h3 className="AdminloginForm__heading">Sign In</h3>
-                 <p className="AdminloginForm__text">Or Use Your Account</p>
-                 <input type="email" placeholder="Email" className="AdminloginForm__field" ref={emailInputRef} />
-                 {emailError && <p className="error-text">{emailError}</p>}
-                 <input type="password" placeholder="Password" className="AdminloginForm__field" ref={passwordInputRef} />
-                {passwordError && <p className="error-text">{passwordError}</p>}
+    <AdminNavBar />
+    <Container className="container-xxl py-3 admin-login">
+        <div className="row main-content text-center bg-success">
+            {/* Logo & Company Info */}
+            <div className="col-md-4 text-center company__info">
+                <span className="company__logo">
+                    <h2><CgProfile size={150} style={{ color:"black"}}/></h2>
+                </span>
+                <h5 className="company_title">Enter Your Details And Start Journey With Us</h5>
+            </div>
+            {/* Login Form */}
+            <div className="col-md-8 col-xs-12 col-sm-12 login_form">
+                <h2 style={{fontSize:"40px" , fontWeight:"500"}}>Admin Login</h2>
+                <form className="form-group">
+                    <h3 className="AdminloginForm__heading">Sign In</h3>
+                    <p className="AdminloginForm__text">Or Use Your Account</p>
+                    <input type="email" placeholder="Email" className="form__input" ref={emailInputRef} />
+                    {emailError && <p className="error-text">{emailError}</p>}
+                    <input type="password" placeholder="Password" className="form__input" ref={passwordInputRef} />
+                    {passwordError && <p className="error-text">{passwordError}</p>}
+                   
+                    <button type="submit" className="btn" onClick={submitHandler}>Sign In</button>
+                  
+                </form>
+            </div>
+        </div>
+    </Container>
+</React.Fragment>
 
-                 <div className="row mt-4 mb-4">
-    
-                     <div className="col-md-12">
-                         <Link to="/TechnicianForgotPassword" className="Admintext-muted">
-                             Forgot password?
-                         </Link>
-                     </div>
-                 </div>
-                 <button type="submit" className="AdminloginBtn loginBtn--main" onClick={submitHandler}>
-                     Sign In
-                 </button>
-            </form>
-         </div>
-         {/* <!-- Login Form Ends --> */}
-         <div className="Admin-loginOverlay-container">
-             {/* <!-- Right Overlay Starts --> */}
-             <div className="AdminloginOverlay loginOverlay--right">
-                 <img src='https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80' alt='' height={250} width={200} style={{borderRadius:"50%"}}/>
-                 <h3 className="AdminloginOverlay__heading"></h3>
-                 <p className="AdminloginOverlay__desc"><h2>Start Your Journey With Us</h2></p>
-             </div>           
-         </div>
-       </div>
-     </div>
-        </Container>
-      
-      </Container>
-      
-
-    </React.Fragment>
-    // <Layout>
-    
-    // </Layout>
   );
 }
 
