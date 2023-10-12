@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Table, Container } from 'react-bootstrap';
 import { LuDownload } from 'react-icons/lu';
+import { Manager_Base_Url, managerlogin_Api } from '../../../Api/Manager_Api';
 
 function DetailsOfMachineData() {
   const { machineId, projectId } = useParams();
@@ -15,7 +16,7 @@ function DetailsOfMachineData() {
       try {
         const token = Cookies.get('token');
         const response = await fetch(
-          `http://3.110.86.245/api/v1/manager/machineData?machineId=${machineId}&projectId=${projectId}`,
+          `${Manager_Base_Url}machineData?machineId=${machineId}&projectId=${projectId}`,
           {
             headers: {
               Authorization: token,

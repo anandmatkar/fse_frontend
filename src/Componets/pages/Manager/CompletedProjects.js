@@ -90,7 +90,7 @@ const CompletedProjects = () => {
         <td>
           <Link
             to={`/projectstatusdetails/${project.project_id}`}
-            className="btn btn-primary"
+            className="bg-primary text-light border-0 border link-offset-2 link-underline link-underline-opacity-0 rounded"
           >
             Details
           </Link>
@@ -103,7 +103,6 @@ const CompletedProjects = () => {
     <>
       <NavbarManagerDashboard />
       <div className="jobcontainer container mt-5">
-
         <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
           <h6 className="section-title bg-white text-center text-primary px-3">
             Manager's Panel

@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { BsFillFileEarmarkPostFill } from 'react-icons/bs';
 import { Table, FormControl, Pagination, Container } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Manager_Base_Url } from '../../../Api/Manager_Api';
@@ -75,7 +76,7 @@ const TimeSheetForApproved = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       fetchData();
-      navigate('/projectprogress');
+      navigate('/projectStatus');
     } catch (error) {
       console.error('Error accepting timesheet request:', error);
     }
@@ -144,10 +145,7 @@ const TimeSheetForApproved = () => {
                                       target="_blank"
                                       rel="noopener noreferrer"
                                     >
-                                      <i
-                                        className="fa fa-cloud-download"
-                                        style={{ fontSize: '20px' }}
-                                      ></i>{' '}
+                                      <BsFillFileEarmarkPostFill className="fs-3"></BsFillFileEarmarkPostFill>{' '}
                                     </a>
                                   ))
                                 : 'No attachments'}

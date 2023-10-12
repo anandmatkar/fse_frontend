@@ -4,6 +4,8 @@ import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiSolidShow } from 'react-icons/bi';
+import { SiGooglesheets } from 'react-icons/si';
+import { TbReport } from 'react-icons/tb';
 import { FormControl, Container } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Manager_Base_Url } from '../../../Api/Manager_Api';
@@ -20,15 +22,12 @@ const ProjectStatusDetails = () => {
 
   useEffect(() => {
     const token = Cookies.get('token');
-    fetch(
-      `${Manager_Base_Url}projectDetails?projectId=${projectId}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
-        },
-      }
-    )
+    fetch(`${Manager_Base_Url}projectDetails?projectId=${projectId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -122,11 +121,11 @@ const ProjectStatusDetails = () => {
       <NavbarManagerDashboard />
 
       <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
-          <h6 className="section-title bg-white text-center text-primary px-3">
-            Manager's Panel
-          </h6>
-          <h1 className="mb-5">Project Details</h1>
-        </div>
+        <h6 className="section-title bg-white text-center text-primary px-3">
+          Manager's Panel
+        </h6>
+        <h1 className="mb-5">Project Details</h1>
+      </div>
 
       <div className="job-progress mt-2">
         <div>
@@ -212,10 +211,7 @@ const ProjectStatusDetails = () => {
                                 <Link
                                   to={`/projectreportdata/${technician.id}/${job.project_id}`}
                                 >
-                                  <i
-                                    className="fa fa-address-book"
-                                    style={{ fontSize: '20px' }}
-                                  ></i>
+                                  <TbReport className="fs-3"></TbReport>
                                 </Link>
                               ) : (
                                 'No Report'
@@ -227,10 +223,7 @@ const ProjectStatusDetails = () => {
                                 <Link
                                   to={`/timesheetforapproval/${technician.id}/${job.project_id}`}
                                 >
-                                  <i
-                                    className="fa fa-book"
-                                    style={{ fontSize: '20px' }}
-                                  ></i>
+                                  <SiGooglesheets className="fs-3"></SiGooglesheets>
                                 </Link>
                               ) : (
                                 'No Timesheet'
@@ -241,10 +234,7 @@ const ProjectStatusDetails = () => {
                                 <Link
                                   to={`/detailsOfMachineData/${technician.machine_data[0].id}/${job.project_id}`}
                                 >
-                                  <BiSolidShow
-                                    color="black"
-                                    className="border border-0 btn fs-1  btn-info"
-                                  />
+                                  <BiSolidShow className="fs-3" />
                                 </Link>
                               ) : (
                                 'No Details '
