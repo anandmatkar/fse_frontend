@@ -55,6 +55,10 @@ import ViewProjectMachineInfo from './Componets/pages/Manager/ViewProjectMachine
 import EditProjectMachineInfo from './Componets/pages/Manager/EditProjectMachineInfo';
 import CompletedProjects from './Componets/pages/Manager/CompletedProjects';
 import DetailsOfMachineData from './Componets/pages/Manager/DetailsOfMachineData';
+import AssignMachineData from './Componets/pages/Teachnician/AssignMachineData';
+import AssignReportData from './Componets/pages/Teachnician/AssignReportData';
+import AssignTimesheetData from './Componets/pages/Teachnician/AssignTimesheetData';
+import AssignprojectAttachments from './Componets/pages/Teachnician/AssignprojectAttachments';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -189,6 +193,12 @@ function App() {
           path="TechnicianForgotPassword"
           element={<TechnicianForgotPassword />}
         ></Route>
+      
+        <Route path="AssignMachineData/:projectID" element={<AssignMachineData/>} ></Route>
+        <Route path="AssignReportData/:projectID" element={<AssignReportData/>} ></Route>
+        <Route path="AssignTimesheetData/:projectID" element={<AssignTimesheetData/>} ></Route>
+        <Route path="AssignProjectAttachments/:projectID" element={<AssignprojectAttachments/>}></Route>
+        
       </Routes>
       {/* jst for push */}
       <Routes></Routes>
