@@ -9,6 +9,7 @@ import {
   Upload_Technician_Documents,
   Manager_Base_Url,
 } from "./../../../Api/Manager_Api";
+import { FiUploadCloud, FiDownload } from 'react-icons/fi';
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -215,6 +216,12 @@ function CreateTechnician() {
       
     }
   };
+
+  const handleDownloadTemplate = () => {
+    const downloadLink = "http://15.206.93.145/uploads/exampleTemplate/tech_example.xlsx";
+    const newTab = window.open(downloadLink, "_blank");
+    newTab.focus();
+  };
   
 
   return (
@@ -230,7 +237,7 @@ function CreateTechnician() {
 
       <Container as={Card.Header}>
         <Row>
-          <Col lg={3} md={6}>
+          <Col lg={3} md={12}>
             <input
               ref={fileInputRef}
               type="file"
@@ -239,10 +246,22 @@ function CreateTechnician() {
               onChange={handleExcelFileChange}
             />
 
-            <Button onClick={() => fileInputRef.current.click()}>Import Excel Sheet</Button>
+            <Button
+              variant="success"
+              className="w-100 my-2"
+              onClick={() => fileInputRef.current.click()}>
+                Import Excel Sheet <FiUploadCloud className="ms-2 fs-4"/>
+            </Button>
           </Col>
 
-          <Col lg={3} md={6}>
+          <Col lg={3} md={12}>
+          <Button
+            className="w-100 my-2"
+            variant="success"
+            onClick={handleDownloadTemplate}
+          >
+            Download Template <FiDownload className="ms-2 fs-4" />
+          </Button>
 
           </Col>
         </Row>
