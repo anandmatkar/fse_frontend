@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './NewCustomerScreen.css';
 import { toast } from 'react-toastify';
 import Spinner from '../Common/Spinner';
@@ -16,7 +16,7 @@ function NewCustomerScreen() {
     customerAccount: '',
     email: '',
     phone: '',
-    country: '',
+    country: '', // Set an initial value here (e.g., 'USA')
     city: '',
     address: '',
     scopeOfWork: '',
@@ -26,7 +26,27 @@ function NewCustomerScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
+  const [countryOptions, setCountryOptions] = useState([]);
+  const [cityOptions, setCityOptions] = useState([]);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchCountries(); // Fetch country names
+  }, []);
+
+  const fetchCountries = async () => {
+    try {
+      const response = await axios.get('https://restcountries.com/v3.1/all');
+      const countryData = response.data.map((country) => ({
+        value: country.cca2,
+        label: country.name.common,
+      }));
+      setCountryOptions(countryData);
+    } catch (error) {
+      console.error('Error fetching countries:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -103,44 +123,6 @@ function NewCustomerScreen() {
       </div>
     );
   }
-
-  // const validateForm = (data) => {
-  //   const errors = {};
-
-  //   if (!data.customerName) {
-  //     errors.customerName = 'Please enter customer name';
-  //   }
-  //   if (!data.customerContactName) {
-  //     errors.customerContactName = 'Please enter customer contact name';
-  //   }
-  //   if (!data.customerAccount) {
-  //     errors.customerAccount = 'Please enter customer account number';
-  //   }
-  //   if (!data.email) {
-  //     errors.email = 'Please enter your email';
-  //   } else if (!validateEmail(data.email)) {
-  //     errors.email = 'Please enter a valid email address';
-  //   }
-  //   if (!data.phone) {
-  //     errors.phone = 'Please enter your phone number';
-  //   } else if (!validatePhone(data.phone)) {
-  //     errors.phone = 'Please enter a valid phone number';
-  //   }
-  //   if (!data.country) {
-  //     errors.country = 'Please enter country';
-  //   }
-  //   if (!data.city) {
-  //     errors.city = 'Please enter city';
-  //   }
-  //   if (!data.address) {
-  //     errors.address = 'Please enter address';
-  //   }
-  //   if (!data.scopeOfWork) {
-  //     errors.scopeOfWork = 'Please enter scope of work';
-  //   }
-
-  //   return errors;
-  // };
 
   const validateForm = (data) => {
     const errors = {};
@@ -302,7 +284,7 @@ function NewCustomerScreen() {
                     </span>
                   )}
                 </p>
-                <p className="createCustomer">
+                {/* <p className="createCustomer">
                   <label className="newCustomerLabel" htmlFor="country">
                     Country
                   </label>
@@ -321,7 +303,50 @@ function NewCustomerScreen() {
                     <option value="UK">UK</option>
                     <option value="Algeria">Algeria</option>
                     <option value="India">India</option>
-                    {/* Add more country options as needed */}
+                  </select>
+                  {errors.country && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {errors.country}
+                    </span>
+                  )}
+                </p>
+                <p className="createCustomer">
+                  <label className="newCustomerLabel" htmlFor="city">
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    className="newCustomerInput  w-100 p-3 border border-1 form-control"
+                    id="city"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                  />
+                  {errors.city && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {errors.city}
+                    </span>
+                  )}
+                </p> */}
+
+                <p className="createCustomer">
+                  <label className="newCustomerLabel" htmlFor="country">
+                    Country
+                  </label>
+                  <select
+                    id="country"
+                    className=" form-select w-100 border border-1 "
+                    name="country"
+                    value={formData.country}
+                    onChange={handleChange}
+                    aria-label=".form-select-lg example"
+                  >
+                    <option value="">Select Country</option>{' '}
+                    {countryOptions.map((country) => (
+                      <option key={country.value} value={country.value}>
+                        {country.label}
+                      </option>
+                    ))}
                   </select>
                   {errors.country && (
                     <span className="error" style={{ color: 'red' }}>
