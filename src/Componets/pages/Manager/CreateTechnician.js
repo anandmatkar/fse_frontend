@@ -7,11 +7,13 @@ import {
   Create_Technician_Api,
   Upload_Technician_Profile,
   Upload_Technician_Documents,
+  Manager_Base_Url,
 } from "./../../../Api/Manager_Api";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
+import { useRef } from "react";
 
 function CreateTechnician() {
   const { Formik } = formik;
@@ -48,6 +50,7 @@ function CreateTechnician() {
   const [selectedFile, setSelectedFile] = useState(""); // State to hold the selected file
   const [profilePicPath, setProfilePicPath] = useState(""); // State to hold the profile picture path
   const [documentsPath, setDocumentsPath] = useState([]); // State to hold the documents path
+  const fileInputRef = useRef(null); // Add this line to create a reference
 
   const createTechnician = async (formData) => {
     try {
@@ -170,6 +173,50 @@ function CreateTechnician() {
     }
   };
 
+  const handleExcelFileChange = async (e) => {
+    const selectedExcelFile = e.target.files[0];
+
+    const token = Cookies.get("token");
+    if (!token) {
+      console.error("Token not found in localStorage.");
+      return;
+    }
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    if (selectedExcelFile) {
+      let excelFileData = new FormData();
+      // Append the profile image to the FormData
+      excelFileData.append("file", selectedExcelFile);
+      
+      console.log(excelFileData);
+
+      try {
+        const response = await axios.post(
+          `${Manager_Base_Url}insertTechnician`,
+          excelFileData,
+          config
+        );
+  
+        if (response.data.status === 201) {
+          navigate("/managetechnician");
+          toast.success(response.data.message);
+          console.log(response.data.data);
+        } else {
+          toast.error(response.data.message);
+        }       
+      } catch (error) {
+        console.log(error.message);
+        toast.error(error.message);
+      }
+      
+    }
+  };
+  
+
   return (
     <React.Fragment>
       <NavbarManagerDashboard />
@@ -182,6 +229,24 @@ function CreateTechnician() {
       </div>
 
       <Container as={Card.Header}>
+        <Row>
+          <Col lg={3} md={6}>
+            <input
+              ref={fileInputRef}
+              type="file"
+              style={{ display: "none" }}
+              accept=".xlsx, .xls" // Specify allowed file types
+              onChange={handleExcelFileChange}
+            />
+
+            <Button onClick={() => fileInputRef.current.click()}>Import Excel Sheet</Button>
+          </Col>
+
+          <Col lg={3} md={6}>
+
+          </Col>
+        </Row>
+        
         <Formik
           validationSchema={schema}
           onSubmit={handleSubmit}
