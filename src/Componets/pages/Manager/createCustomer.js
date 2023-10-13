@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './NewCustomerScreen.css';
 import { toast } from 'react-toastify';
 import Spinner from '../Common/Spinner';
 import axios from 'axios';
-import { Create_Customer_Api } from '../../../Api/Manager_Api';
+import {
+  Create_Customer_Api,
+  Insert_Customer_Api,
+} from '../../../Api/Manager_Api';
 import { useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import './CreateCustomer.css';
+import { LiaFileUploadSolid } from 'react-icons/lia';
 
 function NewCustomerScreen() {
   const [formData, setFormData] = useState({
@@ -25,9 +29,8 @@ function NewCustomerScreen() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-
+  const fileInputRef = useRef(null);
   const [countryOptions, setCountryOptions] = useState([]);
-  const [cityOptions, setCityOptions] = useState([]);
 
   const navigate = useNavigate();
 
@@ -56,6 +59,45 @@ function NewCustomerScreen() {
     });
   };
 
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      let token = Cookies.get('token'); // Get the token from cookies
+
+      const axiosConfig = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: token,
+        },
+      };
+
+      axios
+        .post(Insert_Customer_Api, formData, axiosConfig)
+        .then((response) => {
+          if (response.status === 201) {
+            // Status code 201 indicates success
+            console.log('API Response:', response.data);
+            // Display a success message using toast.success
+            toast.success(response.data.message);
+            navigate('/customerlist');
+          } else {
+            // Handle other status codes as needed
+            console.error('API Error - Status:', response.status);
+            toast.error(response.data.message);
+          }
+        })
+        .catch((error) => {
+          // Handle any errors
+          console.error('API Error:', error);
+          // Display an error message using toast.error
+          toast.error(error.message);
+        });
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Submit button clicked');
@@ -78,7 +120,6 @@ function NewCustomerScreen() {
       },
     };
 
-    console.log(axiosConfig, 'data to send');
     try {
       const response = await axios.post(
         Create_Customer_Api, // Updated API endpoint
@@ -181,9 +222,23 @@ function NewCustomerScreen() {
         )}
         <div class="container newCustomerContainer">
           <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
-            <h6 className="section-title bg-white text-center text-primary px-3">
+            <h6 className="section-title bg-white text-center text-primary px-3 ">
               Manager's Panel
             </h6>
+            <button
+              className="btn btn-success float-end"
+              onClick={() => fileInputRef.current.click()} // Trigger file input click via ref
+            >
+              Upload File {'  '}
+              <input
+                type="file"
+                accept=".xlsx, .xls"
+                ref={fileInputRef} // Attach the ref to the input element
+                style={{ display: 'none' }}
+                onChange={handleFileUpload}
+              />
+              <LiaFileUploadSolid className="fs-3" />
+            </button>
             <h1 className="createCustomer">Create Customer</h1>
           </div>
 
@@ -192,6 +247,7 @@ function NewCustomerScreen() {
               <h3>Add new customer details</h3>
               <img src="/assets/newcustomer.svg" className="mt-3"></img>
             </div>
+
             <div class="contact">
               <form className="newCustomerForm">
                 <p className="createCustomer">
@@ -205,6 +261,7 @@ function NewCustomerScreen() {
                     name="customerName"
                     value={formData.customerName}
                     onChange={handleChange}
+                    placeholder="Enter customer name"
                   />
                   {errors.customerName && (
                     <span className="error" style={{ color: 'red' }}>
@@ -223,6 +280,7 @@ function NewCustomerScreen() {
                     name="customerContactName"
                     value={formData.customerContactName}
                     onChange={handleChange}
+                    placeholder="Enter customer contact name"
                   />
                   {errors.customerName && (
                     <span className="error" style={{ color: 'red' }}>
@@ -241,6 +299,7 @@ function NewCustomerScreen() {
                     name="customerAccount"
                     value={formData.customerAccount}
                     onChange={handleChange}
+                    placeholder="Enter customer account"
                   />
                   {errors.customerAccount && (
                     <span className="error" style={{ color: 'red' }}>
@@ -259,6 +318,7 @@ function NewCustomerScreen() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
+                    placeholder="Enter Email"
                   />
                   {errors.email && (
                     <span className="error" style={{ color: 'red' }}>
@@ -277,6 +337,7 @@ function NewCustomerScreen() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
+                    placeholder="Enter Phone number"
                   />
                   {errors.phone && (
                     <span className="error" style={{ color: 'red' }}>
@@ -284,50 +345,6 @@ function NewCustomerScreen() {
                     </span>
                   )}
                 </p>
-                {/* <p className="createCustomer">
-                  <label className="newCustomerLabel" htmlFor="country">
-                    Country
-                  </label>
-                  <select
-                    id="country"
-                    className="newCustomerInput custom-select w-100 p-3 border border-1 form-control"
-                    name="country"
-                    value={formData.country}
-                    onChange={handleChange}
-                  >
-                    <option disabled defaultValue>
-                      Select Country
-                    </option>{' '}
-                    <option value="USA">USA</option>
-                    <option value="Canada">Canada</option>
-                    <option value="UK">UK</option>
-                    <option value="Algeria">Algeria</option>
-                    <option value="India">India</option>
-                  </select>
-                  {errors.country && (
-                    <span className="error" style={{ color: 'red' }}>
-                      {errors.country}
-                    </span>
-                  )}
-                </p>
-                <p className="createCustomer">
-                  <label className="newCustomerLabel" htmlFor="city">
-                    City
-                  </label>
-                  <input
-                    type="text"
-                    className="newCustomerInput  w-100 p-3 border border-1 form-control"
-                    id="city"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                  />
-                  {errors.city && (
-                    <span className="error" style={{ color: 'red' }}>
-                      {errors.city}
-                    </span>
-                  )}
-                </p> */}
 
                 <p className="createCustomer">
                   <label className="newCustomerLabel" htmlFor="country">
@@ -341,7 +358,9 @@ function NewCustomerScreen() {
                     onChange={handleChange}
                     aria-label=".form-select-lg example"
                   >
-                    <option value="">Select Country</option>{' '}
+                    <option disabled selected value="">
+                      Select Country
+                    </option>{' '}
                     {countryOptions.map((country) => (
                       <option key={country.value} value={country.value}>
                         {country.label}
@@ -365,6 +384,7 @@ function NewCustomerScreen() {
                     name="city"
                     value={formData.city}
                     onChange={handleChange}
+                    placeholder="Enter city name"
                   />
                   {errors.city && (
                     <span className="error" style={{ color: 'red' }}>
@@ -383,6 +403,7 @@ function NewCustomerScreen() {
                     name="address"
                     value={formData.address}
                     onChange={handleChange}
+                    placeholder="Enter your address"
                   />
                   {errors.address && (
                     <span className="error" style={{ color: 'red' }}>
@@ -397,10 +418,11 @@ function NewCustomerScreen() {
                   </label>
                   <textarea
                     id="scopeOfWork"
-                    className="newCustomerInput  w-100 p-3 border border-1 form-control"
+                    className="newCustomerInput  w-100 border border-1 form-control"
                     name="scopeOfWork"
                     value={formData.scopeOfWork}
                     onChange={handleChange}
+                    placeholder="Enter scope of work"
                   ></textarea>
                   {errors.scopeOfWork && (
                     <span className="error" style={{ color: 'red' }}>

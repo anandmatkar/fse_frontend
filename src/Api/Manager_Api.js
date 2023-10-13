@@ -38,3 +38,4 @@ export const Upload_Manager_Profile = `${Base_Url}api/v1/manager/uploadProfilePi
 export const Show_Manager_Profile = `${Base_Url}api/v1/manager/showProfile`;
 export const Update_Manager_Profile = `${Base_Url}api/v1/manager/updateProfile`;
 export const Machine_Details_APi = `${Base_Url}machineData?`;
+export const Insert_Customer_Api = `${Base_Url}api/v1/manager/insertCustomer?`;
