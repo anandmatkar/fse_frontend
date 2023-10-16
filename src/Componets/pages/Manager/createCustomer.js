@@ -12,6 +12,7 @@ import Cookies from 'js-cookie';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import './CreateCustomer.css';
 import { LiaFileUploadSolid } from 'react-icons/lia';
+import { BsFileEarmarkMedical } from 'react-icons/bs';
 
 function NewCustomerScreen() {
   const [formData, setFormData] = useState({
@@ -57,6 +58,13 @@ function NewCustomerScreen() {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleDownloadTemplate = () => {
+    const downloadLink =
+      'http://15.206.93.145/uploads/exampleTemplate/tech_example.xlsx';
+    const newTab = window.open(downloadLink, '_blank');
+    newTab.focus();
   };
 
   const handleFileUpload = (event) => {
@@ -221,27 +229,40 @@ function NewCustomerScreen() {
           </div>
         )}
         <div class="container newCustomerContainer">
-          <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
-            <h6 className="section-title bg-white text-center text-primary px-3 ">
-              Manager's Panel
-            </h6>
-            <button
-              className="btn btn-success float-end"
-              onClick={() => fileInputRef.current.click()} // Trigger file input click via ref
-            >
-              Upload File {'  '}
-              <input
-                type="file"
-                accept=".xlsx, .xls"
-                ref={fileInputRef} // Attach the ref to the input element
-                style={{ display: 'none' }}
-                onChange={handleFileUpload}
-              />
-              <LiaFileUploadSolid className="fs-3" />
-            </button>
-            <h1 className="createCustomer">Create Customer</h1>
-          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-7 text-end">
+                <h6 className="section-title bg-white text-center text-primary px-3 ">
+                  Manager's Panel
+                </h6>
+                <h1 className="createCustomer">Create Customer</h1>
+              </div>
+              <div class="col-5">
+                <button
+                  className="btn btn-success float-end me-2"
+                  onClick={() => fileInputRef.current.click()} // Trigger file input click via ref
+                >
+                  Upload File {'  '}
+                  <input
+                    type="file"
+                    accept=".xlsx, .xls"
+                    ref={fileInputRef} // Attach the ref to the input element
+                    className="d-none"
+                    onChange={handleFileUpload}
+                  />
+                  <LiaFileUploadSolid className="fs-3" />
+                </button>
 
+                <button
+                  className="btn btn-success float-end me-2 "
+                  onClick={handleDownloadTemplate}
+                >
+                  Download Template
+                  <BsFileEarmarkMedical className="fs-3" />
+                </button>
+              </div>
+            </div>
+          </div>
           <div class="wrapper animated_bounceInLeft mb-2 shadow-lg border border-1">
             <div class="company-info text-center text-light">
               <h3>Add new customer details</h3>
