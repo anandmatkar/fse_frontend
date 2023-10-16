@@ -202,7 +202,7 @@ function CreateProject() {
     } else {
       // You can display an error message or take other actions if the limit is reached.
       // For example, you can set an error state.
-      toast.errorrror('You can only add a maximum of 10 machine details.');
+      toast.error('You can only add a maximum of 10 machine details.');
     }
   };
 
