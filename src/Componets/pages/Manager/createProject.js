@@ -12,8 +12,9 @@ import {
   Teachnician_List_Api,
   Customer_List_Api,
 } from './../../../Api/Manager_Api';
+import Select from 'react-select';
+// import 'react-select/dist/react-select.css';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 
 function CreateProject() {
@@ -51,6 +52,15 @@ function CreateProject() {
     projectAttach: '',
     machineDetails: '',
   });
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0
+    const day = String(today.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -125,16 +135,24 @@ function CreateProject() {
       });
   }, []);
 
-  const handleTechCheckboxChange = (event, machineIndex) => {
-    const techId = event.target.value;
+  // const handleTechCheckboxChange = (event, machineIndex) => {
+  //   const techId = event.target.value;
+  //   const updatedMachineDetails = [...machineDetails];
+  //   if (event.target.checked) {
+  //     updatedMachineDetails[machineIndex].techIds.push(techId);
+  //   } else {
+  //     updatedMachineDetails[machineIndex].techIds = updatedMachineDetails[
+  //       machineIndex
+  //     ].techIds.filter((id) => id !== techId);
+  //   }
+  //   setMachineDetails(updatedMachineDetails);
+  // };
+
+  const handleTechChange = (selectedOptions, machineIndex) => {
+    const techIds = selectedOptions.map((option) => option.value);
+
     const updatedMachineDetails = [...machineDetails];
-    if (event.target.checked) {
-      updatedMachineDetails[machineIndex].techIds.push(techId);
-    } else {
-      updatedMachineDetails[machineIndex].techIds = updatedMachineDetails[
-        machineIndex
-      ].techIds.filter((id) => id !== techId);
-    }
+    updatedMachineDetails[machineIndex].techIds = techIds;
     setMachineDetails(updatedMachineDetails);
   };
 
@@ -170,17 +188,22 @@ function CreateProject() {
   };
 
   const addMachineDetail = () => {
-    const newMachineDetail = {
-      MachineType: '',
-      MachineSerial: '',
-      hourCount: '',
-      nomSpeed: '',
-      actSpeed: '',
-      techIds: [],
-      machineAttach: [],
-    };
-
-    setMachineDetails([...machineDetails, newMachineDetail]);
+    if (machineDetails.length < 10) {
+      const newMachineDetail = {
+        MachineType: '',
+        MachineSerial: '',
+        hourCount: '',
+        nomSpeed: '',
+        actSpeed: '',
+        techIds: [],
+        machineAttach: [],
+      };
+      setMachineDetails([...machineDetails, newMachineDetail]);
+    } else {
+      // You can display an error message or take other actions if the limit is reached.
+      // For example, you can set an error state.
+      toast.errorrror('You can only add a maximum of 10 machine details.');
+    }
   };
 
   const handleProjectAttachChange = async (event) => {
@@ -359,6 +382,7 @@ function CreateProject() {
                     type="date"
                     name="startDate"
                     id="startDate"
+                    min={getCurrentDate()}
                     value={startDate}
                     onChange={(event) => setStartDate(event.target.value)}
                     class="form-control formcontrolinput"
@@ -379,6 +403,7 @@ function CreateProject() {
                     type="date"
                     name="endDate"
                     id="endDate"
+                    min={startDate}
                     value={endDate}
                     onChange={(event) => setEndDate(event.target.value)}
                     class="form-control formcontrolinput"
@@ -517,7 +542,7 @@ function CreateProject() {
                       />
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  {/* <div class="col-md-4">
                     <div class="form-group formgroup">
                       <label htmlFor="techIds" className="labeltag">
                         Technician
@@ -544,6 +569,33 @@ function CreateProject() {
                           </div>
                         ))}
                       </div>
+                    </div>
+                  </div> */}
+
+                  <div className="col-md-4">
+                    <div className="form-group formgroup">
+                      <label htmlFor={`techIds_${index}`} className="labeltag">
+                        Technician
+                      </label>
+                      <Select
+                        isMulti
+                        name={`techIds_${index}`}
+                        options={technicians.map((technician) => ({
+                          value: technician.id,
+                          label: technician.name,
+                        }))}
+                        onChange={(selectedOptions) =>
+                          handleTechChange(selectedOptions, index)
+                        }
+                        value={technicians
+                          .filter((technician) =>
+                            machine.techIds.includes(technician.id)
+                          )
+                          .map((technician) => ({
+                            value: technician.id,
+                            label: technician.name,
+                          }))}
+                      />
                     </div>
                   </div>
                   <div class="col-12">

@@ -228,6 +228,7 @@ function NewCustomerScreen() {
             <Spinner />
           </div>
         )}
+
         <div class="container newCustomerContainer">
           <div class="container">
             <div class="row">
