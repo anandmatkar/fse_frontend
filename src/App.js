@@ -64,6 +64,10 @@ import WaitingMachineData from './Componets/pages/Teachnician/WaitingMachineData
 import WaitingReportData from './Componets/pages/Teachnician/WaitingReportData';
 import WaitingTimesheetData from './Componets/pages/Teachnician/WaitingTimesheetData';
 import WaitingProjectAttachment from './Componets/pages/Teachnician/WaitingProjectAttachment';
+import CompleteMachineData from './Componets/pages/Teachnician/CompleteMachineData';
+import CompleteReportData from './Componets/pages/Teachnician/CompleteReportData';
+import CompleteTimesheetData from './Componets/pages/Teachnician/CompleteTimesheetData';
+import CompleteProejctAttachment from './Componets/pages/Teachnician/CompleteProejctAttachment';
 function App() {
   const authCtx = useContext(AuthContext);
   return (
@@ -210,6 +214,12 @@ function App() {
         <Route path="WaitingReportData/:projectID" element={<WaitingReportData/>}></Route>
         <Route path="WaitingTimesheetData/:projectID" element={<WaitingTimesheetData/>}></Route>
          <Route path="WaitingProjectAttachments/:projectID" element={<WaitingProjectAttachment/>}></Route>
+
+         {/* Complete technician data */}
+         <Route path="CompleteMachineData/:projectID" element={<CompleteMachineData/>}></Route>
+        <Route path="CompleteReportData/:projectID" element={<CompleteReportData/>}></Route>
+        <Route path="CompleteTimesheetData/:projectID" element={<CompleteTimesheetData/>}></Route>
+         <Route path="CompleteProjectAttachments/:projectID" element={<CompleteProejctAttachment/>}></Route>
         
       </Routes>
       {/* jst for push */}
