@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, Container, Table, Form, Row, Col, InputGroup } from "react-bootstrap";
+import { Button, Container, Table, Form, Row, Col, InputGroup, Spinner } from "react-bootstrap";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Edit_Project_Machine_Details, Project_Machine_Details } from "../../../Api/Manager_Api";
 import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
 import { BsFiletypeDoc } from "react-icons/bs";
+import PageSpinner from "../Common/PageSpinner";
 
 export default function EditProjectMachineInfo() {
 
@@ -19,7 +20,8 @@ export default function EditProjectMachineInfo() {
   const [projectSpecificDetails, setProjectSpecificDetails] = useState([]);
   const [machineAttachDetails, setMachineAttachDetails] = useState([]);
   const [editMode, setEditMode] = useState(false);
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFetchingMachineDetails, setIsFetchingMachineDetails] = useState(false);
 
   const [formData, setFormData] = useState({
     machine_id: "",
@@ -62,6 +64,9 @@ export default function EditProjectMachineInfo() {
             Authorization: token,
           },
         };
+
+        // Enable the spinner and disable the form
+        setIsSubmitting(true);
   
         // Make a PUT request to update the machine data
         const response = await axios.put(
@@ -80,12 +85,17 @@ export default function EditProjectMachineInfo() {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        // Disable the spinner and enable the form
+        setIsSubmitting(false);
       }
 
   };
 
   const fetchMachineDetails = async () => {
     try {
+      setIsFetchingMachineDetails(true);
+
       const token = localStorage.getItem("token");
 
       if (!token) {
@@ -135,10 +145,11 @@ export default function EditProjectMachineInfo() {
         console.log(machineDetails);
         console.log(machineAttachDetails);
       }
-
     } catch (error) {
       console.log(error);
-    }
+    } finally {
+      setIsFetchingMachineDetails(false);
+    };
   };
 
   useEffect(() => {
@@ -157,7 +168,14 @@ export default function EditProjectMachineInfo() {
       </div>
 
       <Container>
-        {editMode ? (
+        {
+          isFetchingMachineDetails ? 
+          <>
+            <PageSpinner/>
+          </>
+          :
+          <>
+          {editMode ? (
           <Form onSubmit={handleEditMachineDetails}>
             {/* Editable input fields */}
             <InputGroup className="mb-3">
@@ -241,8 +259,8 @@ export default function EditProjectMachineInfo() {
               ))}
             </InputGroup>
 
-            <Button type="submit" variant="success" className="my-4 mx-2">
-              Update Machine Details
+            <Button type="submit" variant="success" className="my-4 mx-2" disabled={isSubmitting}> 
+              {isSubmitting ? <Spinner animation="border" size="sm" /> : "Update Machine Details"}
             </Button>
             <Button
               variant="danger"
@@ -252,89 +270,91 @@ export default function EditProjectMachineInfo() {
               Cancel
             </Button>
           </Form>
-        ) : (
-          // View mode with non-editable input fields
-          <>
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="basic-addon1">Serial No.</InputGroup.Text>
-              <Form.Control
-                placeholder="Serial No."
-                aria-label="Serial No."
-                aria-describedby="basic-addon1"
-                value={formData.serial}
-                onChange={handleChange}
-              />
-            </InputGroup>
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="basic-addon2">Machine Type</InputGroup.Text>
-              <Form.Control
-                placeholder="Machine Type"
-                aria-label="Machine Type"
-                aria-describedby="basic-addon2"
-                value={formData.machine_type}
-                onChange={handleChange}
-              />
-            </InputGroup>
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="basic-addon3">Hour Count</InputGroup.Text>
-              <Form.Control
-                placeholder="Hour Count"
-                aria-label="Hour Count"
-                aria-describedby="basic-addon3"
-                value={formData.hour_count}
-                onChange={handleChange}
-              />
-            </InputGroup>
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="basic-addon4">Nominal Speed</InputGroup.Text>
-              <Form.Control
-                placeholder="Nominal Speed"
-                aria-label="Nominal Speed"
-                aria-describedby="basic-addon4"
-                value={formData.nom_speed}
-                onChange={handleChange}
-              />
-            </InputGroup>
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="basic-addon5">Actual Speed</InputGroup.Text>
-              <Form.Control
-                placeholder="Actual Speed"
-                aria-label="Actual Speed"
-                aria-describedby="basic-addon5"
-                value={formData.act_speed}
-                onChange={handleChange}
-              />
-            </InputGroup>
+          ) : (
+            // View mode with non-editable input fields
+            <>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon1">Serial No.</InputGroup.Text>
+                <Form.Control
+                  placeholder="Serial No."
+                  aria-label="Serial No."
+                  aria-describedby="basic-addon1"
+                  value={formData.serial}
+                  onChange={handleChange}
+                />
+              </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon2">Machine Type</InputGroup.Text>
+                <Form.Control
+                  placeholder="Machine Type"
+                  aria-label="Machine Type"
+                  aria-describedby="basic-addon2"
+                  value={formData.machine_type}
+                  onChange={handleChange}
+                />
+              </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon3">Hour Count</InputGroup.Text>
+                <Form.Control
+                  placeholder="Hour Count"
+                  aria-label="Hour Count"
+                  aria-describedby="basic-addon3"
+                  value={formData.hour_count}
+                  onChange={handleChange}
+                />
+              </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon4">Nominal Speed</InputGroup.Text>
+                <Form.Control
+                  placeholder="Nominal Speed"
+                  aria-label="Nominal Speed"
+                  aria-describedby="basic-addon4"
+                  value={formData.nom_speed}
+                  onChange={handleChange}
+                />
+              </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon5">Actual Speed</InputGroup.Text>
+                <Form.Control
+                  placeholder="Actual Speed"
+                  aria-label="Actual Speed"
+                  aria-describedby="basic-addon5"
+                  value={formData.act_speed}
+                  onChange={handleChange}
+                />
+              </InputGroup>
 
-            <InputGroup className="mb-3">
-              <InputGroup.Text>Description</InputGroup.Text>
-              <Form.Control
-                as="textarea"
-                aria-label="With textarea"
-                placeholder="Machine Description"
-                value={formData.description}
-                onChange={handleChange}
-              />
-            </InputGroup>
-            
-            <InputGroup>
-              <InputGroup.Text className="me-4">Attachments</InputGroup.Text>
-              {machineAttachDetails.map((document) => (
-                <>
-                  <NavLink as={NavLink} to={document.file_path} target="_blank">
-                    <BsFiletypeDoc className="fs-3 mx-3">
-                      Document
-                    </BsFiletypeDoc>
-                  </NavLink>
-                </>
-              ))}
-            </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text>Description</InputGroup.Text>
+                <Form.Control
+                  as="textarea"
+                  aria-label="With textarea"
+                  placeholder="Machine Description"
+                  value={formData.description}
+                  onChange={handleChange}
+                />
+              </InputGroup>
+              
+              <InputGroup>
+                <InputGroup.Text className="me-4">Attachments</InputGroup.Text>
+                {machineAttachDetails.map((document) => (
+                  <>
+                    <NavLink as={NavLink} to={document.file_path} target="_blank">
+                      <BsFiletypeDoc className="fs-3 mx-3">
+                        Document
+                      </BsFiletypeDoc>
+                    </NavLink>
+                  </>
+                ))}
+              </InputGroup>
 
-            <Button variant="info" className="my-4" onClick={handleEdit}>
-              Edit Machine Info
-            </Button>
-          </>
-        )}
+              <Button variant="info" className="my-4" onClick={handleEdit}>
+                Edit Machine Info
+              </Button>
+            </>
+          )}
+          </> 
+        }     
       </Container>
     </>
   );
