@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsFillFileEarmarkPostFill } from 'react-icons/bs';
-import { Table, FormControl, Pagination, Container } from 'react-bootstrap';
+import { Table, Container } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Manager_Base_Url } from '../../../Api/Manager_Api';
 
