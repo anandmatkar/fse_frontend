@@ -4,7 +4,10 @@ import { Table, Container, Button, FormControl } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import { Customer_List_Api, Manager_Base_Url } from './../../../Api/Manager_Api';
+import {
+  Customer_List_Api,
+  Manager_Base_Url,
+} from './../../../Api/Manager_Api';
 
 function CustomerList() {
   const [customerData, setCustomerData] = useState([]);
@@ -56,16 +59,13 @@ function CustomerList() {
   const handleDelete = (customerId) => {
     const token = Cookies.get('token');
 
-    fetch(
-      `${Manager_Base_Url}deleteCustomer?customerId=${customerId}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
-        },
-      }
-    )
+    fetch(`${Manager_Base_Url}deleteCustomer?customerId=${customerId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -148,22 +148,29 @@ function CustomerList() {
     <>
       <NavbarManagerDashboard />
 
-        <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
-          <h6 className="section-title bg-white text-center text-primary px-3">
-            Manager's Panel
-          </h6>
-          <h1 className="mb-5">Customer's List</h1>
-        </div>
+      <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
+        <h6 className="section-title bg-white text-center text-primary px-3">
+          Manager's Panel
+        </h6>
+        <h1 className="mb-5">Customer's List</h1>
+      </div>
 
       <div className="jobcontainer container mt-5">
-      
-      <Button variant='success' as={NavLink} to={'/createCustomer'} className='my-2'> Create Customer </Button>
+        <Button
+          variant="success"
+          as={NavLink}
+          to={'/createCustomer'}
+          className="my-2"
+        >
+          {' '}
+          Create Customer{' '}
+        </Button>
 
-        <div className="card" >
+        <div className="card">
           <FormControl
             type="text"
             className="mb-2 mt-4 ms-4"
-            placeholder="Search Customer"
+            placeholder="Search Customer Name"
             onChange={(e) => setSearch(e.target.value)}
             style={{ width: '25%', border: '1px solid black', float: 'right' }}
           />
