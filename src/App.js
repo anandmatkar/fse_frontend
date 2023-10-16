@@ -6,7 +6,7 @@ import CreateCustomer from './Componets/pages/Manager/createCustomer';
 import ManagerLogin from './Componets/pages/Manager/managerLogin';
 import RegistrationPage from './Componets/pages/Manager/Registration';
 import AuthContext from './Componets/auth-context/auth-context';
-import AssignedProject from './Componets/pages/Teachnician/assignedProject';
+// import AssignedProject from './Componets/pages/Teachnician/assignedProject';
 // import NewCustomerScreen from "./Componets/pages/Manager/createCustomer";
 import NewProjectScreen from './Componets/pages/Manager/createProject';
 import ProjectStatus from './Componets/pages/Manager/projectStatus';
@@ -31,7 +31,7 @@ import AccountWA from './Componets/pages/Admin/AccountW';
 import NewAccount from './Componets/pages/Manager/customerInfo';
 import Userverified from './Componets/pages/Manager/Userverified';
 import Registeredaccount from './Componets/pages/Admin/Registeredaccount';
-import TechnicianTable from './Componets/pages/Teachnician/assignedProject';
+// import TechnicianTable from './Componets/pages/Teachnician/assignedProject';
 import ProjectList from './Componets/pages/Teachnician/viewProjectDetails';
 import NavbarManager from './Componets/pages/Manager/Navbar';
 import ManageTechnician from './Componets/pages/Manager/ManageTechnician';
@@ -59,6 +59,7 @@ import AssignMachineData from './Componets/pages/Teachnician/AssignMachineData';
 import AssignReportData from './Componets/pages/Teachnician/AssignReportData';
 import AssignTimesheetData from './Componets/pages/Teachnician/AssignTimesheetData';
 import AssignprojectAttachments from './Componets/pages/Teachnician/AssignprojectAttachments';
+import AssignAttachmentMachineData from './Componets/pages/Teachnician/AssignMachineData';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -151,7 +152,7 @@ function App() {
           element={<ShowManagerProfile />}
         ></Route>
         <Route path="/createCustomer" element={<CreateCustomer />}></Route>
-        <Route path="/assignTech" element={<AssignedProject />}></Route>
+        {/* <Route path="/assignTech" element={<AssignedProject />}></Route> */}
         <Route path="/createP" element={<NewProjectScreen />}></Route>
         <Route path="/projectStatus" element={<ProjectStatus />}></Route>
         <Route path="/techD" element={<TechnicianDashboard />}></Route>
@@ -175,7 +176,7 @@ function App() {
         <Route path="AccountWA" element={<AccountWA />}></Route>
         <Route path="/verifyManager" element={<Userverified />}></Route>
         <Route path="registerdaccount" element={<Registeredaccount />}></Route>
-        <Route path="techniciantable" element={<TechnicianTable />}></Route>
+        {/* <Route path="techniciantable" element={<TechnicianTable />}></Route> */}
         <Route path="projectlist" element={<ProjectList />}></Route>
         <Route
           path="DetailofJobwaiting/:projectID"
@@ -198,6 +199,7 @@ function App() {
         <Route path="AssignReportData/:projectID" element={<AssignReportData/>} ></Route>
         <Route path="AssignTimesheetData/:projectID" element={<AssignTimesheetData/>} ></Route>
         <Route path="AssignProjectAttachments/:projectID" element={<AssignprojectAttachments/>}></Route>
+        {/* <Route path="AssignAttachmentMachineData/:projectID" element={<AssignAttachmentMachineData/>}></Route> */}
         
       </Routes>
       {/* jst for push */}
