@@ -77,8 +77,8 @@ function UserTable() {
     <>
     <AdminDashboardNavbar/>
     <div className="text-center mb-5 mt-5">
-                    <h6 className="section-title bg-white text-center text-primary px-3">Approval/Waiting Panel</h6>
-                    <h1>Manager Request  Overview</h1>
+                    <h6 className="section-title bg-white text-center text-primary px-3">Admin Panel</h6>
+                    <h1>Accounts Waiting for Approval</h1>
                 </div>
     
     <div className="user-table-container">

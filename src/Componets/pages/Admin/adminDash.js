@@ -43,9 +43,10 @@ function AdminDashboard() {
   return (
     <React.Fragment>
     <AdminDashboardNavbar/>
-    <Container className="container-xxl py-5 mt-5">
-    <div className="text-center mb-5">
-                    <h6 className="section-title bg-white text-center text-primary px-3">Dashboard</h6>
+    <Container className="container-xxl">
+      
+    <div className="text-center my-5">
+                    <h6 className="section-title bg-white text-center text-primary px-3">Admin Dashboard</h6>
                     <h1>Your Request Overview</h1>
                 </div>
       <Container>
@@ -81,16 +82,9 @@ function AdminDashboard() {
       
         </Card>
       </Col>
-       
-       
-
-       
       </Row>
       </Container>
-     
-   
     </Container>
-    
 </React.Fragment>
 
   );
