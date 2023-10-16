@@ -15,6 +15,7 @@ import {
 import Select from 'react-select';
 // import 'react-select/dist/react-select.css';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { MdOutlineDelete } from 'react-icons/md';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 
 function CreateProject() {
@@ -284,6 +285,16 @@ function CreateProject() {
       </div>
     );
   }
+
+  const removeMachineDetail = (index) => {
+    if (index > 0) {
+      const updatedMachineDetails = [...machineDetails];
+      updatedMachineDetails.splice(index, 1);
+      setMachineDetails(updatedMachineDetails);
+    } else {
+      toast.error('The first machine detail cannot be deleted.');
+    }
+  };
 
   return (
     <>
@@ -619,15 +630,31 @@ function CreateProject() {
                 </div>
               </div>
             ))}
-            <div>
-              <AiOutlinePlusCircle
-                // size="30px"
-                color="black"
-                className="border border-0 btn fs-1  btn-success"
-                onClick={addMachineDetail}
-              />{' '}
-              Add Machine Details
+            <div className="d-flex justify-content-between">
+              <div>
+                <AiOutlinePlusCircle
+                  color="black"
+                  className="border border-0 btn fs-1  btn-success"
+                  onClick={addMachineDetail}
+                />{' '}
+                Add Machine Details
+              </div>
+              <div>
+                {machineDetails.length > 1 && (
+                  <>
+                    <MdOutlineDelete
+                      color="black"
+                      className="border border-0 btn fs-1 btn-danger"
+                      onClick={() =>
+                        removeMachineDetail(machineDetails.length - 1)
+                      }
+                    />
+                    Remove Machine
+                  </>
+                )}
+              </div>
             </div>
+
             <div class="col-12 d-flex justify-content-end">
               <button className="btn btn-dark buttonFocus mt-2 p-2 fs-5">
                 Submit

@@ -40,6 +40,7 @@
   .dt-pagination .dt-item:first-child .dt-link, .dt-pagination .dt-item:last-child .dt-link {
       background-color: black;
       color: white;
+      width: 56px;
   }
   
   .dt-pagination .dt-item.active .dt-link {
