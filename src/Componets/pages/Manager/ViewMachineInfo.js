@@ -5,14 +5,18 @@ import { Button, Card, Container, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Project_Machine_Details } from '../../../Api/Manager_Api';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import PageSpinner from '../Common/PageSpinner';
 
 export default function ViewMachineInfo() {
   const navigate = useNavigate();
 
   const [machineInfoDetails, setMachineInfoDetails] = useState([]);
+  const [isFetchingMachineInfo, setIsFetchingMachineInfo] = useState(false);
 
   const fetchMachineDetails = async () => {
     try {
+      setIsFetchingMachineInfo(true);
+      
       const token = localStorage.getItem('token');
 
       if (!token) {
@@ -32,7 +36,9 @@ export default function ViewMachineInfo() {
       setMachineInfoDetails(response.data.data);
     } catch (error) {
       console.log(error);
-    }
+    } finally {
+      setIsFetchingMachineInfo(false);
+    };
   };
 
   useEffect(() => {
@@ -46,13 +52,18 @@ export default function ViewMachineInfo() {
 
         <Container>
 
-          <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
+          <div className="text-center wow fadeInUp my-5" data-wow-delay="0.1s">
             <h6 className="section-title bg-white text-center text-primary px-3">
               Manager's Panel
             </h6>
             <h1 className="mb-5">Machine Info Details</h1>
           </div>
 
+          {
+            isFetchingMachineInfo ? (
+              <PageSpinner/>
+            ) : (
+              <>
                 <Table bordered hover responsive>
                     <thead>
                         <tr>
@@ -90,7 +101,9 @@ export default function ViewMachineInfo() {
                         }
                     </tbody>
                 </Table>
-
+              </>
+            )
+          }
         </Container>
     </React.Fragment>
   )
