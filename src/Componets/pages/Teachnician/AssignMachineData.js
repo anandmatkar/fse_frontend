@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import { Technician_DetailJobAssign } from '../../../Api/Technicians_Api';
 import {AiFillProfile} from 'react-icons/ai'
 import './JobAssigned.css'
+import {Link} from 'react-router-dom'
 
 const AssignMachineData = () => {
     const { projectID } = useParams();
@@ -63,9 +64,13 @@ const AssignMachineData = () => {
                                         <td>{machine.description}</td>
                                         <td>
                                             {machine.machine_attach_data.map(attachment => (
-                                                <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer">
-                                                   <AiFillProfile size="30px" color="black"/>
-                                                </a>
+                                        //        <a key={attachment.id} href={`${attachment.file_path}?projectID=${projectID}`} 
+                                        //        target="_blank" rel="noreferrer" >
+                                        //        <AiFillProfile size="30px" color="black"/>
+                                        //    </a>
+                                        <Link to={`/AssignAttachmentMachineData/${projectID}`}>
+                                             <AiFillProfile size="30px" color="black" />
+                                        </Link>
                                             ))}
                                         </td>
                                     </tr>

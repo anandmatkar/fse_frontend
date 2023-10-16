@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import Layout4 from '../../Layout/Layout4';
 import { AiFillProfile } from 'react-icons/ai';
 import TimeSheetModal from './TimeSheetModal';
+import TimeSheetApprovalModal from './TimeSheetApprovalModal';
 
 const AssignTimesheetData = () => {
     const { projectID } = useParams();
@@ -103,9 +104,12 @@ setProject(prevProject => {
       <Layout4>
         <Container fluid>
             <div className="text-center mb-5 mt-3">
-                <h6 className="section-title bg-white text-center text-primary px-3">Timesheet Details</h6>
+                <h6 className="section-title bg-white text-center text-primary px-3">Timesheet Details</h6>  
                 <h1>Your Timesheet Details</h1>
+                <div className='d-flex justify-content-center align-items-center'>
                 <TimeSheetModal projectID={projectID} onNewTimesheet={onNewTimesheetCallback} />
+                {project && project.technician_data && project.technician_data.some(technician => technician.timesheet_data.length > 0) && <TimeSheetApprovalModal projectID={projectID} />}
+                </div>
             </div>
             
             <div className="card">
