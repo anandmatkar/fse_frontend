@@ -6,12 +6,12 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink, Link } from 'react-router-dom';
-import AuthContext from '../auth-context/auth-context';
+// import AuthContext from '../auth-context/auth-context';
 import Cookies from 'js-cookie';
 
 function AdminNavBar() {
-    const authCtx = useContext(AuthContext);
-    const isLoggedIn = authCtx.isLoggedIn;
+    // const authCtx = useContext(AuthContext);
+    // const isLoggedIn = authCtx.isLoggedIn;
   return (
     <React.Fragment>
       <Navbar expand="lg" className="main-nav-bar">

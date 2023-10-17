@@ -41,46 +41,39 @@ const AssignReportData = () => {
         
 
     const deleteReport = async (id, project_id) => {
-
-        console.log(id, project_id);
-
         try {
             const token = Cookies.get('token');
-            // console.log(token,"token")
             if (!token) {
                 console.error("Token not found in localStorage.");
                 return;
             }
-
+    
             const config = {
                 headers: {
-                    Authorization: token, // Attach the token with "Bearer" prefix
+                    Authorization: token,
                 },
             };
-            console.log(config, "config")
-            let url = `${Technician_DeleteReport}?projectId=${project_id}&reportId=${id}`
-
+            
+            let url = `${Technician_DeleteReport}?projectId=${project_id}&reportId=${id}`;
             const response = await axios.get(url, config);
-
+    
             if (response.status === 200) {
-                toast.success("Report deleted succesfully")
-                setProject((prevProject) => {
-                    const updatedTechnicianData = prevProject.technician_data.map(technician => {
-                        const updatedReports = technician.project_report_data.filter(report => report.id !== id);
-                        return { ...technician, project_report_data: updatedReports };
-                    });
-
-                    return { ...prevProject, technician_data: updatedTechnicianData };
+                toast.success("Report deleted succesfully");
+    
+                // Instantly update the state to reflect the deletion
+                setProject(prevProjectArray => {
+                    return prevProjectArray.filter(report => report.id !== id);
                 });
-
             } else {
-                toast.error("failed to delete Report")
-                console.error('Failed to delete report entry');
+                toast.error("Failed to delete Report");
             }
         } catch (error) {
             console.error('Error:', error);
         }
     };
+    
+    
+    
 
     const onNewReportCallback = (newReport) => {
         setProject(prevProject => {
@@ -112,8 +105,6 @@ const AssignReportData = () => {
                 <h1>Your Report Details</h1>
                 <div className='d-flex justify-content-center align-items-center'>
                     <NewReportModal projectID={projectID} machineID={machineID} onNewReport={onNewReportCallback} />
-                    
-                   
                     {project && project.technician_data && project.technician_data.some(technician => technician.project_report_data && technician.project_report_data.length > 0) && 
                     <RequestApproval projectID={projectID} />}
                 </div>

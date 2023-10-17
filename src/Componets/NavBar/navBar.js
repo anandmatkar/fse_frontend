@@ -7,15 +7,8 @@ import './navBar.css';
 import AuthContext from "../auth-context/auth-context";
 
 function MainNavigation() {
-    const authCtx = useContext(AuthContext);
-    const isLoggedIn = authCtx.isLoggedIn;
     const navigate = useNavigate();
 
-    const logoutHandler = () => {
-      console.log("Logout SucessFull");
-      authCtx.logout();
-
-    }
   return (
     <React.Fragment>
       <Navbar expand="lg" className="main-nav-bar">
