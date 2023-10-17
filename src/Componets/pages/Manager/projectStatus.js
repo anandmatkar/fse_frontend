@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Card, Badge } from 'react-bootstrap';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Card, Badge, Button } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import Cookies from 'js-cookie';
 import { Project_Count_Manager } from './../../../Api/Manager_Api';
@@ -64,10 +64,22 @@ function ProjectStatus() {
         <Container>
           <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
             <h6 className="section-title bg-white text-center text-primary px-3">
-              Project Status
+              Manager's Panel
             </h6>
             <h1 className="mb-5">Our Projects Status</h1>
           </div>
+          <Row>
+            <Col lg={3}>
+              <Button
+                variant="warning"
+                as={NavLink}
+                to={"/createP"}
+                className="my-3 w-100"
+              >
+                Create Project
+              </Button>
+            </Col>
+          </Row>
           <Row xs={1} lg={3} className="g-4">
             <Col
               lg={4}

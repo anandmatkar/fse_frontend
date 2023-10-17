@@ -63,26 +63,26 @@ export default function ManagerDashboard() {
           <Row>
             <ServiceItem
               icon="fa-globe"
-              title="Create Customer"
-              text="Create Customer & Manage Their Profiles"
+              title="Manage Customers"
+              text="Create Customer & Manage Customers"
               onClick={createCustomerHandler}
             />
-            <ServiceItem
+            {/* <ServiceItem
               icon="fa-hotel"
               title="Create Project"
               text="Create Project & Manage Project Details"
               onClick={createProject}
-            />
+            /> */}
             <ServiceItem
               icon="fa-user"
               title="Manage Technicians"
-              text="Create Technician & Manage Technicians Profiles"
+              text="Create Technician & Manage Technicians"
               onClick={manageTechnicians}
             />
             <ServiceItem
               icon="fa-cog"
               title="Manage Projects"
-              text="View Status Finished & Ongoing Project's"
+              text="Create Project & View/Manage Projects Status"
               onClick={ManageProjectStatus}
             />
             <ServiceItem
@@ -101,7 +101,7 @@ export default function ManagerDashboard() {
 
 function ServiceItem({ icon, title, text, onClick }) {
   return (
-    <Col lg={4} md={12} className="wow fadeInUp my-3" data-wow-delay="0.1s">
+    <Col lg={6} md={12} className="wow fadeInUp my-3" data-wow-delay="0.1s">
       <Card className="service-item rounded pt-3" onClick={onClick}>
         <div className="p-4">
           <i className={`fa fa-3x ${icon} text-primary mb-4`}></i>
