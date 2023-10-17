@@ -12,11 +12,17 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Base_Url } from "../../../Api/Base_Url";
 import Cookies from "js-cookie";
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 
 function AdminLogin() {
   const navigate = useNavigate();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+  const [isPasswordVisible, setPasswordVisibility] = useState(false);
+
+    const togglePasswordVisibility = () => {
+      setPasswordVisibility((prevState) => !prevState);
+    };
 
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
@@ -107,7 +113,13 @@ function AdminLogin() {
                     <p className="AdminloginForm__text">Or Use Your Account</p>
                     <input type="email" placeholder="Email" className="form__input" ref={emailInputRef} />
                     {emailError && <p className="error-text">{emailError}</p>}
-                    <input type="password" placeholder="Password" className="form__input" ref={passwordInputRef} />
+                    <div className="password-container">
+                     <input   type={isPasswordVisible ? "text" : "password"}    placeholder="Password"  className="form__input" 
+                     ref={passwordInputRef}  />
+                    <span onClick={togglePasswordVisibility} className="password-icon">
+                        {isPasswordVisible ? <BsFillEyeFill />:<BsFillEyeSlashFill />  }
+                    </span>
+                    </div>
                     {passwordError && <p className="error-text">{passwordError}</p>}
                    
                     <button type="submit" className="btn" onClick={submitHandler}>Sign In</button>

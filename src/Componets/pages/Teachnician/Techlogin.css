@@ -68,6 +68,20 @@
     font-size: 150px; /* Adjusts the size of your <h2> and indirectly the contained SVG icon */
 }
 
+.password-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .password-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+
 @media screen and (max-width: 640px) {
     .technician-login .main-content {
         width: 90%;

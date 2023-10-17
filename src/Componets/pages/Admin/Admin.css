@@ -102,3 +102,17 @@
     font-size: 0.8rem;
     margin-top: 5px;
 }
+
+.password-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .password-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  

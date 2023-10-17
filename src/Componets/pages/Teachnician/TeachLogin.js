@@ -12,14 +12,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Base_Url } from "../../../Api/Base_Url";
 import axios from "axios";
 import './Techlogin.css'
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 
 
 function TechnicianLogin() {
-  const style = {
-    // height:"100vh",
-    marginTop:"90px",
-    color: "#3A3E42 !important"
-  }
+    const [isPasswordVisible, setPasswordVisibility] = useState(false);
+
+    const togglePasswordVisibility = () => {
+      setPasswordVisibility((prevState) => !prevState);
+    };
   const navigate = useNavigate();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -119,10 +120,17 @@ function TechnicianLogin() {
                     <p className="TechnicianloginForm__text">Or Use Your Account</p>
                     <input type="email" placeholder="Email" className="form__input" ref={emailInputRef} />
                     {emailError && <p className="error-text">{emailError}</p>}
-                    <input type="password" placeholder="Password" className="form__input" ref={passwordInputRef} />
-                    {passwordError && <p className="error-text">{passwordError}</p>}
-                    <button type="submit" className="btn" onClick={submitHandler}>Sign In</button>
-                </form>
+                    <div className="password-container">
+                     <input   type={isPasswordVisible ? "text" : "password"}    placeholder="Password"  className="form__input" 
+                     ref={passwordInputRef}  />
+                    <span onClick={togglePasswordVisibility} className="password-icon">
+                        {isPasswordVisible ? <BsFillEyeFill />:<BsFillEyeSlashFill />  }
+                    </span>
+                    </div>
+              {passwordError && <p className="error-text">{passwordError}</p>}
+              <Link to={'/TechnicianForgotPassword'} className="text-muted">Forgot password!</Link>
+              <button type="submit" className="btn" onClick={submitHandler}>Sign In</button>
+            </form>
             </div>
         </div>
     </div>
