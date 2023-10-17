@@ -7,6 +7,7 @@ import { Manager_Base_Url, Technician_Lists_Manager } from "./../../../Api/Manag
 import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
 import PageSpinner from "../Common/PageSpinner";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 export default function ManageTechnician() {
 
@@ -51,7 +52,9 @@ export default function ManageTechnician() {
         // Machine deletion was successful
         // You can also update the local state or re-fetch the machine details
         fetchTechnicianList();
+        toast.success(response.data.message)
       } else {
+        toast.error(response.data.message)
         console.error("Failed to delete the machine.");
       }
     } catch (error) {
