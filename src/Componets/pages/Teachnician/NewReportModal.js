@@ -5,13 +5,16 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Technician_NewCreateReport, Technician_ReportAttach } from '../../../Api/Technicians_Api';
 
-const NewReportModal = ({projectID, onNewReport}) => {
+const NewReportModal = ({projectID, machineID, onNewReport }) => {
 
     const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    projectID: projectID, 
+    projectID: projectID,
+    machineID: machineID,
     date: '',
     description: '',
+    comments: '',
+    duration: '1',
     attachment: null
   });
 
@@ -70,17 +73,23 @@ const handleSubmit = async (e) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                projectID: formData.projectID,
-                date: formData.date,
-                description: formData.description,
-                attachment: attachments
+              projectID: formData.projectID,
+              machineID: formData.machineID,
+              date: formData.date,
+              description: formData.description,
+              comments: formData.comments,
+              duration: formData.duration,
+              attachment: attachments
             })
         });
         const newReport = {
           projectID: formData.projectID,
-                date: formData.date,
-                description: formData.description,
-                attachment: attachments
+          machineID: formData.machineID,
+          date: formData.date,
+          description: formData.description,
+          comments: formData.comments,
+          duration: formData.duration,
+          attachment: attachments
         }
         const data = await response.json();
         if (!data.success) {
@@ -117,6 +126,22 @@ const handleSubmit = async (e) => {
             <label for="description"> Description: </label>
               <textarea className='form-control' name="description" value={formData.description} onChange={handleInputChange} required></textarea>
            </div>
+
+           <div className='form-group'>
+                        <label htmlFor="comments">Comments:</label>
+                        <textarea  className='form-control' name="comments"  value={formData.comments}   onChange={handleInputChange} 
+                            required></textarea>
+                    </div>
+
+                    <div className='form-group'>
+                        <label htmlFor="duration">Duration:</label>
+                        <select className='form-control'  name="duration" value={formData.duration}   onChange={handleInputChange} 
+                            required >
+                            {[...Array(10).keys()].map(i => 
+                                <option value={i + 1} key={i}>{i + 1} hr</option>
+                            )}
+                        </select>
+                    </div>
 
           <div className='form-group'>
             <label for="files"> Attachment:  </label>

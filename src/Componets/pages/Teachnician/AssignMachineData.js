@@ -9,7 +9,7 @@ import './JobAssigned.css'
 import {Link} from 'react-router-dom'
 
 const AssignMachineData = () => {
-    const { projectID } = useParams();
+    const { projectID , machineID} = useParams();
     const [project, setProject] = useState(null);
 
     useEffect(() => {
@@ -75,7 +75,7 @@ const AssignMachineData = () => {
                                             ))}
                                         </td>
                                         <td>
-                                            <Link to={`/AssignReportData/${projectID}/${machine.id}`}>
+                                            <Link to={`/AssignReportData/${projectID}/${machineID}`}>
                                                 <Button variant="primary">View Report</Button>
                                             </Link>
                                         </td>
