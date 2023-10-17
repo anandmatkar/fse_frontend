@@ -62,50 +62,42 @@ const NewReportModal = ({projectID, machineID, onNewReport }) => {
 };
 
 const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = Cookies.get('token');
+  e.preventDefault();
+  const token = Cookies.get('token');
 
-    try {
-        const response = await fetch(`${Technician_NewCreateReport}`, {
-            method: 'POST',
-            headers: {
-                'Authorization': token,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              projectID: formData.projectID,
-              machineID: formData.machineID,
-              date: formData.date,
-              description: formData.description,
-              comments: formData.comments,
-              duration: formData.duration,
-              attachment: attachments
-            })
-        });
-        const newReport = {
-          projectID: formData.projectID,
-          machineID: formData.machineID,
-          date: formData.date,
-          description: formData.description,
-          comments: formData.comments,
-          duration: formData.duration,
-          attachment: attachments
-        }
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.message);
-        }
-        console.log(response);
-        toast.success("Report created successfully!");
-        setShowModal(false);
-        if(response.status === 200) {
-          onNewReport(newReport);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        toast.error('Error creating Report: ' + error.message);
-    }
+  try {
+      const response = await fetch(`${Technician_NewCreateReport}`, {
+          method: 'POST',
+          headers: {
+              'Authorization': token,
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            projectID: formData.projectID,
+            machineID: formData.machineID,
+            date: formData.date,
+            description: formData.description,
+            comments: formData.comments,
+            duration: formData.duration,
+            attachment: attachments
+          })
+      });
+
+      const data = await response.json();
+      if (!data.success) {
+          throw new Error(data.message);
+      }
+      toast.success("Report created successfully!");
+      setShowModal(false);
+      if (response.status === 200) {
+          onNewReport(data.data); 
+      }
+  } catch (error) {
+      console.error('Error:', error);
+      toast.error('Error creating Report: ' + error.message);
+  }
 };
+
   return (
     <div>
       <Button onClick={() => setShowModal(true)} className='btn btn-success me-5'>Add New Report</Button>

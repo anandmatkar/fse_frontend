@@ -85,21 +85,22 @@ const AssignReportData = () => {
         setProject(prevProject => {
             // Check if prevProject or prevProject.technician_data is null/undefined
             if (!prevProject?.technician_data) return prevProject;
-    
+
             const updatedTechnicianData = prevProject.technician_data.map(technician => {
-                // Use a default empty array if project_report_data doesn't exist
                 const existingReports = technician.project_report_data || [];
                 return {
                     ...technician,
-                    project_report_data: [...existingReports, newReport]
+                    project_report_data: [...existingReports, newReport]  // Add the new report
                 };
             });
-            
+    
             return {
                 ...prevProject,
                 technician_data: updatedTechnicianData
             };
         });
+        
+        fetchData(); 
     }
     
     return (
