@@ -75,9 +75,10 @@ const AssignMachineData = () => {
                                             ))}
                                         </td>
                                         <td>
-                                            <Link to={`/AssignReportData/${projectID}/${machineID}`}>
-                                                <Button variant="primary">View Report</Button>
-                                            </Link>
+                                        <Link to={`/AssignReportData/${projectID}/${machine.id}`}>
+                                             <Button variant="primary">View Report</Button>
+                                        </Link>
+
                                         </td>
                                     </tr>
                                 ))
