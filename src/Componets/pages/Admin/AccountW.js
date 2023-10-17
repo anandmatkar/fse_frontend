@@ -15,7 +15,7 @@ function UserTable() {
   const [loading, setLoading] = useState(false);
 
   const handleAction = async (userId, actionType) => {
-    const token = Cookies.getItem("token");
+    const token = Cookies.get("token");
 
     if (!token) {
       console.error("Token not found in localStorage.");
@@ -53,19 +53,12 @@ function UserTable() {
 
 
   useEffect(() => {
-    const getCookie = (name) => {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    const token = getCookie("token");
-
-    const config = {
-      headers: {
-        Authorization: token,
-      },
-    };
+    const token= Cookies.get('token')
+      const config = {
+          headers: {
+            Authorization: token, // Add the token to the headers
+          },
+        };
     axios
     .get(`${Base_Url}api/v1/companyAdmin/managerListForApproval`, config)
     .then((response) => {
