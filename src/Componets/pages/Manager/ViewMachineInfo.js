@@ -17,7 +17,7 @@ export default function ViewMachineInfo() {
     try {
       setIsFetchingMachineInfo(true);
       
-      const token = localStorage.getItem('token');
+      const token = Cookies.get("token");
 
       if (!token) {
         console.error('Token not found in localStorage.');

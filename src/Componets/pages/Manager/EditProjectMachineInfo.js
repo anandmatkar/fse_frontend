@@ -7,6 +7,7 @@ import { Edit_Project_Machine_Details, Project_Machine_Details } from "../../../
 import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
 import { BsFiletypeDoc } from "react-icons/bs";
 import PageSpinner from "../Common/PageSpinner";
+import Cookies from "js-cookie";
 
 export default function EditProjectMachineInfo() {
 
@@ -52,7 +53,7 @@ export default function EditProjectMachineInfo() {
     console.log(formData);
 
     try {
-        const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
   
         if (!token) {
           console.error("Token not found in localStorage.");
@@ -96,7 +97,7 @@ export default function EditProjectMachineInfo() {
     try {
       setIsFetchingMachineDetails(true);
 
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
 
       if (!token) {
         console.error("Token not found in localStorage.");

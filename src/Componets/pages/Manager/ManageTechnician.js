@@ -1,19 +1,69 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, Container, Table, Form, Pagination, InputGroup, Spinner } from "react-bootstrap";
+import { Button, Container, Table, Form, Pagination, InputGroup, Spinner, Modal } from "react-bootstrap";
 import { FaSearch, FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import { Technician_Lists_Manager } from "./../../../Api/Manager_Api";
+import { Manager_Base_Url, Technician_Lists_Manager } from "./../../../Api/Manager_Api";
 import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
 import PageSpinner from "../Common/PageSpinner";
+import Cookies from "js-cookie";
 
 export default function ManageTechnician() {
+
   const [technicianList, setTechnicianList] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [techniciansPerPage] = useState(10);
   const pagesToShow = 2; // Number of pages to show before and after the current page
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedTechnician, setSelectedTechnician] = useState(null);
+
+  const openDeleteModal = (technician) => {
+    setSelectedTechnician(technician);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteTechnician = async (techID) => {
+    try {
+      const token = Cookies.get("token");
+
+      if (!token) {
+        console.error("Token not found in localStorage.");
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+
+      // Send a DELETE request to your API endpoint for technician deletion
+      const response = await axios.put(
+        `${Manager_Base_Url}deleteTechnician?techId=${techID}`,
+        {},
+        config
+      );
+
+      if (response.status === 200) {
+        // Machine deletion was successful
+        // You can also update the local state or re-fetch the machine details
+        fetchTechnicianList();
+      } else {
+        console.error("Failed to delete the machine.");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // setIsDeletingMachine(false); // Set deleting machine to false in all cases
+    };
+
+    setShowDeleteModal(false);
+  };
+
+
 
   const indexOfLastTechnician = currentPage * techniciansPerPage;
   const indexOfFirstTechnician = indexOfLastTechnician - techniciansPerPage;
@@ -105,7 +155,8 @@ export default function ManageTechnician() {
     try {
       setIsFetching(true); // Set loading state to true
 
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
+      
       if (!token) {
         console.error("Token not found in localStorage.");
         return;
@@ -192,6 +243,13 @@ export default function ManageTechnician() {
                         >
                           View Details
                         </Button>
+                        <Button
+                          variant="danger"
+                          className="mx-2"
+                          onClick={() => openDeleteModal(technician)} // Open the delete confirmation modal
+                        >
+                          Delete
+                        </Button>
                       </td>
                     </tr>
                   ))
@@ -207,6 +265,30 @@ export default function ManageTechnician() {
           </>
         )}
       </Container>
+
+      {
+        showDeleteModal && 
+        <>
+          <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Deletion</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="text-center">
+              Are you sure you want to delete <br/>
+              <strong>{selectedTechnician ? `${selectedTechnician.name} ${selectedTechnician.surname}` : "this technician"}</strong> ?
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                Cancel
+              </Button>
+              <Button variant="danger" onClick={() => handleDeleteTechnician(selectedTechnician.id)}>
+                Delete
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </>
+      }
+
     </React.Fragment>
   );
 }

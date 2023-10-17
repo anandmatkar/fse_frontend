@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Manager_Base_Url, Project_Machine_Details } from '../../../Api/Manager_Api';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import PageSpinner from '../Common/PageSpinner';
+import Cookies from 'js-cookie';
 
 export default function ViewProjectMachineInfo() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function ViewProjectMachineInfo() {
     try {
       setIsLoading(true); // Set loading to true when fetching starts
 
-      const token = localStorage.getItem('token');
+      const token = Cookies.get("token");
 
       if (!token) {
         console.error('Token not found in localStorage.');
@@ -69,7 +70,7 @@ export default function ViewProjectMachineInfo() {
     try {
       setIsDeletingMachine(true);
 
-      const token = localStorage.getItem("token");
+      const token = Cookies.get("token");
 
       if (!token) {
         console.error("Token not found in localStorage.");

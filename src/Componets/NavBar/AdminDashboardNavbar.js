@@ -17,6 +17,8 @@ const AdminDashboardNavbar = () => {
   
     const logoutHandler = () => {
       Cookies.remove('token');
+      Cookies.remove('role');
+      
       navigate('/adminLogin')
   
       authCtx.logout();

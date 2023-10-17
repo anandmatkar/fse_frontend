@@ -14,6 +14,7 @@ import axios from 'axios';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Manager_Base_Url } from '../../../Api/Manager_Api';
 import PageSpinner from '../Common/PageSpinner';
+import Cookies from 'js-cookie';
 
 export default function ViewTechnicianProfile() {
   // Extract the 'technicianId' parameter from the URL
@@ -27,7 +28,7 @@ export default function ViewTechnicianProfile() {
     try {
       setIsFetchingProfile(true);
 
-      const token = localStorage.getItem('token');
+      const token = Cookies.get('token');
       if (!token) {
         console.error('Token not found in localStorage.');
         return;

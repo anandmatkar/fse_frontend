@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 
 function AdminLogin() {
+  
   const navigate = useNavigate();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -84,7 +85,9 @@ function AdminLogin() {
             
             // Save the token in cookies
             const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+            console.log(new Date(Date.now()) ,expirationTime);
             Cookies.set('token', idToken, { expires: expirationTime });
+            Cookies.set('role', data.data.role);
 
             authCtx.login(idToken, expirationTime.toISOString());
             navigate("/AdminD");
