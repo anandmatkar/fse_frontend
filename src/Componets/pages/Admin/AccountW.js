@@ -8,13 +8,14 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FcApprove, FcDisapprove } from 'react-icons/fc'
 import AdminDashboardNavbar from "../../NavBar/AdminDashboardNavbar";
+import Cookies from "js-cookie";
 
 function UserTable() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleAction = async (userId, actionType) => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.getItem("token");
 
     if (!token) {
       console.error("Token not found in localStorage.");
@@ -52,90 +53,107 @@ function UserTable() {
 
 
   useEffect(() => {
+    const getCookie = (name) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    const token = getCookie("token");
+
     const config = {
       headers: {
-        Authorization: `${localStorage.getItem("token")}`,
+        Authorization: token,
       },
     };
-
     axios
-      .get(`${Base_Url}api/v1/companyAdmin/managerListForApproval`, config)
-      .then((response) => {
-        setUsers(response.data.data.ManagerListForApproval);
-        setLoading(false);
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 401) {
-          console.error("Unauthorized access:", error);
-        } else {
-          console.error("Error:", error);
-        }
-      });
+    .get(`${Base_Url}api/v1/companyAdmin/managerListForApproval`, config)
+    .then((response) => {
+      if (response.data.success === false) {
+        toast.error(response.data.message);
+        setUsers([]); // set to empty array so you can display the "No manager for approval" message
+      } else {
+        setUsers(response.data.data.ManagerListForApproval || []);
+      }
+      setLoading(false);
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 401) {
+        console.error("Unauthorized access:", error);
+      } else {
+        console.error("Error:", error);
+      }
+    });
   }, []);
 
   return (
     <>
     <AdminDashboardNavbar/>
     <div className="text-center mb-5 mt-5">
-                    <h6 className="section-title bg-white text-center text-primary px-3">Admin Panel</h6>
-                    <h1>Accounts Waiting for Approval</h1>
-                </div>
-    
-    <div className="user-table-container">
-      {/* <h1 className='text-center text-info'>Account Waiting Approval </h1> */}
-      <div className="card">
-        <div className="card-body">
-          <Table responsive hover>
-            <thead className=''>
-              <tr>
-                {/* <th>Account ID</th> */}
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Position</th>
-                <th>Company</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Date</th>
-                <th>Action</th>
+  <h6 className="section-title bg-white text-center text-primary px-3">Admin Panel</h6>
+  <h1>Accounts Waiting for Approval</h1>
+</div>
+
+<div className="user-table-container">
+  <div className="card">
+    <div className="card-body">
+      <Table responsive hover>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Position</th>
+            <th>Company</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users && users.length > 0 ? (
+            users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.name}</td>
+                <td>{user.surname}</td>
+                <td>{user.position}</td>
+                <td>{user.company}</td>
+                <td>{user.email_address}</td>
+                <td>{user.phone_number}</td>
+                <td>{user.created_at}</td>
+                <td>
+                  <Button
+                    variant="primary"
+                    disabled={user.status === 1}
+                    onClick={() => handleAction(user.id, "approve")} 
+                    style={{ marginRight: '10px' }}
+                    className="button-hover-effect">
+                    <FcApprove size={34} />
+                  </Button>
+
+                  <Button
+                    variant={user.status === 1 ? "secondary" : "danger"}
+                    disabled={user.status === 1}
+                    onClick={() => handleAction(user.id, "reject")} 
+                    className="button-hover-effect">
+                    <FcDisapprove size={34} />
+                  </Button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {
-                users.map((user) => (
-                  <tr key={user.id}>
-                    {/* <td>{user.id}</td> */}
-                    <td>{user.name}</td>
-                    <td>{user.surname}</td>
-                    <td>{user.position}</td>
-                    <td>{user.company}</td>
-                    <td>{user.email_address}</td>
-                    <td>{user.phone_number}</td>
-                    <td>{user.created_at}</td>
-                    <td>
-                      <Button
-                        variant="primary"
-                        disabled={user.status === 1}
-                        onClick={() => handleAction(user.id, "approve")} style={{ marginRight: '10px' }}
-                        className="button-hover-effect">
-                        <FcApprove size={34} />
-                      </Button>
-
-                      <Button
-                        variant={user.status === 1 ? "secondary" : "danger"}
-                        disabled={user.status === 1}
-                        onClick={() => handleAction(user.id, "reject")} className="button-hover-effect">
-                        <FcDisapprove size={34} />
-                      </Button>
-                    </td>
-
-                  </tr>
-                ))
-              }
-            </tbody>
-          </Table>
-        </div>
-      </div>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="8" className="text-center fw-bold mt-4">
+                <h3>No manager for approval</h3>
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
     </div>
+  </div>
+</div>
+
     </>
   );
 }
