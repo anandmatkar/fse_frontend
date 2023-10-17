@@ -95,7 +95,6 @@ const DeatailofJobAssign = () => {
                     <thead>
                       <tr>
                         <th>Machine Data</th>
-                        <th>Project Report</th>
                         <th>Timesheet Data</th>
                         <th>Project Attachments</th>
                       </tr>
@@ -107,11 +106,11 @@ const DeatailofJobAssign = () => {
                             <Button variant="primary">See Machine Details</Button>
                           </Link>
                         </td>
-                        <td>
+                        {/* <td>
                           <Link to={`/AssignReportData/${project.project_id}`}>
                             <Button variant="primary">See Project Report</Button>
                           </Link>
-                        </td>
+                        </td> */}
                         <td>
                           <Link to={`/AssignTimesheetData/${project.project_id}`}>
                             <Button variant="primary">See Timesheet Data</Button>

@@ -153,7 +153,7 @@ function App() {
           element={<AssignprojectAttachments />}
         ></Route>
         <Route
-          path="AssignReportData/:projectID"
+          path="AssignReportData/:projectID/:machineID"
           element={<AssignReportData />}
         ></Route>
         <Route

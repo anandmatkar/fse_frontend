@@ -94,7 +94,7 @@ const { projectID } = useParams();
                     <thead>
                       <tr>
                         <th>Machine Data</th>
-                        <th>Project Report</th>
+                        {/* <th>Project Report</th> */}
                         <th>Timesheet Data</th>
                         <th>Project Attachments</th>
                       </tr>
@@ -106,11 +106,11 @@ const { projectID } = useParams();
                             <Button variant="primary">See Machine Details</Button>
                           </Link>
                         </td>
-                        <td>
+                        {/* <td>
                           <Link to={`/WaitingReportData/${project.project_id}`}>
                             <Button variant="primary">See Project Report</Button>
                           </Link>
-                        </td>
+                        </td> */}
                         <td>
                           <Link to={`/WaitingTimesheetData/${project.project_id}`}>
                             <Button variant="primary">See Timesheet Data</Button>

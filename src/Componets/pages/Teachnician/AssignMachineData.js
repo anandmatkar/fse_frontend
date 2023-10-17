@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout4 from '../../Layout/Layout4';
-import {  Table, Container } from 'react-bootstrap';
+import {  Table, Container , Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Technician_DetailJobAssign } from '../../../Api/Technicians_Api';
@@ -50,6 +50,7 @@ const AssignMachineData = () => {
                                 <th>Actual Speed</th>
                                 <th>Description</th>
                                 <th>Attachments</th>
+                                <th>Report</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,6 +73,11 @@ const AssignMachineData = () => {
                                              <AiFillProfile size="30px" color="black" />
                                         </Link>
                                             ))}
+                                        </td>
+                                        <td>
+                                            <Link to={`/AssignReportData/${projectID}/${machine.id}`}>
+                                                <Button variant="primary">View Report</Button>
+                                            </Link>
                                         </td>
                                     </tr>
                                 ))

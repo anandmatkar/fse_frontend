@@ -11,14 +11,16 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RequestApproval from './RequestApproval';
+import { Base_Url } from '../../../Api/Base_Url';
 
 const AssignReportData = () => {
-    const { projectID } = useParams();
+    const { projectID , machineID } = useParams();
     const [project, setProject] = useState(null);
 
     useEffect(() => {
         const token = Cookies.get('token');
-        fetch(`${Technician_DetailJobAssign}?projectId=${projectID}`, {
+        const reportDetailsUrl = `${Base_Url}api/v1/technician/reportDetailsForTech?projectId=${projectID}&machineId=${machineID}`
+        fetch(reportDetailsUrl, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: token,
@@ -109,39 +111,39 @@ const AssignReportData = () => {
                         <div className="bf-table-responsive">
                             {project && (
                                 <Table striped bordered hover responsive className='bf-table'>
-                                    <thead>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Comments</th>
+                                        <th>Duration</th>
+                                        <th>Attachments</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {project && (
                                         <tr>
-                                            <th>Date</th>
-                                            <th>Description</th>
-                                            <th>Attachments</th>
-                                            <th>Action</th>
+                                            <td>{project.date}</td>
+                                            <td>{project.description}</td>
+                                            <td>{project.comments}</td>
+                                            <td>{project.duration}</td>
+                                            <td>
+                                                {project.project_documents && project.project_documents.map(attachment => (
+                                                    <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer">
+                                                        <AiFillProfile size="30px" color="black" />
+                                                    </a>
+                                                ))}
+                                            </td>
+                                            <td>
+                                                <Button variant="danger" onClick={() => deleteReport(project.id, projectID)}>
+                                                    Delete
+                                                </Button>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {project.technician_data.flatMap(technician =>
-                                            technician.project_report_data.map(report => (
-                                                <tr key={report.id}>
-                                                    <td>{report.date}</td>
-                                                    <td>{report.description}</td>
-
-                                                    <td>
-                                                        {report.report_attach_data && report.report_attach_data.map(attachment => (
-
-                                                            <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer">
-                                                                <AiFillProfile size="30px" color="black" />
-                                                            </a>
-                                                        ))}
-                                                    </td>
-                                                    <td>
-                                                        <Button variant="danger" onClick={() => deleteReport(report.id, projectID)}>
-                                                            Delete
-                                                        </Button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        )}
-                                    </tbody>
-                                </Table>
+                                    )}
+                                </tbody>
+                            </Table>
                             )}
 
                             {!project && <div>Loading...</div>}
