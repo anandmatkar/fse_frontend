@@ -15,7 +15,8 @@ import { Base_Url } from '../../../Api/Base_Url';
 
 const AssignReportData = () => {
     const { projectID , machineID } = useParams();
-    const [project, setProject] = useState(null);
+    const [project, setProject] = useState([]);
+
 
     const fetchData = () => {
         const token = Cookies.get('token');
@@ -29,7 +30,7 @@ const AssignReportData = () => {
             .then(res => res.json())
             .then(data => {
                 if (data && data.data && data.data.length > 0) {
-                    setProject(data.data[0]);
+                    setProject(data.data);  // <-- set the entire array here
                 }
             })
             .catch(error => console.error("Error fetching report data:", error));
@@ -105,69 +106,68 @@ const AssignReportData = () => {
     
     return (
         <Layout4>
-            <Container fluid>
-                <div className="text-center mb-5 mt-3">
-                    <h6 className="section-title bg-white text-center text-primary px-3">Report Details</h6>
-                    <h1>Your Report Details</h1>
-                    <div className='d-flex justify-content-center align-items-center'>
+        <Container fluid>
+            <div className="text-center mb-5 mt-3">
+                <h6 className="section-title bg-white text-center text-primary px-3">Report Details</h6>
+                <h1>Your Report Details</h1>
+                <div className='d-flex justify-content-center align-items-center'>
                     <NewReportModal projectID={projectID} machineID={machineID} onNewReport={onNewReportCallback} />
+                    
+                   
                     {project && project.technician_data && project.technician_data.some(technician => technician.project_report_data && technician.project_report_data.length > 0) && 
                     <RequestApproval projectID={projectID} />}
-                    </div>
                 </div>
-
-                <div className="card">
-                    <div className="card-body">
-                        <div className="bf-table-responsive">
-                            {project ? (
-                                project.project_documents && project.project_documents.length > 0 ? (
-                                    <Table striped bordered hover responsive className='bf-table'>
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Description</th>
-                                                <th>Comments</th>
-                                                <th>Duration</th>
-                                                <th>Attachments</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>{project.date}</td>
-                                                <td>{project.description}</td>
-                                                <td>{project.comments}</td>
-                                                <td>{project.duration}</td>
-                                                <td>
-                                                    {project.project_documents.map(attachment => (
-                                                        <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer">
-                                                            <AiFillProfile size="30px" color="black" />
-                                                        </a>
-                                                    ))}
-                                                </td>
-                                                <td>
-                                                    <Button variant="danger" onClick={() => deleteReport(project.id, projectID)}>
-                                                        Delete
-                                                    </Button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                ) : (
-                                    <div className="text-center">
-                                        No report presented.
-                                    </div>
-                                )
-                            ) : (
-                                <div className="text-center fs-3 fw-bold">
+            </div>
+    
+            <div className="card">
+                <div className="card-body">
+                    <div className="bf-table-responsive">
+                        {project && project.length > 0 ? (
+                            <Table striped bordered hover responsive className='bf-table'>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Comments</th>
+                                        <th>Duration</th>
+                                        <th>Attachments</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {project.map(report => (
+                                        <tr key={report.id}>
+                                            <td>{report.date}</td>
+                                            <td>{report.description}</td>
+                                            <td>{report.comments}</td>
+                                            <td>{report.duration}</td>
+                                            <td>
+                                                {report.project_documents.map(attachment => (
+                                                    <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer">
+                                                        <AiFillProfile size="30px" color="black" />
+                                                    </a>
+                                                ))}
+                                            </td>
+                                            <td>
+                                                <Button variant="danger" onClick={() => deleteReport(report.id, projectID)}>
+                                                    Delete
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        ) : (
+                            <div className="text-center">
                                 No report presented.
                             </div>
-                            )}
-                        </div>
+                        )}
                     </div>
                 </div>
-            </Container>
-        </Layout4>
+            </div>
+        </Container>
+    </Layout4>
+    
     );
 }
 
