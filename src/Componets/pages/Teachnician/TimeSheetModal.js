@@ -7,9 +7,30 @@ import { useNavigate } from 'react-router-dom';
 import { Base_Url } from '../../../Api/Base_Url';
 import { Technician_TimesheetAttach } from '../../../Api/Technicians_Api';
 
+const generateTimeSlots = () => {
+  const slots = [];
+  for(let i = 0; i < 24; i++) {
+      for(let j = 0; j < 60; j+=30) {
+          let hours = i;
+          let period = 'AM';
+          if(hours >= 12) {
+              period = 'PM';
+              hours -= 12;
+          }
+          if(hours === 0) hours = 12;
+          
+          const displayHours = hours < 10 ? '0' + hours : hours;
+          const minutes = j === 0 ? '00' : j;
+          slots.push(`${displayHours}:${minutes} ${period}`);
+      }
+  }
+  return slots;
+};
+
 const TimeSheetModal = ({ projectID , onNewTimesheet }) => { 
 
   const navigate = useNavigate();
+  const timeSlots = generateTimeSlots();
 
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -17,6 +38,7 @@ const TimeSheetModal = ({ projectID , onNewTimesheet }) => {
       date: '',
       start_time: '',
       end_time: '',
+      lunch_time: '', 
       comments: '',
       attachment: null
   });
@@ -79,6 +101,7 @@ const handleSubmit = async (e) => {
               date: formData.date,
               startTime: formData.start_time,
               endTime: formData.end_time,
+              lunchtime: formData.lunch_time,
               comments: formData.comments,
               attachment: attachments // Send the attachments array here
           })
@@ -88,6 +111,7 @@ const handleSubmit = async (e) => {
               date: formData.date,
               startTime: formData.start_time,
               endTime: formData.end_time,
+              lunchtime: formData.lunch_time,
               comments: formData.comments,
               attachment: attachments // Send the attachments array here
       }
@@ -131,17 +155,27 @@ const handleSubmit = async (e) => {
               <input className="form-control" type="date" name="date" onChange={handleInputChange} required />
             </div>
    
-      <div className="form-group">
-              <label for="start_time">Start Time:</label>
-              <input className="form-control" type="time" name="start_time" onChange={handleInputChange} required />
-            </div>
+            <div className="form-group">
+            <label htmlFor="start_time">Start Time:</label>
+            <select className="form-control" name="start_time" onChange={handleInputChange} required>
+                {timeSlots.map(slot => <option key={slot} value={slot}>{slot}</option>)}
+            </select>
+        </div>
 
-
-      <div className="form-group">
-              <label for="end_time">End Time:</label>
-              <input className="form-control" type="time" name="end_time" onChange={handleInputChange} required />
-            </div>
-
+        <div className="form-group">
+            <label htmlFor="end_time">End Time:</label>
+            <select className="form-control" name="end_time" onChange={handleInputChange} required>
+                {timeSlots.map(slot => <option key={slot} value={slot}>{slot}</option>)}
+            </select>
+        </div>
+        <div className="form-group">
+            <label htmlFor="lunch_time">Lunch Time:</label>
+            <select className="form-control" name="lunch_time" onChange={handleInputChange} required>
+                <option value="30 minutes">30 minutes</option>
+                <option value="45 minutes">45 minutes</option>
+                <option value="1 hour">1 hour</option>
+            </select>
+        </div>
     
       <div className="form-group">
               <label for="comments">Comments:</label>

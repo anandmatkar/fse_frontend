@@ -182,7 +182,7 @@ function App() {
           element={<WaitingMachineData />}
         ></Route>
         <Route
-          path="WaitingReportData/:projectID"
+          path="WaitingReportData/:projectID/:machineID"
           element={<WaitingReportData />}
         ></Route>
         <Route
@@ -202,7 +202,7 @@ function App() {
           element={<CompleteMachineData />}
         ></Route>
         <Route
-          path="CompleteReportData/:projectID"
+          path="CompleteReportData/:projectID/:machineID"
           element={<CompleteReportData />}
         ></Route>
         <Route

@@ -106,7 +106,7 @@ const AssignReportData = () => {
                 <div className='d-flex justify-content-center align-items-center'>
                     <NewReportModal projectID={projectID} machineID={machineID} onNewReport={onNewReportCallback} />
                     {project && project.technician_data && project.technician_data.some(technician => technician.project_report_data && technician.project_report_data.length > 0) && 
-                    <RequestApproval projectID={projectID} />}
+                     <RequestApproval projectID={projectID} />}
                 </div>
             </div>
     

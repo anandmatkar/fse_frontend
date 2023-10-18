@@ -91,7 +91,7 @@ const handleSubmit = async (e) => {
       setShowModal(false);
       if (response.status === 200) {
           onNewReport(data.data); 
-      }
+      }  
   } catch (error) {
       console.error('Error:', error);
       toast.error('Error creating Report: ' + error.message);
