@@ -84,7 +84,7 @@ console.log(config, "config")
   }
 };
 const onNewTimesheetCallback = (newTimesheet) => {
-  console.log(newTimesheet);
+//   console.log(newTimesheet);
 // setTimesheetData(prevData => [...prevData, newTimesheet]);
 // Update project
 setProject(prevProject => {
@@ -153,7 +153,7 @@ setProject(prevProject => {
                                 </tbody>
                             </Table>
                         )}
-                        {!project && <div>Loading...</div>}
+                        {!project && <div>No timesheet presented.</div>}
                     </div>
                 </div>
             </div>

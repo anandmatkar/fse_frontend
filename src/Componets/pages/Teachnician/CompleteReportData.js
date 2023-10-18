@@ -13,7 +13,7 @@ import { Base_Url } from '../../../Api/Base_Url';
 
 const CompleteReportData = () => {
     const { projectID,  machineID } = useParams();
-    const [project, setProject] = useState(null);
+    const [project, setProject] = useState([]);
 
     const fetchData = () => {
         const token = Cookies.get('token');
@@ -27,7 +27,7 @@ const CompleteReportData = () => {
             .then(res => res.json())
             .then(data => {
                 if (data && data.data && data.data.length > 0) {
-                    setProject(data.data);  // <-- set the entire array here
+                    setProject(data.data); 
                 }
             })
             .catch(error => console.error("Error fetching report data:", error));
