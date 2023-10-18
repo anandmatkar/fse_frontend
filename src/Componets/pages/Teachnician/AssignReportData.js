@@ -17,7 +17,6 @@ const AssignReportData = () => {
     const { projectID , machineID } = useParams();
     const [project, setProject] = useState([]);
 
-
     const fetchData = () => {
         const token = Cookies.get('token');
         const reportDetailsUrl = `${Base_Url}api/v1/technician/reportDetailsForTech?projectId=${projectID}&machineId=${machineID}`
@@ -105,7 +104,9 @@ const AssignReportData = () => {
                 <h1>Your Report Details</h1>
                 <div className='d-flex justify-content-center align-items-center'>
                     <NewReportModal projectID={projectID} machineID={machineID} onNewReport={onNewReportCallback} />
-                    {project && project.length > 0 &&  <RequestApproval projectID={projectID} />}
+                    {project && project.length > 0 && 
+ <RequestApproval projectID={projectID}  />}
+
                 </div>
             </div>
     

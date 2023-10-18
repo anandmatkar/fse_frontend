@@ -57,7 +57,7 @@ const NewReportModal = ({projectID, machineID, onNewReport }) => {
         } catch (error) {
             console.error('Error uploading file:', error);
             alert('Error uploading file: ' + error.message);
-        }
+        };
     }
 };
 
@@ -91,6 +91,7 @@ const handleSubmit = async (e) => {
       setShowModal(false);
       if (response.status === 200) {
           onNewReport(data.data); 
+        
       }  
   } catch (error) {
       console.error('Error:', error);

@@ -115,44 +115,48 @@ setProject(prevProject => {
             <div className="card">
                 <div className="card-body">
                     <div className="bf-table-responsive">
-                        {project && (
-                            <Table striped bordered hover responsive className='bf-table'> 
-                                <thead>
-                                    <tr>
-                                        <th>Comments</th>
-                                        <th>Start Time</th>
-                                        <th>End Time</th>
-                                        <th>Lunch Time</th>
-                                        <th>Date</th>
-                                        <th>Attachments</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {project.technician_data.flatMap(technician => 
-                                        technician.timesheet_data.map(timesheet => (
-                                            <tr key={timesheet.id}>
-                                                <td>{timesheet.comments}</td>
-                                                <td>{timesheet.start_time}</td>
-                                                <td>{timesheet.end_time}</td>
-                                                <td>{timesheet.lunch_time}</td>
-                                                <td>{timesheet.date}</td>
-                                                <td>
-                                                    {timesheet.timesheet_attach_data && timesheet.timesheet_attach_data.map(attachment => (
-                                                        <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
-                                                            <AiFillProfile size="30px" color="black" />
-                                                        </a>
-                                                    ))}
-                                                </td>
-                                                <td>
-                                                    <Button className='job-delete-timesheet-btn' variant="danger" size="sm" onClick={() => deleteTimeSheet(timesheet.id, projectID)}>Delete</Button>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </Table>
-                        )}
+                    {project && (
+  <Table striped bordered hover responsive className='bf-table'> 
+      <thead>
+          <tr>
+              <th>Comments</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Lunch Time</th>
+              <th>Date</th>
+              <th>Attachments</th>
+              <th>Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          {project.technician_data.flatMap(technician => 
+              technician.timesheet_data.map(timesheet => (
+                  <tr key={timesheet.id}>
+                      <td>{timesheet.comments || 'No data'}</td>
+                      <td>{timesheet.start_time || 'No data'}</td>
+                      <td>{timesheet.end_time || 'No data'}</td>
+                      <td>{timesheet.lunch_time || 'No data'}</td>
+                      <td>{timesheet.date || 'No data'}</td>
+                      <td>
+                          {timesheet.timesheet_attach_data && timesheet.timesheet_attach_data.length > 0 ? 
+                              timesheet.timesheet_attach_data.map(attachment => (
+                                  <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
+                                      <AiFillProfile size="30px" color="black" />
+                                  </a>
+                              )) 
+                              : 
+                              'No data'
+                          }
+                      </td>
+                      <td>
+                          <Button className='job-delete-timesheet-btn' variant="danger" size="sm" onClick={() => deleteTimeSheet(timesheet.id, projectID)}>Delete</Button>
+                      </td>
+                  </tr>
+              ))
+          )}
+      </tbody>
+  </Table>
+)}
                         {!project && <div>No timesheet presented.</div>}
                     </div>
                 </div>
