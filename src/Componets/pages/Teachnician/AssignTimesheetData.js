@@ -63,7 +63,7 @@ console.log(config, "config")
         const response = await axios.get(url, config);            
 
         if (response.status === 200) {
-          toast.success("Report deleted succesfully")
+          toast.success("Timehseet deleted succesfully")
           console.log('Timesheet entry deleted successfully');
 
           // Update the state to reflect the deleted timesheet
@@ -84,7 +84,7 @@ console.log(config, "config")
   }
 };
 const onNewTimesheetCallback = (newTimesheet) => {
-  console.log(newTimesheet);
+//   console.log(newTimesheet);
 // setTimesheetData(prevData => [...prevData, newTimesheet]);
 // Update project
 setProject(prevProject => {
@@ -122,6 +122,7 @@ setProject(prevProject => {
                                         <th>Comments</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>
+                                        <th>Lunch Time</th>
                                         <th>Date</th>
                                         <th>Attachments</th>
                                         <th>Action</th>
@@ -134,6 +135,7 @@ setProject(prevProject => {
                                                 <td>{timesheet.comments}</td>
                                                 <td>{timesheet.start_time}</td>
                                                 <td>{timesheet.end_time}</td>
+                                                <td>{timesheet.lunch_time}</td>
                                                 <td>{timesheet.date}</td>
                                                 <td>
                                                     {timesheet.timesheet_attach_data && timesheet.timesheet_attach_data.map(attachment => (
@@ -151,7 +153,7 @@ setProject(prevProject => {
                                 </tbody>
                             </Table>
                         )}
-                        {!project && <div>Loading...</div>}
+                        {!project && <div>No timesheet presented.</div>}
                     </div>
                 </div>
             </div>

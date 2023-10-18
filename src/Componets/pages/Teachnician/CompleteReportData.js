@@ -9,15 +9,16 @@ import './JobAssigned.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { Base_Url } from '../../../Api/Base_Url';
 
 const CompleteReportData = () => {
-    const { projectID } = useParams();
-    const [project, setProject] = useState(null);
+    const { projectID,  machineID } = useParams();
+    const [project, setProject] = useState([]);
 
-    useEffect(() => {
+    const fetchData = () => {
         const token = Cookies.get('token');
-        fetch(`${Technician_DetailJobAssign}?projectId=${projectID}`, {
+        const reportDetailsUrl = `${Base_Url}api/v1/technician/reportDetailsForTech?projectId=${projectID}&machineId=${machineID}`
+        fetch(reportDetailsUrl, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: token,
@@ -26,11 +27,15 @@ const CompleteReportData = () => {
             .then(res => res.json())
             .then(data => {
                 if (data && data.data && data.data.length > 0) {
-                    setProject(data.data[0]);
+                    setProject(data.data); 
                 }
             })
             .catch(error => console.error("Error fetching report data:", error));
-    }, [projectID]);
+    };
+    useEffect(() => {
+        fetchData();
+    }, [projectID, machineID]); 
+
 
   
     return (
@@ -44,24 +49,27 @@ const CompleteReportData = () => {
                 <div className="card">
                     <div className="card-body">
                         <div className="bf-table-responsive">
-                            {project && (
+                            {project && project.length > 0 ? (
                                 <Table striped bordered hover responsive className='bf-table'>
                                     <thead>
                                         <tr>
                                             <th>Date</th>
                                             <th>Description</th>
+                                            <th>Comments</th>
+                                            <th>Duration</th>
                                             <th>Attachments</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {project.technician_data.flatMap(technician =>
-                                            technician.project_report_data.map(report => (
+                                        {project.map(report => (
                                                 <tr key={report.id}>
                                                     <td>{report.date}</td>
                                                     <td>{report.description}</td>
+                                                    <td>{report.comments}</td>
+                                            <td>{report.duration}</td>
 
                                                     <td>
-                                                        {report.report_attach_data && report.report_attach_data.map(attachment => (
+                                                        { report.report_attach_data.map(attachment => (
 
                                                             <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer">
                                                                 <AiFillProfile size="30px" color="black" />
@@ -70,12 +78,15 @@ const CompleteReportData = () => {
                                                     </td>
                                                 </tr>
                                             ))
-                                        )}
+                                        }
                                     </tbody>
                                 </Table>
-                            )}
+                            ):(
 
-                            {!project && <div>Loading...</div>}
+                                <div className="text-center">
+                                No report presented.
+                            </div>
+                            )}
                         </div>
                     </div>
                 </div>
