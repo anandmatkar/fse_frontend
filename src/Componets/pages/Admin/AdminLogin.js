@@ -44,8 +44,6 @@ function AdminLogin() {
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
-    localStorage.setItem("enteredEmail", JSON.stringify(enteredEmail));
-
 
     if (!enteredEmail) {
       setEmailError("Please provide an email.");
@@ -76,24 +74,54 @@ function AdminLogin() {
         }
       );
 
-      if (response.status !== 200) {
-                throw new Error("Authentication failed");
-            }
-            const data = response.data;
-            const idToken = data.data.token;
-            toast.success("Login successfull!");
-            
-            // Save the token in cookies
-            const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
-            console.log(new Date(Date.now()) ,expirationTime);
-            Cookies.set('token', idToken, { expires: expirationTime });
-            Cookies.set('role', data.data.role);
+      if (response.data.status === 200) {
+        let accessToken = response.data.data.token;
+        let role = response.data.data.role;
+        let name = response.data.data.name;
+        let profile = response.data.data.avatar;
 
-            authCtx.login(idToken, expirationTime.toISOString());
-            navigate("/AdminD");
+        const currentTime = new Date().getTime();
+        const expirationTime = new Date(currentTime + 1 * 20 * 1000); // 1 minutes in milliseconds
+
+        // Convert expirationTime to milliseconds
+        const expirationTimeInMilliseconds = expirationTime.getTime();
+
+        authCtx.login(accessToken, expirationTimeInMilliseconds, role, name, profile);
+
+        navigate("/AdminD");
+
+        toast.success(response.data.message, {
+          position: 'top-right',
+          autoClose: 2000, // Notification will close automatically after 2 seconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        // Cookies.set('token', idToken, { expires: expirationTime });
+        // Cookies.set('role', data.data.role);
+
+      } else {
+        toast.error(response.data.message, {
+          position: 'top-right',
+          autoClose: 2000, // Notification will close automatically after 2 seconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+
         } catch (error) {
             console.log(error.message);
-            toast.error("Incorrect email or password. Please try again.");
+            toast.error(error.message, {
+              position: 'top-right',
+              autoClose: 2000, // Notification will close automatically after 2 seconds
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
         }
     };
   return (

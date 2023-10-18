@@ -16,13 +16,14 @@ const AdminDashboardNavbar = () => {
     const isLoggedIn = authCtx.isLoggedIn;
   
     const logoutHandler = () => {
-      Cookies.remove('token');
-      Cookies.remove('role');
+      // Cookies.remove('token');
+      // Cookies.remove('role');
       
+      authCtx.logoutBtn();
       navigate('/adminLogin')
   
-      authCtx.logout();
     };
+    
   return (
     <React.Fragment>
     <Navbar expand="lg" className="main-nav-bar">

@@ -10,11 +10,10 @@ const NavbarManagerDashboard = () => {
   const authCtx = useContext(AuthContext);
 
   const logoutHandler = () => {
-    Cookies.remove('token');
-    localStorage.removeItem('Name');
-    localStorage.removeItem('Profile');
+    authCtx.logoutBtn();
+    // localStorage.removeItem('Name');
+    // localStorage.removeItem('Profile');
     navigate('/mangerLogin');
-    console.log('Logout SucessFull');
   };
 
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -60,7 +59,7 @@ const NavbarManagerDashboard = () => {
                   <Dropdown.Toggle as={CustomToggle} variant="secondary">
                     <img
                       src={
-                        localStorage.getItem('Profile') ||
+                        Cookies.get('Profile') ||
                         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU'
                       }
                       alt="Profile"

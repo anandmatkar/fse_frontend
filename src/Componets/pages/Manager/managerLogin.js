@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useRef, useEffect } from 'react';
+import AuthContext from '../../auth-context/auth-context';
+import { useState, useRef, useContext } from 'react';
 import axios from 'axios';
 import Spinner from '../Common/Spinner';
 import { toast } from 'react-toastify';
@@ -10,8 +11,13 @@ import { managerlogin_Api } from './../../../Api/Manager_Api';
 
 function ManagerLogin() {
   const navigate = useNavigate();
+
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+
+  // const confirmpasswordInputRef = useRef();
+
+  const authCtx = useContext(AuthContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
@@ -54,24 +60,48 @@ function ManagerLogin() {
       email: enteredEmail,
       password: enteredPassword,
     };
+
     try {
       const response = await axios.post(managerlogin_Api, body);
 
       if (response.data.status === 200) {
+
         setIsLoading(false);
-        Cookies.set('token', response.data.data.token, { expires: 1 });
-        Cookies.set('Name', response.data.data.name);
-        Cookies.set('Profile', response.data.data.avatar);
+
+        let accessToken = response.data.data.token;
+        let role = response.data.data.role;
+        let name = response.data.data.name;
+        let profile = response.data.data.avatar;
+
+        const currentTime = new Date().getTime();
+        const expirationTime = new Date(currentTime + 1 * 20 * 1000); // 1 minutes in milliseconds
+
+        // Convert expirationTime to milliseconds
+        const expirationTimeInMilliseconds = expirationTime.getTime();
+
+        authCtx.login(accessToken, expirationTimeInMilliseconds, role, name, profile);
 
         navigate('/manager');
 
         toast.success(response.data.message, {
+          position: 'top-right',
+          autoClose: 2000, // Notification will close automatically after 2 seconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
           onClose: () => {
             setIsLoading(false);
           },
         });
       } else {
         toast.error(response.data.message, {
+          position: 'top-right',
+          autoClose: 2000, // Notification will close automatically after 2 seconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
           onClose: () => {
             setIsLoading(false); // Hide the spinner after the toast is closed
           },
@@ -79,21 +109,20 @@ function ManagerLogin() {
       }
     } catch (error) {
       setIsLoading(false);
-
+      console.log(error.message);
       toast.error(error.message, {
+        position: 'top-right',
+        autoClose: 2000, // Notification will close automatically after 2 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
         onClose: () => {
           setIsLoading(false); // Hide the spinner after the toast is closed
         },
       });
     }
   };
-
-  useEffect(() => {
-    const token = Cookies.get('token');
-    if (token) {
-      navigate('/manager');
-    }
-  }, []);
 
   return (
     <>

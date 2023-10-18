@@ -42,7 +42,6 @@ function TechnicianLogin() {
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
-    localStorage.setItem("enteredEmail", JSON.stringify(enteredEmail));
 
     if (!enteredEmail) {
         setEmailError("Please provide an email.");
@@ -78,10 +77,23 @@ function TechnicianLogin() {
             if (response.data.status === 200) {
                 const data = response.data.data;
                 if (data.token) {
-                    Cookies.set('token', data.token, { expires: 2 });
-                    localStorage.setItem('Name', data.name);
-                    localStorage.setItem('Profile', data.avatar);
-                    authCtx.login(data.token);
+                    let accessToken = data.token;
+                    let role = data.role;
+                    let name = data.name;
+                    let profile = data.avatar;
+
+                    const currentTime = new Date().getTime();
+                    const expirationTime = new Date(currentTime + 1 * 20 * 1000); // 1 minutes in milliseconds
+
+                    // Convert expirationTime to milliseconds
+                    const expirationTimeInMilliseconds = expirationTime.getTime();
+
+                    // Cookies.set('token', data.token, { expires: 2 });
+                    // Cookies.set('role', data.role, { expires: 2 });
+                    // localStorage.setItem('Name', data.name);
+                    // localStorage.setItem('Profile', data.avatar);
+                    
+                    authCtx.login(accessToken, expirationTimeInMilliseconds, role, name, profile);
                     navigate("/techD");
                     toast.success("Login successful!"); 
                 } else {

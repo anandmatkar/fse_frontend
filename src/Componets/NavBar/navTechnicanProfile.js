@@ -16,11 +16,11 @@ const NavTechnicanProfile = () => {
 const token = Cookies.get('token')
 // console.log(token,"token")
     const logoutHandler = () => {
-      Cookies.remove('token')
-      localStorage.removeItem('Name');
-      localStorage.removeItem('Profile');
-      navigate('/techLogin')
-      console.log("Logout SucessFull");
+    //   Cookies.remove('token')
+    //   localStorage.removeItem('Name');
+    //   localStorage.removeItem('Profile');
+        authCtx.logoutBtn();
+        navigate('/techLogin')
     }
     
     const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
