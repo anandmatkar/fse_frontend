@@ -344,15 +344,24 @@ function CreateProject() {
                   <label htmlFor="projectType" className="labeltag">
                     Project Type
                   </label>
-                  <input
-                    type="text"
+                  <select
                     name="projectType"
                     id="projectType"
-                    placeholder="Project type"
                     class="form-control formcontrolinput"
                     value={projectType}
                     onChange={(event) => setProjectType(event.target.value)}
-                  />
+                  >
+                    <option value="" disabled>
+                      Select Project Type
+                    </option>
+                    <option value="Change over part">Change over part</option>
+                    <option value="Overhaul">Overhaul</option>
+                    <option value="Line installation">Line installation</option>
+                    <option value="Start up">Start up</option>
+                    <option value="Commissioning machine">
+                      Commissioning machine
+                    </option>
+                  </select>
                   {errors.projectType && (
                     <p className="error-message text-danger">
                       {errors.projectType}
@@ -360,6 +369,7 @@ function CreateProject() {
                   )}
                 </div>
               </div>
+
               <div class="col-md-4">
                 <div class="form-group formgroup">
                   <label htmlFor="projectDescription" className="labeltag">

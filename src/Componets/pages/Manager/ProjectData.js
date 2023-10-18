@@ -87,7 +87,7 @@ function ProjectData() {
                   className="btn btn-success border border-0"
                   onClick={handleApproveClick}
                 >
-                  Approved
+                  Approve
                 </button>
               )}
             </div>
