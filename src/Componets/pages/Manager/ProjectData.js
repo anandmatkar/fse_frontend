@@ -1,15 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Table, Container } from 'react-bootstrap';
-import { LuDownload } from 'react-icons/lu';
+import { toast } from 'react-toastify';
 import { Manager_Base_Url } from '../../../Api/Manager_Api';
 
 function ProjectData() {
   const { techID, projectId, machineId } = useParams();
   const [projectData, setProjectData] = useState([]);
   const [showApprovedButton, setShowApprovedButton] = useState(false);
+
+  async function handleApproveClick() {
+    try {
+      const token = Cookies.get('token');
+      const response = await fetch(
+        `${Manager_Base_Url}validateReport?techId=${techID}&projectId=${projectId}&machineId=${machineId}`,
+        {
+          method: 'PUT', // Adjust the method as needed (POST, PUT, etc.)
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const approvalMessage = data.message;
+
+      // Update the UI after the report is approved
+      setShowApprovedButton(false);
+
+      // Show a success toast message with the approval message
+      toast.success(approvalMessage);
+    } catch (error) {
+      console.error('Error approving report:', error);
+
+      // Show an error toast message
+      toast.error('Error approving report');
+    }
+  }
 
   useEffect(() => {
     async function fetchProjectData() {
@@ -50,7 +83,10 @@ function ProjectData() {
           <div className="card p-2">
             <div className="d-flex justify-content-end mx-2">
               {showApprovedButton && (
-                <button className="btn btn-success border border-0">
+                <button
+                  className="btn btn-success border border-0"
+                  onClick={handleApproveClick}
+                >
                   Approved
                 </button>
               )}
