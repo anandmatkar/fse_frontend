@@ -74,7 +74,7 @@ function ManagerLogin() {
         let profile = response.data.data.avatar;
 
         const currentTime = new Date().getTime();
-        const expirationTime = new Date(currentTime + 1 * 20 * 1000); // 1 minutes in milliseconds
+        const expirationTime = new Date(currentTime + 1 * 60 * 60 * 1000); // 60 minutes in milliseconds
 
         // Convert expirationTime to milliseconds
         const expirationTimeInMilliseconds = expirationTime.getTime();
