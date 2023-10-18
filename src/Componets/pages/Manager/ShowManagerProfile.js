@@ -5,7 +5,11 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import {Upload_Manager_Profile, Show_Manager_Profile, Update_Manager_Profile} from '../../../Api/Manager_Api'
+import {
+  Upload_Manager_Profile,
+  Show_Manager_Profile,
+  Update_Manager_Profile,
+} from '../../../Api/Manager_Api';
 
 function ShowManagerProfile() {
   const navigate = useNavigate();
@@ -59,9 +63,7 @@ function ShowManagerProfile() {
       const formData = new FormData();
       formData.append('image', file);
       try {
-        const response = await axios.post(Upload_Manager_Profile,
-          formData
-        );
+        const response = await axios.post(Upload_Manager_Profile, formData);
         if (response.data.status === 201) {
           const uploadedURL = response.data.data;
           console.log(uploadedURL);
@@ -114,6 +116,16 @@ function ShowManagerProfile() {
         toast.error(error.message);
       });
   };
+
+  useEffect(() => {
+    // Check if token exists in localStorage
+    const token = Cookies.get('token');
+    if (!token) {
+      // Perform any additional token validation if needed
+      // Then navigate to the dashboard
+      navigate('/mangerLogin');
+    }
+  }, []);
   return (
     <>
       <NavbarManagerDashboard />

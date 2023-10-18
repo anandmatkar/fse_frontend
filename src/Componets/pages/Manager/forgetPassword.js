@@ -210,9 +210,12 @@ function Reset() {
     <React.Fragment>
       <Navbar />
 
-      <div className="container d-flex flex-column">
-        <div className="row align-items-center justify-content-center g-0 mt-5">
-          <div className="col-12 col-md-8 col-lg-4 border-top border-3 border-primary">
+      <div
+        className="container d-flex flex-column "
+        style={{ marginTop: '90px' }}
+      >
+        <div className="row align-items-center justify-content-center g-0 ">
+          <div className="col-12 col-md-8 col-lg-4 border-top border-3 border-success ">
             <div className="card shadow-sm">
               <div className="card-body">
                 {isForgotPassword && !isResetPassword && (
@@ -245,7 +248,7 @@ function Reset() {
                       <div className="mb-3 d-grid">
                         <button
                           type="button"
-                          className="btn btn-primary"
+                          className="btn btn-success"
                           onClick={sendResetEmail}
                         >
                           {isLoading ? <Spinner /> : 'Send Reset Email'}
@@ -294,7 +297,7 @@ function Reset() {
                       <div className="mb-3 d-grid">
                         <button
                           type="button"
-                          className="btn btn-primary"
+                          className="btn btn-success"
                           onClick={resetPassword}
                         >
                           Reset Password

@@ -1,6 +1,6 @@
 import React from 'react';
 import ManagerDashboard from './Componets/pages/Manager/managerD';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import CreateCustomer from './Componets/pages/Manager/createCustomer';
 import ManagerLogin from './Componets/pages/Manager/managerLogin';
 import RegistrationPage from './Componets/pages/Manager/Registration';
@@ -54,6 +54,31 @@ import CompleteMachineData from './Componets/pages/Teachnician/CompleteMachineDa
 import CompleteReportData from './Componets/pages/Teachnician/CompleteReportData';
 import CompleteTimesheetData from './Componets/pages/Teachnician/CompleteTimesheetData';
 import CompleteProejctAttachment from './Componets/pages/Teachnician/CompleteProejctAttachment';
+import ProjectData from './Componets/pages/Manager/ProjectData';
+import Cookies from 'js-cookie';
+
+// Define a function to check if the user is authenticated
+function isAuthenticated() {
+  return !!Cookies.get('token');
+}
+
+// Define a function to get the user's role
+function getUserRole() {
+  return Cookies.get('role');
+}
+
+// ProtectedRoute component to protect routes based on role
+function ProtectedRoute({ role, children }) {
+  const isAuthenticatedUser = isAuthenticated();
+  const userRole = getUserRole();
+
+  // If the user is not authenticated, redirect to the login page
+  if (!isAuthenticatedUser) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+}
 
 function App() {
   return (
@@ -64,20 +89,42 @@ function App() {
         <Route path="/" exact element={<LoginFrontPage />} />
       </Routes>
 
-      {/* =================================================ADMIN================================================================= */}
+      {/* ===================================================ADMIN================================================================= */}
 
       <Routes>
+        <Route
+          path="/AdminD"
+          element={
+            <ProtectedRoute role="Admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/AccountWA"
+          element={
+            <ProtectedRoute role="Admin">
+              <AccountWA />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/registerdaccount"
+          element={
+            <ProtectedRoute role="Admin">
+              <Registeredaccount />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/adminLogin" element={<AdminLogin />}></Route>
-        <Route path="AccountWA" element={<AccountWA />}></Route>
-        <Route path="/AdminD" element={<AdminDashboard />}></Route>
-        <Route path="registerdaccount" element={<Registeredaccount />}></Route>
       </Routes>
 
       {/* ===============================================MANAGER====================================================================== */}
-
-      <Routes>
-        <Route path="/managerL" element={<ManagerDashboard />}></Route>
-        <Route path="/register" element={<RegistrationPage />}></Route>
+      {/* 
+      <Routes> */}
+      {/* <Route path="/managerL" element={<ManagerDashboard />}></Route> */}
+      {/* <Route path="/register" element={<RegistrationPage />}></Route>
         <Route path="/mangerLogin" element={<ManagerLogin />}></Route>
         <Route path="/completedprojects" element={<CompletedProjects />} />
         <Route path="/createCustomer" element={<CreateCustomer />}></Route>
@@ -131,113 +178,372 @@ function App() {
         <Route
           path="/viewtechnicianprofile/:technicianID"
           element={<ViewTechnicianProfile />}
+        /> */}
+
+      {/* ===============================================MANAGER====================================================================== */}
+
+      <Routes>
+        {/* <Route path="/managerL" element={<ManagerDashboard />}></Route> */}
+        <Route path="/register" element={<RegistrationPage />}></Route>
+        <Route path="/mangerLogin" element={<ManagerLogin />}></Route>
+        <Route path="/verifyManager" element={<Userverified />} />
+        <Route path="/reset" element={<Reset />} />
+        <Route
+          path="/completedprojects"
+          element={
+            <ProtectedRoute role="Manager">
+              <CompletedProjects />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createCustomer"
+          element={
+            <ProtectedRoute role="Manager">
+              <CreateCustomer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createP"
+          element={
+            <ProtectedRoute role="Manager">
+              <NewProjectScreen />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createtechnician"
+          element={
+            <ProtectedRoute role="Manager">
+              <CreateTechnician />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/newaccount"
+          element={
+            <ProtectedRoute role="Manager">
+              <NewAccount />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/customerlist"
+          element={
+            <ProtectedRoute role="Manager">
+              <CustomerList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/projectprogress"
+          element={
+            <ProtectedRoute role="Manager">
+              <JobProgress />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/manager"
+          element={
+            <ProtectedRoute role="Manager">
+              <ManagerDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/managetechnician"
+          element={
+            <ProtectedRoute role="Manager">
+              <ManageTechnician />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projectStatus"
+          element={
+            <ProtectedRoute role="Manager">
+              <ProjectStatus />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/managemachineinfo"
+          element={
+            <ProtectedRoute role="Manager">
+              <ViewMachineInfo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/customerediteddetails/:customerID"
+          element={
+            <ProtectedRoute role="Manager">
+              <CustomerEditedDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/detailsOfMachineData/:techID/:projectId"
+          element={
+            <ProtectedRoute role="Manager">
+              <DetailsOfMachineData />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/project-attached-machine-details/edit-machine/:projectID/:machineID"
+          element={
+            <ProtectedRoute role="Manager">
+              <EditProjectMachineInfo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projectdata/:machineId/:projectId/:techID"
+          element={
+            <ProtectedRoute role="Manager">
+              <ProjectData />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ProjectReportData/:techId/:projectId"
+          element={
+            <ProtectedRoute role="Manager">
+              <ProjectReportData />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projectRequestedForApproval"
+          element={
+            <ProtectedRoute role="Manager">
+              <ProjectRequestedForApproval />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projectstatusdetails/:projectId"
+          element={
+            <ProtectedRoute role="Manager">
+              <ProjectStatusDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/showmanagerprofile"
+          element={
+            <ProtectedRoute role="Manager">
+              <ShowManagerProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/timesheetforapproval/:techId/:projectId"
+          element={
+            <ProtectedRoute role="Manager">
+              <TimeSheetForApproved />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/project-attached-machine-details/:projectID"
+          element={
+            <ProtectedRoute role="Manager">
+              <ViewProjectMachineInfo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/viewtechnicianprofile/:technicianID"
+          element={
+            <ProtectedRoute role="Manager">
+              <ViewTechnicianProfile />
+            </ProtectedRoute>
+          }
         />
       </Routes>
 
       {/*================================================Technician Routes==================================================== */}
+
       <Routes>
         <Route path="/ChangePassword" element={<ChangePassword />}></Route>
-        <Route path="/JobAssigned" element={<JobAssigned />}></Route>
-        <Route path="/JobClosed" element={<JobClosed />}></Route>
-        <Route path="/JobApproval" element={<JobEWaitingAprroval />}></Route>
         <Route path="/techLogin" element={<TechnicianLogin />}></Route>
 
-        <Route path="/techD" element={<TechnicianDashboard />}></Route>
+        <Route
+          path="/JobAssigned"
+          element={
+            <ProtectedRoute role="Technician">
+              <JobAssigned />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/JobClosed"
+          element={
+            <ProtectedRoute role="Technician">
+              <JobClosed />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/JobApproval"
+          element={
+            <ProtectedRoute role="Technician">
+              <JobEWaitingAprroval />
+            </ProtectedRoute>
+          }
+        ></Route>
+
+        <Route
+          path="/techD"
+          element={
+            <ProtectedRoute role="Technician">
+              <TechnicianDashboard />
+            </ProtectedRoute>
+          }
+        ></Route>
         <Route
           path="AssignMachineData/:projectID"
-          element={<AssignMachineData />}
+          element={
+            <ProtectedRoute role="Technician">
+              <AssignMachineData />{' '}
+            </ProtectedRoute>
+          }
         ></Route>
 
         <Route
           path="AssignProjectAttachments/:projectID"
-          element={<AssignprojectAttachments />}
+          element={
+            <ProtectedRoute role="Technician">
+              <AssignprojectAttachments />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="AssignReportData/:projectID/:machineID"
-          element={<AssignReportData />}
+          element={
+            <ProtectedRoute role="Technician">
+              <AssignReportData />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="AssignTimesheetData/:projectID"
-          element={<AssignTimesheetData />}
+          element={
+            <ProtectedRoute role="Technician">
+              <AssignTimesheetData />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="DeatilsodJobAssign/:projectID"
-          element={<DeatailofJobAssign />}
+          element={
+            <ProtectedRoute role="Technician">
+              <DeatailofJobAssign />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="DetailofJobwaiting/:projectID"
-          element={<DetailofJobwaiting />}
+          element={
+            <ProtectedRoute role="Technician">
+              <DetailofJobwaiting />
+            </ProtectedRoute>
+          }
         ></Route>
-
         <Route
           path="DetailsofJobClosed/:projectID"
-          element={<DetailofJobclosed />}
+          element={
+            <ProtectedRoute role="Technician">
+              <DetailofJobclosed />{' '}
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="TechnicianForgotPassword"
-          element={<TechnicianForgotPassword />}
+          element={
+            <ProtectedRoute role="Technician">
+              <TechnicianForgotPassword />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="WaitingMachineData/:projectID"
-          element={<WaitingMachineData />}
+          element={
+            <ProtectedRoute role="Technician">
+              <WaitingMachineData />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="WaitingReportData/:projectID/:machineID"
-          element={<WaitingReportData />}
+          element={
+            <ProtectedRoute role="Technician">
+              <WaitingReportData />{' '}
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="WaitingTimesheetData/:projectID"
-          element={<WaitingTimesheetData />}
+          element={
+            <ProtectedRoute role="Technician">
+              <WaitingTimesheetData />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="WaitingProjectAttachments/:projectID"
-          element={<WaitingProjectAttachment />}
+          element={
+            <ProtectedRoute role="Technician">
+              <WaitingProjectAttachment />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="/updateTechnicianprofile"
-          element={<UpdateTechincianprofile />}
+          element={
+            <ProtectedRoute role="Technician">
+              <UpdateTechincianprofile />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="CompleteMachineData/:projectID"
-          element={<CompleteMachineData />}
+          element={
+            <ProtectedRoute role="Technician">
+              <CompleteMachineData />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="CompleteReportData/:projectID/:machineID"
-          element={<CompleteReportData />}
+          element={
+            <ProtectedRoute role="Technician">
+              <CompleteReportData />{' '}
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="CompleteTimesheetData/:projectID"
-          element={<CompleteTimesheetData />}
+          element={
+            <ProtectedRoute role="Technician">
+              <CompleteTimesheetData />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="CompleteProjectAttachments/:projectID"
-          element={<CompleteProejctAttachment />}
+          element={
+            <ProtectedRoute role="Technician">
+              <CompleteProejctAttachment />
+            </ProtectedRoute>
+          }
         ></Route>
       </Routes>
-
-      {/* ===================================================================================== */}
-
-      {/* <Routes>
-        <Route path="/navbarmanager" element={<NavbarManager />}></Route>
-
-        <Route path="/timeSheetss" element={<TimeSheet />}></Route>
-      </Routes>
-
-      <Routes></Routes>
-
-      <Routes>
-        <Route path="/projectmanager" element={<ProjectManager />}></Route>
-
-        <Route path="/timeSheet" element={<TimesheetScreen />}></Route>
-        <Route path="/timeSheetEntry" element={<TimesheetEntry />}></Route>
-
-        <Route
-          path="/timeSheetForm"
-          element={<AddTimesheetEntryForm />}
-        ></Route>
-        <Route path="/showproject" element={<ShowCreatedProject />}></Route>
-        <Route path="projectlist" element={<ProjectList />}></Route>
-      </Routes> */}
     </React.Fragment>
   );
 }

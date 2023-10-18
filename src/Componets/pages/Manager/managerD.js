@@ -9,27 +9,15 @@ export default function ManagerDashboard() {
   const createCustomerHandler = () => {
     navigate('/customerlist');
   };
-  const AssignTechnician = () => {
-    navigate('/assignTech');
-  };
+
   const ManageProjectStatus = () => {
     navigate('/projectStatus');
   };
-  const ManageCustomerInfo = () => {
-    navigate('/manageCustomerInfo');
-  };
-  const ManageMachineInfo = () => {
-    navigate('/machinInfo');
-  };
+
   const createProject = () => {
     navigate('/createP');
   };
-  const timeSheetHandler = () => {
-    navigate('/timeSheet');
-  };
-  const showNewProject = () => {
-    navigate('/showproject');
-  };
+
   const manageTechnicians = () => {
     navigate('/managetechnician');
   };

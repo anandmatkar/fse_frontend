@@ -1,5 +1,4 @@
-import { clear } from '@testing-library/user-event/dist/clear';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -58,42 +57,13 @@ const OTPVerification = () => {
         console.log(response.status);
         if (response.status === 200) {
           // Check response status
-          toast.success('Successfully Verified Account', {
-            position: 'top-right',
-            autoClose: 2000, // Notification will close automatically after 2 seconds
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
+          toast.success('Successfully Verified Account');
           localStorage.clear();
           navigate(`/mangerLogin`);
         } else if (response.status === 404) {
-          // Check response status
-          // Handle error or display a message
-          console.error('This User Is Not Exits');
-
-          toast.error('Please enter valid OTP', {
-            position: 'top-right',
-            autoClose: 2000, // Notification will close automatically after 2 seconds
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
+          toast.error('Please enter valid OTP');
         } else if (response.status === 403) {
-          // Check response status
-          // Handle error or display a message
-          console.error('This User Is Not Exits');
-
-          toast.error('OTP is incorrect', {
-            position: 'top-right',
-            autoClose: 2000, // Notification will close automatically after 2 seconds
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
+          toast.error('OTP is incorrect');
         }
       })
       .catch((error) => {
@@ -136,16 +106,8 @@ const OTPVerification = () => {
                 ))}
               </div>
               {/* Display OTP validation error message */}
-              {otpError && <div className="error">{otpError}</div>}
-              <div className="text-center mt-5">
-                {/* <span className="d-block mobile-text">
-                  Didn't receive the code?
-                </span> */}
-                {/* <h6 className="m-2">
-                  <Link to="/Forgetpass">Forget Password</Link>
-                </h6> */}
-              </div>
-              {/* Form submit button */}
+              {otpError && <div className="error text-danger">{otpError}</div>}
+              <div className="text-center mt-5"></div>
               <div className="text-center mt-5">
                 <button
                   type="submit"
@@ -159,7 +121,6 @@ const OTPVerification = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };

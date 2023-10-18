@@ -9,6 +9,7 @@ import { TbReport } from 'react-icons/tb';
 import { FormControl, Container } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Manager_Base_Url } from '../../../Api/Manager_Api';
+import { toast } from 'react-toastify';
 
 const ProjectStatusDetails = () => {
   const navigate = useNavigate();
@@ -46,6 +47,43 @@ const ProjectStatusDetails = () => {
         console.error('Error fetching data:', error);
       });
   }, [projectId]);
+
+  const handleApprovedProject = async () => {
+    const token = Cookies.get('token');
+
+    try {
+      const response = await fetch(
+        `${Manager_Base_Url}completeProject?projectId=${projectId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        // Check the status of the response, not response.data.status
+        const data = await response.json(); // Parse the response JSON
+        if (data.success) {
+          toast.success(data.message);
+        } else {
+          toast.error(data.message); // Handle error response
+        }
+      } else {
+        // Handle non-200 status codes (e.g., 4xx or 5xx errors)
+        console.error('Error approving project:', response.statusText);
+      }
+
+      // Navigate only if the request was successful
+      if (response.status === 200) {
+        navigate('/projectStatus');
+      }
+    } catch (error) {
+      console.error('Error approving project:', error);
+    }
+  };
 
   const handleDeleteProject = async () => {
     const token = Cookies.get('token');
@@ -130,9 +168,22 @@ const ProjectStatusDetails = () => {
       <div className="job-progress mt-2">
         <div>
           <div className="d-flex float-end mt-2 p-2">
-            <button className="btn btn-danger" onClick={handleDeleteProject}>
-              Delete
-            </button>
+            <div className="d-flex justify-content-end me-2">
+              <div>
+                <button
+                  className="btn btn-success me-2"
+                  onClick={handleApprovedProject}
+                >
+                  Approved
+                </button>
+              </div>
+              <button
+                className="btn btn-danger me-2"
+                onClick={handleDeleteProject}
+              >
+                Delete
+              </button>
+            </div>
           </div>
           {project ? (
             <div className="mx-5">
@@ -183,7 +234,7 @@ const ProjectStatusDetails = () => {
                         <th>Scope</th>
                         <th>Start_date</th>
                         <th>End_date</th>
-                        <th>Tech Report</th>
+                        {/* <th>Tech Report</th> */}
                         <th>Time Sheet</th>
                         <th>Machine Details</th>
                       </tr>
@@ -205,7 +256,7 @@ const ProjectStatusDetails = () => {
                             <td>{job.start_date}</td>
                             <td>{job.end_date}</td>
 
-                            <td className="text-center">
+                            {/* <td className="text-center">
                               {technician.project_report_data &&
                               technician.project_report_data.length > 0 ? (
                                 <Link
@@ -216,7 +267,7 @@ const ProjectStatusDetails = () => {
                               ) : (
                                 'No Report'
                               )}
-                            </td>
+                            </td> */}
                             <td className="text-center">
                               {technician.timesheet_data &&
                               technician.timesheet_data.length > 0 ? (
@@ -232,7 +283,7 @@ const ProjectStatusDetails = () => {
                             <td className="text-center">
                               {technician.machine_data.length > 0 ? (
                                 <Link
-                                  to={`/detailsOfMachineData/${technician.machine_data[0].id}/${job.project_id}`}
+                                  to={`/detailsOfMachineData/${technician.id}/${job.project_id}`}
                                 >
                                   <BiSolidShow className="fs-3" />
                                 </Link>

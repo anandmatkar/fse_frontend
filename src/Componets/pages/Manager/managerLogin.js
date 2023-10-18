@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import AuthContext from '../../auth-context/auth-context';
-import { useState, useRef, useContext } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import Spinner from '../Common/Spinner';
 import { toast } from 'react-toastify';
@@ -13,10 +12,6 @@ function ManagerLogin() {
   const navigate = useNavigate();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-
-  // const confirmpasswordInputRef = useRef();
-
-  const authCtx = useContext(AuthContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
@@ -65,41 +60,18 @@ function ManagerLogin() {
       if (response.data.status === 200) {
         setIsLoading(false);
         Cookies.set('token', response.data.data.token, { expires: 1 });
-        localStorage.setItem('Name', response.data.data.name);
-        localStorage.setItem('Profile', response.data.data.avatar);
-
-        // Assume you receive an 'idToken' for authentication
-        const idToken = response.data.data.token;
-        console.log(idToken, 'data');
-
-        // You can set an arbitrary expiration time (e.g., 1 hour from now)
-        const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
-        localStorage.setItem('token', idToken);
-        console.log(idToken, 'id token');
-
-        authCtx.login(idToken, expirationTime.toISOString());
+        Cookies.set('Name', response.data.data.name);
+        Cookies.set('Profile', response.data.data.avatar);
 
         navigate('/manager');
 
         toast.success(response.data.message, {
-          position: 'top-right',
-          autoClose: 2000, // Notification will close automatically after 2 seconds
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
           onClose: () => {
             setIsLoading(false);
           },
         });
       } else {
         toast.error(response.data.message, {
-          position: 'top-right',
-          autoClose: 2000, // Notification will close automatically after 2 seconds
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
           onClose: () => {
             setIsLoading(false); // Hide the spinner after the toast is closed
           },
@@ -107,20 +79,21 @@ function ManagerLogin() {
       }
     } catch (error) {
       setIsLoading(false);
-      console.log(error.message);
+
       toast.error(error.message, {
-        position: 'top-right',
-        autoClose: 2000, // Notification will close automatically after 2 seconds
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
         onClose: () => {
           setIsLoading(false); // Hide the spinner after the toast is closed
         },
       });
     }
   };
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (token) {
+      navigate('/manager');
+    }
+  }, []);
 
   return (
     <>

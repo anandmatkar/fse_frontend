@@ -1,20 +1,28 @@
-import React, { useState } from "react";
-import * as formik from "formik";
-import * as yup from "yup";
-import { Card, Container, Button, Row, Col, Form, InputGroup } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
+import React, { useState } from 'react';
+import * as formik from 'formik';
+import * as yup from 'yup';
+import {
+  Card,
+  Container,
+  Button,
+  Row,
+  Col,
+  Form,
+  InputGroup,
+} from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import {
   Create_Technician_Api,
   Upload_Technician_Profile,
   Upload_Technician_Documents,
   Manager_Base_Url,
-} from "./../../../Api/Manager_Api";
+} from './../../../Api/Manager_Api';
 import { FiUploadCloud, FiDownload } from 'react-icons/fi';
-import axios from "axios";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
-import { useRef } from "react";
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import { useRef } from 'react';
 
 function CreateTechnician() {
   const { Formik } = formik;
@@ -25,21 +33,21 @@ function CreateTechnician() {
     surname: yup.string().required(),
     emailAddress: yup
       .string()
-      .required("Email is required")
+      .required('Email is required')
       .matches(
         /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
-        "Invalid email address"
+        'Invalid email address'
       ),
     password: yup
       .string()
-      .required("Password is required")
+      .required('Password is required')
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d).{8,}$/,
-        "Password must be at least 8 characters and contain both letters and numbers"
+        'Password must be at least 8 characters and contain both letters and numbers'
       ),
     phone: yup
       .string()
-      .matches(/^[0-9]{10}$/, "Phone number must be 10 digits")
+      .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits')
       .required(),
     nationality: yup.string().required(),
     qualification: yup.string().required(),
@@ -48,8 +56,8 @@ function CreateTechnician() {
     documents: yup.string(),
   });
 
-  const [selectedFile, setSelectedFile] = useState(""); // State to hold the selected file
-  const [profilePicPath, setProfilePicPath] = useState(""); // State to hold the profile picture path
+  const [selectedFile, setSelectedFile] = useState(''); // State to hold the selected file
+  const [profilePicPath, setProfilePicPath] = useState(''); // State to hold the profile picture path
   const [documentsPath, setDocumentsPath] = useState([]); // State to hold the documents path
   const fileInputRef = useRef(null); // Add this line to create a reference
 
@@ -59,7 +67,7 @@ function CreateTechnician() {
       const token = Cookies.get("token");
       
       if (!token) {
-        console.error("Token not found in localStorage.");
+        console.error('Token not found in localStorage.');
         return;
       }
       let config = {
@@ -81,19 +89,19 @@ function CreateTechnician() {
       );
       console.log(response.data);
       if (response.data.status === 201) {
-        navigate("/managetechnician");
+        navigate('/managetechnician');
         toast.success(response.data.message);
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
       console.log(error.message);
-      toast.error("Error creating technician. Please try again.");
+      toast.error('Error creating technician. Please try again.');
     }
   };
 
   const handleSubmit = (values, e) => {
-    console.log("Form Data:", values);
+    console.log('Form Data:', values);
     // console.log(selectedFile);
     createTechnician(values);
   };
@@ -104,9 +112,9 @@ function CreateTechnician() {
       const profileImage = e.target.files[0];
       console.log(profileImage);
 
-      const token = Cookies.get("token");
+      const token = Cookies.get('token');
       if (!token) {
-        console.error("Token not found in localStorage.");
+        console.error('Token not found in localStorage.');
         return;
       }
       let config = {
@@ -117,7 +125,7 @@ function CreateTechnician() {
       let fileData = new FormData();
 
       // Append the profile image to the FormData
-      fileData.append("image", profileImage);
+      fileData.append('image', profileImage);
 
       const response = await axios.post(
         Upload_Technician_Profile,
@@ -142,12 +150,12 @@ function CreateTechnician() {
 
     // Append each selected file to the FormData object
     for (let i = 0; i < selectedFiles.length; i++) {
-      docFormData.append("files", selectedFiles[i]);
+      docFormData.append('files', selectedFiles[i]);
     }
 
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     if (!token) {
-      console.error("Token not found in localStorage.");
+      console.error('Token not found in localStorage.');
       return;
     }
     let config = {
@@ -178,9 +186,9 @@ function CreateTechnician() {
   const handleExcelFileChange = async (e) => {
     const selectedExcelFile = e.target.files[0];
 
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     if (!token) {
-      console.error("Token not found in localStorage.");
+      console.error('Token not found in localStorage.');
       return;
     }
     let config = {
@@ -192,8 +200,8 @@ function CreateTechnician() {
     if (selectedExcelFile) {
       let excelFileData = new FormData();
       // Append the profile image to the FormData
-      excelFileData.append("file", selectedExcelFile);
-      
+      excelFileData.append('file', selectedExcelFile);
+
       console.log(excelFileData);
 
       try {
@@ -202,28 +210,27 @@ function CreateTechnician() {
           excelFileData,
           config
         );
-  
+
         if (response.data.status === 201) {
-          navigate("/managetechnician");
+          navigate('/managetechnician');
           toast.success(response.data.message);
           console.log(response.data.data);
         } else {
           toast.error(response.data.message);
-        }       
+        }
       } catch (error) {
         console.log(error.message);
         toast.error(error.message);
       }
-      
     }
   };
 
   const handleDownloadTemplate = () => {
-    const downloadLink = "http://15.206.93.145/uploads/exampleTemplate/tech_example.xlsx";
-    const newTab = window.open(downloadLink, "_blank");
+    const downloadLink =
+      'http://15.206.93.145/uploads/exampleTemplate/tech_example.xlsx';
+    const newTab = window.open(downloadLink, '_blank');
     newTab.focus();
   };
-  
 
   return (
     <React.Fragment>
@@ -242,7 +249,7 @@ function CreateTechnician() {
             <input
               ref={fileInputRef}
               type="file"
-              style={{ display: "none" }}
+              style={{ display: 'none' }}
               accept=".xlsx, .xls" // Specify allowed file types
               onChange={handleExcelFileChange}
             />
@@ -250,36 +257,36 @@ function CreateTechnician() {
             <Button
               variant="success"
               className="w-100 my-2"
-              onClick={() => fileInputRef.current.click()}>
-                Import Excel Sheet <FiUploadCloud className="ms-2 fs-4"/>
+              onClick={() => fileInputRef.current.click()}
+            >
+              Import Excel Sheet <FiUploadCloud className="ms-2 fs-4" />
             </Button>
           </Col>
 
           <Col lg={3} md={12}>
-          <Button
-            className="w-100 my-2"
-            variant="success"
-            onClick={handleDownloadTemplate}
-          >
-            Download Template <FiDownload className="ms-2 fs-4" />
-          </Button>
-
+            <Button
+              className="w-100 my-2"
+              variant="success"
+              onClick={handleDownloadTemplate}
+            >
+              Download Template <FiDownload className="ms-2 fs-4" />
+            </Button>
           </Col>
         </Row>
-        
+
         <Formik
           validationSchema={schema}
           onSubmit={handleSubmit}
           initialValues={{
-            name: "",
-            surname: "",
-            emailAddress: "",
-            password: "",
-            phone: "",
-            nationality: "",
-            qualification: "",
-            level: "",
-            profilePic: "",
+            name: '',
+            surname: '',
+            emailAddress: '',
+            password: '',
+            phone: '',
+            nationality: '',
+            qualification: '',
+            level: '',
+            profilePic: '',
           }}
         >
           {({ handleSubmit, handleChange, values, touched, errors }) => (
