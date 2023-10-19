@@ -131,7 +131,7 @@ function ManagerLogin() {
                 Enter Your Details And Start Your Journey With Us
               </h5>
             </div>
-            <div className="col-md-8 col-xs-12 col-sm-12 login_form">
+            <div className="col-md-8 col-xs-12 col-sm-12 login_form p-2">
               <h2 style={{ fontSize: '40px', fontWeight: '500' }}>
                 Manager Login
               </h2>

@@ -211,7 +211,7 @@ function Reset() {
       <Navbar />
 
       <div
-        className="container d-flex flex-column "
+        className="container d-flex flex-column"
         style={{ marginTop: '90px' }}
       >
         <div className="row align-items-center justify-content-center g-0 ">
