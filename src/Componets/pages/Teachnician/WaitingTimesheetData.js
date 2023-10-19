@@ -65,16 +65,20 @@ const WaitingTimesheetData = () => {
                                     {project.technician_data.flatMap(technician => 
                                         technician.timesheet_data.map(timesheet => (
                                             <tr key={timesheet.id}>
-                                                <td>{timesheet.comments}</td>
-                                                <td>{timesheet.start_time}</td>
-                                                <td>{timesheet.end_time}</td>
-                                                <td>{timesheet.date}</td>
+                                                <td>{timesheet.comments || 'No data'}</td>
+                                                <td>{timesheet.start_time || 'No data'}</td>
+                                                <td>{timesheet.end_time || 'No data'}</td>
+                                                <td>{timesheet.date || 'No data'}</td>
                                                 <td>
-                                                    {timesheet.timesheet_attach_data && timesheet.timesheet_attach_data.map(attachment => (
-                                                        <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
-                                                            <AiFillProfile size="30px" color="black" />
-                                                        </a>
-                                                    ))}
+                                                {timesheet.timesheet_attach_data && timesheet.timesheet_attach_data.length > 0 ? 
+                              timesheet.timesheet_attach_data.map(attachment => (
+                                  <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer" title={attachment.file_path.split('/').pop()}>
+                                      <AiFillProfile size="30px" color="black" />
+                                  </a>
+                              )) 
+                              : 
+                              'No data'
+                          }
                                                 </td>
                                             </tr>
                                         ))
