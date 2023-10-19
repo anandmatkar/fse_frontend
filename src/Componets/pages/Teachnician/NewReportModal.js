@@ -128,12 +128,12 @@ const handleSubmit = async (e) => {
 
                     <div className='form-group'>
                         <label htmlFor="duration">Duration:</label>
-                        <select className='form-control'  name="duration" value={formData.duration}   onChange={handleInputChange} 
-                            required >
-                            {[...Array(10).keys()].map(i => 
-                                <option value={i + 1} key={i}>{i + 1} hr</option>
-                            )}
-                        </select>
+                        <select className='form-control' name="duration" value={formData.duration} onChange={handleInputChange} required>
+                          <option value="" hidden>Select Duration</option>
+                          {[...Array(10).keys()].map(i => 
+                              <option value={i + 1} key={i}>{i + 1} hr</option>
+                          )}
+                      </select>
                     </div>
 
           <div className='form-group'>

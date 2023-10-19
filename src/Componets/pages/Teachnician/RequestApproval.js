@@ -5,7 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Technician_ReportRequestApproval } from '../../../Api/Technicians_Api';
 
-const RequestApproval = ({projectID}) => {
+const RequestApproval = ({projectID ,  onRequestSent }) => {
     const [showApprovalModal, setShowApprovalModal] = useState(false);
     const token = Cookies.get('token');
 
@@ -22,7 +22,7 @@ const RequestApproval = ({projectID}) => {
             if (!data.success) {
                 throw new Error(data.message);
             }
-
+            onRequestSent();
             toast.success("Report sent approval successfully!");
             setShowApprovalModal(false);
         } catch (error) {

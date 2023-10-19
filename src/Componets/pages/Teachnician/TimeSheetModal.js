@@ -158,23 +158,26 @@ const handleSubmit = async (e) => {
             <div className="form-group">
             <label htmlFor="start_time">Start Time:</label>
             <select className="form-control" name="start_time" onChange={handleInputChange} required>
-                {timeSlots.map(slot => <option key={slot} value={slot}>{slot}</option>)}
-            </select>
+    <option value="" disabled selected>Select Time</option>
+    {timeSlots.map(slot => <option key={slot} value={slot}>{slot}</option>)}
+</select>
         </div>
 
         <div className="form-group">
             <label htmlFor="end_time">End Time:</label>
             <select className="form-control" name="end_time" onChange={handleInputChange} required>
-                {timeSlots.map(slot => <option key={slot} value={slot}>{slot}</option>)}
-            </select>
+    <option value="" disabled selected>Select Time</option>
+    {timeSlots.map(slot => <option key={slot} value={slot}>{slot}</option>)}
+</select>
         </div>
         <div className="form-group">
             <label htmlFor="lunch_time">Lunch Time:</label>
             <select className="form-control" name="lunch_time" onChange={handleInputChange} required>
-                <option value="30 minutes">30 minutes</option>
-                <option value="45 minutes">45 minutes</option>
-                <option value="1 hour">1 hour</option>
-            </select>
+    <option value="" disabled selected>Select Time</option>
+    <option value="30 minutes">30 minutes</option>
+    <option value="45 minutes">45 minutes</option>
+    <option value="1 hour">1 hour</option>
+</select>
         </div>
     
       <div className="form-group">
