@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { Table, Container, Button } from 'react-bootstrap';
 import axios from 'axios';
 import Spinner from '../Common/Spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Base_Url } from '../../../Api/Base_Url';
+import LayoutTech from "../../Layout/Layout3";
 
 function TechnicianForgotPassword() {
     const NewPassRef = useRef();
@@ -216,12 +218,17 @@ const Reset = async  () => {
 
   return (
     <React.Fragment>
+        <LayoutTech>
     {/* <div className={classes.h1}>
         <h1>FSE Report</h1>
     </div> */}
-
+  <Container className="container-xxl py-5">
+                <div className="text-center mb-5">
+                    <h6 className="section-title bg-white text-center text-primary px-3">Forgot password</h6>
+                    <h1>Recover Your Password</h1>
+                </div>
     <div className="container d-flex flex-column">
-        <div className="row align-items-center justify-content-center min-vh-100 g-0">
+        <div className="row align-items-center justify-content-center mt-3 g-0">
             <div className="col-12 col-md-8 col-lg-4 border-top border-3 border-success">
                 <div className="card shadow-sm">
                     <div className="card-body">
@@ -328,7 +335,8 @@ const Reset = async  () => {
             </div>
         </div>
     </div>
-    <ToastContainer />
+    </Container>
+    </LayoutTech>
 </React.Fragment>
 
   )

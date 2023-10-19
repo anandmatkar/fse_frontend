@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { Technician_ChnagePassword } from '../../../Api/Technicians_Api';
+import Layout4 from "../../Layout/Layout4";
 
 export default function ChangePassword() {
   const [oldPassword, setOldPassword] = useState('');
@@ -92,9 +93,15 @@ export default function ChangePassword() {
   };
 
   return (
+    <Layout4>
+    <Container className="container-xxl py-5">
+              <div className="text-center mb-5">
+                  <h6 className="section-title bg-white text-center text-primary px-3">Remember your pasword!</h6>
+                  <h1>password recover</h1>
+              </div>
     
               <div className="container d-flex flex-column">
-        <div className="row align-items-center justify-content-center min-vh-100 g-0">
+        <div className="row align-items-center justify-content-center mt-3 g-0">
             <div className="col-12 col-md-8 col-lg-4 border-top border-3 border-success">
                 <div className="card shadow-sm">
                     <div className="card-body">
@@ -162,5 +169,7 @@ export default function ChangePassword() {
             </div>
         </div>
     </div>
+    </Container>
+    </Layout4>
   );
 }

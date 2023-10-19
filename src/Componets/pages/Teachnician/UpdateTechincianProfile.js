@@ -17,6 +17,7 @@ import './UpdateTechincianProfile.css'
 import { NavLink } from "react-router-dom";
 import { Base_Url } from '../../../Api/Base_Url';
 import { Technician_upload_Profile_Pic } from '../../../Api/Technicians_Api';
+import Layout4 from "../../Layout/Layout4";
 
 
 function UpdateTechincianProfile() {
@@ -276,6 +277,12 @@ useEffect(() => {
 
   return (
     <React.Fragment>
+       <Layout4>
+      <Container className="container-xxl py-5">
+                <div className="text-center mb-5">
+                    <h6 className="section-title bg-white text-center text-primary px-3">Profile view</h6>
+                    <h1>User Profile Update</h1>
+                </div>
     <Container className='my-3'>
     {/* <Card.Header className='fs-3 fw-bold text-center my-3'>Edit Technician Profile</Card.Header> */}
     <div className="d-flex justify-content-between mb-4">
@@ -433,8 +440,9 @@ useEffect(() => {
 
             </Row>
         </Card>
-        <ToastContainer/>
+      </Container>
     </Container>
+    </Layout4>
 </React.Fragment>
 
   );

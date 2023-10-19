@@ -408,12 +408,9 @@ function App() {
         ></Route>
         <Route
           path="TechnicianForgotPassword"
-          element={
-            <ProtectedRoute role="Technician">
-              <TechnicianForgotPassword />
-            </ProtectedRoute>
-          }
+          element={ <TechnicianForgotPassword /> }
         ></Route>
+        
         <Route
           path="WaitingMachineData/:projectID"
           element={
