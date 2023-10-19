@@ -77,6 +77,10 @@ function ProtectedRoute({ role, children }) {
     return <Navigate to="/" />;
   }
 
+  if (userRole !== role) {
+    return <Navigate to="/" />;
+  }
+
   return children;
 }
 
@@ -121,69 +125,8 @@ function App() {
       </Routes>
 
       {/* ===============================================MANAGER====================================================================== */}
-      {/* 
-      <Routes> */}
-      {/* <Route path="/managerL" element={<ManagerDashboard />}></Route> */}
-      {/* <Route path="/register" element={<RegistrationPage />}></Route>
-        <Route path="/mangerLogin" element={<ManagerLogin />}></Route>
-        <Route path="/completedprojects" element={<CompletedProjects />} />
-        <Route path="/createCustomer" element={<CreateCustomer />}></Route>
-        <Route path="/createP" element={<NewProjectScreen />}></Route>
-        <Route path="/createtechnician" element={<CreateTechnician />} />
-        <Route path="/newaccount" element={<NewAccount />}></Route>
-        <Route path="/customerlist" element={<CustomerList />}></Route>
-        <Route path="/reset" element={<Reset />}></Route>
-        <Route path="/projectprogress" element={<JobProgress />}></Route>
-        <Route path="/manager" element={<ManagerDashboard />}></Route>
-        <Route path="/managetechnician" element={<ManageTechnician />} />
-        <Route path="/projectStatus" element={<ProjectStatus />}></Route>
-        <Route path="/verifyManager" element={<Userverified />}></Route>
-        <Route path="/managemachineinfo" element={<ViewMachineInfo />} />
-        <Route
-          path="/customerediteddetails/:customerID"
-          element={<CustomerEditedDetails />}
-        ></Route>
-        <Route
-          path="/detailsOfMachineData/:machineId/:projectId"
-          element={<DetailsOfMachineData />}
-        />
-        <Route
-          path="/project-attached-machine-details/edit-machine/:projectID/:machineID"
-          element={<EditProjectMachineInfo />}
-        />
-        <Route
-          path="/ProjectReportData/:techId/:projectId"
-          element={<ProjectReportData />}
-        />
-        <Route
-          path="/projectRequestedForApproval"
-          element={<ProjectRequestedForApproval />}
-        />
-        <Route
-          path="/projectstatusdetails/:projectId"
-          element={<ProjectStatusDetails />}
-        ></Route>
-        <Route
-          path="/showmanagerprofile"
-          element={<ShowManagerProfile />}
-        ></Route>
-        <Route
-          path="/timesheetforapproval/:techId/:projectId"
-          element={<TimeSheetForApproved />}
-        />
-        <Route
-          path="/project-attached-machine-details/:projectID"
-          element={<ViewProjectMachineInfo />}
-        />
-        <Route
-          path="/viewtechnicianprofile/:technicianID"
-          element={<ViewTechnicianProfile />}
-        /> */}
-
-      {/* ===============================================MANAGER====================================================================== */}
 
       <Routes>
-        {/* <Route path="/managerL" element={<ManagerDashboard />}></Route> */}
         <Route path="/register" element={<RegistrationPage />}></Route>
         <Route path="/mangerLogin" element={<ManagerLogin />}></Route>
         <Route path="/verifyManager" element={<Userverified />} />

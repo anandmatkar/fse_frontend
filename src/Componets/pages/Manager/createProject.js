@@ -13,7 +13,6 @@ import {
   Customer_List_Api,
 } from './../../../Api/Manager_Api';
 import Select from 'react-select';
-// import 'react-select/dist/react-select.css';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { MdOutlineDelete } from 'react-icons/md';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
@@ -136,20 +135,12 @@ function CreateProject() {
       });
   }, []);
 
-  // const handleTechCheckboxChange = (event, machineIndex) => {
-  //   const techId = event.target.value;
-  //   const updatedMachineDetails = [...machineDetails];
-  //   if (event.target.checked) {
-  //     updatedMachineDetails[machineIndex].techIds.push(techId);
-  //   } else {
-  //     updatedMachineDetails[machineIndex].techIds = updatedMachineDetails[
-  //       machineIndex
-  //     ].techIds.filter((id) => id !== techId);
-  //   }
-  //   setMachineDetails(updatedMachineDetails);
-  // };
-
   const handleTechChange = (selectedOptions, machineIndex) => {
+    if (selectedOptions.length > 10) {
+      toast.error('You can only select a maximum of 10 Technicians.');
+      return; // Don't update the state if more than 10 technicians are selected
+    }
+
     const techIds = selectedOptions.map((option) => option.value);
 
     const updatedMachineDetails = [...machineDetails];
@@ -246,6 +237,7 @@ function CreateProject() {
     const isFormValid = validateForm();
 
     if (isFormValid) {
+      setIsLoading(true);
       const finalMachineDetails = [...machineDetails, ...addedMachineDetails];
 
       const projectData = {
@@ -263,7 +255,7 @@ function CreateProject() {
 
         if (response.data.status === 200) {
           toast.success('Project created successfully');
-          navigate('/manager');
+          navigate('/projectStatus');
         } else {
           toast.error('Error creating project');
           console.error(
@@ -274,17 +266,19 @@ function CreateProject() {
       } catch (error) {
         toast.error('An error occurred while creating the project');
         console.error('API Error:', error);
+      } finally {
+        setIsLoading(false); // Set isLoading back to false after the API request is complete
       }
     }
   };
 
-  if (isLoading) {
-    return (
-      <div>
-        <Spinner />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div>
+  //       <Spinner />
+  //     </div>
+  //   );
+  // }
 
   const removeMachineDetail = (index) => {
     if (index > 0) {
@@ -299,6 +293,7 @@ function CreateProject() {
   return (
     <>
       <NavbarManagerDashboard />
+
       <div class="container newproject">
         <header class="headernewproject">
           <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
@@ -308,370 +303,354 @@ function CreateProject() {
             <h1 className="mb-5">Create Project</h1>
           </div>
         </header>
-        <div class="form-wrap newprojectform">
-          <form onSubmit={handleSubmit}>
-            <div class="row colrow">
-              <div class="col-md-4">
-                <div class="form-group formgroupinput">
-                  <label htmlFor="customer" className="labeltag">
-                    Customer
-                  </label>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <div class="form-wrap newprojectform">
+            <form onSubmit={handleSubmit}>
+              <div class="row colrow">
+                <div class="col-md-4">
+                  <div class="form-group formgroupinput">
+                    <label htmlFor="customer" className="labeltag">
+                      Customer
+                    </label>
 
-                  <select
-                    id="customerId"
-                    class="form-control formcontrolinput"
-                    value={customerId}
-                    onChange={(event) => setCustomerId(event.target.value)}
-                  >
-                    <option disabled selected value="">
-                      Select Customer
-                    </option>
-                    {customers.map((customer, index) => (
-                      <option key={index} value={customer.id}>
-                        {customer.customer_name}
+                    <select
+                      id="customerId"
+                      class="form-control formcontrolinput"
+                      value={customerId}
+                      onChange={(event) => setCustomerId(event.target.value)}
+                    >
+                      <option disabled selected value="">
+                        Select Customer
                       </option>
-                    ))}
-                  </select>
-                  {errors.customerId && (
-                    <p className="error-message text-danger">
-                      {errors.customerId}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group formgroup">
-                  <label htmlFor="projectType" className="labeltag">
-                    Project Type
-                  </label>
-                  <select
-                    name="projectType"
-                    id="projectType"
-                    class="form-control formcontrolinput"
-                    value={projectType}
-                    onChange={(event) => setProjectType(event.target.value)}
-                  >
-                    <option value="" disabled>
-                      Select Project Type
-                    </option>
-                    <option value="Change over part">Change over part</option>
-                    <option value="Overhaul">Overhaul</option>
-                    <option value="Line installation">Line installation</option>
-                    <option value="Start up">Start up</option>
-                    <option value="Commissioning machine">
-                      Commissioning machine
-                    </option>
-                  </select>
-                  {errors.projectType && (
-                    <p className="error-message text-danger">
-                      {errors.projectType}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group formgroup">
-                  <label htmlFor="projectDescription" className="labeltag">
-                    Project description
-                  </label>
-                  <input
-                    type="text"
-                    name="description"
-                    id="description"
-                    value={description}
-                    onChange={(event) => setDescription(event.target.value)}
-                    placeholder="Project description"
-                    class="form-control formcontrolinput"
-                  />
-                  {errors.description && (
-                    <p className="error-message text-danger">
-                      {errors.description}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div class="row colrow">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label htmlFor="startDate" className="labeltag">
-                    Start Date
-                  </label>
-                  <input
-                    type="date"
-                    name="startDate"
-                    id="startDate"
-                    min={getCurrentDate()}
-                    value={startDate}
-                    onChange={(event) => setStartDate(event.target.value)}
-                    class="form-control formcontrolinput"
-                  />
-                  {errors.startDate && (
-                    <p className="error-message text-danger">
-                      {errors.startDate}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group formgroup">
-                  <label htmlFor="endDate" className="labeltag">
-                    End Date
-                  </label>
-                  <input
-                    type="date"
-                    name="endDate"
-                    id="endDate"
-                    min={startDate}
-                    value={endDate}
-                    onChange={(event) => setEndDate(event.target.value)}
-                    class="form-control formcontrolinput"
-                  />
-                  {errors.endDate && (
-                    <p className="error-message text-danger">
-                      {errors.endDate}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div className="form-group formgroup col-md-4">
-                <label htmlFor="projectAttach" className="labeltag">
-                  Project Documents
-                </label>
-                <input
-                  type="file"
-                  className={`form-control formcontrolinput ${
-                    errors.projectAttach ? 'is-invalid' : ''
-                  }`}
-                  multiple
-                  onChange={handleProjectAttachChange}
-                />
-                {errors.projectAttach && (
-                  <p className="error-message text-danger">
-                    {errors.projectAttach}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="col-12">
-              {errors.machineDetails && (
-                <p className="error-message text-danger">
-                  {errors.machineDetails}
-                </p>
-              )}
-            </div>
-
-            {machineDetails.map((machine, index) => (
-              <div key={index}>
-                <div class="row p-2 colrow">
-                  <div className="col-12">
-                    {errors.machineDetails && (
+                      {customers.map((customer, index) => (
+                        <option key={index} value={customer.id}>
+                          {customer.customer_name}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.customerId && (
                       <p className="error-message text-danger">
-                        {errors.machineDetails}
+                        {errors.customerId}
                       </p>
                     )}
                   </div>
-                  <div class="col-md-4">
-                    <div class="form-group formgroup">
-                      <label htmlFor="MachineType" className="labeltag">
-                        Machine Type
-                      </label>
-                      <input
-                        type="text"
-                        name="MachineType"
-                        value={machine.MachineType}
-                        onChange={(event) =>
-                          handleMachineDetailChange(event, index, 'MachineType')
-                        }
-                        placeholder="Machine type"
-                        class="form-control formcontrolinput"
-                      />
-                    </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group formgroup">
+                    <label htmlFor="projectType" className="labeltag">
+                      Project Type
+                    </label>
+                    <select
+                      name="projectType"
+                      id="projectType"
+                      class="form-control formcontrolinput"
+                      value={projectType}
+                      onChange={(event) => setProjectType(event.target.value)}
+                    >
+                      <option value="" disabled>
+                        Select Project Type
+                      </option>
+                      <option value="Change over part">Change over part</option>
+                      <option value="Overhaul">Overhaul</option>
+                      <option value="Line installation">
+                        Line installation
+                      </option>
+                      <option value="Start up">Start up</option>
+                      <option value="Commissioning machine">
+                        Commissioning machine
+                      </option>
+                    </select>
+                    {errors.projectType && (
+                      <p className="error-message text-danger">
+                        {errors.projectType}
+                      </p>
+                    )}
                   </div>
-                  <div class="col-md-4">
-                    <div class="form-group formgroup">
-                      <label htmlFor="MachineSerial" className="labeltag">
-                        Serial Number
-                      </label>
-                      <input
-                        type="text"
-                        name="MachineSerial"
-                        value={machine.MachineSerial}
-                        onChange={(event) =>
-                          handleMachineDetailChange(
-                            event,
-                            index,
-                            'MachineSerial'
-                          )
-                        }
-                        placeholder="Machine Serial number"
-                        class="form-control formcontrolinput"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group formgroup">
-                      <label htmlFor="hourCount" className="labeltag">
-                        Hour Count
-                      </label>
-                      <input
-                        type="text"
-                        name="hourCount"
-                        value={machine.hourCount}
-                        onChange={(event) =>
-                          handleMachineDetailChange(event, index, 'hourCount')
-                        }
-                        placeholder="Hour Count"
-                        class="form-control formcontrolinput"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group formgroup">
-                      <label htmlFor="nomSpeed" className="labeltag">
-                        Nominal Speed
-                      </label>
-                      <input
-                        type="text"
-                        name="nomSpeed"
-                        value={machine.nomSpeed}
-                        onChange={(event) =>
-                          handleMachineDetailChange(event, index, 'nomSpeed')
-                        }
-                        placeholder="Nominal Speed"
-                        class="form-control formcontrolinput"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group formgroup">
-                      <label htmlFor="actSpeed" className="labeltag">
-                        Actual Speed
-                      </label>
-                      <input
-                        type="text"
-                        name="actSpeed"
-                        value={machine.actSpeed}
-                        onChange={(event) =>
-                          handleMachineDetailChange(event, index, 'actSpeed')
-                        }
-                        placeholder="Actual Speed"
-                        class="form-control formcontrolinput"
-                      />
-                    </div>
-                  </div>
-                  {/* <div class="col-md-4">
-                    <div class="form-group formgroup">
-                      <label htmlFor="techIds" className="labeltag">
-                        Technician
-                      </label>
-                      <div className="d-flex flex-wrap">
-                        {technicians.map((technician, techIndex) => (
-                          <div key={techIndex} className="form-check">
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              id={`techCheckbox_${index}_${techIndex}`}
-                              value={technician.id}
-                              onChange={(event) =>
-                                handleTechCheckboxChange(event, index)
-                              }
-                              checked={machine.techIds.includes(technician.id)}
-                            />
-                            <label
-                              className="form-check-label me-2"
-                              htmlFor={`techCheckbox_${index}_${techIndex}`}
-                            >
-                              {technician.name}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div> */}
+                </div>
 
-                  <div className="col-md-4">
-                    <div className="form-group formgroup">
-                      <label htmlFor={`techIds_${index}`} className="labeltag">
-                        Technician
-                      </label>
-                      <Select
-                        isMulti
-                        name={`techIds_${index}`}
-                        options={technicians.map((technician) => ({
-                          value: technician.id,
-                          label: technician.name,
-                        }))}
-                        onChange={(selectedOptions) =>
-                          handleTechChange(selectedOptions, index)
-                        }
-                        value={technicians
-                          .filter((technician) =>
-                            machine.techIds.includes(technician.id)
-                          )
-                          .map((technician) => ({
-                            value: technician.id,
-                            label: technician.name,
-                          }))}
-                      />
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="form-group formgroup">
-                      <label
-                        htmlFor={`machineAttach_${index}`}
-                        className="labeltag"
-                      >
-                        Machine Attachments
-                      </label>
-                      <input
-                        type="file"
-                        class="form-control formcontrolinput"
-                        multiple
-                        onChange={(event) =>
-                          handleMachineDocuments(event, index)
-                        }
-                      />
-                    </div>
+                <div class="col-md-4">
+                  <div class="form-group formgroup">
+                    <label htmlFor="projectDescription" className="labeltag">
+                      Project description
+                    </label>
+                    <input
+                      type="text"
+                      name="description"
+                      id="description"
+                      value={description}
+                      onChange={(event) => setDescription(event.target.value)}
+                      placeholder="Project description"
+                      class="form-control formcontrolinput"
+                    />
+                    {errors.description && (
+                      <p className="error-message text-danger">
+                        {errors.description}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
-            ))}
-            <div className="d-flex justify-content-between">
-              <div>
-                <AiOutlinePlusCircle
-                  color="black"
-                  className="border border-0 btn fs-1  btn-success"
-                  onClick={addMachineDetail}
-                />{' '}
-                Add Machine Details
-              </div>
-              <div>
-                {machineDetails.length > 1 && (
-                  <>
-                    <MdOutlineDelete
-                      color="black"
-                      className="border border-0 btn fs-1 btn-danger"
-                      onClick={() =>
-                        removeMachineDetail(machineDetails.length - 1)
-                      }
+
+              <div class="row colrow">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label htmlFor="startDate" className="labeltag">
+                      Start Date
+                    </label>
+                    <input
+                      type="date"
+                      name="startDate"
+                      id="startDate"
+                      min={getCurrentDate()}
+                      value={startDate}
+                      onChange={(event) => setStartDate(event.target.value)}
+                      class="form-control formcontrolinput"
                     />
-                    Remove Machine
-                  </>
+                    {errors.startDate && (
+                      <p className="error-message text-danger">
+                        {errors.startDate}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group formgroup">
+                    <label htmlFor="endDate" className="labeltag">
+                      End Date
+                    </label>
+                    <input
+                      type="date"
+                      name="endDate"
+                      id="endDate"
+                      min={startDate}
+                      value={endDate}
+                      onChange={(event) => setEndDate(event.target.value)}
+                      class="form-control formcontrolinput"
+                    />
+                    {errors.endDate && (
+                      <p className="error-message text-danger">
+                        {errors.endDate}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="form-group formgroup col-md-4">
+                  <label htmlFor="projectAttach" className="labeltag">
+                    Project Documents
+                  </label>
+                  <input
+                    type="file"
+                    className={`form-control formcontrolinput ${
+                      errors.projectAttach ? 'is-invalid' : ''
+                    }`}
+                    multiple
+                    onChange={handleProjectAttachChange}
+                  />
+                  {errors.projectAttach && (
+                    <p className="error-message text-danger">
+                      {errors.projectAttach}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="col-12">
+                {errors.machineDetails && (
+                  <p className="error-message text-danger">
+                    {errors.machineDetails}
+                  </p>
                 )}
               </div>
-            </div>
 
-            <div class="col-12 d-flex justify-content-end">
-              <button className="btn btn-dark buttonFocus mt-2 p-2 fs-5">
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
+              {machineDetails.map((machine, index) => (
+                <div key={index}>
+                  <div class="row p-2 colrow">
+                    <div className="col-12">
+                      {errors.machineDetails && (
+                        <p className="error-message text-danger">
+                          {errors.machineDetails}
+                        </p>
+                      )}
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group formgroup">
+                        <label htmlFor="MachineType" className="labeltag">
+                          Machine Type
+                        </label>
+                        <input
+                          type="text"
+                          name="MachineType"
+                          value={machine.MachineType}
+                          onChange={(event) =>
+                            handleMachineDetailChange(
+                              event,
+                              index,
+                              'MachineType'
+                            )
+                          }
+                          placeholder="Machine type"
+                          class="form-control formcontrolinput"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group formgroup">
+                        <label htmlFor="MachineSerial" className="labeltag">
+                          Serial Number
+                        </label>
+                        <input
+                          type="text"
+                          name="MachineSerial"
+                          value={machine.MachineSerial}
+                          onChange={(event) =>
+                            handleMachineDetailChange(
+                              event,
+                              index,
+                              'MachineSerial'
+                            )
+                          }
+                          placeholder="Machine Serial number"
+                          class="form-control formcontrolinput"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group formgroup">
+                        <label htmlFor="hourCount" className="labeltag">
+                          Hour Count
+                        </label>
+                        <input
+                          type="text"
+                          name="hourCount"
+                          value={machine.hourCount}
+                          onChange={(event) =>
+                            handleMachineDetailChange(event, index, 'hourCount')
+                          }
+                          placeholder="Hour Count"
+                          class="form-control formcontrolinput"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group formgroup">
+                        <label htmlFor="nomSpeed" className="labeltag">
+                          Nominal Speed
+                        </label>
+                        <input
+                          type="text"
+                          name="nomSpeed"
+                          value={machine.nomSpeed}
+                          onChange={(event) =>
+                            handleMachineDetailChange(event, index, 'nomSpeed')
+                          }
+                          placeholder="Nominal Speed"
+                          class="form-control formcontrolinput"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group formgroup">
+                        <label htmlFor="actSpeed" className="labeltag">
+                          Actual Speed
+                        </label>
+                        <input
+                          type="text"
+                          name="actSpeed"
+                          value={machine.actSpeed}
+                          onChange={(event) =>
+                            handleMachineDetailChange(event, index, 'actSpeed')
+                          }
+                          placeholder="Actual Speed"
+                          class="form-control formcontrolinput"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-md-4">
+                      <div className="form-group formgroup">
+                        <label
+                          htmlFor={`techIds_${index}`}
+                          className="labeltag"
+                        >
+                          Technician
+                        </label>
+                        <Select
+                          isMulti
+                          name={`techIds_${index}`}
+                          options={technicians.map((technician) => ({
+                            value: technician.id,
+                            label: technician.name,
+                          }))}
+                          onChange={(selectedOptions) =>
+                            handleTechChange(selectedOptions, index)
+                          }
+                          value={technicians
+                            .filter((technician) =>
+                              machine.techIds.includes(technician.id)
+                            )
+                            .map((technician) => ({
+                              value: technician.id,
+                              label: technician.name,
+                            }))}
+                        />
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="form-group formgroup">
+                        <label
+                          htmlFor={`machineAttach_${index}`}
+                          className="labeltag"
+                        >
+                          Machine Attachments
+                        </label>
+                        <input
+                          type="file"
+                          class="form-control formcontrolinput"
+                          multiple
+                          onChange={(event) =>
+                            handleMachineDocuments(event, index)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div className="d-flex justify-content-between">
+                <div>
+                  <AiOutlinePlusCircle
+                    color="black"
+                    className="border border-0 btn fs-1  btn-success"
+                    onClick={addMachineDetail}
+                  />{' '}
+                  Add Machine Details
+                </div>
+                <div>
+                  {machineDetails.length > 1 && (
+                    <>
+                      <MdOutlineDelete
+                        color="black"
+                        className="border border-0 btn fs-1 btn-danger"
+                        onClick={() =>
+                          removeMachineDetail(machineDetails.length - 1)
+                        }
+                      />
+                      Remove Machine
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div class="col-12 d-flex justify-content-end">
+                <button className="btn btn-dark buttonFocus mt-2 p-2 fs-5">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     </>
   );
