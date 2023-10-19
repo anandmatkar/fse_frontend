@@ -14,6 +14,7 @@ const AssignTimesheetData = () => {
     const { projectID } = useParams();
     const [timesheetData, setTimesheetData] = useState(null);
     const [project , setProject] = useState(null);
+    const [isRequestSent, setIsRequestSent] = useState(false);
 
     useEffect(() => {
         const token = Cookies.get('token');
@@ -107,9 +108,13 @@ setProject(prevProject => {
                 <h6 className="section-title bg-white text-center text-primary px-3">Timesheet Details</h6>  
                 <h1>Your Timesheet Details</h1>
                 <div className='d-flex justify-content-center align-items-center'>
-                <TimeSheetModal projectID={projectID} onNewTimesheet={onNewTimesheetCallback} />
-                {project && project.technician_data && project.technician_data.some(technician => technician.timesheet_data.length > 0) && <TimeSheetApprovalModal projectID={projectID} />}
-                </div>
+    {!isRequestSent && (
+        <>
+            <TimeSheetModal projectID={projectID} onNewTimesheet={onNewTimesheetCallback} />
+            {project && project.technician_data && project.technician_data.some(technician => technician.timesheet_data.length > 0) && <TimeSheetApprovalModal projectID={projectID} onRequestSent={() => setIsRequestSent(true)} />}
+        </>
+    )}
+</div>
             </div>
             
             <div className="card">

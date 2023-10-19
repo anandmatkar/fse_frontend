@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Base_Url } from '../../../Api/Base_Url';
 import { Technician_Timesheet_Approval } from '../../../Api/Technicians_Api';
 
-const TimeSheetApprovalModal = ({ projectID, onNewTimesheet }) => {
+const TimeSheetApprovalModal = ({ projectID, onRequestSent }) => {
   const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ const TimeSheetApprovalModal = ({ projectID, onNewTimesheet }) => {
 
       // Show a success message or perform any other actions
       toast.success("Timesheet sent approval successfully!");
-
+      onRequestSent(); 
       navigate('/JobAssigned');
 
     } catch (error) {
