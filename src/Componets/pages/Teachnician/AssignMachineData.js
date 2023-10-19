@@ -9,7 +9,7 @@ import './JobAssigned.css'
 import {Link} from 'react-router-dom'
 
 const AssignMachineData = () => {
-    const { projectID , machineID} = useParams();
+    const { projectID } = useParams();
     const [project, setProject] = useState(null);
 
     useEffect(() => {

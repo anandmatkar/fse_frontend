@@ -58,6 +58,7 @@ const WaitingReportData = () => {
                                             <th>Comments</th>
                                             <th>Duration</th>
                                             <th>Attachments</th>
+                                          
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -69,7 +70,7 @@ const WaitingReportData = () => {
                                             <td>{report.duration}</td>
 
                                                     <td>
-                                                        { report.report_attach_data.map(attachment => (
+                                                        { report.project_documents.map(attachment => (
 
                                                             <a key={attachment.id} href={attachment.file_path} target="_blank" rel="noreferrer">
                                                                 <AiFillProfile size="30px" color="black" />

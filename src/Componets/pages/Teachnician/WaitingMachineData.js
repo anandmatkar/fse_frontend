@@ -50,6 +50,7 @@ const WaitingMachineData = () => {
                                 <th>Actual Speed</th>
                                 <th>Description</th>
                                 <th>Attachments</th>
+                                <th>Report</th>
                             </tr>
                         </thead>
                         <tbody>
