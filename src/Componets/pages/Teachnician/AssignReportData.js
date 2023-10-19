@@ -98,6 +98,11 @@ const AssignReportData = () => {
         
         fetchData(); 
     }
+
+    const shouldShowButtons = () => {
+        return project.every(report => !report.is_requested_for_approval && !report.is_approved);
+    };
+
     
     return (
         <Layout4>
@@ -106,13 +111,13 @@ const AssignReportData = () => {
                 <h6 className="section-title bg-white text-center text-primary px-3">Report Details</h6>
                 <h1>Your Report Details</h1>
                 <div className='d-flex justify-content-center align-items-center'>
-    {!isRequestSent && (
-        <>
-            <NewReportModal projectID={projectID} machineID={machineID} onNewReport={onNewReportCallback} />
-            {project && project.length > 0 && <RequestApproval projectID={projectID} onRequestSent={() => setIsRequestSent(true)} />}
-        </>
-    )}
-</div>
+                {shouldShowButtons() && (
+                    <>
+                        <NewReportModal projectID={projectID} machineID={machineID} onNewReport={onNewReportCallback} />
+                        {project && project.length > 0 && <RequestApproval projectID={projectID} onRequestSent={() => setIsRequestSent(true)} />}
+                    </>
+                )}
+                </div>
 
             </div>
     
