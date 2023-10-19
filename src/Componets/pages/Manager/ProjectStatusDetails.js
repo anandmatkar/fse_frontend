@@ -274,7 +274,16 @@ const ProjectStatusDetails = () => {
                                 <Link
                                   to={`/timesheetforapproval/${technician.id}/${job.project_id}`}
                                 >
-                                  <SiGooglesheets className="fs-3"></SiGooglesheets>
+                                  {
+                                    technician.timesheet_data.map((timesheet) => (
+                                      timesheet.is_timesheet_requested_for_approval ? 
+                                      <SiGooglesheets color='red' className="fs-3"></SiGooglesheets> : 
+                                      timesheet.is_timesheet_approved ?  
+                                      <SiGooglesheets color='green' className="fs-3"></SiGooglesheets> :
+                                      <SiGooglesheets className="fs-3"></SiGooglesheets>
+                                    ))
+                                  }
+
                                 </Link>
                               ) : (
                                 'No Timesheet'
