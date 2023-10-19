@@ -9,6 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FcApprove, FcDisapprove } from 'react-icons/fc'
 import AdminDashboardNavbar from "../../NavBar/AdminDashboardNavbar";
 import Cookies from "js-cookie";
+import Spinner from "../Common/Spinner";
+
 
 function UserTable() {
   const [users, setUsers] = useState([]);
@@ -16,6 +18,7 @@ function UserTable() {
 
   const handleAction = async (userId, actionType) => {
     const token = Cookies.get("token");
+    setLoading(true); 
 
     if (!token) {
       console.error("Token not found in localStorage.");
@@ -46,10 +49,11 @@ function UserTable() {
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setLoading(false);  // Stop loading once the process is done, whether successful or not
     }
+
   };
-
-
 
 
   useEffect(() => {
@@ -81,12 +85,16 @@ function UserTable() {
 
   return (
     <>
+    
     <AdminDashboardNavbar/>
+    
     <div className="text-center mb-5 mt-5">
   <h6 className="section-title bg-white text-center text-primary px-3">Admin Panel</h6>
   <h1>Accounts Waiting for Approval</h1>
 </div>
-
+{loading ? (
+        <Spinner />
+      ) : (
 <div className="user-table-container">
   <div className="card">
     <div className="card-body">
@@ -146,8 +154,9 @@ function UserTable() {
     </div>
   </div>
 </div>
-
+  )}
     </>
+    
   );
 }
 
