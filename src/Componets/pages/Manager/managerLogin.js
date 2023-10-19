@@ -68,7 +68,9 @@ function ManagerLogin() {
         setIsLoading(false);
         const { token, role, name, avatar } = response.data.data;
         const currentTime = new Date().getTime();
-        const expirationTime = new Date(currentTime + 1 * 60 * 60 * 1000);
+        const expirationTime = new Date(currentTime + 1 * 60 * 60 * 1000); // 60 minutes in milliseconds
+
+        // Convert expirationTime to milliseconds
         const expirationTimeInMilliseconds = expirationTime.getTime();
 
         authCtx.login(token, expirationTimeInMilliseconds, role, name, avatar);
