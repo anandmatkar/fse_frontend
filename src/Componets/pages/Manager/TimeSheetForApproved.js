@@ -120,6 +120,7 @@ const TimeSheetForApproved = () => {
                         <th>Date</th>
                         <th>Start Time</th>
                         <th>End Time</th>
+                        <th>Lunch</th>
                         <th>Comments</th>
                         <th>Attachments</th>
                       </tr>
@@ -135,6 +136,7 @@ const TimeSheetForApproved = () => {
                             <td>{entry.date}</td>
                             <td>{entry.start_time}</td>
                             <td>{entry.end_time}</td>
+                            <td>{entry.lunch_time}</td>
                             <td>{entry.comments}</td>
                             <td>
                               {entry.timesheet_attach.length > 0
