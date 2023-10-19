@@ -93,7 +93,7 @@ export const AuthContextProvider = ({ children }) => {
     Cookies.remove('Profile');
     Cookies.remove('expires');
     navigate('/'); // Adjust the route to your login page
-    toast.error('Logout Successfully... Please Sign in Again', {
+    toast.success('Logout Successfully... Please Sign in Again', {
       position: 'top-right',
       autoClose: 2000, // Notification will close automatically after 2 seconds
       hideProgressBar: false,
