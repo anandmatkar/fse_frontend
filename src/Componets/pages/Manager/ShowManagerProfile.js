@@ -129,26 +129,33 @@ function ShowManagerProfile() {
   return (
     <>
       <NavbarManagerDashboard />
-      <div className="container ">
+      <div className="container">
+        <div className="text-center wow fadeInUp mt-5" data-wow-delay="0.1s">
+          <h6 className="section-title bg-white text-center text-primary px-3">
+            Manager's Panel
+          </h6>
+          <h1 >Update Manager Profile</h1>
+        </div>
+
         <Link to="/manager" className="">
-          <button className="btn btn-primary">
+          <button className="btn btn-primary mb-3">
             <i className="fa fa-home"></i> Back
           </button>
         </Link>
-        <div class="container border border-dark mt-5 rounded p-4">
+        <div class="container border border-dark rounded p-4">
           <div class="row justify-content-center">
             <div class="col-lg-9">
-              <h1 class="mb-3"> Customer Details Update</h1>
               <form onSubmit={handleSubmit}>
-                <div>
+                <div className="my-3">
                   {(profilePicURL || managerData.avatar) && (
                     <img
                       src={profilePicURL || managerData.avatar}
                       alt="Profile Picture"
                       className="img-fluid mb-3"
-                      style={{ maxWidth: '150px' }}
+                      style={{ maxWidth: "150px" }}
                     />
                   )}
+                  <br />
                   <input
                     type="file"
                     accept="image/*"
@@ -157,7 +164,7 @@ function ShowManagerProfile() {
                 </div>
                 <div class="row g-3">
                   <div class="col-md-6">
-                    <label for="your-name" class="form-label">
+                    <label for="your-name" className="form-label fw-bold">
                       First Name
                     </label>
                     <input
@@ -170,7 +177,7 @@ function ShowManagerProfile() {
                     />
                   </div>
                   <div class="col-md-6">
-                    <label for="your-surname" class="form-label">
+                    <label for="your-surname" className="form-label fw-bold">
                       Last Name
                     </label>
                     <input
@@ -183,7 +190,7 @@ function ShowManagerProfile() {
                     />
                   </div>
                   <div class="col-md-6">
-                    <label for="your-subject" class="form-label">
+                    <label for="your-subject" className="form-label fw-bold">
                       Company
                     </label>
                     <input
@@ -196,8 +203,8 @@ function ShowManagerProfile() {
                     />
                   </div>
                   <div class="col-md-6">
-                    <label for="your-subject" class="form-label">
-                      Email{' '}
+                    <label for="your-subject" className="form-label fw-bold">
+                      Email{" "}
                     </label>
                     <input
                       type="text"
@@ -209,7 +216,7 @@ function ShowManagerProfile() {
                     />
                   </div>
                   <div class="col-md-6">
-                    <label for="your-subject" class="form-label">
+                    <label for="your-subject" className="form-label fw-bold">
                       Phone
                     </label>
                     <input
@@ -226,7 +233,7 @@ function ShowManagerProfile() {
                       <div class="col-md-6">
                         <button
                           type="submit"
-                          class="btn btn-dark w-100 fw-bold"
+                          class="btn btn-success w-100 fw-bold"
                         >
                           Update & Save Changes
                         </button>
