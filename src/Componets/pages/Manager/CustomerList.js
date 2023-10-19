@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { Table, Container, Button, FormControl } from 'react-bootstrap';
+import { Table, Container, Button, FormControl, Modal } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
@@ -14,6 +14,10 @@ function CustomerList() {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  // State for managing the confirmation modal
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [customerToDelete, setCustomerToDelete] = useState(null);
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -67,28 +71,44 @@ function CustomerList() {
       },
     })
       .then((response) => {
-        if (!response.ok) {
+        if (response.status === 200) {
+          // Show a success toast message
+          return response.json(); // Parse the response JSON
+        } else if (response.status === 409) {
+          // Handle the specific message for a 409 status
+          return response.json(); // Parse the response JSON
+        } else {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          toast.success(data.message);
 
-        // Show a success toast message
-        toast.success('Customer deleted successfully', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-
-        // Remove the deleted customer from the state
-        setCustomerData((prevCustomerData) =>
-          prevCustomerData.filter((customer) => customer.id !== customerId)
-        );
+          // Remove the deleted customer from the state
+          setCustomerData((prevCustomerData) =>
+            prevCustomerData.filter((customer) => customer.id !== customerId)
+          );
+        } else if (data.status === 409) {
+          toast.error(data.message);
+        } else {
+          toast.error(data.message);
+        }
       })
       .catch((error) => {
-        console.error('Error deleting customer:', error);
-
         // Show an error toast message
-        toast.error('Error deleting customer', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        toast.error(error.message);
       });
+  };
+
+  const showDeleteConfirmation = (customer) => {
+    setShowDeleteModal(true);
+    setCustomerToDelete(customer);
+  };
+
+  const hideDeleteConfirmation = () => {
+    setShowDeleteModal(false);
+    setCustomerToDelete(null);
   };
 
   const renderCustomerRows = () => {
@@ -122,7 +142,10 @@ function CustomerList() {
           </Link>
         </td>
         <td>
-          <Button variant="danger" onClick={() => handleDelete(customer.id)}>
+          <Button
+            variant="danger"
+            onClick={() => showDeleteConfirmation(customer)}
+          >
             Delete
           </Button>
         </td>
@@ -225,6 +248,29 @@ function CustomerList() {
           </ul>
         </nav>
       </div>
+
+      {showDeleteModal && (
+        <Modal centered show={showDeleteModal} onHide={hideDeleteConfirmation}>
+          <Modal.Header>
+            <Modal.Title>Confirm Deletion</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Are you sure you want to delete the customer?</Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="danger"
+              onClick={() => {
+                handleDelete(customerToDelete.id);
+                hideDeleteConfirmation();
+              }}
+            >
+              Delete
+            </Button>
+            <Button variant="secondary" onClick={hideDeleteConfirmation}>
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </>
   );
 }

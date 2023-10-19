@@ -102,8 +102,7 @@ const JobProgress = () => {
   return (
     <>
       <NavbarManagerDashboard />
-      <div className="jobcontainer container mt-5">
-
+      <div className=" container mt-5">
         <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
           <h6 className="section-title bg-white text-center text-primary px-3">
             Manager's Panel
@@ -112,16 +111,17 @@ const JobProgress = () => {
         </div>
 
         <div className="card">
-          <FormControl
-            type="text"
-            className="mx-4 my-4"
-            placeholder="Search Projects"
-            onChange={(e) => {
-              console.log('Search input:', e.target.value);
-              setSearch(e.target.value);
-            }}
-            style={{ width: '25%', border: '1px solid black', float: 'right' }}
-          />
+          <div className="p-2">
+            <FormControl
+              type="text"
+              className=" w-100 my-4"
+              placeholder="Search Projects"
+              onChange={(e) => {
+                console.log('Search input:', e.target.value);
+                setSearch(e.target.value);
+              }}
+            />
+          </div>
 
           <div className="card-body">
             <div className="bf-table-responsive">

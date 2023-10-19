@@ -56,17 +56,6 @@ export default function ManagerDashboard() {
 
   return (
     <React.Fragment>
-      {/* <div
-        className="imgBg"
-        style={{
-          background: `url(${'/assets/CurveLine.svg'})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          // maxHeight: '100vh',
-          height: '100vh',
-        }}
-      > */}
-      {/* <NavbarManager /> */}
       <NavbarManagerDashboard />
 
       <div className="container-xxl py-5">
@@ -84,12 +73,7 @@ export default function ManagerDashboard() {
               text="Create Customer & Manage Customers"
               onClick={createCustomerHandler}
             />
-            {/* <ServiceItem
-              icon="fa-hotel"
-              title="Create Project"
-              text="Create Project & Manage Project Details"
-              onClick={createProject}
-            /> */}
+
             <ServiceItem
               icon="fa-user"
               title="Manage Technicians"
@@ -111,7 +95,6 @@ export default function ManagerDashboard() {
           </Row>
         </Container>
       </div>
-      {/* </div> */}
     </React.Fragment>
   );
 }

@@ -111,16 +111,17 @@ const CompletedProjects = () => {
         </div>
 
         <div className="card">
-          <FormControl
-            type="text"
-            className="mx-4 my-4"
-            placeholder="Search by Customer Name..."
-            onChange={(e) => {
-              console.log('Search input:', e.target.value);
-              setSearch(e.target.value);
-            }}
-            style={{ width: '25%', border: '1px solid black', float: 'right' }}
-          />
+          <div className="p-2">
+            <FormControl
+              type="text"
+              className="w-100 my-4"
+              placeholder="Search by Customer Name..."
+              onChange={(e) => {
+                console.log('Search input:', e.target.value);
+                setSearch(e.target.value);
+              }}
+            />
+          </div>
           <div className="card-body">
             <div className="bf-table-responsive">
               <Container fluid>

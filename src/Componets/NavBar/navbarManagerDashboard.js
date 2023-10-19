@@ -49,7 +49,7 @@ const NavbarManagerDashboard = () => {
           <div>
             <ListGroup horizontal>
               <span style={{}} className="h1 mt-3 text-light fs-4">
-                {localStorage.getItem('Name') || 'FSE'}
+                {Cookies.get('Name') || 'FSE'}
               </span>
               <ListGroup.Item
                 className="border-0"
@@ -70,7 +70,7 @@ const NavbarManagerDashboard = () => {
                         height: '55px',
                       }}
                     />
-                     <MdArrowDropDown style={{color:"black"}} size={20}/>
+                    <MdArrowDropDown style={{ color: 'black' }} size={20} />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>

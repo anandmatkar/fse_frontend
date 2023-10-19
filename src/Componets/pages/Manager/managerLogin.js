@@ -1,30 +1,32 @@
-import React from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import AuthContext from '../../auth-context/auth-context';
-import { useState, useRef, useContext } from 'react';
+import { Container } from 'react-bootstrap';
 import axios from 'axios';
-import Spinner from '../Common/Spinner';
 import { toast } from 'react-toastify';
+import AuthContext from '../../auth-context/auth-context';
 import Cookies from 'js-cookie';
 import Navbar from '../../NavBar/navbarManager';
 import { managerlogin_Api } from './../../../Api/Manager_Api';
+import Spinner from '../Common/Spinner';
+import { CgProfile } from 'react-icons/cg';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
+// import '../Admin/Admin.css';
 
 function ManagerLogin() {
   const navigate = useNavigate();
-
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-
-  // const confirmpasswordInputRef = useRef();
-
   const authCtx = useContext(AuthContext);
-
   const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [isPasswordVisible, setPasswordVisibility] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility((prevState) => !prevState);
+  };
 
   const validateEmail = (email) => {
-    // Implement your email validation logic here, for example:
     const validEmail = /\S+@\S+\.\S+/;
     return validEmail.test(email);
   };
@@ -38,25 +40,23 @@ function ManagerLogin() {
     setEmailError('');
     setPasswordError('');
 
-    let hasError = false;
-
     if (enteredEmail.trim() === '') {
       setEmailError('Email is required.');
-      hasError = true;
     } else if (!validateEmail(enteredEmail)) {
       setEmailError('Please enter a valid email.');
-      hasError = true;
     }
+
     if (enteredPassword.trim() === '') {
       setPasswordError('Password is required.');
-      hasError = true;
     }
 
-    if (!hasError) {
-      setIsLoading(true);
+    if (emailError || passwordError) {
+      return;
     }
 
-    let body = {
+    setIsLoading(true);
+
+    const body = {
       email: enteredEmail,
       password: enteredPassword,
     };
@@ -65,27 +65,18 @@ function ManagerLogin() {
       const response = await axios.post(managerlogin_Api, body);
 
       if (response.data.status === 200) {
-
         setIsLoading(false);
-
-        let accessToken = response.data.data.token;
-        let role = response.data.data.role;
-        let name = response.data.data.name;
-        let profile = response.data.data.avatar;
-
+        const { token, role, name, avatar } = response.data.data;
         const currentTime = new Date().getTime();
-        const expirationTime = new Date(currentTime + 1 * 60 * 60 * 1000); // 60 minutes in milliseconds
-
-        // Convert expirationTime to milliseconds
+        const expirationTime = new Date(currentTime + 1 * 60 * 60 * 1000);
         const expirationTimeInMilliseconds = expirationTime.getTime();
 
-        authCtx.login(accessToken, expirationTimeInMilliseconds, role, name, profile);
-
+        authCtx.login(token, expirationTimeInMilliseconds, role, name, avatar);
         navigate('/manager');
 
         toast.success(response.data.message, {
           position: 'top-right',
-          autoClose: 2000, // Notification will close automatically after 2 seconds
+          autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -97,28 +88,27 @@ function ManagerLogin() {
       } else {
         toast.error(response.data.message, {
           position: 'top-right',
-          autoClose: 2000, // Notification will close automatically after 2 seconds
+          autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           onClose: () => {
-            setIsLoading(false); // Hide the spinner after the toast is closed
+            setIsLoading(false);
           },
         });
       }
     } catch (error) {
       setIsLoading(false);
-      console.log(error.message);
       toast.error(error.message, {
         position: 'top-right',
-        autoClose: 2000, // Notification will close automatically after 2 seconds
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         onClose: () => {
-          setIsLoading(false); // Hide the spinner after the toast is closed
+          setIsLoading(false);
         },
       });
     }
@@ -127,89 +117,86 @@ function ManagerLogin() {
   return (
     <>
       <Navbar />
-      <div
-        className="container con1 rounded border  border-dark"
-        style={{ marginTop: '10px' }}
-      >
-        <div className="row">
-          <div
-            className="col col-sm-12 col-md-6 col-12 text-center"
-            style={{ marginTop: '75px' }}
-          >
-            <h1>Manager Login</h1>
-            <img
-              src="/assets/manager.svg"
-              alt="Manager Login"
-              style={{ width: '450px' }}
-            />
-          </div>
-          <div
-            className="col col-sm-12 col-md-6 col-12"
-            style={{ marginTop: '30px' }}
-          >
-            <div className="card d-flex border-0 p-5">
-              <div className="card-body">
-                {isLoading ? (
-                  <Spinner />
-                ) : (
-                  <form>
-                    <h3>Manager Login</h3>
-                    <hr />
-                    <br />
-                    <div className="form-group password-input-container">
-                      <label htmlFor="form2Example17">Email</label>
-                      <div className="input-group">
-                        <input
-                          type="email"
-                          id="form2Example17"
-                          className="form-control form-control-lg"
-                          ref={emailInputRef}
-                        />
-                      </div>
-                      {emailError && (
-                        <span className="error" style={{ color: 'red' }}>
-                          {emailError}
-                        </span>
-                      )}{' '}
-                    </div>
-                    <div className="form-group password-input-container">
-                      <label htmlFor="form2Example27">Password:</label>
-                      <div className="input-group">
-                        <input
-                          type="password"
-                          id="form2Example27"
-                          className="form-control form-control-lg"
-                          ref={passwordInputRef}
-                        />
-                      </div>
-                      {passwordError && (
-                        <span className="error" style={{ color: 'red' }}>
-                          {passwordError}
-                        </span>
-                      )}
-                    </div>
-                    <br />
-                    <button
-                      className="btn btn-dark btn-lg btn-block"
-                      type="submit"
-                      onClick={submitHandler}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Container className="container-xxl py-3 admin-login">
+          <div className="row main-content text-center">
+            <div className="col-md-4 col-xs-12 col-sm-12 p-2 text-center company__info">
+              <span className="company__logo">
+                <h2>
+                  <CgProfile size={150} style={{ color: 'black' }} />
+                </h2>
+              </span>
+              <h5 className="company_title">
+                Enter Your Details And Start Your Journey With Us
+              </h5>
+            </div>
+            <div className="col-md-8 col-xs-12 col-sm-12 login_form">
+              <h2 style={{ fontSize: '40px', fontWeight: '500' }}>
+                Manager Login
+              </h2>
+              <form className="form-group">
+                <h3 className="AdminloginForm__heading">Sign In</h3>
+                <p className="AdminloginForm__text">Or Use Your Account</p>
+                <div>
+                  <input
+                    type="email"
+                    id="form2Example17"
+                    className="form-control form-control-lg mt-3"
+                    ref={emailInputRef}
+                    placeholder="Email"
+                  />
+                  {emailError && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {emailError}
+                    </span>
+                  )}
+                  <div className="password-container">
+                    <input
+                      type={isPasswordVisible ? 'text' : 'password'}
+                      id="form2Example27"
+                      className="form-control form-control-lg mt-3"
+                      ref={passwordInputRef}
+                      placeholder="Password"
+                    />
+                    <span
+                      onClick={togglePasswordVisibility}
+                      className="password-icon"
                     >
-                      Login
-                    </button>{' '}
-                    <br />
-                    <br />
-                    <Link to="/reset">Forgot password?</Link>
-                    <br />
-                    Don't have an account?{' '}
-                    <Link to="/register">Create Account</Link>
-                  </form>
-                )}
-              </div>
+                      {isPasswordVisible ? (
+                        <BsFillEyeFill />
+                      ) : (
+                        <BsFillEyeSlashFill />
+                      )}
+                    </span>
+                  </div>
+                  {passwordError && (
+                    <span className="error" style={{ color: 'red' }}>
+                      {passwordError}
+                    </span>
+                  )}
+                </div>
+                <button
+                  className="btn btn-dark btn-lg btn-block"
+                  type="submit"
+                  onClick={submitHandler}
+                >
+                  Sign In
+                </button>
+                <div className="float-start">
+                  <Link to="/reset" className="float-start">
+                    Forgot password?
+                  </Link>
+                  <br />
+                  Don't have an account?{' '}
+                  <Link to="/register">Create Account</Link>
+                </div>
+              </form>
             </div>
           </div>
-          <div className="col-md-2"></div>
-        </div>
-      </div>
+        </Container>
+      )}
     </>
   );
 }

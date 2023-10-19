@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Table from 'react-bootstrap/Table';
+import { Table, Container, Button, FormControl, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiSolidShow } from 'react-icons/bi';
 import { SiGooglesheets } from 'react-icons/si';
-import { TbReport } from 'react-icons/tb';
-import { FormControl, Container } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Manager_Base_Url } from '../../../Api/Manager_Api';
 import { toast } from 'react-toastify';
@@ -15,6 +13,8 @@ const ProjectStatusDetails = () => {
   const navigate = useNavigate();
   const [jobData, setJobData] = useState([]);
   const [project, setProject] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [customerToDelete, setCustomerToDelete] = useState(null);
   const [searchTechnician, setSearchTechnician] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -31,7 +31,7 @@ const ProjectStatusDetails = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          throw Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
       })
@@ -47,6 +47,17 @@ const ProjectStatusDetails = () => {
         console.error('Error fetching data:', error);
       });
   }, [projectId]);
+
+  const showDeleteConfirmation = (project) => {
+    setCustomerToDelete(project);
+    setShowDeleteModal(true);
+  };
+
+  // Function to hide the delete confirmation modal
+  const hideDeleteConfirmation = () => {
+    setCustomerToDelete(null);
+    setShowDeleteModal(false);
+  };
 
   const handleApprovedProject = async () => {
     const token = Cookies.get('token');
@@ -98,13 +109,16 @@ const ProjectStatusDetails = () => {
           },
         }
       );
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json(); // Parse the response JSON
+
+      if (data.status === 200) {
+        toast.success(data.message);
+        navigate('/projectprogress');
+      } else {
+        toast.error(data.message);
       }
-      // Redirect to a different page after successful deletion, e.g., the project list page
-      navigate('/projectprogress'); // Change the route accordingly
     } catch (error) {
-      console.error('Error deleting project:', error);
+      toast.error(error.message);
     }
   };
 
@@ -167,7 +181,7 @@ const ProjectStatusDetails = () => {
 
       <div className="job-progress mt-2">
         <div>
-          <div className="d-flex float-end mt-2 p-2">
+          <div className="d-flex float-end mt-2 p-2 ">
             <div className="d-flex justify-content-end me-2">
               <div>
                 <button
@@ -177,12 +191,14 @@ const ProjectStatusDetails = () => {
                   Approve
                 </button>
               </div>
-              <button
-                className="btn btn-danger me-2"
-                onClick={handleDeleteProject}
-              >
-                Delete
-              </button>
+              <div>
+                <button
+                  className="btn btn-danger me-2"
+                  onClick={() => showDeleteConfirmation(project)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
           {project ? (
@@ -203,22 +219,23 @@ const ProjectStatusDetails = () => {
               </p>
             </div>
           ) : (
-            <p>Loading project details...</p>
+            <p>No project details...</p>
           )}
         </div>
-        <div className="jobcontainer container mt-5">
+        <div className="container-fluid mt-5">
           <div className="card p-2">
-            <FormControl
-              type="text"
-              className="mx-4 mt-4"
-              placeholder="Search Technicians"
-              onChange={(e) => setSearchTechnician(e.target.value)}
-              style={{
-                width: '25%',
-                border: '1px solid black',
-                float: 'right',
-              }}
-            />
+            <div>
+              <FormControl
+                type="text"
+                className=" w-100 form-control p-2"
+                placeholder="Search Technicians name"
+                onChange={(e) => setSearchTechnician(e.target.value)}
+                // style={{
+                //   border: '1px solid black',
+                //   float: 'right',
+                // }}
+              />
+            </div>
             <div className="card-body">
               <div className="bf-table-responsive">
                 <Container fluid>
@@ -256,18 +273,6 @@ const ProjectStatusDetails = () => {
                             <td>{job.start_date}</td>
                             <td>{job.end_date}</td>
 
-                            {/* <td className="text-center">
-                              {technician.project_report_data &&
-                              technician.project_report_data.length > 0 ? (
-                                <Link
-                                  to={`/projectreportdata/${technician.id}/${job.project_id}`}
-                                >
-                                  <TbReport className="fs-3"></TbReport>
-                                </Link>
-                              ) : (
-                                'No Report'
-                              )}
-                            </td> */}
                             <td className="text-center">
                               {technician.timesheet_data &&
                               technician.timesheet_data.length > 0 ? (
@@ -286,7 +291,7 @@ const ProjectStatusDetails = () => {
                                               timesheet.is_timesheet_approved
                                           )
                                         ? 'green'
-                                        : 'black'
+                                        : 'blue'
                                     }
                                     className="fs-3"
                                   ></SiGooglesheets>
@@ -345,6 +350,34 @@ const ProjectStatusDetails = () => {
               </ul>
             </nav>
           </div>
+
+          {showDeleteModal && (
+            <Modal show={showDeleteModal} onHide={hideDeleteConfirmation}>
+              <Modal.Header closeButton>
+                <Modal.Title>Confirm Deletion</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                Are you sure you want to delete the project?
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="danger"
+                  onClick={() => {
+                    hideDeleteConfirmation();
+                    handleDeleteProject();
+                  }}
+                >
+                  Delete
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => hideDeleteConfirmation()}
+                >
+                  Cancel
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          )}
         </div>
       </div>
     </>

@@ -61,6 +61,7 @@ const NavTechnicanProfile = () => {
                         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU'
                       }
                       alt="Profile"
+                      className="border border-dark"
                       style={{
                         width: '60px',
                         borderRadius: '50%',
