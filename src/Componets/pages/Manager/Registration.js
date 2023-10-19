@@ -93,6 +93,15 @@ const RegistrationPage = () => {
     } else if (password !== confirmPass.trim()) {
       formErrors.confirmPass = 'Passwords do not match';
     }
+    if (!profilePic) {
+      formErrors.profilePic = 'Please upload your Profile';
+    } else {
+      const allowedExtensions = /(\.jpeg|\.jpg|\.png)$/i;
+      if (!allowedExtensions.exec(profilePic.name)) {
+        formErrors.profilePic = 'Please upload a valid JPEG, JPG, or PNG image';
+      }
+    }
+
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
@@ -242,9 +251,9 @@ const RegistrationPage = () => {
                               name="emailAddress"
                               onChange={(e) => setEmail(e.target.value)}
                             />
-                            {errors.email && (
+                            {errors.emailAddress && (
                               <span className="error" style={{ color: 'red' }}>
-                                {errors.email}
+                                {errors.emailAddress}
                               </span>
                             )}
                           </div>
@@ -309,6 +318,7 @@ const RegistrationPage = () => {
                             <input
                               type="file"
                               id="file"
+                              accept=".jpeg, .jpg, .png"
                               className="form-control inputfieldresistration"
                               onChange={handleProfilePicChange}
                             />
