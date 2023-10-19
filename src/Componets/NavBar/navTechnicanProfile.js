@@ -49,7 +49,7 @@ const NavTechnicanProfile = () => {
                 {Cookies.get('Name') || 'FSE'}
               </span>
               <ListGroup.Item
-                className="border border-0 "
+                className="border-0 "
                 style={{ background: 'none' }}
               >
                 <Dropdown className="imgdropdowns " drop="start">
