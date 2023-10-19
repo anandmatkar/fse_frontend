@@ -8,6 +8,7 @@ import { SiGooglesheets } from 'react-icons/si';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Manager_Base_Url } from '../../../Api/Manager_Api';
 import { toast } from 'react-toastify';
+import Spinner from '../Common/Spinner';
 
 const ProjectStatusDetails = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const ProjectStatusDetails = () => {
   const [customerToDelete, setCustomerToDelete] = useState(null);
   const [searchTechnician, setSearchTechnician] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const itemsPerPage = 10;
 
   const { projectId } = useParams();
@@ -63,6 +65,7 @@ const ProjectStatusDetails = () => {
     const token = Cookies.get('token');
 
     try {
+      setIsLoading(true);
       const response = await fetch(
         `${Manager_Base_Url}completeProject?projectId=${projectId}`,
         {
@@ -84,15 +87,18 @@ const ProjectStatusDetails = () => {
         }
       } else {
         // Handle non-200 status codes (e.g., 4xx or 5xx errors)
-        console.error('Error approving project:', response.statusText);
+        toast.error('Error approving project:', response.statusText);
       }
+
+      setIsLoading(false);
 
       // Navigate only if the request was successful
       if (response.status === 200) {
         navigate('/projectStatus');
       }
     } catch (error) {
-      console.error('Error approving project:', error);
+      setIsLoading(false);
+      toast.error(error.message);
     }
   };
 
@@ -178,208 +184,213 @@ const ProjectStatusDetails = () => {
         </h6>
         <h1 className="mb-5">Project Details</h1>
       </div>
-
-      <div className="job-progress mt-2">
-        <div>
-          <div className="d-flex float-end mt-2 p-2 ">
-            <div className="d-flex justify-content-end me-2">
-              <div>
-                <button
-                  className="btn btn-success me-2"
-                  onClick={handleApprovedProject}
-                >
-                  Approve
-                </button>
-              </div>
-              <div>
-                <button
-                  className="btn btn-danger me-2"
-                  onClick={() => showDeleteConfirmation(project)}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-          {project ? (
-            <div className="mx-5">
-              <p>
-                <b>Order ID:</b> {project.order_id}
-              </p>
-              <p>
-                <b>Customer Name:</b> {project.customer_name}
-              </p>
-              <p>
-                <b>Customer Account ID: </b>
-                {project.customer_account}
-              </p>
-              <p>
-                <b>Description: </b>
-                {project.description}
-              </p>
-            </div>
-          ) : (
-            <p>No project details...</p>
-          )}
-        </div>
-        <div className="container-fluid mt-5">
-          <div className="card p-2">
-            <div>
-              <FormControl
-                type="text"
-                className=" w-100 form-control p-2"
-                placeholder="Search Technicians name"
-                onChange={(e) => setSearchTechnician(e.target.value)}
-                // style={{
-                //   border: '1px solid black',
-                //   float: 'right',
-                // }}
-              />
-            </div>
-            <div className="card-body">
-              <div className="bf-table-responsive">
-                <Container fluid>
-                  <h3>Technician Details</h3>
-                  <Table responsive hover className="bf-table">
-                    <thead>
-                      <tr>
-                        <th>Qualification</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Scope</th>
-                        <th>Start_date</th>
-                        <th>End_date</th>
-                        {/* <th>Tech Report</th> */}
-                        <th>Time Sheet</th>
-                        <th>Machine Details</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {currentJobData.map((job) =>
-                        job.technician_data.map((technician, index) => (
-                          <tr key={`${job.project_id}-${technician.id}`}>
-                            <td>{technician.qualification || 'N/A'}</td>
-                            <td>
-                              {`${technician.name} ${technician.surname}` ||
-                                'N/A'}
-                            </td>
-                            <td>{technician.email_address}</td>
-                            <td>{technician.phone_number}</td>
-                            <td>{technician.email_address}</td>
-                            <td>{job.scope_of_work}</td>
-                            <td>{job.start_date}</td>
-                            <td>{job.end_date}</td>
-
-                            <td className="text-center">
-                              {technician.timesheet_data &&
-                              technician.timesheet_data.length > 0 ? (
-                                <Link
-                                  to={`/timesheetforapproval/${technician.id}/${job.project_id}`}
-                                >
-                                  <SiGooglesheets
-                                    color={
-                                      technician.timesheet_data.some(
-                                        (timesheet) =>
-                                          timesheet.is_timesheet_requested_for_approval
-                                      )
-                                        ? 'red'
-                                        : technician.timesheet_data.some(
-                                            (timesheet) =>
-                                              timesheet.is_timesheet_approved
-                                          )
-                                        ? 'green'
-                                        : 'blue'
-                                    }
-                                    className="fs-3"
-                                  ></SiGooglesheets>
-                                </Link>
-                              ) : (
-                                'No Timesheet'
-                              )}
-                            </td>
-
-                            <td className="text-center">
-                              {technician.machine_data.length > 0 ? (
-                                <Link
-                                  to={`/detailsOfMachineData/${technician.id}/${job.project_id}`}
-                                >
-                                  <BiSolidShow className="fs-3" />
-                                </Link>
-                              ) : (
-                                'No Details '
-                              )}
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                      {renderCustomerRows()}
-                    </tbody>
-                  </Table>
-                </Container>
-              </div>
-            </div>
-            <nav className="dt-pagination">
-              <ul className="dt-pagination-ul">
-                <li
-                  className={`dt-item ${currentPage === 1 ? 'disabled' : ''}`}
-                >
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div className="job-progress mt-2">
+          <div>
+            <div className="d-flex float-end mt-2 p-2 ">
+              <div className="d-flex justify-content-end me-2">
+                <div>
                   <button
-                    className="dt-link"
-                    onClick={() => setCurrentPage(currentPage - 1)}
+                    className="btn btn-success me-2"
+                    onClick={handleApprovedProject}
                   >
-                    Prev
+                    Approve
                   </button>
-                </li>
-                {renderPaginationButtons()}
-                <li className={`dt-item ${!canGoToNextPage ? 'disabled' : ''}`}>
-                  {/* Disable the "Next" button if there's no more data */}
-                  {canGoToNextPage ? (
+                </div>
+                <div>
+                  <button
+                    className="btn btn-danger me-2"
+                    onClick={() => showDeleteConfirmation(project)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+            {project ? (
+              <div className="mx-5">
+                <p>
+                  <b>Order ID:</b> {project.order_id}
+                </p>
+                <p>
+                  <b>Customer Name:</b> {project.customer_name}
+                </p>
+                <p>
+                  <b>Customer Account ID: </b>
+                  {project.customer_account}
+                </p>
+                <p>
+                  <b>Description: </b>
+                  {project.description}
+                </p>
+              </div>
+            ) : (
+              <p>No project details...</p>
+            )}
+          </div>
+          <div className="container-fluid mt-5">
+            <div className="card p-2">
+              <div>
+                <FormControl
+                  type="text"
+                  className=" w-100 form-control p-2"
+                  placeholder="Search Technicians name"
+                  onChange={(e) => setSearchTechnician(e.target.value)}
+                  // style={{
+                  //   border: '1px solid black',
+                  //   float: 'right',
+                  // }}
+                />
+              </div>
+              <div className="card-body">
+                <div className="bf-table-responsive">
+                  <Container fluid>
+                    <h3>Technician Details</h3>
+                    <Table responsive hover className="bf-table">
+                      <thead>
+                        <tr>
+                          <th>Qualification</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Phone</th>
+                          <th>Email</th>
+                          <th>Scope</th>
+                          <th>Start_date</th>
+                          <th>End_date</th>
+                          {/* <th>Tech Report</th> */}
+                          <th>Time Sheet</th>
+                          <th>Machine Details</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {currentJobData.map((job) =>
+                          job.technician_data.map((technician, index) => (
+                            <tr key={`${job.project_id}-${technician.id}`}>
+                              <td>{technician.qualification || 'N/A'}</td>
+                              <td>
+                                {`${technician.name} ${technician.surname}` ||
+                                  'N/A'}
+                              </td>
+                              <td>{technician.email_address}</td>
+                              <td>{technician.phone_number}</td>
+                              <td>{technician.email_address}</td>
+                              <td>{job.scope_of_work}</td>
+                              <td>{job.start_date}</td>
+                              <td>{job.end_date}</td>
+
+                              <td className="text-center">
+                                {technician.timesheet_data &&
+                                technician.timesheet_data.length > 0 ? (
+                                  <Link
+                                    to={`/timesheetforapproval/${technician.id}/${job.project_id}`}
+                                  >
+                                    <SiGooglesheets
+                                      color={
+                                        technician.timesheet_data.some(
+                                          (timesheet) =>
+                                            timesheet.is_timesheet_requested_for_approval
+                                        )
+                                          ? 'red'
+                                          : technician.timesheet_data.some(
+                                              (timesheet) =>
+                                                timesheet.is_timesheet_approved
+                                            )
+                                          ? 'green'
+                                          : 'blue'
+                                      }
+                                      className="fs-3"
+                                    ></SiGooglesheets>
+                                  </Link>
+                                ) : (
+                                  'No Timesheet'
+                                )}
+                              </td>
+
+                              <td className="text-center">
+                                {technician.machine_data.length > 0 ? (
+                                  <Link
+                                    to={`/detailsOfMachineData/${technician.id}/${job.project_id}`}
+                                  >
+                                    <BiSolidShow className="fs-3" />
+                                  </Link>
+                                ) : (
+                                  'No Details '
+                                )}
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                        {renderCustomerRows()}
+                      </tbody>
+                    </Table>
+                  </Container>
+                </div>
+              </div>
+              <nav className="dt-pagination">
+                <ul className="dt-pagination-ul">
+                  <li
+                    className={`dt-item ${currentPage === 1 ? 'disabled' : ''}`}
+                  >
                     <button
                       className="dt-link"
-                      onClick={() => setCurrentPage(currentPage + 1)}
+                      onClick={() => setCurrentPage(currentPage - 1)}
                     >
-                      Next
+                      Prev
                     </button>
-                  ) : (
-                    <span>No data found</span>
-                  )}
-                </li>
-              </ul>
-            </nav>
-          </div>
+                  </li>
+                  {renderPaginationButtons()}
+                  <li
+                    className={`dt-item ${!canGoToNextPage ? 'disabled' : ''}`}
+                  >
+                    {/* Disable the "Next" button if there's no more data */}
+                    {canGoToNextPage ? (
+                      <button
+                        className="dt-link"
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                      >
+                        Next
+                      </button>
+                    ) : (
+                      <span>No data found</span>
+                    )}
+                  </li>
+                </ul>
+              </nav>
+            </div>
 
-          {showDeleteModal && (
-            <Modal show={showDeleteModal} onHide={hideDeleteConfirmation}>
-              <Modal.Header closeButton>
-                <Modal.Title>Confirm Deletion</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                Are you sure you want to delete the project?
-              </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  variant="danger"
-                  onClick={() => {
-                    hideDeleteConfirmation();
-                    handleDeleteProject();
-                  }}
-                >
-                  Delete
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => hideDeleteConfirmation()}
-                >
-                  Cancel
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          )}
+            {showDeleteModal && (
+              <Modal show={showDeleteModal} onHide={hideDeleteConfirmation}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Confirm Deletion</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  Are you sure you want to delete the project?
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="danger"
+                    onClick={() => {
+                      hideDeleteConfirmation();
+                      handleDeleteProject();
+                    }}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => hideDeleteConfirmation()}
+                  >
+                    Cancel
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

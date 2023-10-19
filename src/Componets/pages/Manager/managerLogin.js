@@ -4,7 +4,6 @@ import { Container } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import AuthContext from '../../auth-context/auth-context';
-import Cookies from 'js-cookie';
 import Navbar from '../../NavBar/navbarManager';
 import { managerlogin_Api } from './../../../Api/Manager_Api';
 import Spinner from '../Common/Spinner';
