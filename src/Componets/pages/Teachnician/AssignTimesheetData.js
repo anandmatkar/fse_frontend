@@ -16,28 +16,31 @@ const AssignTimesheetData = () => {
     const [project , setProject] = useState(null);
     const [isRequestSent, setIsRequestSent] = useState(false);
 
-    useEffect(() => {
-        const token = Cookies.get('token');
-        const fetchTimesheet = async () => {
-            try {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: token,
-                    },
-                };
-                const response = await axios.get(`${Technician_DetailJobAssign}?projectId=${projectID}`, config);
-                if (response.data.success) {
-                  const fetchedData = response.data.data[0];
-                  setTimesheetData(fetchedData);
-                  setProject(fetchedData);  // add this line
-              } else {
-                    toast.error("Failed to fetch timesheet data");
-                }
-            } catch (error) {
-                console.error("Error fetching timesheet data:", error);
+    const fetchTimesheet = async () => {
+        try {
+            const token = Cookies.get('token');
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: token,
+                },
+            };
+            const response = await axios.get(`${Technician_DetailJobAssign}?projectId=${projectID}`, config);
+            if (response.data.success) {
+              const fetchedData = response.data.data[0];
+              setTimesheetData(fetchedData);
+              setProject(fetchedData);  // add this line
+          } else {
+                toast.error("Failed to fetch timesheet data");
             }
+        } catch (error) {
+            console.error("Error fetching timesheet data:", error);
         }
+    }
+
+    useEffect(() => {
+      
+        
         fetchTimesheet();
     }, [projectID]);
 
@@ -100,6 +103,7 @@ setProject(prevProject => {
       technician_data: updatedTechnicianData
   };
 });
+fetchTimesheet();
 }
     return (
       <Layout4>
