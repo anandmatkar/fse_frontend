@@ -108,7 +108,6 @@ function NewCustomerScreen() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Submit button clicked');
 
     const formErrors = validateForm(formData);
     setErrors(formErrors);
@@ -119,7 +118,6 @@ function NewCustomerScreen() {
     setIsLoading(true);
 
     let token = Cookies.get('token');
-    console.log(token);
 
     const axiosConfig = {
       headers: {
@@ -151,7 +149,6 @@ function NewCustomerScreen() {
         setShowPopup(true);
         // Show success toast message
         toast.success(response.data.message);
-        console.log('Response Data:', response);
         navigate('/manager');
       } else {
         // Show error toast message
@@ -222,25 +219,28 @@ function NewCustomerScreen() {
   return (
     <>
       <NavbarManagerDashboard />
-      <div>
+      <div className="p-2">
         {isLoading && (
           <div className="loading-spinner">
             <Spinner />
           </div>
         )}
 
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-12 text-center">
+        <div className="container-fluid p-2">
+          <div className="row">
+            <div className="col-12 text-center">
               <h6 className="section-title bg-white text-center text-primary px-3">
                 Manager's Panel
               </h6>
             </div>
-            <div class="col-12 d-flex">
-              <div className="col-7 d-flex justify-content-end">
+            <div className="row">
+              <div className="col-12 text-center">
                 <h1 className="createCustomer">Create Customer</h1>
               </div>
-              <div className="col-5 float-center">
+              <div
+                className="col-12 position-absolute text-right"
+                style={{ right: '8%' }}
+              >
                 <button
                   className="btn btn-outline-success mx-2 btn-sm"
                   onClick={handleDownloadTemplate}
@@ -267,14 +267,14 @@ function NewCustomerScreen() {
           </div>
         </div>
 
-        <div class="container newCustomerContainer">
-          <div class="wrapper animated_bounceInLeft mb-2 shadow-lg border border-1">
-            <div class="company-info text-center text-light">
-              <h3>Add new customer details</h3>
+        <div className="container newCustomerContainer">
+          <div className="wrapper animated_bounceInLeft mb-2 shadow-lg border border-1">
+            <div className="company-info text-center text-light">
+              <h3 className="">Add new customer details</h3>
               <img src="/assets/newcustomer.svg" className="mt-3"></img>
             </div>
 
-            <div class="contact">
+            <div className="contact">
               <form className="newCustomerForm">
                 <p className="createCustomer">
                   <label className="newCustomerLabel" htmlFor="customerName">
