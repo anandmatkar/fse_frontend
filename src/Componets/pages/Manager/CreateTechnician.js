@@ -269,7 +269,7 @@ function CreateTechnician() {
               variant="success"
               onClick={handleDownloadTemplate}
             >
-              Download Template <FiDownload className="ms-2 fs-4" />
+              Template <FiDownload className="ms-2 fs-4" />
             </Button>
           </Col>
         </Row>
