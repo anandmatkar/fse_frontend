@@ -45,8 +45,8 @@ const NavTechnicanProfile = () => {
           </Navbar.Brand>
           <div>
             <ListGroup horizontal>
-              <span style={{}} className="h1 mt-3 text-light fs-3">
-                {Cookies.get('Name') || 'FSE'}
+              <span style={{}} className="h1 mt-3 text-dark fs-3">
+                Technician : {Cookies.get('Name') || 'FSE'}
               </span>
               <ListGroup.Item
                 className="border-0 "
