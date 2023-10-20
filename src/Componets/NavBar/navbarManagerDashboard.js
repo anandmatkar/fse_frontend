@@ -48,8 +48,8 @@ const NavbarManagerDashboard = () => {
           > */}
           <div>
             <ListGroup horizontal>
-              <span style={{}} className="h1 mt-3 text-light fs-4">
-                {Cookies.get('Name') || 'FSE'}
+              <span style={{}} className="h1 mt-3 text-dark fs-4 mx-5">
+                Manager : {Cookies.get('Name').toUpperCase() || 'FSE'}
               </span>
               <ListGroup.Item
                 className="border-0"

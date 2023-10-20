@@ -154,7 +154,7 @@ export default function ViewProjectMachineInfo() {
                     <td>{machine.description}</td>
                     <td>
                     <Dropdown drop='centered'>
-                      <Dropdown.Toggle variant="secondary" size="sm" id="machine-actions-dropdown">
+                      <Dropdown.Toggle variant="success" size="sm" id="machine-actions-dropdown">
                         Actions
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
