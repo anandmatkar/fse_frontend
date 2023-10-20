@@ -178,7 +178,7 @@ function CustomerList() {
         <h1 className="mb-5">Customer's List</h1>
       </div>
 
-      <div className="jobcontainer container mt-5">
+      <div className="container-fluid mt-5">
         <Button
           variant="success"
           as={NavLink}
