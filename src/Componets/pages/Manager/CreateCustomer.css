@@ -34,7 +34,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
   }
-  .animated_bounceInLeft > * {
+  /* .animated_bounceInLeft > * {
     padding: 2em;
-  }
+  } */
 }

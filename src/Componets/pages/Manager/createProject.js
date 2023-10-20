@@ -93,6 +93,37 @@ function CreateProject() {
     if (!machineDetails) {
       newErrors.machineDetails = 'All Machine Details are required';
     }
+    machineDetails.forEach((machine, index) => {
+      if (!machine.MachineType.trim()) {
+        newErrors[`MachineType_${index}`] = 'Machine Type is required';
+      }
+
+      if (!machine.MachineSerial.trim()) {
+        newErrors[`MachineSerial_${index}`] = 'Serial Number is required';
+      }
+
+      if (!machine.hourCount.trim()) {
+        newErrors[`hourCount_${index}`] = 'Hour Count is required';
+      }
+
+      if (!machine.nomSpeed.trim()) {
+        newErrors[`nomSpeed_${index}`] = 'Nominal Speed is required';
+      }
+
+      if (!machine.actSpeed.trim()) {
+        newErrors[`actSpeed_${index}`] = 'Actual Speed is required';
+      }
+
+      if (!machine.techIds.length) {
+        newErrors[`techIds_${index}`] = 'Technician selection is required';
+      }
+
+      if (!machine.machineAttach.length) {
+        newErrors[`machineAttach_${index}`] =
+          'At least one attachment is required';
+      }
+    });
+
     setErrors(newErrors);
 
     // Check if there are any errors
@@ -493,6 +524,11 @@ function CreateProject() {
                           placeholder="Machine type"
                           class="form-control formcontrolinput"
                         />
+                        {errors[`MachineType_${index}`] && (
+                          <small className="text-danger">
+                            {errors[`MachineType_${index}`]}
+                          </small>
+                        )}
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -514,6 +550,11 @@ function CreateProject() {
                           placeholder="Machine Serial number"
                           class="form-control formcontrolinput"
                         />
+                        {errors[`MachineSerial_${index}`] && (
+                          <small className="text-danger">
+                            {errors[`MachineSerial_${index}`]}
+                          </small>
+                        )}
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -531,6 +572,11 @@ function CreateProject() {
                           placeholder="Hour Count"
                           class="form-control formcontrolinput"
                         />
+                        {errors[`hourCount_${index}`] && (
+                          <small className="text-danger">
+                            {errors[`hourCount_${index}`]}
+                          </small>
+                        )}
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -548,6 +594,11 @@ function CreateProject() {
                           placeholder="Nominal Speed"
                           class="form-control formcontrolinput"
                         />
+                        {errors[`nomSpeed_${index}`] && (
+                          <small className="text-danger">
+                            {errors[`nomSpeed_${index}`]}
+                          </small>
+                        )}
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -565,6 +616,11 @@ function CreateProject() {
                           placeholder="Actual Speed"
                           class="form-control formcontrolinput"
                         />
+                        {errors[`actSpeed_${index}`] && (
+                          <small className="text-danger">
+                            {errors[`actSpeed_${index}`]}
+                          </small>
+                        )}
                       </div>
                     </div>
 
@@ -595,6 +651,11 @@ function CreateProject() {
                               label: technician.name,
                             }))}
                         />
+                        {errors[`techIds_${index}`] && (
+                          <small className="text-danger">
+                            {errors[`techIds_${index}`]}
+                          </small>
+                        )}
                       </div>
                     </div>
                     <div class="col-12">
@@ -613,6 +674,11 @@ function CreateProject() {
                             handleMachineDocuments(event, index)
                           }
                         />
+                        {errors[`machineAttach_${index}`] && (
+                          <small className="text-danger">
+                            {errors[`machineAttach_${index}`]}
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
