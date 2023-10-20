@@ -3,7 +3,7 @@ import Layout4 from '../../Layout/Layout4';
 import { Table, Container, Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { Technician_DetailJobAssign, Technician_DeleteReport } from '../../../Api/Technicians_Api';
+import {  Technician_DeleteReport } from '../../../Api/Technicians_Api';
 import { AiFillProfile } from 'react-icons/ai';
 import './JobAssigned.css';
 import NewReportModal from './NewReportModal';
@@ -12,10 +12,15 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RequestApproval from './RequestApproval';
 import { Base_Url } from '../../../Api/Base_Url';
+import {Modal} from 'react-bootstrap'
 
 const AssignReportData = () => {
     const { projectID , machineID } = useParams();
     const [project, setProject] = useState([]);
+
+    const [showModal, setShowModal] = useState(false);
+const [selectedReport, setSelectedReport] = useState(null);
+
 
     const [isRequestSent, setIsRequestSent] = useState(false);
 
@@ -74,6 +79,18 @@ const AssignReportData = () => {
         }
     };
     
+     // Confirm deletion using modal
+     const confirmDelete = (reportId, projectId) => {
+        setSelectedReport({ id: reportId, projectId: projectId });
+        setShowModal(true);
+    };
+
+    const handleConfirmDelete = () => {
+        if (selectedReport) {
+            deleteReport(selectedReport.id, selectedReport.projectId);
+        }
+        setShowModal(false);
+    };
     
     
 
@@ -120,7 +137,7 @@ const AssignReportData = () => {
                 </div>
 
             </div>
-    
+     
             <div className="card">
                 <div className="card-body">
                     <div className="bf-table-responsive">
@@ -151,9 +168,9 @@ const AssignReportData = () => {
                                                 ))}
                                             </td>
                                             <td>
-                                                <Button variant="danger" onClick={() => deleteReport(report.id, projectID)}>
-                                                    Delete
-                                                </Button>
+                                            <Button variant="danger" onClick={() => confirmDelete(report.id, projectID)}>
+                                Delete
+                            </Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -167,6 +184,20 @@ const AssignReportData = () => {
                     </div>
                 </div>
             </div>
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmation</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to delete this report?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        No
+                    </Button>
+                    <Button variant="danger" onClick={handleConfirmDelete}>
+                        Yes, Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     </Layout4>
     

@@ -9,12 +9,17 @@ import Layout4 from '../../Layout/Layout4';
 import { AiFillProfile } from 'react-icons/ai';
 import TimeSheetModal from './TimeSheetModal';
 import TimeSheetApprovalModal from './TimeSheetApprovalModal';
+import { Modal } from 'react-bootstrap';
+
 
 const AssignTimesheetData = () => {
     const { projectID } = useParams();
     const [timesheetData, setTimesheetData] = useState(null);
     const [project , setProject] = useState(null);
     const [isRequestSent, setIsRequestSent] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+const [timesheetToDelete, setTimesheetToDelete] = useState(null);
+
 
     const fetchTimesheet = async () => {
         try {
@@ -87,6 +92,17 @@ console.log(config, "config")
       console.error('Error:', error);
   }
 };
+
+const confirmDelete = async () => {
+    // The actual deletion code
+    await deleteTimeSheet(timesheetToDelete, projectID);
+    setShowDeleteModal(false); // close the modal
+  }
+  
+  const handleDelete = (id) => {
+    setTimesheetToDelete(id);
+    setShowDeleteModal(true);
+  }
 const onNewTimesheetCallback = (newTimesheet) => {
 //   console.log(newTimesheet);
 // setTimesheetData(prevData => [...prevData, newTimesheet]);
@@ -158,7 +174,8 @@ fetchTimesheet();
                           }
                       </td>
                       <td>
-                          <Button className='job-delete-timesheet-btn' variant="danger" size="sm" onClick={() => deleteTimeSheet(timesheet.id, projectID)}>Delete</Button>
+                      <Button className='job-delete-timesheet-btn' variant="danger" size="sm" onClick={() => handleDelete(timesheet.id)}>Delete</Button>
+
                       </td>
                   </tr>
               ))
@@ -170,6 +187,22 @@ fetchTimesheet();
                     </div>
                 </div>
             </div>
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+  <Modal.Header closeButton>
+    <Modal.Title>Confirm Deletion</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    Are you sure you want to delete this timesheet entry?
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+      No
+    </Button>
+    <Button variant="danger" onClick={confirmDelete}>
+      Yes
+    </Button>
+  </Modal.Footer>
+</Modal>
         </Container>
         </Layout4>
     );
