@@ -24,8 +24,8 @@
   margin-bottom: 5px;
 }
 
-.new-customer-screen input[type="text"],
-.new-customer-screen input[type="email"],
+.new-customer-screen input[type='text'],
+.new-customer-screen input[type='email'],
 .new-customer-screen select,
 .new-customer-screen textarea {
   width: 100%;
@@ -55,4 +55,10 @@
   border-radius: 4px;
   text-align: center;
   margin-top: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  .btn_Download_temp.position-absolute {
+    position: relative !important;
+  }
 }

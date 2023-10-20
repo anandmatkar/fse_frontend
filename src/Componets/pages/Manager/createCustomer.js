@@ -238,7 +238,7 @@ function NewCustomerScreen() {
                 <h1 className="createCustomer">Create Customer</h1>
               </div>
               <div
-                className="col-12 position-absolute text-right"
+                className="col-12 position-absolute text-right btn_Download_temp"
                 style={{ right: '8%' }}
               >
                 <button
