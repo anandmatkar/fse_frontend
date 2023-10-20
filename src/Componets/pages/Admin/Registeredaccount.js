@@ -4,13 +4,10 @@ import Table from 'react-bootstrap/Table';
 import { Base_Url } from '../../../Api/Base_Url';
 import AdminDashboardNavbar from '../../NavBar/AdminDashboardNavbar';
 import Cookies from 'js-cookie';
-
 const Registeredaccount = () => {
-
     const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
-
     const toggleActivation = (userId) => {
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
@@ -18,16 +15,13 @@ const Registeredaccount = () => {
         )
       );
     };
-
     const totalPages = Math.ceil(users.length / itemsPerPage);
     const lastIndex = currentPage * itemsPerPage;
     const firstIndex = lastIndex - itemsPerPage;
     const currentUsers = users.slice(firstIndex, lastIndex);
-
     const handleChangePage = (newPage) => {
       setCurrentPage(newPage);
     };
-
     const renderPaginationButtons = () => {
       const buttons = [];
       for (let i = 1; i <= totalPages; i++) {
@@ -39,16 +33,13 @@ const Registeredaccount = () => {
       }
       return buttons;
     };
-
     useEffect(() => {
       const token= Cookies.get('token')
-  
       const config = {
         headers: {
           Authorization: token,
         },
       };
-          
           axios
             .get(`${Base_Url}api/v1/companyAdmin/managerListForApproval`, config)
             .then((response) => {
@@ -57,9 +48,7 @@ const Registeredaccount = () => {
             .catch((error) => {
               console.error("Error fetching data:", error);
             })
-    }, []); 
-
- 
+    }, []);
     return (
       <>
        <AdminDashboardNavbar/>
@@ -119,6 +108,4 @@ const Registeredaccount = () => {
       </>
     );
   }
-
-
 export default Registeredaccount
