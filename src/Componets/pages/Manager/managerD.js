@@ -27,10 +27,26 @@ export default function ManagerDashboard() {
     navigate('/managemachineinfo');
   };
 
+  // Function to disable back navigation on mobile devices
+  const disableBackOnMobile = () => {
+    if (window.innerWidth <= 768) {
+      window.history.pushState(null, null, window.location.pathname);
+      window.addEventListener('popstate', () => {
+        window.history.pushState(null, null, window.location.pathname);
+      });
+    }
+  };
+
 
     useEffect(() => {
         const token = Cookies.get('token');
         const role = Cookies.get('role');  // Assuming 'role' is the name of the cookie storing the role
+        
+        // Check if the user is logged in and on a mobile device
+        if (token && role) {
+          disableBackOnMobile();
+        }
+
         // Function to block back navigation
         const blockBackNavigation = (e) => {
             e.preventDefault();
