@@ -114,7 +114,7 @@ const ProjectRequestedForApprovalProgress = () => {
   return (
     <>
       <NavbarManagerDashboard />
-      <div className=" container-fluid mt-5">
+      <div className="container-fluid mt-5">
         <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
           <h6 className="section-title bg-white text-center text-primary px-3">
             Manager's Panel

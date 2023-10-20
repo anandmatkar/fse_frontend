@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
-import {
-  Button,
-  Card,
-  Container,
-  ListGroup,
-  Row,
-  Col,
-  Table,
-} from 'react-bootstrap';
-import { BsFiletypeDoc } from 'react-icons/bs'
+import { Card, Container, ListGroup, Row, Col } from 'react-bootstrap';
+import { BsFiletypeDoc } from 'react-icons/bs';
 import axios from 'axios';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { Manager_Base_Url } from '../../../Api/Manager_Api';
@@ -58,11 +50,9 @@ export default function ViewTechnicianProfile() {
 
   return (
     <React.Fragment>
+      <NavbarManagerDashboard />
 
-      <NavbarManagerDashboard/>
-      
       <Container className="my-5">
-
         <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
           <h6 className="section-title bg-white text-center text-primary px-3">
             Manager's Panel
@@ -70,10 +60,9 @@ export default function ViewTechnicianProfile() {
           <h1 className="mb-5">View Technician Profile</h1>
         </div>
 
-        {
-          isFetchingProfile ? (
-            <PageSpinner/>
-          ) : (
+        {isFetchingProfile ? (
+          <PageSpinner />
+        ) : (
           <Card>
             <Row>
               <Col lg={4}>
@@ -120,22 +109,27 @@ export default function ViewTechnicianProfile() {
                       <b>Level :</b> {`${technicianProfile.level}`}
                     </ListGroup.Item>
                     <ListGroup.Item>
-                      <b>Documents :</b> {
-                        technicianDocs.map( document => (
-                          <>
-                          <NavLink as={NavLink} to={document.file_path} target="_blank"><BsFiletypeDoc className='fs-3 mx-2'>Document</BsFiletypeDoc></NavLink>
-                          </>
-                        ))
-                      }
+                      <b>Documents :</b>{' '}
+                      {technicianDocs.map((document) => (
+                        <>
+                          <NavLink
+                            as={NavLink}
+                            to={document.file_path}
+                            target="_blank"
+                          >
+                            <BsFiletypeDoc className="fs-3 mx-2">
+                              Document
+                            </BsFiletypeDoc>
+                          </NavLink>
+                        </>
+                      ))}
                     </ListGroup.Item>
                   </ListGroup>
                 </Card>
               </Col>
             </Row>
           </Card>
-          )
-        }
-
+        )}
       </Container>
     </React.Fragment>
   );

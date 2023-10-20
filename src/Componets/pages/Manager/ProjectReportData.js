@@ -146,7 +146,7 @@ function ProjectReportData() {
   return (
     <>
       <NavbarManagerDashboard />
-      <div className="jobcontainer container mt-5">
+      <div className="container-fluid mt-5">
         <h1 className="jobassigntext mb-4">Project Report Data</h1>
         <div className="card">
           <FormControl
