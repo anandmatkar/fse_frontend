@@ -103,8 +103,13 @@ const TimeSheetForApproved = () => {
   return (
     <>
       <NavbarManagerDashboard />
-      <div className="jobcontainer container mt-5">
-        <h1 className="jobassigntext mb-4">Time Sheet</h1>
+      <div className="container-fluid mt-5">
+        <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
+          <h6 className="section-title bg-white text-center text-primary px-3">
+            Manager's Panel
+          </h6>
+          <h1 className="mb-5">Timehseet For Approval</h1>
+        </div>
         <div className="card">
           {loading ? (
             <p>Loading technician details...</p>

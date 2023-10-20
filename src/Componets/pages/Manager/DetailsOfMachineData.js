@@ -56,7 +56,7 @@ function DetailsOfMachineData() {
         </h6>
         <h1 className="mb-5">Details of Machine Data</h1>
       </div>
-      <div className="container mt-5">
+      <div className="container-fluid mt-5">
         <div className="card p-2">
           <div className="card-body">
             <div className="bf-table-responsive rounded">
