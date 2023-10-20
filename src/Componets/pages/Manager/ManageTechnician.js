@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, Container, Table, Form, Pagination, InputGroup, Spinner, Modal } from "react-bootstrap";
+import { Button, Container, Table, Form, Pagination, InputGroup, Spinner, Modal, Dropdown } from "react-bootstrap";
 import { FaSearch, FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { Manager_Base_Url, Technician_Lists_Manager } from "./../../../Api/Manager_Api";
@@ -239,7 +239,28 @@ export default function ManageTechnician() {
                       <td>{`${technician.name} ${technician.surname}`}</td>
                       <td>{technician.email_address}</td>
                       <td>
-                        <Button
+                      <Dropdown>
+                        <Dropdown.Toggle size="sm" variant="success" id="dropdown-basic">
+                          Actions
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                          <Dropdown.Item 
+                            href="#" 
+                            as={NavLink}
+                            to={`/viewtechnicianprofile/${technician.id}`}
+                            >
+                            View Details
+                          </Dropdown.Item>
+                          <Dropdown.Item
+                            href="#"
+                            onClick={() => openDeleteModal(technician)}
+                            >
+                            Delete
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                        {/* <Button
                             variant="success"
                             as={NavLink}
                             to={`/viewtechnicianprofile/${technician.id}`}
@@ -252,7 +273,7 @@ export default function ManageTechnician() {
                           onClick={() => openDeleteModal(technician)} // Open the delete confirmation modal
                         >
                           Delete
-                        </Button>
+                        </Button> */}
                       </td>
                     </tr>
                   ))
