@@ -149,17 +149,19 @@ function ProjectStatus() {
                           <td>
                             <Button
                               variant="secondary"
+                              size='sm'
                               onClick={() => navigateToProjectDetails(project.project_id)}
                             >
                               Details
                             </Button>
                           </td>
                           <td>
-                            <Button variant="warning">Edit</Button>
+                            <Button variant="warning" size='sm'>Edit</Button>
                           </td>
                           <td>
                             <Button
                               variant="danger"
+                              size='sm'
                               onClick={() => openDeleteModal(project)}
                             >
                               Delete
@@ -168,11 +170,11 @@ function ProjectStatus() {
                           <td>
                             {!project.is_requested_for_approval &&
                             !project.is_completed ? (
-                              <Button variant="primary" className='w-100'>Open</Button>
+                              <Button variant="primary" size='sm' className='w-100'>Open</Button>
                             ) : project.is_requested_for_approval ? (
-                              <Button variant="warning" className='w-100'>Waiting</Button>
+                              <Button variant="warning" size='sm' className='w-100'>Waiting</Button>
                             ) : (
-                              <Button variant="success" className='w-100'>Approved</Button>
+                              <Button variant="success" size='sm' className='w-100'>Approved</Button>
                             )}
                           </td>
                         </tr>

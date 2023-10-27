@@ -5,6 +5,7 @@ import { Base_Url } from './Base_Url';
 export const Technician_ChnagePassword = `${Base_Url}api/v1/technician/changePassword`
 
 // Detail of job Assign  , Detail of job waiting , Deatail of job closed
+export const Technician_Assigned_Projects = `${Base_Url}api/v1/technician/assignedProjectList`
 export const Technician_DetailJobAssign = `${Base_Url}api/v1/technician/assignedProjectDetails`
 export const Technician_DeleteTimesheet = `${Base_Url}api/v1/technician/deleteTimesheet`
 export const Technician_DeleteReport = `${Base_Url}api/v1/technician/deleteReport`
