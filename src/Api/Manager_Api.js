@@ -24,7 +24,9 @@ export const Profile_Upload_Manager = `${Base_Url}api/v1/manager/uploadProfilePi
 
 ////////////////////Project Status Manager //////////////////////////////////
 export const Project_List_Manager = `${Base_Url}api/v1/manager/projectList`;
+export const Project_Details_Manager = `${Base_Url}api/v1/manager/projectDetails`;
 export const Project_Count_Manager = `${Base_Url}api/v1/manager/projectCount`;
+export const Delete_Project_Manager = `${Base_Url}api/v1/manager/deleteProject`;
 //////////////////////Technician Create Manager ///////////////////////////
 
 export const Create_Technician_Api = `${Base_Url}api/v1/manager/createTechnician`;
