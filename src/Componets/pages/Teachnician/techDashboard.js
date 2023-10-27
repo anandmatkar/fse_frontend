@@ -1,131 +1,146 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card , Badge } from 'react-bootstrap';
+import { Button, Container, Row, Col, Card, Badge, Table } from "react-bootstrap";
 import Layout4 from "../../Layout/Layout4";
 import classes from "./techdashboard.module.css";
-import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { Base_Url } from "../../../Api/Base_Url";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { Technician_Assigned_Projects } from "../../../Api/Technicians_Api";
+import PageSpinner from "../Common/PageSpinner";
 
 function TechnicianDashboard() {
-    const Navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const JobClosed = () => {
-        Navigate("/JobClosed");
-        console.log("Successfully Updated");
+  const tableHeads = ['Order ID', 'Customer Name', 'Country', 'Start Date', 'End Date', 'View', 'Status'];
+
+  const [ assignedProjectList, setAssignedProjectList ] = useState([]);
+  const [ isFetchingProjectList, setIsFetchingProjectList ] = useState(false);
+
+  const fetchAssignedProjectList = async () => {
+    try {
+        setIsFetchingProjectList(true);
+
+        let token = Cookies.get("token");
+      
+      if (!token) {
+        toast.error("Token not found in Cookies. Session Timeout Please Login Again.");
+        return;
+      }
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+
+    let response = await axios.get(Technician_Assigned_Projects, config);
+
+    console.log(response.data.data);
+
+    if(response.data.status === 200) {
+        setAssignedProjectList(response.data.data);
+        setIsFetchingProjectList(false);
+    } else {
+        toast.error(response.data.message);
+        setIsFetchingProjectList(false);
+    }
+                
+    } catch (error) {
+        toast.error(error.message);
+        setIsFetchingProjectList(false);        
+    } finally {
+        setIsFetchingProjectList(false);
+    };
+  };
+
+  useEffect(() => {
+    fetchAssignedProjectList()
+  }, []);
+  
+  useEffect(() => {
+    const token = Cookies.get("token");
+    const role = Cookies.get("role"); // Assuming 'role' is the name of the cookie storing the role
+    // Function to block back navigation
+    const blockBackNavigation = (e) => {
+      e.preventDefault();
+      // Resetting the state to prevent going back
+      window.history.pushState(null, null, window.location.pathname);
     };
 
-    const JobAssigned = () => {
-        Navigate("/JobAssigned");
-        console.log("Successfully Updated");
+    // If token and role are present, block the back navigation
+    if (token && role) {
+      // Push a new entry to history stack
+      window.history.pushState(null, null, window.location.pathname);
+
+      // Add a popstate listener
+      window.addEventListener("popstate", blockBackNavigation);
+    }
+
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("popstate", blockBackNavigation);
     };
+  }, []);
 
-    const JobEWaitingAprroval = () => {
-        Navigate("/JobApproval");
-        console.log("Successfully Updated");
-    };
+  return (
+    <Layout4>
+      <Container className="container-xxl py-5">
+        <div className="text-center mb-5">
+          <h6 className="section-title bg-white text-center text-primary px-3">
+            Dashboard
+          </h6>
+          <h1>Your Tasks Overview</h1>
+        </div>
 
-    const [projectCounts, setProjectCounts] = useState({
-        assignedProjectCount: 0,
-        completedProjectCount: 0,
-        projectWaitingApprovalCount: 0
-    });
+        {
+            isFetchingProjectList ? 
+            <PageSpinner/> :
+            <Container>
+                <Row>
+                    <Table responsive hover>
+                    <thead>
+                        <tr>
+                        {tableHeads.map((heading) => (
+                            <th>{heading}</th>
+                        ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            assignedProjectList.map((assignedProject) => (
+                                <tr>
+                                    <td>{assignedProject.order_id}</td>
+                                    <td>{assignedProject.customer_name}</td>
+                                    <td>{assignedProject.country}</td>
+                                    <td>{assignedProject.start_date}</td>
+                                    <td>{assignedProject.end_date}</td>
+                                    <td>
+                                        <Button variant="secondary" size="sm">Details</Button>
+                                    </td>
+                                    <td>
+                                        {
+                                            (!assignedProject.is_completed &&
+                                            !assignedProject.is_requested_for_approval) ?
+                                                <Button variant="primary" size="sm" className='w-100'>Open</Button> :
+                                            (assignedProject.is_completed) ?
+                                                <Button variant="success" size="sm" className='w-100'>Completed</Button> :
+                                            (assignedProject.is_requested_for_approval) ?
+                                                <Button variant="warning" size="sm" className='w-100'>Cancel</Button> :
+                                            <></>
+                                        }
+                                    </td>
 
-    useEffect(() => {
-        const token = Cookies.get('token');
-        // Fetch the data from the API when the component mounts
-        fetch(`${Base_Url}api/v1/technician/assignedProjectCounts`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: token,
-                // Add any other necessary headers such as authentication tokens if required
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                setProjectCounts(data.data);
-            }
-        })
-        .catch(error => console.error("Error fetching the project counts:", error));
-    }, []);
-
-    useEffect(() => {
-        const token = Cookies.get('token');
-        const role = Cookies.get('role');  // Assuming 'role' is the name of the cookie storing the role
-        // Function to block back navigation
-        const blockBackNavigation = (e) => {
-            e.preventDefault();
-            // Resetting the state to prevent going back
-            window.history.pushState(null, null, window.location.pathname);
-        };
-    
-        // If token and role are present, block the back navigation
-        if (token && role) {
-            // Push a new entry to history stack
-            window.history.pushState(null, null, window.location.pathname);
-            
-            // Add a popstate listener
-            window.addEventListener('popstate', blockBackNavigation);
-        }
-    
-    
-        // Cleanup function to remove the event listener when the component unmounts
-        return () => {
-            window.removeEventListener('popstate', blockBackNavigation);
-        };
-    }, []);
-        
-
-    return (
-        <Layout4>
-            <Container className="container-xxl py-5">
-                <div className="text-center mb-5">
-                    <h6 className="section-title bg-white text-center text-primary px-3">Dashboard</h6>
-                    <h1>Your Tasks Overview</h1>
-                </div>
-                <Row xs={1} lg={3} className="g-4">
-                    <Col onClick={JobAssigned}>
-                        <Card className="service-item rounded pt-3 position-relative">
-                        <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.assignedProjectCount}</Badge>
-                            <Card.Body className="text-center">
-                                <i className="fa fa-3x fa-globe text-primary mb-4"></i>
-                                <Card.Title className="fs-3">Job Assign</Card.Title>
-                                <Card.Text>View your Assign Project, you can find more details here.</Card.Text>
-                                <Button variant="primary" className={classes.cardButton} onClick={JobAssigned}>View Details</Button>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-
-                    <Col onClick={JobEWaitingAprroval}>
-                        <Card className="service-item rounded pt-3 position-relative">
-                        <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.projectWaitingApprovalCount}</Badge>
-                            <Card.Body className="text-center">
-                                <i className="fa fa-3x fa-hotel text-primary mb-4"></i>
-                                <Card.Title  className="fs-3">Job waiting Approval</Card.Title>
-                                <Card.Text>View Jobs Waiting for Approval, you can see more details here.</Card.Text>
-                                <Button variant="primary" className={classes.cardButton} onClick={JobEWaitingAprroval}>View Details</Button>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-
-                    <Col onClick={JobClosed}>
-                        <Card className="service-item rounded pt-3 position-relative">
-                        <Badge variant="secondary" className={`position-absolute ${classes.badgePosition}`}>{projectCounts.completedProjectCount}</Badge>
-                            <Card.Body className="text-center">
-                                <i className="fa fa-3x fa-user text-primary mb-4"></i>
-                                <Card.Title  className="fs-3">Job Closed</Card.Title>
-                                <Card.Text>View job which are closed, you can see more details here.</Card.Text>
-                                <Button variant="danger" className={classes.cardButton} onClick={JobClosed}>View Details</Button>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                    </Table>
                 </Row>
             </Container>
-        </Layout4>
-    );
+        }
+      </Container>
+    </Layout4>
+  );
 }
 
 export default TechnicianDashboard;
