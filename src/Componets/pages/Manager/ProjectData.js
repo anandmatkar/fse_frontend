@@ -79,11 +79,11 @@ function ProjectData() {
     <div>
       <NavbarManagerDashboard />
 
-      <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
+      <div className="text-center wow fadeInUp my-5" data-wow-delay="0.1s">
         <h6 className="section-title bg-white text-center text-primary px-3">
           Manager's Panel
         </h6>
-        <h1 className="mb-5">Project Data Details</h1>
+        <h1 className="mb-5">Project Technician Report Details</h1>
       </div>
       <div className="container-fluid mt-5">
         <div>
@@ -123,7 +123,7 @@ function ProjectData() {
                       ) : (
                         <tr>
                           <td colSpan="4" className="text-center">
-                            No project data found...
+                            No project technician report data found...
                           </td>
                         </tr>
                       )}

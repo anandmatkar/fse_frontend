@@ -1,0 +1,18 @@
+a.custom-tab.nav-link {
+    color: green;
+    font-weight: bold;
+}
+
+a.custom-tab-active.nav-link.active {
+    background-color: #86B817;
+    color: white;
+    font-weight: bold;
+}
+
+span.my-2.report-icon {
+    display: block;
+}
+
+button.report-status.mt-2.btn.btn-secondary.btn-sm {
+    display: block;
+}

@@ -56,6 +56,7 @@ import CompleteTimesheetData from './Componets/pages/Teachnician/CompleteTimeshe
 import CompleteProejctAttachment from './Componets/pages/Teachnician/CompleteProejctAttachment';
 import ProjectData from './Componets/pages/Manager/ProjectData';
 import Cookies from 'js-cookie';
+import ProjectDetails from './Componets/pages/Manager/ProjectDetails';
 
 // Define a function to check if the user is authenticated
 function isAuthenticated() {
@@ -209,6 +210,14 @@ function App() {
           element={
             <ProtectedRoute role="Manager">
               <ProjectStatus />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projectDetails/:projectID"
+          element={
+            <ProtectedRoute role="Manager">
+              <ProjectDetails />
             </ProtectedRoute>
           }
         />
