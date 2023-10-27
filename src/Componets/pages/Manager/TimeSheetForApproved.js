@@ -104,12 +104,19 @@ const TimeSheetForApproved = () => {
     <>
       <NavbarManagerDashboard />
       <div className="jobcontainer container mt-5">
-        <h1 className="jobassigntext mb-4">Time Sheet</h1>
+
+        <div className="text-center wow fadeInUp my-5" data-wow-delay="0.1s">
+          <h6 className="section-title bg-white text-center text-primary px-3">
+            Manager's Panel
+          </h6>
+          <h1 className="mb-5">Project Technician TimeSheets</h1>
+        </div>
+        
         <div className="card">
           {loading ? (
             <p>Loading technician details...</p>
           ) : technicianData.length === 0 ? (
-            <p>No technician details found.</p>
+            <p>No technician Timesheet found.</p>
           ) : (
             <div className="card-body">
               <div className="bf-table-responsive">
@@ -147,10 +154,10 @@ const TimeSheetForApproved = () => {
                                       target="_blank"
                                       rel="noopener noreferrer"
                                     >
-                                      <BsFillFileEarmarkPostFill className="fs-3"></BsFillFileEarmarkPostFill>{' '}
+                                      <BsFillFileEarmarkPostFill className="fs-3"></BsFillFileEarmarkPostFill>{" "}
                                     </a>
                                   ))
-                                : 'No attachments'}
+                                : "No attachments"}
                             </td>
                           </tr>
                         ))}
@@ -159,13 +166,13 @@ const TimeSheetForApproved = () => {
                 </Container>
               </div>
               <div className="d-flex float-end mt-3 p-2">
-                {renderApprovalButton()}{' '}
+                {renderApprovalButton()}{" "}
               </div>
             </div>
           )}
           <nav className="dt-pagination">
             <ul className="dt-pagination-ul">
-              <li className={`dt-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <li className={`dt-item ${currentPage === 1 ? "disabled" : ""}`}>
                 <button
                   className="dt-link"
                   onClick={() => setCurrentPage(currentPage - 1)}
@@ -176,7 +183,7 @@ const TimeSheetForApproved = () => {
               {renderPaginationButtons()}
               <li
                 className={`dt-item ${
-                  currentPage === totalPages ? 'disabled' : ''
+                  currentPage === totalPages ? "disabled" : ""
                 }`}
               >
                 <button
