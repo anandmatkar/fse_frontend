@@ -6,9 +6,11 @@ export const Technician_ChnagePassword = `${Base_Url}api/v1/technician/changePas
 
 // Detail of job Assign  , Detail of job waiting , Deatail of job closed
 export const Technician_Assigned_Projects = `${Base_Url}api/v1/technician/assignedProjectList`
+export const Technician_Assigned_Project_Details = `${Base_Url}api/v1/technician/assignedProjectDetails`
 export const Technician_DetailJobAssign = `${Base_Url}api/v1/technician/assignedProjectDetails`
 export const Technician_DeleteTimesheet = `${Base_Url}api/v1/technician/deleteTimesheet`
 export const Technician_DeleteReport = `${Base_Url}api/v1/technician/deleteReport`
+export const Technician_Upload_Agreement = `${Base_Url}api/v1/technician/uploadAgreement`
 
 // Jobassigned , jobwaiting , jobclosed
 export const Technician_ProjectList = `${Base_Url}api/v1/technician/assignedProjectList`
