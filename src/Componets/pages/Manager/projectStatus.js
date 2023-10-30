@@ -7,6 +7,7 @@ import { Delete_Project_Manager, Project_List_Manager } from './../../../Api/Man
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import PageSpinner from '../Common/PageSpinner';
+import EditProjectDetailsModal from './EditProjectDetailsModal';
 
 function ProjectStatus() {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ function ProjectStatus() {
   const tableHeads = ['Order ID', 'Customer Name', 'Country', 'Start Date', 'End Date', 'View', 'Edit', 'Delete', 'Status'];
 
   const [ projectList, setProjectList ] = useState([]);
+  const [ showEditModal, setShowEditModal ] = useState(false);
+  const [ projectToEdit, setProjectToEdit ] = useState(null);
   const [ showDeleteModal, setShowDeleteModal ]  = useState(false);
   const [ projectToDelete, setProjectToDelete ] = useState(null);
   const [ isFetchingProject, setIsFetchingProject ] = useState(false);
@@ -21,6 +24,12 @@ function ProjectStatus() {
   const openDeleteModal = (project) => {
     setProjectToDelete(project);
     setShowDeleteModal(true);
+  }
+
+  // Open the edit modal and populate it with project data
+  const openEditModal = (project) => {
+    setProjectToEdit(project);
+    setShowEditModal(true);
   }
 
   const handleDeleteConfirmation = async () => {
@@ -156,7 +165,7 @@ function ProjectStatus() {
                             </Button>
                           </td>
                           <td>
-                            <Button variant="warning" size='sm'>Edit</Button>
+                            <Button variant="warning" size='sm' onClick={() => openEditModal()}>Edit</Button>
                           </td>
                           <td>
                             <Button
@@ -170,7 +179,7 @@ function ProjectStatus() {
                           <td>
                             {!project.is_requested_for_approval &&
                             !project.is_completed ? (
-                              <Button variant="primary" size='sm' className='w-100'>Open</Button>
+                              <Button variant="primary" size='sm' className='w-100'>In Progress</Button>
                             ) : project.is_requested_for_approval ? (
                               <Button variant="warning" size='sm' className='w-100'>Waiting</Button>
                             ) : (
@@ -195,6 +204,13 @@ function ProjectStatus() {
           </Container>
         </Container>
       )}
+
+      <EditProjectDetailsModal
+        show={showEditModal}
+        onHide={() => setShowEditModal(false)}
+        project={projectToEdit}
+        onUpdate={fetchProjectList}
+      />
 
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>

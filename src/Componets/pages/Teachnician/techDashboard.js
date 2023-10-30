@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Container, Row, Col, Card, Badge, Table } from "react-bootstrap";
 import Layout4 from "../../Layout/Layout4";
 import classes from "./techdashboard.module.css";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -87,7 +87,7 @@ function TechnicianDashboard() {
       <Container className="container-xxl py-5">
         <div className="text-center mb-5">
           <h6 className="section-title bg-white text-center text-primary px-3">
-            Dashboard
+            Technician's Dashboard
           </h6>
           <h1>Your Tasks Overview</h1>
         </div>
@@ -115,7 +115,7 @@ function TechnicianDashboard() {
                                     <td>{assignedProject.start_date}</td>
                                     <td>{assignedProject.end_date}</td>
                                     <td>
-                                        <Button variant="secondary" size="sm">Details</Button>
+                                        <Button variant="secondary" size="sm" as={NavLink} to={`/technicianProjectDetails/${assignedProject.project_id}`}>Details</Button>
                                     </td>
                                     <td>
                                         {

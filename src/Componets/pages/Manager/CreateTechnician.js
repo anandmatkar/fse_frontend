@@ -23,6 +23,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import { useRef } from 'react';
+import { Base_Url } from '../../../Api/Base_Url';
 
 function CreateTechnician() {
   const { Formik } = formik;
@@ -227,7 +228,7 @@ function CreateTechnician() {
 
   const handleDownloadTemplate = () => {
     const downloadLink =
-      'http://15.206.93.145/uploads/exampleTemplate/tech_example.xlsx';
+      `${Base_Url}uploads/exampleTemplate/tech_example.xlsx`;
     const newTab = window.open(downloadLink, '_blank');
     newTab.focus();
   };
