@@ -1,15 +1,19 @@
 import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, NavLink } from 'react-router-dom';
 import { BsFillFileEarmarkPostFill } from 'react-icons/bs';
-import { Table, Container } from 'react-bootstrap';
+import { Table, Container, Button, Row, Col } from 'react-bootstrap';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import { Manager_Base_Url } from '../../../Api/Manager_Api';
+import { Manager_Base_Url, Show_Signed_Paper_Technicians } from '../../../Api/Manager_Api';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { Base_Url } from '../../../Api/Base_Url';
 
 const TimeSheetForApproved = () => {
   const { techId, projectId } = useParams();
   const [technicianData, setTechnicianData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [documentDownloadLink, setDocumentDownloadLink] = useState(null);
   const itemsPerPage = 10;
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -30,7 +34,7 @@ const TimeSheetForApproved = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       setTechnicianData(data.data);
       setLoading(false);
     } catch (error) {
@@ -39,8 +43,35 @@ const TimeSheetForApproved = () => {
     }
   };
 
+  const fetchSignedDocument = async () => {
+    try {
+
+      const token = Cookies.get("token");
+      
+      if (!token) {
+        console.error("Token not found in localStorage.");
+        return;
+      }
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+      const response = await axios.get(`${Show_Signed_Paper_Technicians}?projectId=${projectId}&techId=${techId}`, config);
+      console.log(response.data);
+      // console.log(response.data.data[0].file_path);
+      if(response.data.status === 200 && response.data.data.length > 0) {
+        setDocumentDownloadLink(response.data.data[0].file_path);
+        
+      }
+    } catch (error) {
+      // toast.error(error.message);      
+    }
+  }
+
   useEffect(() => {
     fetchData();
+    fetchSignedDocument();
   }, [techId, projectId]);
 
   // Calculate the total number of pages based on the number of items and items per page
@@ -51,9 +82,9 @@ const TimeSheetForApproved = () => {
       technicianData.some((entry) => entry.is_timesheet_requested_for_approval)
     ) {
       return (
-        <button className="btn btn-success" onClick={handleApprovedButtonClick}>
+        <Button variant='success' onClick={handleApprovedButtonClick}>
           Approve Timesheet
-        </button>
+        </Button>
       );
     }
     return null;
@@ -100,18 +131,44 @@ const TimeSheetForApproved = () => {
     return buttons;
   };
 
+  const handleDownloadDocument = () => {
+    console.log(documentDownloadLink);
+    if(documentDownloadLink !== null) {
+      const newTab = window.open(documentDownloadLink, '_blank');
+      newTab.focus();
+    }
+  };
+
+
   return (
     <>
       <NavbarManagerDashboard />
       <div className="jobcontainer container mt-5">
-
         <div className="text-center wow fadeInUp my-5" data-wow-delay="0.1s">
           <h6 className="section-title bg-white text-center text-primary px-3">
             Manager's Panel
           </h6>
-          <h1 className="mb-5">Project Technician TimeSheets</h1>
+          <h1 className="mb-5">Project Technician Timesheets</h1>
         </div>
-        
+
+        <Row>
+          <Col></Col>
+          <Col></Col>
+          <Col></Col>
+          <Col lg={3} md={6}>
+            {
+              documentDownloadLink !== null ? (
+                <Button variant="warning" className="my-2 w-100" onClick={handleDownloadDocument}>
+                  Signed Copy Timesheet
+                </Button>
+
+              ) : (
+                <></>
+              )
+            }
+          </Col>
+        </Row>
+
         <div className="card">
           {loading ? (
             <p>Loading technician details...</p>

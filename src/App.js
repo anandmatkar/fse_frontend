@@ -57,6 +57,7 @@ import CompleteProejctAttachment from './Componets/pages/Teachnician/CompletePro
 import ProjectData from './Componets/pages/Manager/ProjectData';
 import Cookies from 'js-cookie';
 import ProjectDetails from './Componets/pages/Manager/ProjectDetails';
+import TechnicianProjectDetails from './Componets/pages/Teachnician/TechnicianProjectDetails';
 
 // Define a function to check if the user is authenticated
 function isAuthenticated() {
@@ -358,6 +359,16 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
+
+        <Route
+          path="/technicianProjectDetails/:projectID"
+          element={
+            <ProtectedRoute role="Technician">
+              <TechnicianProjectDetails />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="AssignMachineData/:projectID"
           element={
