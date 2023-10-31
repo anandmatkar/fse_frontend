@@ -8,15 +8,15 @@ import './TechnicianProjectDetails.css'
 import PageSpinner from '../Common/PageSpinner';
 import { FcDocument } from 'react-icons/fc';
 import Layout4 from '../../Layout/Layout4'
-import { Technician_Assigned_Project_Details, Technician_Timesheet_Approval, Technician_Upload_Agreement } from '../../../Api/Technicians_Api';
+import { Technician_Assigned_Project_Details, Technician_DeleteTimesheet, Technician_Timesheet_Approval, Technician_Upload_Agreement } from '../../../Api/Technicians_Api';
 import NavTechnicanProfile from '../../NavBar/navTechnicanProfile';
+import TimeSheetModal from './TimeSheetModal';
 
 export default function TechnicianProjectDetails() {
 
     const { projectID } = useParams();
     const navigate = useNavigate();
     const fileInputRef = React.createRef();
-
 
     const tabNames = ['project-details', 'customer-details', 'reports', 'timesheets'];
 
@@ -25,14 +25,66 @@ export default function TechnicianProjectDetails() {
     const [ technicianDetails, setTechnicianDetails ] = useState([]);
     const [ machineDetails, setMachineDetails ] = useState([]);
     const [ isFetchingProjectDetails, setIsFetchingProjectDetails ] = useState(false);
-    const [ selectedImage, setSelectedImage ] = useState(null); // State to store the selected image
+    const [ selectedImage, setSelectedImage ] = useState(null);
+    const [ showConfirmation, setShowConfirmation ] = useState(false);
+    const [ showTimeSheetModal, setShowTimeSheetModal ] = useState(false);
+    const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState(false);
+    const [ timesheetToDelete, setTimesheetToDelete ] = useState(null);
+
+    const showDeleteConfirmationDialog = (timesheet) => {
+      setTimesheetToDelete(timesheet);
+      setShowDeleteConfirmation(true);
+    };
+
+    const hideDeleteConfirmationDialog = () => {
+      setTimesheetToDelete(null);
+      setShowDeleteConfirmation(false);
+    };
+
+      const handleTimesheetDeletion = async (timesheet) => {
+        console.log(timesheet);
+        try {
+          const token = Cookies.get("token");
+          if (!token) {
+            console.error("Token not found in localStorage.");
+            return;
+          }
+          const config = {
+            headers: {
+              Authorization: token,
+            },
+          };
+
+          let url = `${Technician_DeleteTimesheet}?projectId=${projectID}&timeSheetId=${timesheetToDelete.id}`;
+
+          const response = await axios.get(url, config);
+
+          if (response.status === 200) {
+            toast.success(response.data.message);
+            hideDeleteConfirmationDialog();
+            setTimesheetToDelete(null);
+            fetchProjectDetails();
+          } else {
+            toast.error(response.data.message);
+            hideDeleteConfirmationDialog();
+          }
+        } catch (error) {
+          toast.error(error.message);
+        }
+      };
+      
+    const handleOpenModal = () => {
+      setShowTimeSheetModal(true);
+    };
+
+    const handleCloseModal = () => {
+      setShowTimeSheetModal(false);
+    };
     
     const fetchProjectDetails = async () => {
         try {
             setIsFetchingProjectDetails(true);
-
             let token = Cookies.get("token");
-      
             if (!token) {
                 toast.error("Token not found in Cookies. Session Timeout Please Login Again.");
                 return;
@@ -45,8 +97,6 @@ export default function TechnicianProjectDetails() {
 
             let response = await axios.get(`${Technician_Assigned_Project_Details}?projectId=${projectID}`, config);
 
-            console.log(response.data.data[0]);
-
             if(response.data.status === 200) {
                 setProjectDetails(response.data.data[0]);
                 setTechnicianDetails(response.data.data[0].technician_data);
@@ -55,7 +105,6 @@ export default function TechnicianProjectDetails() {
                 toast.error(response.data.message);
             }
         } catch (error) {
-            console.log(error.message);
             setIsFetchingProjectDetails(false);            
         } finally {
             setIsFetchingProjectDetails(false);
@@ -64,11 +113,8 @@ export default function TechnicianProjectDetails() {
 
     const handleImageUpload = async (e) => {
         try {
-
             const selectedTimeSheetFile = e.target.files[0];
-            
             let token = Cookies.get("token");
-      
             if (!token) {
                 toast.error("Token not found in Cookies. Session Timeout Please Login Again.");
                 return;
@@ -79,7 +125,6 @@ export default function TechnicianProjectDetails() {
                 },
             };
 
-            // Check if an image is selected
             if (!selectedTimeSheetFile) {
                 toast.error("Please Select an Timesheet Agreement to upload.");
                 return;
@@ -94,39 +139,28 @@ export default function TechnicianProjectDetails() {
 
             if (response.data.status === 201) {
                 toast.success(response.data.message);
-                // You can handle success as needed
             } else {
                 toast.error(response.data.message);
-                // Handle the error as needed
             }
         } catch (error) {
-            console.error("Timesheet Agreement Upload Error:", error);
             toast.error(error.message);            
         }
     }
 
-    
-    const [showConfirmation, setShowConfirmation] = useState(false);
-
-    // Function to show the confirmation dialog
     const showConfirmationDialog = () => {
         setShowConfirmation(true);
     };
 
-    // Function to hide the confirmation dialog
     const hideConfirmationDialog = () => {
         setShowConfirmation(false);
     };
 
     const handleRequestApprovalClick = async () => {
-        // Show the confirmation dialog
         showConfirmationDialog();
     };
 
     const confirmApproval = async () => {
-
         hideConfirmationDialog();
-
         try {
             let token = Cookies.get("token");
       
@@ -145,10 +179,8 @@ export default function TechnicianProjectDetails() {
             if (response.data.status === 200) {
                 toast.success(response.data.message);
                 fetchProjectDetails();
-                // You can handle success as needed
             } else {
                 toast.error(response.data.message);
-                // Handle the error as needed
             }            
         } catch (error) {
             toast.error(error.message);            
@@ -158,7 +190,6 @@ export default function TechnicianProjectDetails() {
     useEffect(() => {
         fetchProjectDetails();
     }, []);
-
 
   return (
     <>
@@ -269,14 +300,122 @@ export default function TechnicianProjectDetails() {
                             <>
                                 <Card className='w-100 my-2'>
                                     <Card.Header className='fs-4 text-center'>TimeSheets</Card.Header>
+                                    <Container>
+                                        <Row>
+                                            <Col lg={3} md={12}>
+                                            {technicianDetails.length > 0 && technicianDetails.map((technician) => (
+                                            technician.timesheet_data.length > 0 ? (
+                                                technician.timesheet_data.some(
+                                                (timesheet) =>
+                                                    timesheet.is_timesheet_requested_for_approval ||
+                                                    timesheet.is_timesheet_approved
+                                                ) ? null : (
+                                                <TimeSheetModal
+                                                    showModal={showTimeSheetModal}
+                                                    onClose={handleCloseModal}
+                                                    projectID={projectID}
+                                                    fetchProjectDetails={fetchProjectDetails}
+                                                    onNewTimesheet={(newTimesheet) => {
+                                                    setProjectDetails((prevProject) => {
+                                                        const updatedTechnicianData = prevProject.technician_data.map(
+                                                        (tech) => {
+                                                            if (tech.id === technician.id) {
+                                                            return {
+                                                                ...tech,
+                                                                timesheet_data: [...tech.timesheet_data, newTimesheet],
+                                                            };
+                                                            }
+                                                            return tech;
+                                                        }
+                                                        );
+                                                        return {
+                                                        ...prevProject,
+                                                        technician_data: updatedTechnicianData,
+                                                        };
+                                                    });
+                                                    }}
+                                                />
+                                                )
+                                            ) : (
+                                                <TimeSheetModal
+                                                showModal={showTimeSheetModal}
+                                                onClose={handleCloseModal}
+                                                projectID={projectID}
+                                                fetchProjectDetails={fetchProjectDetails}
+                                                onNewTimesheet={(newTimesheet) => {
+                                                    setProjectDetails((prevProject) => {
+                                                    const updatedTechnicianData = prevProject.technician_data.map(
+                                                        (tech) => {
+                                                        if (tech.id === technician.id) {
+                                                            return {
+                                                            ...tech,
+                                                            timesheet_data: [...tech.timesheet_data, newTimesheet],
+                                                            };
+                                                        }
+                                                        return tech;
+                                                        }
+                                                    );
+                                                    return {
+                                                        ...prevProject,
+                                                        technician_data: updatedTechnicianData,
+                                                    };
+                                                    });
+                                                }}
+                                                />
+                                            )
+                                            ))}
+                                            </Col>
+                                            <Col lg={3} md={12}>
+                                                <input
+                                                    type="file"
+                                                    ref={fileInputRef}
+                                                    style={{ display: 'none' }}
+                                                    onChange={handleImageUpload}
+                                                />
+                                                <Button
+                                                    variant='warning'
+                                                    className='w-100 my-2'
+                                                    onClick={() => fileInputRef.current.click()}
+                                                >
+                                                    Attach Scanned Timesheet
+                                                </Button>
+                                            </Col>
+                                            <Col lg={3} md={6}>
+                                                {
+                                                    (technicianDetails.length > 0) ? (
+                                                        technicianDetails.map((technician) => (
+                                                                (technician.timesheet_data.length > 0) ?
+                                                                (
+                                                                    (technician.timesheet_data[0].is_timesheet_requested_for_approval ||
+                                                                        technician.timesheet_data[0].is_timesheet_approved) ? (
+                                                                            <></>
+                                                                        ) : (
+                                                                            <Button variant='primary' className='w-100 my-2' onClick={() => handleRequestApprovalClick()}>Request Timesheet For Approval</Button>
+                                                                        )
+                                                                ) : (
+                                                                    <></>
+                                                                )
+                                                            
+                                                        ))
+                                                    ) : 
+                                                    (<></>)
+                                                }
+                                            </Col>
+                                            <Col lg={3} md={6}>                                                
+                                            </Col>
+                                        </Row>
+
+                                    </Container>
                                     <Table responsive>
                                         <thead>
                                             <tr>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
+                                                <th>Date</th>
+                                                <th>Start Time</th>
+                                                <th>End Time</th>
                                                 <th>Lunch Time</th>
                                                 <th>Attachment</th>
                                                 <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -287,6 +426,7 @@ export default function TechnicianProjectDetails() {
                                                             technician.timesheet_data.length > 0 &&
                                                             technician.timesheet_data.map((timesheet, index) => (
                                                                 <tr>
+                                                                    <td>{timesheet.date}</td>
                                                                     <td>{timesheet.start_time}</td>
                                                                     <td>{timesheet.end_time}</td>
                                                                     <td>{timesheet.lunch_time}</td>
@@ -303,6 +443,15 @@ export default function TechnicianProjectDetails() {
                                                                                 <></>
                                                                         }
                                                                     </td>
+                                                                    <td>
+                                                                    <Button
+                                                                        variant="danger"
+                                                                        size="sm"
+                                                                        onClick={() => showDeleteConfirmationDialog(timesheet)}
+                                                                        >
+                                                                        Delete
+                                                                    </Button>
+                                                                    </td>
 
                                                                 </tr>
                                                             ))
@@ -312,59 +461,13 @@ export default function TechnicianProjectDetails() {
                                         </tbody>
                                         </Table>
                                 </Card>
-
-                                <Row>
-                                    <Col lg={3} md={6}>
-
-                                    </Col>
-                                    <Col lg={3} md={6}>
-                                        <input
-                                            type="file"
-                                            ref={fileInputRef}
-                                            style={{ display: 'none' }}
-                                            onChange={handleImageUpload}
-                                        />
-                                        <Button
-                                            variant='warning'
-                                            className='w-100 my-2'
-                                            onClick={() => fileInputRef.current.click()}
-                                        >
-                                            Attach Scanned Timesheet
-                                        </Button>
-                                    </Col>
-                                    <Col lg={3} md={6}>
-                                        {
-                                            (technicianDetails.length > 0) ? (
-                                                technicianDetails.map((technician) => (
-                                                        (technician.timesheet_data.length > 0) ?
-                                                        (
-                                                            (technician.timesheet_data[0].is_timesheet_requested_for_approval ||
-                                                                technician.timesheet_data[0].is_timesheet_approved) ? (
-                                                                    <></>
-                                                                ) : (
-                                                                    <Button variant='primary' className='w-100 my-2' onClick={() => handleRequestApprovalClick()}>Request Timesheet For Approval</Button>
-                                                                )
-                                                        ) : (
-                                                            <></>
-                                                        )
-                                                    
-                                                ))
-                                            ) : 
-                                            (<></>)
-                                        }
-                                    </Col>
-                                    <Col lg={3} md={6}>
-                                        
-                                    </Col>
-
-                                </Row>
                             </>
                         )}
                     </Container>
                 )
             }
 
-            {/* Confirmation Dialog */}
+        {/* Confirmation Dialog */}
         <Modal show={showConfirmation} onHide={hideConfirmationDialog}>
             <Modal.Header closeButton>
                 <Modal.Title>Confirmation</Modal.Title>
@@ -378,6 +481,24 @@ export default function TechnicianProjectDetails() {
                 </Button>
                 <Button variant="primary" onClick={confirmApproval}>
                     Confirm
+                </Button>
+            </Modal.Footer>
+        </Modal>
+        
+        {/* Delete Dialog */}
+        <Modal show={showDeleteConfirmation} onHide={hideDeleteConfirmationDialog}>
+            <Modal.Header closeButton>
+                <Modal.Title>Delete Confirmation</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className='text-center'>
+                Are you sure you want to delete this timesheet <br/> Dated : {timesheetToDelete ? <b>{timesheetToDelete.date}</b> : ''} ?
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={hideDeleteConfirmationDialog}>
+                Cancel
+                </Button>
+                <Button variant="danger" onClick={() => handleTimesheetDeletion(timesheetToDelete)}>
+                Confirm Delete
                 </Button>
             </Modal.Footer>
         </Modal>
