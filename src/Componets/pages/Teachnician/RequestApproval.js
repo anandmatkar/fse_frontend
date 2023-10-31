@@ -1,17 +1,17 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Button, Modal } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Technician_ReportRequestApproval } from '../../../Api/Technicians_Api';
 
-const RequestApproval = ({projectID , onRequestSent, fetchData }) => {
+const RequestApproval = ({projectID, machineID, onRequestSent, fetchData }) => {
     const [showApprovalModal, setShowApprovalModal] = useState(false);
     const token = Cookies.get('token');
 
     const handleApproval = async () => {
         try {
-            let response = await fetch(`${Technician_ReportRequestApproval}?projectId=${projectID}`, {
+            let response = await fetch(`${Technician_ReportRequestApproval}?projectId=${projectID}&machineId=${machineID}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': token,
@@ -31,6 +31,10 @@ const RequestApproval = ({projectID , onRequestSent, fetchData }) => {
             toast.error('Error sending request: ' + error.message);
         }
     };
+
+    useEffect(() => {
+        console.log(projectID, machineID);
+    }, [])
   return (
    <div>
        <Button onClick={() => setShowApprovalModal(true)} className="btn btn-success">Request Approval</Button>
