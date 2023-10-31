@@ -3,12 +3,14 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { Update_Project_Details } from '../../../Api/Manager_Api';
 
-function EditProjectDetailsModal({ show, onHide, project, onUpdate }) {
+function EditProjectDetailsModal({ show, onHide, project, fetchProjectList }) {
   const initialEditedProject = {
-    description: 'project.description',
-    start_date: 'project.start_date',
-    end_date: 'project.end_date',
+    order_id: project.order_id,
+    description: project.description,
+    start_date: project.start_date,
+    end_date: project.end_date,
   };
 
   const [editedProject, setEditedProject] = useState(initialEditedProject);
@@ -24,12 +26,10 @@ function EditProjectDetailsModal({ show, onHide, project, onUpdate }) {
   const updateProjectDetails = async () => {
     try {
       const token = Cookies.get("token");
-
       if (!token) {
         console.error("Token not found in Cookies.");
         return;
       }
-
       const config = {
         headers: {
           Authorization: token,
@@ -37,36 +37,47 @@ function EditProjectDetailsModal({ show, onHide, project, onUpdate }) {
       };
 
       const updatedData = {
+        projectId: project.project_id,
         description: editedProject.description,
-        start_date: editedProject.start_date,
-        end_date: editedProject.end_date,
+        startDate: editedProject.start_date,
+        endDate: editedProject.end_date,
       };
 
       const response = await axios.put(
-        `${'Update_Project_Manager'}?projectId=${project.project_id}`,
+        `${Update_Project_Details}`,
         updatedData,
         config
       );
 
-      if (response.data.success) {
-        onUpdate();
-        toast.success("Project details updated successfully.");
+      if (response.data.status === 200) {
+        console.log(response.data);
+        fetchProjectList();
+        toast.success(response.data.message);
       }
     } catch (error) {
       console.error(error.message);
       toast.error(error.message);
     }
-
     onHide();
   }
 
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Edit Project</Modal.Title>
+        <Modal.Title>Edit Project Details</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
+          <Form.Group className="mb-3">
+            <Form.Label><b>Order ID</b></Form.Label>
+            <Form.Control
+              type="text"
+              name="order_id"
+              value={editedProject.order_id}
+              onChange={handleEditInputChange}
+              disabled
+            />
+          </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label><b>Description</b></Form.Label>
             <Form.Control
@@ -79,7 +90,7 @@ function EditProjectDetailsModal({ show, onHide, project, onUpdate }) {
           <Form.Group className="mb-3">
             <Form.Label><b>Start Date</b></Form.Label>
             <Form.Control
-              type="text"
+              type="date"
               name="start_date"
               value={editedProject.start_date}
               onChange={handleEditInputChange}
@@ -88,7 +99,7 @@ function EditProjectDetailsModal({ show, onHide, project, onUpdate }) {
           <Form.Group className="mb-3">
             <Form.Label><b>End Date</b></Form.Label>
             <Form.Control
-              type="text"
+              type="date"
               name="end_date"
               value={editedProject.end_date}
               onChange={handleEditInputChange}
@@ -101,7 +112,7 @@ function EditProjectDetailsModal({ show, onHide, project, onUpdate }) {
           Cancel
         </Button>
         <Button variant="primary" onClick={updateProjectDetails}>
-          Save Changes
+          Edit Project Details
         </Button>
       </Modal.Footer>
     </Modal>

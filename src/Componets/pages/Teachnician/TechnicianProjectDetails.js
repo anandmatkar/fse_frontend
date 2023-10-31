@@ -430,7 +430,21 @@ export default function TechnicianProjectDetails() {
                                                                     <td>{timesheet.start_time}</td>
                                                                     <td>{timesheet.end_time}</td>
                                                                     <td>{timesheet.lunch_time}</td>
-                                                                    <td>{<FcDocument className='fs-3'/>}</td>
+                                                                    {/* <td>{<FcDocument className='fs-3'/>}</td> */}
+                                                                    <td>
+                                                                    {timesheet.timesheet_attach_data.length > 0 && (
+                                                                    timesheet.timesheet_attach_data.map((attachment, attachmentIndex) => (
+                                                                        <a
+                                                                        key={attachmentIndex}
+                                                                        href={attachment.file_path}  // Set the URL of the attachment
+                                                                        target="_blank"  // Open the link in a new tab
+                                                                        rel="noopener noreferrer" // Add security attributes
+                                                                        >
+                                                                        <FcDocument className='fs-3' />
+                                                                        </a>
+                                                                    ))
+                                                                    )}
+                                                                    </td>
                                                                     <td>
                                                                         {
                                                                             (!timesheet.is_timesheet_approved &&

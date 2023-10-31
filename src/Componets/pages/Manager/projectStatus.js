@@ -165,7 +165,7 @@ function ProjectStatus() {
                             </Button>
                           </td>
                           <td>
-                            <Button variant="warning" size='sm' onClick={() => openEditModal()}>Edit</Button>
+                            <Button variant="warning" size='sm' onClick={() => openEditModal(project)}>Edit</Button>
                           </td>
                           <td>
                             <Button
@@ -205,12 +205,15 @@ function ProjectStatus() {
         </Container>
       )}
 
-      <EditProjectDetailsModal
-        show={showEditModal}
-        onHide={() => setShowEditModal(false)}
-        project={projectToEdit}
-        onUpdate={fetchProjectList}
-      />
+      {
+        showEditModal && 
+        <EditProjectDetailsModal
+          show={showEditModal}
+          onHide={() => setShowEditModal(false)}
+          project={projectToEdit}
+          fetchProjectList={fetchProjectList}
+        />
+      }
 
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
