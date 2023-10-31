@@ -55,7 +55,6 @@ const [timesheetToDelete, setTimesheetToDelete] = useState(null);
 
       try {
         const token = Cookies.get('token');
-console.log(token,"token")
         if (!token) {
           console.error("Token not found in localStorage.");
           return;
@@ -66,7 +65,7 @@ console.log(token,"token")
             Authorization: token, 
           },
         };
-console.log(config, "config")
+        
         let url = `${Technician_DeleteTimesheet}?projectId=${project_id}&timeSheetId=${id}`
         
         const response = await axios.get(url, config);            
