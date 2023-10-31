@@ -114,7 +114,7 @@ const AssignReportData = () => {
                 {shouldShowButtons() && (
                     <>
                         <NewReportModal projectID={projectID} machineID={machineID} onNewReport={onNewReportCallback} />
-                        {project && project.length > 0 && <RequestApproval projectID={projectID} onRequestSent={() => setIsRequestSent(true)} fetchData={fetchData} />}
+                        {project && project.length > 0 && <RequestApproval projectID={projectID} machineID={machineID} onRequestSent={() => setIsRequestSent(true)} fetchData={fetchData} />}
                     </>
                 )}
                 </div>
