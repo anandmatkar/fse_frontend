@@ -53,6 +53,9 @@ function EditProjectDetailsModal({ show, onHide, project, fetchProjectList }) {
         console.log(response.data);
         fetchProjectList();
         toast.success(response.data.message);
+      } else {
+        fetchProjectList();
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.error(error.message);
