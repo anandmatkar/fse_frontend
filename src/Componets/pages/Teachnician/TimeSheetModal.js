@@ -27,7 +27,7 @@ const generateTimeSlots = () => {
   return slots;
 };
 
-const TimeSheetModal = ({ projectID , onNewTimesheet }) => { 
+const TimeSheetModal = ({ projectID , onNewTimesheet, fetchProjectDetails }) => { 
 
   const navigate = useNavigate();
   const timeSlots = generateTimeSlots();
@@ -128,6 +128,7 @@ const handleSubmit = async (e) => {
       console.log(timesheetData);
       if (timesheetData.success) {
         onNewTimesheet(newTimeSheetData);
+        fetchProjectDetails();
     }
   } catch (error) {
       console.error('Error:', error);
@@ -137,7 +138,9 @@ const handleSubmit = async (e) => {
 
   return (
    <div className='d-flex '>
-<Button  className='btn btn-success me-5'
+<Button
+  variant='success'
+  className='w-100 my-2'
   style={{}} 
   onClick={() => setShowModal(true)}>
   Add new Timesheet

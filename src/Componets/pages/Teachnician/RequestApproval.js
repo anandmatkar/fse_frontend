@@ -32,9 +32,6 @@ const RequestApproval = ({projectID, machineID, onRequestSent, fetchData }) => {
         }
     };
 
-    useEffect(() => {
-        console.log(projectID, machineID);
-    }, [])
   return (
    <div>
        <Button onClick={() => setShowApprovalModal(true)} className="btn btn-success">Request Approval</Button>
