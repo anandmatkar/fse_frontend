@@ -242,16 +242,19 @@ export default function TechnicianProjectDetails() {
                                                     <tr>
                                                         <td>{machine.serial}</td>
                                                         <td>{machine.machine_type}</td>
-                                                        <td>{<FcDocument className='fs-3'/>}</td>
+                                                        <td>{<FcDocument className='fs-3' onClick={() => navigate(`/AssignReportData/${projectID}/${machine.id}`)}/>}</td>
                                                         <td>
                                                             {
-                                                                (!machine.project_report_data[0].is_requested_for_approval &&
-                                                                !machine.project_report_data[0].is_approved) ? 
-                                                                (<Button variant='primary' size='sm'>In Progress</Button>) :
-                                                                (machine.project_report_data[0].is_requested_for_approval) ?
-                                                                (<Button variant='warning' size='sm'>Waiting</Button>) :
-                                                                (machine.project_report_data[0].is_approved) ? 
-                                                                (<Button variant='success' size='sm'>Approved</Button>) : <></>
+                                                                (machine.project_report_data.length > 0) ? (
+                                                                    (!machine.project_report_data[0].is_requested_for_approval &&
+                                                                        !machine.project_report_data[0].is_approved) ? 
+                                                                        (<Button variant='primary' size='sm'>In Progress</Button>) :
+                                                                        (machine.project_report_data[0].is_requested_for_approval) ?
+                                                                        (<Button variant='warning' size='sm'>Waiting</Button>) :
+                                                                        (machine.project_report_data[0].is_approved) ? 
+                                                                        (<Button variant='success' size='sm'>Approved</Button>) : <></>
+                                                                ) : (<Button variant='secondary' size='sm'>No Reports</Button>)
+                                                                
                                                             }
                                                         </td>
                                                     </tr>
@@ -331,12 +334,23 @@ export default function TechnicianProjectDetails() {
                                     </Col>
                                     <Col lg={3} md={6}>
                                         {
-                                            (technicianDetails[0].timesheet_data[0].is_timesheet_requested_for_approval ||
-                                            technicianDetails[0].timesheet_data[0].is_timesheet_approved) ? (
-                                                <></>
-                                            ) : (
-                                                <Button variant='primary' className='w-100 my-2' onClick={() => handleRequestApprovalClick()}>Request Timesheet For Approval</Button>
-                                            )
+                                            (technicianDetails.length > 0) ? (
+                                                technicianDetails.map((technician) => (
+                                                        (technician.timesheet_data.length > 0) ?
+                                                        (
+                                                            (technician.timesheet_data[0].is_timesheet_requested_for_approval ||
+                                                                technician.timesheet_data[0].is_timesheet_approved) ? (
+                                                                    <></>
+                                                                ) : (
+                                                                    <Button variant='primary' className='w-100 my-2' onClick={() => handleRequestApprovalClick()}>Request Timesheet For Approval</Button>
+                                                                )
+                                                        ) : (
+                                                            <></>
+                                                        )
+                                                    
+                                                ))
+                                            ) : 
+                                            (<></>)
                                         }
                                     </Col>
                                     <Col lg={3} md={6}>

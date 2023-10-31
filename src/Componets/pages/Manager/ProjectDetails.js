@@ -232,28 +232,29 @@ function ProjectDetails() {
                                                                                 ))}
                                                                             </td>
                                                                             <td>
-                                                                                {machine.tech_machine_data.length > 0 &&
-                                                                                machine.tech_machine_data.map((technician, techIndex) => (
-                                                                                    <React.Fragment key={techIndex}>
-                                                                                    {technician.project_report_data.length > 0 ? (
-                                                                                        technician.project_report_data[0].is_requested_for_approval ? (
-                                                                                        <Button variant='warning' size='sm' className='report-status mt-2'>
-                                                                                            Waiting for Approval
-                                                                                        </Button>
-                                                                                        ) : technician.project_report_data[0].is_approved ? (
-                                                                                        <Button variant='success' size='sm' className='report-status mt-2'>
-                                                                                            Approved
-                                                                                        </Button>
-                                                                                        ) : (
-                                                                                        <Button variant='primary' size='sm' className='report-status mt-2'>
-                                                                                            Open
-                                                                                        </Button>
-                                                                                        )
-                                                                                    ) : (
-                                                                                        <Button variant='secondary' size='sm' className='report-status mt-2'><b>No reports</b></Button>
-                                                                                    )}
-                                                                                    </React.Fragment>
-                                                                                ))}
+                                                                            {machine.tech_machine_data.length > 0 &&
+                                                                            machine.tech_machine_data.map((technician, techIndex) => (
+                                                                                <div key={techIndex}>
+                                                                                {technician.project_report_data.some(report => report.is_requested_for_approval) ? (
+                                                                                    <Button variant='warning' size='sm' className='report-status mt-2'>
+                                                                                    Waiting for Approval
+                                                                                    </Button>
+                                                                                ) : technician.project_report_data.some(report => report.is_approved) ? (
+                                                                                    <Button variant='success' size='sm' className='report-status mt-2'>
+                                                                                    Approved
+                                                                                    </Button>
+                                                                                ) : technician.project_report_data.some(report => !report.is_requested_for_approval && !report.is_approved) ? (
+                                                                                    <Button variant='primary' size='sm' className='report-status mt-2'>
+                                                                                    In Progress
+                                                                                    </Button>
+                                                                                ) : (
+                                                                                    <Button variant='secondary' size='sm' className='report-status mt-2'>
+                                                                                    <b>No reports</b>
+                                                                                    </Button>
+                                                                                )}
+                                                                                </div>
+                                                                            ))
+                                                                            }
                                                                             </td>
                                                                         </tr>
                                                                     </>

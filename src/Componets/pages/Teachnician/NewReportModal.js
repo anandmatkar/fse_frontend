@@ -8,15 +8,26 @@ import { Technician_NewCreateReport, Technician_ReportAttach } from '../../../Ap
 const NewReportModal = ({projectID, machineID, onNewReport }) => {
 
     const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({
-    projectID: projectID,
-    machineID: machineID,
-    date: '',
-    description: '',
-    comments: '',
-    duration: '',
-    attachment: null
-  });
+    const [formData, setFormData] = useState({
+      projectID: projectID,
+      machineID: machineID,
+      date: '',
+      description: '',
+      comments: '',
+      duration: '1',
+      attachment: null
+    });
+    const resetForm = () => {
+      setFormData({
+        projectID: projectID,
+        machineID: machineID,
+        date: '',
+        description: '',
+        comments: '',
+        duration: '1',
+        attachment: null,
+      });
+    };
 
   const [attachments, setAttachments] = useState([]); 
 
@@ -87,11 +98,11 @@ const handleSubmit = async (e) => {
       if (!data.success) {
           throw new Error(data.message);
       }
-      toast.success("Report created successfully!");
-      setShowModal(false);
       if (response.status === 200) {
-          onNewReport(data.data); 
-        
+        onNewReport(data.data); 
+        toast.success("Report created successfully!");
+        setShowModal(false);
+        resetForm();        
       }  
   } catch (error) {
       console.error('Error:', error);

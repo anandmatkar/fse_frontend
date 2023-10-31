@@ -131,7 +131,7 @@ const [selectedReport, setSelectedReport] = useState(null);
                 {shouldShowButtons() && (
                     <>
                         <NewReportModal projectID={projectID} machineID={machineID} onNewReport={onNewReportCallback} />
-                        {project && project.length > 0 && <RequestApproval projectID={projectID} onRequestSent={() => setIsRequestSent(true)} />}
+                        {project && project.length > 0 && <RequestApproval projectID={projectID} onRequestSent={() => setIsRequestSent(true)} fetchData={fetchData} />}
                     </>
                 )}
                 </div>
