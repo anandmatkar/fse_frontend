@@ -11,6 +11,7 @@ export const Technician_DetailJobAssign = `${Base_Url}api/v1/technician/assigned
 export const Technician_DeleteTimesheet = `${Base_Url}api/v1/technician/deleteTimesheet`
 export const Technician_DeleteReport = `${Base_Url}api/v1/technician/deleteReport`
 export const Technician_Upload_Agreement = `${Base_Url}api/v1/technician/uploadAgreement`
+export const Technician_Edit_Report = `${Base_Url}api/v1/technician/editReport`
 
 // Jobassigned , jobwaiting , jobclosed
 export const Technician_ProjectList = `${Base_Url}api/v1/technician/assignedProjectList`
