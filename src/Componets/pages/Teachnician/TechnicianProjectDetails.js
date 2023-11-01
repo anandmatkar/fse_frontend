@@ -8,9 +8,10 @@ import './TechnicianProjectDetails.css'
 import PageSpinner from '../Common/PageSpinner';
 import { FcDocument } from 'react-icons/fc';
 import Layout4 from '../../Layout/Layout4'
-import { Technician_Assigned_Project_Details, Technician_DeleteTimesheet, Technician_Timesheet_Approval, Technician_Upload_Agreement } from '../../../Api/Technicians_Api';
+import { Show_Signed_Paper_To_Tech, Technician_Assigned_Project_Details, Technician_DeleteTimesheet, Technician_Timesheet_Approval, Technician_Upload_Agreement } from '../../../Api/Technicians_Api';
 import NavTechnicanProfile from '../../NavBar/navTechnicanProfile';
 import TimeSheetModal from './TimeSheetModal';
+import { Show_Signed_Paper_Technicians } from '../../../Api/Manager_Api';
 
 export default function TechnicianProjectDetails() {
 
@@ -30,6 +31,8 @@ export default function TechnicianProjectDetails() {
     const [ showTimeSheetModal, setShowTimeSheetModal ] = useState(false);
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState(false);
     const [ timesheetToDelete, setTimesheetToDelete ] = useState(null);
+    const [ documentDownloadLink, setDocumentDownloadLink ] = useState(null);
+
 
     const showDeleteConfirmationDialog = (timesheet) => {
       setTimesheetToDelete(timesheet);
@@ -42,7 +45,6 @@ export default function TechnicianProjectDetails() {
     };
 
       const handleTimesheetDeletion = async (timesheet) => {
-        console.log(timesheet);
         try {
           const token = Cookies.get("token");
           if (!token) {
@@ -80,6 +82,33 @@ export default function TechnicianProjectDetails() {
     const handleCloseModal = () => {
       setShowTimeSheetModal(false);
     };
+
+    const fetchSignedDocument = async (techId) => {
+        try {
+    
+          const token = Cookies.get("token");
+          
+          if (!token) {
+            toast.error("Token not found in Cookies.");
+            return;
+          }
+          const config = {
+            headers: {
+              Authorization: token,
+            },
+          };
+        
+          const response = await axios.get(`${Show_Signed_Paper_To_Tech}?projectId=${projectID}`, config);
+          // console.log(response.data.data[0].file_path);
+          if(response.data.status === 200 && response.data.data.length > 0) {
+            setDocumentDownloadLink(response.data.data[0].file_path);
+          } else {
+            toast.error(response.data.message);
+          }
+        } catch (error) {
+          toast.error(error.message);      
+        }
+      }
     
     const fetchProjectDetails = async () => {
         try {
@@ -139,6 +168,7 @@ export default function TechnicianProjectDetails() {
 
             if (response.data.status === 201) {
                 toast.success(response.data.message);
+                fetchSignedDocument();
             } else {
                 toast.error(response.data.message);
             }
@@ -187,8 +217,18 @@ export default function TechnicianProjectDetails() {
         }
     }
 
+    const handleDownloadDocument = () => {
+        fetchSignedDocument();
+        console.log(documentDownloadLink);
+        if(documentDownloadLink !== null) {
+          const newTab = window.open(documentDownloadLink, '_blank');
+          newTab.focus();
+        }
+      };
+
     useEffect(() => {
         fetchProjectDetails();
+        fetchSignedDocument();
     }, []);
 
   return (
@@ -377,7 +417,7 @@ export default function TechnicianProjectDetails() {
                                                     className='w-100 my-2'
                                                     onClick={() => fileInputRef.current.click()}
                                                 >
-                                                    Attach Scanned Timesheet
+                                                    Attach Signed Paper
                                                 </Button>
                                             </Col>
                                             <Col lg={3} md={6}>
@@ -401,7 +441,17 @@ export default function TechnicianProjectDetails() {
                                                     (<></>)
                                                 }
                                             </Col>
-                                            <Col lg={3} md={6}>                                                
+                                            <Col lg={3} md={6}>
+                                                {
+                                                    documentDownloadLink !== null ? (
+                                                        <Button variant="warning" className="my-2 w-100" onClick={handleDownloadDocument}>
+                                                        View Signed Paper
+                                                        </Button>
+
+                                                    ) : (
+                                                        <></>
+                                                    )
+                                                }
                                             </Col>
                                         </Row>
 
