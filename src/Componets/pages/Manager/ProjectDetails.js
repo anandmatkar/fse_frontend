@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import { Container, Row, Col, Card, Badge, Button, Table, Nav, Tab, ListGroup } from 'react-bootstrap';
+import { Container, Row, Col, Card, Badge, Button, Table, Nav, Tab, ListGroup, Modal } from 'react-bootstrap';
 import './ProjectDetails.css';
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Project_Details_Manager } from '../../../Api/Manager_Api';
+import { Approve_Project_Api, Project_Details_Manager } from '../../../Api/Manager_Api';
 import PageSpinner from '../Common/PageSpinner';
 import { FcDocument } from 'react-icons/fc';
 
@@ -22,6 +22,35 @@ function ProjectDetails() {
     const [ projectMachineDetails, setProjectMachineDetails ] = useState([]);
     const [ technicianDetails, setTechnicianDetails ] = useState([]);
     const [ isFetchingProjectDetails, setIsFetchingProjectDetails ] = useState(false);
+    const [ showApproveModal, setShowApproveModal ] = useState(false);
+
+    // Function to handle the approval request
+    const handleProjectApproveRequest = async () => {
+        try {
+            let token = Cookies.get("token");
+            if (!token) {
+                toast.error("Token not found in Cookies. Session Timeout Please Login Again.");
+                return;
+            }
+            const config = {
+                headers: {
+                Authorization: token,
+                },
+            };
+            let response = await axios.put(`${Approve_Project_Api}?projectId=${projectID}`,{}, config);
+
+            if (response.data.status === 200) {
+                toast.success(response.data.message);
+            } else {
+                toast.error(response.data.message);
+            }            
+        } catch (error) {
+            toast.error(error.message);            
+        } finally {
+            fetchProjectDetails();
+            setShowApproveModal(false);
+        }
+    };
 
     const fetchProjectDetails = async () => {
         try {
@@ -41,8 +70,6 @@ function ProjectDetails() {
 
             let response = await axios.get(`${Project_Details_Manager}?projectId=${projectID}`, config);
 
-            console.log(response.data.data[0]);
-
             if(response.data.status === 200) {
                 setProjectDetails(response.data.data[0]);
                 setProjectMachineDetails(response.data.data[0].machine_data);
@@ -51,7 +78,6 @@ function ProjectDetails() {
                 toast.error(response.data.message);
             }
         } catch (error) {
-            console.log(error.message);
             setIsFetchingProjectDetails(false);            
         } finally {
             setIsFetchingProjectDetails(false);
@@ -76,6 +102,7 @@ function ProjectDetails() {
 
             <Container>
                 <Tab.Container activeKey={activeTab}>
+
                 <div className="text-center wow fadeInUp my-5" data-wow-delay="0.1s">
                     <h6 className="section-title bg-white text-center text-primary px-3">
                     Manager's Panel
@@ -86,6 +113,26 @@ function ProjectDetails() {
                 {
                     isFetchingProjectDetails ? <PageSpinner/> :
                     <>
+                            <Row>
+                                <Col lg={3} md={12}>
+
+                                </Col>
+                                <Col lg={3} md={12}>
+
+                                </Col>
+                                <Col lg={3} md={12}>
+
+                                </Col>
+                                <Col lg={3} md={12}>
+                                    {
+                                        projectDetails.is_requested_for_approval ? (
+                                            <Button variant='success' className='w-100 my-2'
+                                            onClick={() => setShowApproveModal(true)}
+                                            >Approve Project</Button>
+                                        ) : null
+                                    }
+                                </Col>
+                            </Row>
 
                         <Nav variant="tabs">
                             {tabNames.map((tabName) => (
@@ -279,6 +326,27 @@ function ProjectDetails() {
                 }
         
                 </Tab.Container>
+
+                {
+                    showApproveModal &&
+                    <Modal show={showApproveModal} onHide={() => setShowApproveModal(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Confirm Approval</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body className='text-center'>
+                            Are you sure you want to approve project <br/>
+                            <b>{`Order ID : ${projectDetails.order_id}`}</b>?
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => setShowApproveModal(false)}>
+                                Cancel
+                            </Button>
+                            <Button variant="success" onClick={handleProjectApproveRequest}>
+                                Approve
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                }
             </Container>
         </>
     );

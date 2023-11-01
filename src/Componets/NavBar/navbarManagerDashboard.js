@@ -33,7 +33,7 @@ const NavbarManagerDashboard = () => {
     <React.Fragment>
       <Navbar className="main-nav-bar">
         <Container>
-          <Navbar.Brand href="#" as={NavLink} to="/">
+          <Navbar.Brand href="#" as={NavLink} to="/manager">
             <img
               alt="Profile Avatar"
               src="/assets/logofse.png" // If avatar is not present, use default
