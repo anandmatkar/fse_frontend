@@ -3,7 +3,7 @@ import Layout4 from '../../Layout/Layout4';
 import { Table, Container, Button, Modal, Dropdown } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import {  Technician_DeleteReport } from '../../../Api/Technicians_Api';
+import { Technician_DetailJobAssign, Technician_DeleteReport } from '../../../Api/Technicians_Api';
 import { AiFillProfile } from 'react-icons/ai';
 import './JobAssigned.css';
 import NewReportModal from './NewReportModal';
@@ -132,7 +132,7 @@ const AssignReportData = () => {
                 </div>
 
             </div>
-     
+    
             <div className="card">
                 <div className="card-body">
                     <div className="bf-table-responsive">
@@ -190,20 +190,6 @@ const AssignReportData = () => {
                     </div>
                 </div>
             </div>
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Confirmation</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Are you sure you want to delete this report?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
-                        No
-                    </Button>
-                    <Button variant="danger" onClick={handleConfirmDelete}>
-                        Yes, Delete
-                    </Button>
-                </Modal.Footer>
-            </Modal>
         </Container>
 
         {/* Confirmation Dialog */}
