@@ -43,3 +43,4 @@ export const Update_Manager_Profile = `${Base_Url}api/v1/manager/updateProfile`;
 export const Machine_Details_APi = `${Base_Url}machineData?`;
 export const Insert_Customer_Api = `${Base_Url}api/v1/manager/insertCustomer?`;
 export const Show_Signed_Paper_Technicians = `${Base_Url}api/v1/manager/showSignedPaper`;
+export const Approve_Project_Api = `${Base_Url}api/v1/manager/completeProject`
