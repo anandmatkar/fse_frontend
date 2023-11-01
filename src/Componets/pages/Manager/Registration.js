@@ -9,6 +9,7 @@ import {
   Profile_Upload_Manager,
 } from './../../../Api/Manager_Api';
 import Navbar from '../../NavBar/navbarManager';
+import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
 import './Registration.css';
 
 const RegistrationPage = () => {
@@ -21,40 +22,90 @@ const RegistrationPage = () => {
   const [confirmPass, setConfirmPass] = useState('');
   const [profilePic, setProfilePic] = useState(null);
   const [profilePicURL, setProfilePicURL] = useState(''); // Holds the uploaded picture URL
+  const [isPasswordVisible, setPasswordVisibility] = useState(false);
+  const [isConfirmPassVisible, setConfirmPassVisibility] = useState(false);
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
 
-  const handleProfilePicChange = async (event) => {
-    const file = event.target.files[0];
-    setProfilePic(file);
-
-    if (file) {
-      const formData = new FormData();
-      formData.append('image', file);
-
-      try {
-        const response = await axios.post(Profile_Upload_Manager, formData);
-        console.log(response.data.data);
-        if (response.data.status === 201) {
-          // The API should return the URL of the uploaded profile picture
-          const uploadedURL = response.data.data;
-          console.log(uploadedURL);
-          setProfilePicURL(uploadedURL);
-          toast.success(response.data.message);
-        } else {
-          console.error(
-            'Profile Picture Upload Failed. Status Code:',
-            response.status
-          );
-          toast.error(response.data.message);
-        }
-      } catch (error) {
-        console.error('API Error:', error);
-        toast.error(error.message);
-      }
-    }
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility((prevState) => !prevState);
   };
+
+  const toggleConfirmPassVisibility = () => {
+    setConfirmPassVisibility((prevState) => !prevState);
+  };
+
+  // const handleProfilePicChange = async (event) => {
+  //   const file = event.target.files[0];
+  //   setProfilePic(file);
+
+  //   if (file) {
+  //     const formData = new FormData();
+  //     formData.append('image', file);
+
+  //     try {
+  //       const response = await axios.post(Profile_Upload_Manager, formData);
+  //       console.log(response.data.data);
+  //       if (response.data.status === 201) {
+  //         // The API should return the URL of the uploaded profile picture
+  //         const uploadedURL = response.data.data;
+  //         console.log(uploadedURL);
+  //         setProfilePicURL(uploadedURL);
+  //         toast.success(response.data.message);
+  //       } else {
+  //         console.error(
+  //           'Profile Picture Upload Failed. Status Code:',
+  //           response.status
+  //         );
+  //         toast.error(response.data.message);
+  //       }
+  //     } catch (error) {
+  //       console.error('API Error:', error);
+  //       toast.error(error.message);
+  //     }
+  //   }
+  // };
+
+  const allowedExtensions = [".png", ".jpg", ".jpeg"]; // List of allowed file extensions
+
+const handleProfilePicChange = async (event) => {
+  const file = event.target.files[0];
+
+  if (!file) {
+    // Handle the case where no file is selected, you can show a message or return early.
+    return;
+  }
+
+  const fileExtension = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2);
+  if (allowedExtensions.includes("." + fileExtension.toLowerCase())) {
+    setProfilePic(file);
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const response = await axios.post(Profile_Upload_Manager, formData);
+      if (response.data.status === 201) {
+        // The API should return the URL of the uploaded profile picture
+        const uploadedURL = response.data.data;
+        setProfilePicURL(uploadedURL);
+        toast.success(response.data.message);
+      } else {
+        console.error('Profile Picture Upload Failed. Status Code:', response.status);
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+      toast.error(error.message);
+    }
+  } else {
+    // Show an error message for unsupported file types
+    toast.error('Please upload a valid JPEG, JPG, or PNG image');
+    // You might also want to reset the file input to clear the invalid selection
+    event.target.value = '';
+  }
+};
+
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -93,15 +144,14 @@ const RegistrationPage = () => {
     } else if (password !== confirmPass.trim()) {
       formErrors.confirmPass = 'Passwords do not match';
     }
-    if (!profilePic) {
-      formErrors.profilePic = 'Please upload your Profile';
-    } else {
-      const allowedExtensions = /(\.jpeg|\.jpg|\.png)$/i;
-      if (!allowedExtensions.exec(profilePic.name)) {
+    if (profilePic) {
+      const allowedExtensions = /\.(jpeg|jpg|png)$/i; // Regular expression to match valid file extensions
+      if (!allowedExtensions.test(profilePic.name)) {
         formErrors.profilePic = 'Please upload a valid JPEG, JPG, or PNG image';
       }
     }
-
+  
+  
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
@@ -260,9 +310,9 @@ const RegistrationPage = () => {
                         </div>
 
                         <div className="col-md-6">
-                          <div className="form-group">
+                          <div className="form-group position-relative">
                             <input
-                              type="password"
+                              type={isPasswordVisible ? "text" : "password"}
                               id="password"
                               className="form-control inputfieldresistration"
                               value={password}
@@ -270,6 +320,18 @@ const RegistrationPage = () => {
                               name="password"
                               onChange={(e) => setPassword(e.target.value)}
                             />
+                            <span
+                              onClick={togglePasswordVisibility}
+                          className="eye-icon position-absolute" style={{
+                            right: '10px',
+                            top: '5px'}}
+                            >
+                              {isPasswordVisible ? (
+                                <BsFillEyeFill />
+                              ) : (
+                                <BsFillEyeSlashFill />
+                              )}
+                            </span>
                             {errors.password && (
                               <span className="error" style={{ color: 'red' }}>
                                 {errors.password}
@@ -278,9 +340,9 @@ const RegistrationPage = () => {
                           </div>
                         </div>
                         <div className="col-md-6">
-                          <div className="form-group">
+                          <div className="form-group position-relative">
                             <input
-                              type="password"
+                              type={isConfirmPassVisible ? "text" : "password"}
                               id="confirmpass"
                               className="form-control inputfieldresistration"
                               value={confirmPass}
@@ -288,6 +350,18 @@ const RegistrationPage = () => {
                               name="confirmpass"
                               onChange={(e) => setConfirmPass(e.target.value)}
                             />
+                            <span
+                              onClick={toggleConfirmPassVisibility}
+                              className="eye-icon position-absolute " style={{
+                                right: '10px',
+                                top: '5px'}}
+                            >
+                              {isConfirmPassVisible ? (
+                                <BsFillEyeFill />
+                              ) : (
+                                <BsFillEyeSlashFill />
+                              )}
+                            </span>
                             {errors.confirmPass && (
                               <span className="error" style={{ color: 'red' }}>
                                 {errors.confirmPass}
@@ -306,9 +380,9 @@ const RegistrationPage = () => {
                               name="phone"
                               onChange={(e) => setPhone(e.target.value)}
                             />
-                            {errors.confirmPass && (
+                            {errors.phone && (
                               <span className="error" style={{ color: 'red' }}>
-                                {errors.confirmPass}
+                                {errors.phone}
                               </span>
                             )}
                           </div>
@@ -318,7 +392,7 @@ const RegistrationPage = () => {
                             <input
                               type="file"
                               id="file"
-                              accept=".jpeg, .jpg, .png"
+                              accept="image/*"
                               className="form-control inputfieldresistration"
                               onChange={handleProfilePicChange}
                             />
