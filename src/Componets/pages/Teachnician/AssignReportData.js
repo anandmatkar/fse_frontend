@@ -44,7 +44,7 @@ const AssignReportData = () => {
         })
             .then(res => res.json())
             .then(data => {
-                if (data && data.data && data.data.length > 0) {
+                if (data && data.data) {
                     setProject(data.data);  // <-- set the entire array here
                 }
             })
@@ -73,7 +73,7 @@ const AssignReportData = () => {
             if (response.data.status === 200) {
                 toast.success(response.data.message);
                 setReportToDelete(null);
-                fetchData();
+                // fetchData();
                 // Instantly update the state to reflect the deletion
                 // setProject(prevProjectArray => {
                 //     return prevProjectArray.filter(report => report.id !== id);
@@ -85,8 +85,8 @@ const AssignReportData = () => {
             toast.error(error.message);
         } finally {
             setShowDeleteConfirmation(false);
+            fetchData();
         }
-        fetchData();
     };
 
     const onNewReportCallback = (newReport) => {
@@ -114,15 +114,18 @@ const AssignReportData = () => {
     const shouldShowButtons = () => {
         return project.every(report => !report.is_requested_for_approval && !report.is_approved);
     };
-
     
     return (
         <Layout4>
         <Container fluid>
-            <div className="text-center mb-5 mt-3">
-                <h6 className="section-title bg-white text-center text-primary px-3">Report Details</h6>
-                <h1>Your Report Details</h1>
-                <div className='d-flex justify-content-center align-items-center'>
+            <div className="text-center">
+                <div className="text-center wow fadeInUp my-5" data-wow-delay="0.1s">
+                    <h6 className="section-title bg-white text-center text-primary px-3">
+                    Technician's Panel
+                    </h6>
+                    <h1 className="mb-5">Report Details</h1>
+                </div>
+                <div className='d-flex justify-content-center align-items-center my-2'>
                 {shouldShowButtons() && (
                     <>
                         <NewReportModal projectID={projectID} machineID={machineID} onNewReport={onNewReportCallback} />
