@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout4 from '../../Layout/Layout4';
-import { Table, Container, Button } from 'react-bootstrap';
+import { Table, Container, Button, Modal, Dropdown } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import {  Technician_DeleteReport } from '../../../Api/Technicians_Api';
@@ -12,18 +12,26 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RequestApproval from './RequestApproval';
 import { Base_Url } from '../../../Api/Base_Url';
-import {Modal} from 'react-bootstrap'
+import EditReportModal from './EditReportModel';
 
 const AssignReportData = () => {
     const { projectID , machineID } = useParams();
-    const [project, setProject] = useState([]);
+    const [ project, setProject ] = useState([]);
+    const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState(false);
+    const [ reportToDelete, setReportToDelete ] = useState(null);
+    const [ showEditModal, setShowEditModal ] = useState(false);
+    const [ reportToEdit, setReportToEdit ] = useState(null);
+    const [ isRequestSent, setIsRequestSent ] = useState(false);
 
-    const [showModal, setShowModal] = useState(false);
-const [selectedReport, setSelectedReport] = useState(null);
-
-
-    const [isRequestSent, setIsRequestSent] = useState(false);
-
+    const openEditModal = (report) => {
+        setReportToEdit(report);
+        setShowEditModal(true);
+      };
+      
+      const closeEditModal = () => {
+        setReportToEdit(null);
+        setShowEditModal(false);
+      };
 
     const fetchData = () => {
         const token = Cookies.get('token');
@@ -42,57 +50,44 @@ const [selectedReport, setSelectedReport] = useState(null);
             })
             .catch(error => console.error("Error fetching report data:", error));
     };
+
     useEffect(() => {
         fetchData();
     }, [projectID, machineID]); 
         
 
-    const deleteReport = async (id, project_id) => {
+    const deleteReport = async (report, projectId) => {
         try {
             const token = Cookies.get('token');
             if (!token) {
                 console.error("Token not found in localStorage.");
                 return;
             }
-    
             const config = {
                 headers: {
                     Authorization: token,
                 },
-            };
-            
-            let url = `${Technician_DeleteReport}?projectId=${project_id}&reportId=${id}`;
-            const response = await axios.get(url, config);
-    
-            if (response.status === 200) {
-                toast.success("Report deleted succesfully");
-    
+            };  
+
+            const response = await axios.get(`${Technician_DeleteReport}?projectId=${projectId}&reportId=${report.id}`, config);
+            if (response.data.status === 200) {
+                toast.success(response.data.message);
+                setReportToDelete(null);
+                fetchData();
                 // Instantly update the state to reflect the deletion
-                setProject(prevProjectArray => {
-                    return prevProjectArray.filter(report => report.id !== id);
-                });
+                // setProject(prevProjectArray => {
+                //     return prevProjectArray.filter(report => report.id !== id);
+                // });
             } else {
-                toast.error("Failed to delete Report");
+                toast.error(response.data.message);
             }
         } catch (error) {
-            console.error('Error:', error);
+            toast.error(error.message);
+        } finally {
+            setShowDeleteConfirmation(false);
         }
+        fetchData();
     };
-    
-     // Confirm deletion using modal
-     const confirmDelete = (reportId, projectId) => {
-        setSelectedReport({ id: reportId, projectId: projectId });
-        setShowModal(true);
-    };
-
-    const handleConfirmDelete = () => {
-        if (selectedReport) {
-            deleteReport(selectedReport.id, selectedReport.projectId);
-        }
-        setShowModal(false);
-    };
-    
-    
 
     const onNewReportCallback = (newReport) => {
         setProject(prevProject => {
@@ -168,9 +163,20 @@ const [selectedReport, setSelectedReport] = useState(null);
                                                 ))}
                                             </td>
                                             <td>
-                                            <Button variant="danger" onClick={() => confirmDelete(report.id, projectID)}>
-                                Delete
-                            </Button>
+                                                <Button variant="danger" size='sm' className='mx-2 my-1' onClick={() => {
+                                                    setReportToDelete(report);
+                                                    setShowDeleteConfirmation(true);
+                                                }}>
+                                                    Delete
+                                                </Button>
+                                                <Button
+                                                    variant="warning"
+                                                    className="mx-2 my-1"
+                                                    size="sm"
+                                                    onClick={() => openEditModal(report)}
+                                                    >
+                                                    Edit
+                                                    </Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -178,7 +184,7 @@ const [selectedReport, setSelectedReport] = useState(null);
                             </Table>
                         ) : (
                             <div className="text-center fs-3 fw-bold">
-                                No report presented.
+                                No Report Available for Display.
                             </div>
                         )}
                     </div>
@@ -199,6 +205,36 @@ const [selectedReport, setSelectedReport] = useState(null);
                 </Modal.Footer>
             </Modal>
         </Container>
+
+        {/* Confirmation Dialog */}
+        <Modal show={showDeleteConfirmation} onHide={() => setShowDeleteConfirmation(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delete Confirmation</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="text-center">
+                    Are you sure you want to delete this report?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDeleteConfirmation(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant="danger" onClick={() => deleteReport(reportToDelete, projectID)}>
+                        Confirm Delete
+                    </Button>
+                </Modal.Footer>
+        </Modal>
+
+        {showEditModal && (
+        <EditReportModal
+            report={reportToEdit}
+            onEdit={(editedReport) => {
+            // Implement your API call to update the report here
+            // console.log("Edited report:", editedReport);
+            }}
+            onClose={closeEditModal}
+            fetchData={fetchData}
+        />
+        )}
     </Layout4>
     
     );

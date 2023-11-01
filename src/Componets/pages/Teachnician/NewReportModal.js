@@ -14,7 +14,7 @@ const NewReportModal = ({projectID, machineID, onNewReport }) => {
       date: '',
       description: '',
       comments: '',
-      duration: '1',
+      duration: '',
       attachment: null
     });
     const resetForm = () => {
@@ -24,7 +24,7 @@ const NewReportModal = ({projectID, machineID, onNewReport }) => {
         date: '',
         description: '',
         comments: '',
-        duration: '1',
+        duration: '',
         attachment: null,
       });
     };
