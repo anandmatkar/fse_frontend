@@ -17,7 +17,7 @@ import {
   Upload_Technician_Documents,
   Manager_Base_Url,
 } from './../../../Api/Manager_Api';
-import { FiUploadCloud, FiDownload } from 'react-icons/fi';
+import { FiUploadCloud, FiDownload, FiEye, FiEyeOff } from 'react-icons/fi';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -57,18 +57,18 @@ function CreateTechnician() {
     documents: yup.string(),
   });
 
-  const [selectedFile, setSelectedFile] = useState(''); // State to hold the selected file
-  const [profilePicPath, setProfilePicPath] = useState(''); // State to hold the profile picture path
-  const [documentsPath, setDocumentsPath] = useState([]); // State to hold the documents path
-  const fileInputRef = useRef(null); // Add this line to create a reference
+  const [selectedFile, setSelectedFile] = useState('');
+  const [profilePicPath, setProfilePicPath] = useState('');
+  const [documentsPath, setDocumentsPath] = useState([]);
+  const [showPassword, setShowPassword] = useState(false); // State to control password visibility
+  const fileInputRef = useRef(null);
 
   const createTechnician = async (formData) => {
     try {
-      // const token = localStorage.getItem("token");
       const token = Cookies.get("token");
       
       if (!token) {
-        console.error('Token not found in localStorage.');
+        toast.error('Token not found in localStorage.');
         return;
       }
       let config = {
@@ -76,7 +76,6 @@ function CreateTechnician() {
           Authorization: token,
         },
       };
-
       let technicianData = {
         ...formData,
         profilePic: profilePicPath,
@@ -88,7 +87,6 @@ function CreateTechnician() {
         technicianData,
         config
       );
-      console.log(response.data);
       if (response.data.status === 201) {
         navigate('/managetechnician');
         toast.success(response.data.message);
@@ -96,13 +94,11 @@ function CreateTechnician() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error.message);
       toast.error('Error creating technician. Please try again.');
     }
   };
 
   const handleSubmit = (values, e) => {
-    console.log('Form Data:', values);
     // console.log(selectedFile);
     createTechnician(values);
   };
@@ -111,7 +107,6 @@ function CreateTechnician() {
     try {
       setSelectedFile(e.target.files[0]);
       const profileImage = e.target.files[0];
-      console.log(profileImage);
 
       const token = Cookies.get('token');
       if (!token) {
@@ -134,11 +129,9 @@ function CreateTechnician() {
         config
       );
 
-      console.log(response.data);
-
       setProfilePicPath(response.data.data);
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -164,7 +157,6 @@ function CreateTechnician() {
         Authorization: token,
       },
     };
-    console.log(docFormData);
     // Make an HTTP POST request to your API to send the documents
     try {
       const response = await axios.post(
@@ -176,10 +168,10 @@ function CreateTechnician() {
       if (response.data.status === 201) {
         setDocumentsPath(response.data.data);
         toast.success(response.data.message);
-        console.log(response.data.data);
+      } else {
+        toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error.message);
       toast.error(error.message);
     }
   };
@@ -197,13 +189,10 @@ function CreateTechnician() {
         Authorization: token,
       },
     };
-
     if (selectedExcelFile) {
       let excelFileData = new FormData();
       // Append the profile image to the FormData
       excelFileData.append('file', selectedExcelFile);
-
-      console.log(excelFileData);
 
       try {
         const response = await axios.post(
@@ -215,12 +204,10 @@ function CreateTechnician() {
         if (response.data.status === 201) {
           navigate('/managetechnician');
           toast.success(response.data.message);
-          console.log(response.data.data);
         } else {
           toast.error(response.data.message);
         }
       } catch (error) {
-        console.log(error.message);
         toast.error(error.message);
       }
     }
@@ -346,17 +333,26 @@ function CreateTechnician() {
                 <Col lg={6} className="mb-3">
                   <Form.Group controlId="validationFormik03" className="my-2">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control
-                      type="password" // Set the type to "password"
-                      placeholder="Password"
-                      name="password"
-                      value={values.password}
-                      onChange={handleChange}
-                      isInvalid={!!errors.password}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.password}
-                    </Form.Control.Feedback>
+                    <InputGroup hasValidation>
+                      <Form.Control
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Password"
+                        name="password"
+                        value={values.password}
+                        onChange={handleChange}
+                        isInvalid={!!errors.password}
+                      />
+                      <InputGroup.Text>
+                        {showPassword ? (
+                          <FiEyeOff onClick={() => setShowPassword(!showPassword)} />
+                        ) : (
+                          <FiEye onClick={() => setShowPassword(!showPassword)} />
+                        )}
+                      </InputGroup.Text>
+                      <Form.Control.Feedback type="invalid">
+                        {errors.password}
+                      </Form.Control.Feedback>
+                    </InputGroup>
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">

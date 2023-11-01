@@ -121,11 +121,11 @@ function TechnicianDashboard() {
                                         {
                                             (!assignedProject.is_completed &&
                                             !assignedProject.is_requested_for_approval) ?
-                                                <Button variant="primary" size="sm" className='w-100'>Open</Button> :
+                                                <Button variant="primary" size="sm" className='w-100'>In Progress</Button> :
                                             (assignedProject.is_completed) ?
                                                 <Button variant="success" size="sm" className='w-100'>Completed</Button> :
                                             (assignedProject.is_requested_for_approval) ?
-                                                <Button variant="warning" size="sm" className='w-100'>Cancel</Button> :
+                                                <Button variant="warning" size="sm" className='w-100'>Waiting</Button> :
                                             <></>
                                         }
                                     </td>
