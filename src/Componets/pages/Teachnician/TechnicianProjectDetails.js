@@ -103,7 +103,7 @@ export default function TechnicianProjectDetails() {
           if(response.data.status === 200 && response.data.data.length > 0) {
             setDocumentDownloadLink(response.data.data[0].file_path);
           } else {
-            toast.error(response.data.message);
+            // toast.error(response.data.message);
           }
         } catch (error) {
           toast.error(error.message);      
@@ -508,13 +508,21 @@ export default function TechnicianProjectDetails() {
                                                                         }
                                                                     </td>
                                                                     <td>
-                                                                    <Button
-                                                                        variant="danger"
-                                                                        size="sm"
-                                                                        onClick={() => showDeleteConfirmationDialog(timesheet)}
-                                                                        >
-                                                                        Delete
-                                                                    </Button>
+                                                                        {
+                                                                            (timesheet.is_timesheet_requested_for_approval || timesheet.is_timesheet_approved) ? (
+                                                                                <></>
+                                                                            ) : (
+                                                                                <>
+                                                                                    <Button
+                                                                                        variant="danger"
+                                                                                        size="sm"
+                                                                                        onClick={() => showDeleteConfirmationDialog(timesheet)}
+                                                                                        >
+                                                                                        Delete
+                                                                                    </Button>                                                                                
+                                                                                </>
+                                                                            )
+                                                                        }
                                                                     </td>
 
                                                                 </tr>
