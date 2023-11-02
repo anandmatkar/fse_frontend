@@ -15,8 +15,6 @@ export default function EditProjectMachineInfo() {
 
     let { projectID, machineID } = useParams();
 
-    // console.log(projectID, machineID);
-
   const [machineInfoDetails, setMachineInfoDetails] = useState([]);
   const [projectSpecificDetails, setProjectSpecificDetails] = useState([]);
   const [machineAttachDetails, setMachineAttachDetails] = useState([]);
@@ -40,6 +38,7 @@ export default function EditProjectMachineInfo() {
 
   const handleCancel = () => {
     setEditMode(false);
+    navigate(-1);
   };
 
   const handleChange = (e) => {
@@ -49,45 +48,35 @@ export default function EditProjectMachineInfo() {
 
   const handleEditMachineDetails = async (e) => {
     e.preventDefault();
-    // You can handle the form submission logic here
-    console.log(formData);
-
     try {
       const token = Cookies.get("token");
-  
         if (!token) {
           console.error("Token not found in localStorage.");
           return;
         }
-  
         const config = {
           headers: {
             Authorization: token,
           },
         };
-
-        // Enable the spinner and disable the form
         setIsSubmitting(true);
   
-        // Make a PUT request to update the machine data
         const response = await axios.put(
           Edit_Project_Machine_Details,
           formData,
           config
         );
   
-        if (response.status === 200) {
-          // Update was successful, exit edit mode
+        if (response.data.status === 200) {
           setEditMode(false);
           toast.success(response.data.message);
-
-          // Navigate back to the previous page
-            navigate(-1);
+          navigate(-1);
+        } else {
+          toast.success(response.data.message);
         }
       } catch (error) {
-        console.log(error);
+        toast.error(error.message);
       } finally {
-        // Disable the spinner and enable the form
         setIsSubmitting(false);
       }
 

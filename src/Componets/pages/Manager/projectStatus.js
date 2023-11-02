@@ -37,7 +37,6 @@ function ProjectStatus() {
       // Make an API call to delete the project
       try {
         let token = Cookies.get("token");
-      
         if (!token) {
           console.error("Token not found in Cookies.");
           return;
@@ -53,9 +52,10 @@ function ProjectStatus() {
         if(response.data.success) {
           fetchProjectList();
           toast.success(response.data.message);
+        } else {
+          toast.error(response.data.message);
         }
       } catch (error) {
-        console.log(error.message);
         toast.error(error.message);        
       }
       

@@ -6,6 +6,7 @@ import { Manager_Base_Url, Project_Machine_Details } from '../../../Api/Manager_
 import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import PageSpinner from '../Common/PageSpinner';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
 export default function ViewProjectMachineInfo() {
   const navigate = useNavigate();
@@ -69,44 +70,35 @@ export default function ViewProjectMachineInfo() {
 
     try {
       setIsDeletingMachine(true);
-
       const token = Cookies.get("token");
-
       if (!token) {
         console.error("Token not found in localStorage.");
         return;
       }
-
       const config = {
         headers: {
           Authorization: token,
         },
       };
-
-      // Send a DELETE request to your API endpoint for machine deletion
       const response = await axios.put(
         `${Manager_Base_Url}deleteMachine?machineId=${machineID}&projectId=${projectID}`,
         {},
         config
       );
 
-      if (response.status === 200) {
-        // Machine deletion was successful
-        // You can also update the local state or re-fetch the machine details
+      if (response.data.status === 200) {
+        toast.success(response.data.message);
         fetchMachineDetails();
       } else {
-        console.error("Failed to delete the machine.");
+        toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error.message);
     } finally {
-      setIsDeletingMachine(false); // Set deleting machine to false in all cases
+      setIsDeletingMachine(false);
     };
-
-    // Hide the confirmation modal
     setShowDeleteConfirmation(false);
   };
-  
 
   useEffect(() => {
     fetchMachineDetails();
