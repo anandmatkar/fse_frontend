@@ -62,7 +62,7 @@ function NewCustomerScreen() {
 
   const handleDownloadTemplate = () => {
     const downloadLink =
-      'http://3.108.223.48/uploads/exampleTemplate/tech_example.xlsx';
+    `${Base_Url}uploads/exampleTemplate/example_file.xlsx`;
     const newTab = window.open(downloadLink, '_blank');
     newTab.focus();
   };
