@@ -13,6 +13,7 @@ import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
 import './CreateCustomer.css';
 import { LiaFileUploadSolid } from 'react-icons/lia';
 import { BsFileEarmarkMedical } from 'react-icons/bs';
+import { Base_Url } from '../../../Api/Base_Url';
 
 function NewCustomerScreen() {
   const [formData, setFormData] = useState({
