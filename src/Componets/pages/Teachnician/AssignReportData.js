@@ -15,6 +15,7 @@ import { Base_Url } from '../../../Api/Base_Url';
 import EditReportModal from './EditReportModel';
 
 const AssignReportData = () => {
+
     const { projectID , machineID } = useParams();
     const [ project, setProject ] = useState([]);
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState(false);
@@ -166,20 +167,30 @@ const AssignReportData = () => {
                                                 ))}
                                             </td>
                                             <td>
-                                                <Button variant="danger" size='sm' className='mx-2 my-1' onClick={() => {
-                                                    setReportToDelete(report);
-                                                    setShowDeleteConfirmation(true);
-                                                }}>
-                                                    Delete
-                                                </Button>
-                                                <Button
-                                                    variant="warning"
-                                                    className="mx-2 my-1"
-                                                    size="sm"
-                                                    onClick={() => openEditModal(report)}
-                                                    >
-                                                    Edit
-                                                    </Button>
+                                                {
+                                                    (report.is_requested_for_approval || report.is_approved) ? (
+                                                        <></>
+                                                    ) : (
+                                                        <>
+                                                        <Button variant="danger" size='sm' className='mx-2 my-1' onClick={() => {
+                                                            setReportToDelete(report);
+                                                            setShowDeleteConfirmation(true);
+                                                        }}>
+                                                            Delete
+                                                        </Button>
+                                                        <Button
+                                                            variant="warning"
+                                                            className="mx-2 my-1"
+                                                            size="sm"
+                                                            onClick={() => openEditModal(report)}
+                                                        >
+                                                            Edit
+                                                        </Button>
+                                                        </>
+                                                    )
+
+                                                }
+                                                
                                             </td>
                                         </tr>
                                     ))}
