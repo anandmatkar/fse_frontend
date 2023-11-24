@@ -1,13 +1,17 @@
-import Cookies from 'js-cookie';
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, NavLink } from 'react-router-dom';
-import { BsFillFileEarmarkPostFill } from 'react-icons/bs';
-import { Table, Container, Button, Row, Col } from 'react-bootstrap';
-import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import { Manager_Base_Url, Show_Signed_Paper_Technicians } from '../../../Api/Manager_Api';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { Base_Url } from '../../../Api/Base_Url';
+import Cookies from "js-cookie";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
+import { BsFillFileEarmarkPostFill } from "react-icons/bs";
+import { Table, Container, Button, Row, Col } from "react-bootstrap";
+import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
+import {
+  Manager_Base_Url,
+  Show_Signed_Paper_Technicians,
+} from "../../../Api/Manager_Api";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { Base_Url } from "../../../Api/Base_Url";
+import { FaArrowLeft } from "react-icons/fa";
 
 const TimeSheetForApproved = () => {
   const { techId, projectId } = useParams();
@@ -20,12 +24,12 @@ const TimeSheetForApproved = () => {
 
   const fetchData = async () => {
     try {
-      const token = Cookies.get('token');
+      const token = Cookies.get("token");
       const response = await fetch(
         `${Manager_Base_Url}timesheetDetails?techId=${techId}&projectId=${projectId}`,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: token,
           },
         }
@@ -38,16 +42,15 @@ const TimeSheetForApproved = () => {
       setTechnicianData(data.data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
       setLoading(false);
     }
   };
 
   const fetchSignedDocument = async () => {
     try {
-
       const token = Cookies.get("token");
-      
+
       if (!token) {
         console.error("Token not found in localStorage.");
         return;
@@ -57,17 +60,19 @@ const TimeSheetForApproved = () => {
           Authorization: token,
         },
       };
-      const response = await axios.get(`${Show_Signed_Paper_Technicians}?projectId=${projectId}&techId=${techId}`, config);
+      const response = await axios.get(
+        `${Show_Signed_Paper_Technicians}?projectId=${projectId}&techId=${techId}`,
+        config
+      );
       console.log(response.data);
       // console.log(response.data.data[0].file_path);
-      if(response.data.status === 200 && response.data.data.length > 0) {
+      if (response.data.status === 200 && response.data.data.length > 0) {
         setDocumentDownloadLink(response.data.data[0].file_path);
-        
       }
     } catch (error) {
-      // toast.error(error.message);      
+      // toast.error(error.message);
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
@@ -82,7 +87,7 @@ const TimeSheetForApproved = () => {
       technicianData.some((entry) => entry.is_timesheet_requested_for_approval)
     ) {
       return (
-        <Button variant='success' onClick={handleApprovedButtonClick}>
+        <Button variant="success" onClick={handleApprovedButtonClick}>
           Approve Timesheet
         </Button>
       );
@@ -92,13 +97,13 @@ const TimeSheetForApproved = () => {
 
   const handleApprovedButtonClick = async () => {
     try {
-      const token = Cookies.get('token');
+      const token = Cookies.get("token");
       const response = await fetch(
         `${Manager_Base_Url}acceptTimesheetRequest?projectId=${projectId}&techId=${techId}`,
         {
-          method: 'PUT',
+          method: "PUT",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: token,
           },
         }
@@ -107,9 +112,9 @@ const TimeSheetForApproved = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       fetchData();
-      navigate('/projectStatus');
+      navigate("/projectStatus");
     } catch (error) {
-      console.error('Error accepting timesheet request:', error);
+      console.error("Error accepting timesheet request:", error);
     }
   };
 
@@ -121,7 +126,7 @@ const TimeSheetForApproved = () => {
     const buttons = [];
     for (let i = 1; i <= totalPages; i++) {
       buttons.push(
-        <li key={i} className={`dt-item ${currentPage === i ? 'active' : ''}`}>
+        <li key={i} className={`dt-item ${currentPage === i ? "active" : ""}`}>
           <button className="dt-link" onClick={() => setCurrentPage(i)}>
             {i}
           </button>
@@ -133,12 +138,11 @@ const TimeSheetForApproved = () => {
 
   const handleDownloadDocument = () => {
     console.log(documentDownloadLink);
-    if(documentDownloadLink !== null) {
-      const newTab = window.open(documentDownloadLink, '_blank');
+    if (documentDownloadLink !== null) {
+      const newTab = window.open(documentDownloadLink, "_blank");
       newTab.focus();
     }
   };
-
 
   return (
     <>
@@ -152,28 +156,37 @@ const TimeSheetForApproved = () => {
         </div>
 
         <Row>
+          <Col>
+            <Button variant="primary" as={NavLink} to={-1} className="my-4">
+              <FaArrowLeft /> Back to Project Details
+            </Button>
+          </Col>
+        </Row>
+
+        <Row>
           <Col></Col>
           <Col></Col>
           <Col></Col>
           <Col lg={3} md={6}>
-            {
-              documentDownloadLink !== null ? (
-                <Button variant="warning" className="my-2 w-100" onClick={handleDownloadDocument}>
-                  Signed Copy Timesheet
-                </Button>
-
-              ) : (
-                <></>
-              )
-            }
+            {documentDownloadLink !== null ? (
+              <Button
+                variant="warning"
+                className="my-2 w-100"
+                onClick={handleDownloadDocument}
+              >
+                Signed Copy Timesheet
+              </Button>
+            ) : (
+              <></>
+            )}
           </Col>
         </Row>
 
         <div className="card">
           {loading ? (
-            <p>Loading technician details...</p>
+            <h1>Loading technician details...</h1>
           ) : technicianData.length === 0 ? (
-            <p>No technician Timesheet found.</p>
+            <h4 className="my-2 mx-2">No technician Timesheet found.</h4>
           ) : (
             <div className="card-body">
               <div className="bf-table-responsive">

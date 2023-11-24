@@ -5,6 +5,7 @@ import { Button, Table } from "react-bootstrap";
 import { Base_Url } from "../../../Api/Base_Url";
 import AdminDashboardNavbar from "../../NavBar/AdminDashboardNavbar";
 import Cookies from "js-cookie";
+import { FaArrowLeft } from "react-icons/fa";
 
 const Registeredaccount = () => {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ const Registeredaccount = () => {
           onClick={() => navigate("/AdminD")}
           className="my-2"
         >
-          Back to Admin Dashboard
+          <FaArrowLeft /> Back to Admin Dashboard
         </Button>
         <div className="card">
           <div className="card-body">

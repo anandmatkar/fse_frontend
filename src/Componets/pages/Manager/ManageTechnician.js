@@ -1,15 +1,37 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, Container, Table, Form, Pagination, InputGroup, Spinner, Modal, Dropdown } from "react-bootstrap";
-import { FaSearch, FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  Container,
+  Table,
+  Form,
+  Pagination,
+  InputGroup,
+  Spinner,
+  Modal,
+  Dropdown,
+} from "react-bootstrap";
+import {
+  FaSearch,
+  FaChevronLeft,
+  FaChevronRight,
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+  FaArrowLeft,
+} from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import { Manager_Base_Url, Technician_Lists_Manager } from "./../../../Api/Manager_Api";
+import {
+  Manager_Base_Url,
+  Technician_Lists_Manager,
+} from "./../../../Api/Manager_Api";
 import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
 import PageSpinner from "../Common/PageSpinner";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
 export default function ManageTechnician() {
+  const navigate = useNavigate();
 
   const [technicianList, setTechnicianList] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
@@ -52,21 +74,19 @@ export default function ManageTechnician() {
         // Machine deletion was successful
         // You can also update the local state or re-fetch the machine details
         fetchTechnicianList();
-        toast.success(response.data.message)
+        toast.success(response.data.message);
       } else {
-        toast.error(response.data.message)
+        toast.error(response.data.message);
         console.error("Failed to delete the machine.");
       }
     } catch (error) {
       console.log(error);
     } finally {
       // setIsDeletingMachine(false); // Set deleting machine to false in all cases
-    };
+    }
 
     setShowDeleteModal(false);
   };
-
-
 
   const indexOfLastTechnician = currentPage * techniciansPerPage;
   const indexOfFirstTechnician = indexOfLastTechnician - techniciansPerPage;
@@ -159,7 +179,7 @@ export default function ManageTechnician() {
       setIsFetching(true); // Set loading state to true
 
       const token = Cookies.get("token");
-      
+
       if (!token) {
         console.error("Token not found in localStorage.");
         return;
@@ -194,7 +214,18 @@ export default function ManageTechnician() {
         <h1 className="mb-5">Manage Technicians</h1>
       </div>
 
-      <Container className="my-5">
+      <Container>
+        <Button
+          variant="primary"
+          onClick={() => {
+            navigate("/manager");
+          }}
+        >
+          <FaArrowLeft /> Back to Manager Dashboard
+        </Button>
+      </Container>
+
+      <Container className="mb-5">
         <Button
           variant="warning"
           as={NavLink}
@@ -239,27 +270,31 @@ export default function ManageTechnician() {
                       <td>{`${technician.name} ${technician.surname}`}</td>
                       <td>{technician.email_address}</td>
                       <td>
-                      <Dropdown>
-                        <Dropdown.Toggle size="sm" variant="success" id="dropdown-basic">
-                          Actions
-                        </Dropdown.Toggle>
+                        <Dropdown>
+                          <Dropdown.Toggle
+                            size="sm"
+                            variant="success"
+                            id="dropdown-basic"
+                          >
+                            Actions
+                          </Dropdown.Toggle>
 
-                        <Dropdown.Menu>
-                          <Dropdown.Item 
-                            href="#" 
-                            as={NavLink}
-                            to={`/viewtechnicianprofile/${technician.id}`}
+                          <Dropdown.Menu>
+                            <Dropdown.Item
+                              href="#"
+                              as={NavLink}
+                              to={`/viewtechnicianprofile/${technician.id}`}
                             >
-                            View Details
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            href="#"
-                            onClick={() => openDeleteModal(technician)}
+                              View Details
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              href="#"
+                              onClick={() => openDeleteModal(technician)}
                             >
-                            Delete
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                              Delete
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
                         {/* <Button
                             variant="success"
                             as={NavLink}
@@ -290,29 +325,41 @@ export default function ManageTechnician() {
         )}
       </Container>
 
-      {
-        showDeleteModal && 
+      {showDeleteModal && (
         <>
-          <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+          <Modal
+            show={showDeleteModal}
+            onHide={() => setShowDeleteModal(false)}
+          >
             <Modal.Header closeButton>
               <Modal.Title>Confirm Deletion</Modal.Title>
             </Modal.Header>
             <Modal.Body className="text-center">
-              Are you sure you want to delete <br/>
-              <strong>{selectedTechnician ? `${selectedTechnician.name} ${selectedTechnician.surname}` : "this technician"}</strong> ?
+              Are you sure you want to delete <br />
+              <strong>
+                {selectedTechnician
+                  ? `${selectedTechnician.name} ${selectedTechnician.surname}`
+                  : "this technician"}
+              </strong>{" "}
+              ?
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+              <Button
+                variant="secondary"
+                onClick={() => setShowDeleteModal(false)}
+              >
                 Cancel
               </Button>
-              <Button variant="danger" onClick={() => handleDeleteTechnician(selectedTechnician.id)}>
+              <Button
+                variant="danger"
+                onClick={() => handleDeleteTechnician(selectedTechnician.id)}
+              >
                 Delete
               </Button>
             </Modal.Footer>
           </Modal>
         </>
-      }
-
+      )}
     </React.Fragment>
   );
 }

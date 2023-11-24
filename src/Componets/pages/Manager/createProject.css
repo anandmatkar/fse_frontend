@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700,900&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700,900&display=swap");
 
 .newproject {
   max-width: 1230px;
@@ -8,7 +8,7 @@
 .heading1 {
   font-weight: 700;
   font-size: 45px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .headernewproject {
@@ -21,7 +21,7 @@
 .newprojectform {
   background: rgba(255, 255, 255, 1);
   width: 100%;
-  max-width: 850px;
+  /* max-width: 850px; */
   padding: 50px;
   margin: 0 auto;
   position: relative;
@@ -33,7 +33,7 @@
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.15);
 }
 .newprojectform:before {
-  content: '';
+  content: "";
   width: 90%;
   height: calc(100% + 60px);
   left: 0;

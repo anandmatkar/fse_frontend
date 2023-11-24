@@ -1,31 +1,34 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './NewCustomerScreen.css';
-import { toast } from 'react-toastify';
-import Spinner from '../Common/Spinner';
-import axios from 'axios';
+import React, { useState, useEffect, useRef } from "react";
+import "./NewCustomerScreen.css";
+import { toast } from "react-toastify";
+import Spinner from "../Common/Spinner";
+import axios from "axios";
 import {
   Create_Customer_Api,
   Insert_Customer_Api,
-} from '../../../Api/Manager_Api';
-import { useNavigate, Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import './CreateCustomer.css';
-import { LiaFileUploadSolid } from 'react-icons/lia';
-import { BsFileEarmarkMedical } from 'react-icons/bs';
-import { Base_Url } from '../../../Api/Base_Url';
+} from "../../../Api/Manager_Api";
+import { useNavigate, Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+
+import Cookies from "js-cookie";
+import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
+import "./CreateCustomer.css";
+import { LiaFileUploadSolid } from "react-icons/lia";
+import { BsFileEarmarkMedical } from "react-icons/bs";
+import { Base_Url } from "../../../Api/Base_Url";
+import { FaArrowLeft } from "react-icons/fa";
 
 function NewCustomerScreen() {
   const [formData, setFormData] = useState({
-    customerName: '',
-    customerContactName: '',
-    customerAccount: '',
-    email: '',
-    phone: '',
-    country: '', // Set an initial value here (e.g., 'USA')
-    city: '',
-    address: '',
-    scopeOfWork: '',
+    customerName: "",
+    customerContactName: "",
+    customerAccount: "",
+    email: "",
+    phone: "",
+    country: "", // Set an initial value here (e.g., 'USA')
+    city: "",
+    address: "",
+    scopeOfWork: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -42,14 +45,14 @@ function NewCustomerScreen() {
 
   const fetchCountries = async () => {
     try {
-      const response = await axios.get('https://restcountries.com/v3.1/all');
+      const response = await axios.get("https://restcountries.com/v3.1/all");
       const countryData = response.data.map((country) => ({
         value: country.cca2,
         label: country.name.common,
       }));
       setCountryOptions(countryData);
     } catch (error) {
-      console.error('Error fetching countries:', error);
+      console.error("Error fetching countries:", error);
     }
   };
 
@@ -62,9 +65,8 @@ function NewCustomerScreen() {
   };
 
   const handleDownloadTemplate = () => {
-    const downloadLink =
-    `${Base_Url}uploads/exampleTemplate/example_file.xlsx`;
-    const newTab = window.open(downloadLink, '_blank');
+    const downloadLink = `${Base_Url}uploads/exampleTemplate/example_file.xlsx`;
+    const newTab = window.open(downloadLink, "_blank");
     newTab.focus();
   };
 
@@ -72,13 +74,13 @@ function NewCustomerScreen() {
     const file = event.target.files[0];
     if (file) {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
-      let token = Cookies.get('token'); // Get the token from cookies
+      let token = Cookies.get("token"); // Get the token from cookies
 
       const axiosConfig = {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
           Authorization: token,
         },
       };
@@ -88,11 +90,11 @@ function NewCustomerScreen() {
         .then((response) => {
           if (response.status === 201) {
             toast.success(response.data.message);
-            navigate('/customerlist');
+            navigate("/customerlist");
           } else {
             const toastMessage = `${
               response.data.message
-            }: ${response.data.duplicates.join(', ')}`;
+            }: ${response.data.duplicates.join(", ")}`;
 
             // Display the toast message
             toast.error(toastMessage);
@@ -100,7 +102,7 @@ function NewCustomerScreen() {
         })
         .catch((error) => {
           // Handle any errors
-          console.error('API Error:', error);
+          console.error("API Error:", error);
           // Display an error message using toast.error
           toast.error(error.message);
         });
@@ -118,11 +120,11 @@ function NewCustomerScreen() {
     }
     setIsLoading(true);
 
-    let token = Cookies.get('token');
+    let token = Cookies.get("token");
 
     const axiosConfig = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: token,
       },
     };
@@ -137,20 +139,20 @@ function NewCustomerScreen() {
       if (response.data.status === 201) {
         // Reset form fields
         setFormData({
-          customerName: '',
-          customerContactName: '',
-          customerAccount: '',
-          email: '',
-          phone: '',
-          country: '',
-          city: '',
-          address: '',
-          scopeOfWork: '',
+          customerName: "",
+          customerContactName: "",
+          customerAccount: "",
+          email: "",
+          phone: "",
+          country: "",
+          city: "",
+          address: "",
+          scopeOfWork: "",
         });
         setShowPopup(true);
         // Show success toast message
         toast.success(response.data.message);
-        navigate('/manager');
+        navigate("/manager");
       } else {
         // Show error toast message
         toast.error(response.data.message);
@@ -175,35 +177,35 @@ function NewCustomerScreen() {
     const errors = {};
 
     if (!data.customerName.trim()) {
-      errors.customerName = 'Please enter customer name';
+      errors.customerName = "Please enter customer name";
     }
     if (!data.customerContactName.trim()) {
-      errors.customerContactName = 'Please enter customer contact name';
+      errors.customerContactName = "Please enter customer contact name";
     }
     if (!data.customerAccount.trim()) {
-      errors.customerAccount = 'Please enter customer account number';
+      errors.customerAccount = "Please enter customer account number";
     }
     if (!data.email.trim()) {
-      errors.email = 'Please enter your email';
+      errors.email = "Please enter your email";
     } else if (!validateEmail(data.email.trim())) {
-      errors.email = 'Please enter a valid email address';
+      errors.email = "Please enter a valid email address";
     }
     if (!data.phone.trim()) {
-      errors.phone = 'Please enter your phone number';
+      errors.phone = "Please enter your phone number";
     } else if (!validatePhone(data.phone.trim())) {
-      errors.phone = 'Please enter a valid phone number';
+      errors.phone = "Please enter a valid phone number";
     }
     if (!data.country.trim()) {
-      errors.country = 'Please enter country';
+      errors.country = "Please enter country";
     }
     if (!data.city.trim()) {
-      errors.city = 'Please enter city';
+      errors.city = "Please enter city";
     }
     if (!data.address.trim()) {
-      errors.address = 'Please enter address';
+      errors.address = "Please enter address";
     }
     if (!data.scopeOfWork.trim()) {
-      errors.scopeOfWork = 'Please enter scope of work';
+      errors.scopeOfWork = "Please enter scope of work";
     }
 
     return errors;
@@ -227,6 +229,14 @@ function NewCustomerScreen() {
           </div>
         )}
 
+        <Button
+          variant="primary"
+          className="my-2 mx-5"
+          onClick={() => navigate("/customerlist")}
+        >
+          <FaArrowLeft /> Back to Customer List
+        </Button>
+
         <div className="container-fluid p-2">
           <div className="row">
             <div className="col-12 text-center">
@@ -240,7 +250,7 @@ function NewCustomerScreen() {
               </div>
               <div
                 className="col-12 position-absolute text-right btn_Download_temp"
-                style={{ right: '8%' }}
+                style={{ right: "8%" }}
               >
                 <button
                   className="btn btn-outline-success mx-2 btn-sm"
@@ -253,7 +263,7 @@ function NewCustomerScreen() {
                   className="btn btn-outline-success mx-2 btn-sm"
                   onClick={() => fileInputRef.current.click()} // Trigger file input click via ref
                 >
-                  Upload File {'  '}
+                  Upload File {"  "}
                   <input
                     type="file"
                     accept=".xlsx, .xls"
@@ -271,7 +281,7 @@ function NewCustomerScreen() {
         <div className="container newCustomerContainer">
           <div className="wrapper animated_bounceInLeft mb-2 shadow-lg border border-1">
             <div className="company-info text-center text-light">
-              <h3 className="">Add new customer details</h3>
+              <h3 className="">Add New Customer Details</h3>
               <img src="/assets/newcustomer.svg" className="mt-3"></img>
             </div>
 
@@ -291,7 +301,7 @@ function NewCustomerScreen() {
                     placeholder="Enter customer name"
                   />
                   {errors.customerName && (
-                    <span className="error" style={{ color: 'red' }}>
+                    <span className="error" style={{ color: "red" }}>
                       {errors.customerName}
                     </span>
                   )}
@@ -310,7 +320,7 @@ function NewCustomerScreen() {
                     placeholder="Enter customer contact name"
                   />
                   {errors.customerName && (
-                    <span className="error" style={{ color: 'red' }}>
+                    <span className="error" style={{ color: "red" }}>
                       {errors.customerName}
                     </span>
                   )}
@@ -329,7 +339,7 @@ function NewCustomerScreen() {
                     placeholder="Enter customer account"
                   />
                   {errors.customerAccount && (
-                    <span className="error" style={{ color: 'red' }}>
+                    <span className="error" style={{ color: "red" }}>
                       {errors.customerAccount}
                     </span>
                   )}
@@ -348,7 +358,7 @@ function NewCustomerScreen() {
                     placeholder="Enter Email"
                   />
                   {errors.email && (
-                    <span className="error" style={{ color: 'red' }}>
+                    <span className="error" style={{ color: "red" }}>
                       {errors.email}
                     </span>
                   )}
@@ -367,7 +377,7 @@ function NewCustomerScreen() {
                     placeholder="Enter Phone number"
                   />
                   {errors.phone && (
-                    <span className="error" style={{ color: 'red' }}>
+                    <span className="error" style={{ color: "red" }}>
                       {errors.phone}
                     </span>
                   )}
@@ -387,7 +397,7 @@ function NewCustomerScreen() {
                   >
                     <option disabled selected value="">
                       Select Country
-                    </option>{' '}
+                    </option>{" "}
                     {countryOptions.map((country) => (
                       <option key={country.value} value={country.value}>
                         {country.label}
@@ -395,7 +405,7 @@ function NewCustomerScreen() {
                     ))}
                   </select>
                   {errors.country && (
-                    <span className="error" style={{ color: 'red' }}>
+                    <span className="error" style={{ color: "red" }}>
                       {errors.country}
                     </span>
                   )}
@@ -414,7 +424,7 @@ function NewCustomerScreen() {
                     placeholder="Enter city name"
                   />
                   {errors.city && (
-                    <span className="error" style={{ color: 'red' }}>
+                    <span className="error" style={{ color: "red" }}>
                       {errors.city}
                     </span>
                   )}
@@ -433,7 +443,7 @@ function NewCustomerScreen() {
                     placeholder="Enter your address"
                   />
                   {errors.address && (
-                    <span className="error" style={{ color: 'red' }}>
+                    <span className="error" style={{ color: "red" }}>
                       {errors.address}
                     </span>
                   )}
@@ -452,7 +462,7 @@ function NewCustomerScreen() {
                     placeholder="Enter scope of work"
                   ></textarea>
                   {errors.scopeOfWork && (
-                    <span className="error" style={{ color: 'red' }}>
+                    <span className="error" style={{ color: "red" }}>
                       {errors.scopeOfWork}
                     </span>
                   )}

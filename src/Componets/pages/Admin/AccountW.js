@@ -6,6 +6,7 @@ import Table from "react-bootstrap/Table";
 import { Button } from "react-bootstrap";
 import { Base_Url } from "../../../Api/Base_Url";
 import { toast } from "react-toastify";
+import { FaArrowLeft, FaHome } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
 import { FcApprove, FcDisapprove } from "react-icons/fc";
 import AdminDashboardNavbar from "../../NavBar/AdminDashboardNavbar";
@@ -102,7 +103,7 @@ function UserTable() {
             onClick={() => navigate("/AdminD")}
             className="my-2"
           >
-            Back to Admin Dashboard
+            <FaArrowLeft /> Back to Admin Dashboard
           </Button>
 
           <div className="card">

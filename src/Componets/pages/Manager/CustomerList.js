@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { Table, Container, Button, FormControl, Modal } from 'react-bootstrap';
-import { Link, NavLink } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { Table, Container, Button, FormControl, Modal } from "react-bootstrap";
+import { Link, NavLink } from "react-router-dom";
+import { FaArrowLeft, FaHome } from "react-icons/fa";
+import { toast } from "react-toastify";
+import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
 import {
   Customer_List_Api,
   Manager_Base_Url,
-} from './../../../Api/Manager_Api';
+} from "./../../../Api/Manager_Api";
 
 function CustomerList() {
+  const navigate = useNavigate();
   const [customerData, setCustomerData] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -20,10 +23,10 @@ function CustomerList() {
   const [customerToDelete, setCustomerToDelete] = useState(null);
 
   useEffect(() => {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     const axiosConfig = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: token,
       },
     };
@@ -40,13 +43,13 @@ function CustomerList() {
           setCustomerData(data.data);
         } else {
           console.error(
-            'API response does not contain an array of data:',
+            "API response does not contain an array of data:",
             data
           );
         }
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       });
   }, []);
 
@@ -61,12 +64,12 @@ function CustomerList() {
   const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
 
   const handleDelete = (customerId) => {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
 
     fetch(`${Manager_Base_Url}deleteCustomer?customerId=${customerId}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: token,
       },
     })
@@ -157,7 +160,7 @@ function CustomerList() {
     const buttons = [];
     for (let i = 1; i <= totalPages; i++) {
       buttons.push(
-        <li key={i} className={`dt-item ${currentPage === i ? 'active' : ''}`}>
+        <li key={i} className={`dt-item ${currentPage === i ? "active" : ""}`}>
           <button className="dt-link" onClick={() => setCurrentPage(i)}>
             {i}
           </button>
@@ -171,31 +174,39 @@ function CustomerList() {
     <>
       <NavbarManagerDashboard />
 
-      <div className="text-center wow fadeInUp my-2" data-wow-delay="0.1s">
+      <div className="text-center wow fadeInUp my-5" data-wow-delay="0.1s">
         <h6 className="section-title bg-white text-center text-primary px-3">
           Manager's Panel
         </h6>
-        <h1 className="mb-5">Customer's List</h1>
+        <h1 className="mb-2">Customer's List</h1>
       </div>
 
-      <div className="container-fluid mt-5">
-        <Button
-          variant="success"
-          as={NavLink}
-          to={'/createCustomer'}
-          className="my-2"
-        >
-          {' '}
-          Create Customer{' '}
-        </Button>
-
+      <div className="container-fluid mt-2">
         <div className="card">
+          <div>
+            <Button
+              variant="primary"
+              className="my-3 mx-4 float-start"
+              onClick={() => navigate("/manager")}
+            >
+              <FaArrowLeft /> Back to Manager Dashboard
+            </Button>
+
+            <Button
+              variant="success"
+              as={NavLink}
+              to={"/createCustomer"}
+              className="my-3 mx-4 float-end"
+            >
+              Create Customer
+            </Button>
+          </div>
           <FormControl
             type="text"
-            className="mb-2 mt-4 ms-4"
+            className="mb-2 mt-2 ms-4"
             placeholder="Search Customer Name"
             onChange={(e) => setSearch(e.target.value)}
-            style={{ width: '25%', border: '1px solid black', float: 'right' }}
+            style={{ width: "25%", border: "1px solid black", float: "right" }}
           />
           <div className="card-body">
             <div className="bf-table-responsive">
@@ -224,7 +235,7 @@ function CustomerList() {
         </div>
         <nav className="dt-pagination">
           <ul className="dt-pagination-ul">
-            <li className={`dt-item ${currentPage === 1 ? 'disabled' : ''}`}>
+            <li className={`dt-item ${currentPage === 1 ? "disabled" : ""}`}>
               <button
                 className="dt-link"
                 onClick={() => setCurrentPage(currentPage - 1)}
@@ -235,7 +246,7 @@ function CustomerList() {
             {renderPaginationButtons()}
             <li
               className={`dt-item ${
-                currentPage === totalPages ? 'disabled' : ''
+                currentPage === totalPages ? "disabled" : ""
               }`}
             >
               <button
