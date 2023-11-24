@@ -602,7 +602,7 @@ export default function TechnicianProjectDetails() {
                       <th>Start Time</th>
                       <th>End Time</th>
                       <th>Lunch Time</th>
-                      <th>Attachment</th>
+                      {/* <th>Attachment</th> */}
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -619,7 +619,7 @@ export default function TechnicianProjectDetails() {
                               <td>{timesheet.end_time}</td>
                               <td>{timesheet.lunch_time}</td>
                               {/* <td>{<FcDocument className='fs-3'/>}</td> */}
-                              <td>
+                              {/* <td>
                                 {timesheet.timesheet_attach_data.length > 0 &&
                                   timesheet.timesheet_attach_data.map(
                                     (attachment, attachmentIndex) => (
@@ -633,7 +633,7 @@ export default function TechnicianProjectDetails() {
                                       </a>
                                     )
                                   )}
-                              </td>
+                              </td> */}
                               <td>
                                 {!timesheet.is_timesheet_approved &&
                                 !timesheet.is_timesheet_requested_for_approval ? (
