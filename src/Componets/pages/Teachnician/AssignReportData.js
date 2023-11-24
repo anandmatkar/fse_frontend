@@ -150,7 +150,7 @@ const AssignReportData = () => {
                   variant="primary"
                   as={NavLink}
                   to={-1}
-                  className="my-4 float-start"
+                  className="my-4 me-5 float-start"
                 >
                   <FaArrowLeft /> Back to View Project Specific Machines
                 </Button>
