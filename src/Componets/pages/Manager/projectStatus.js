@@ -1,36 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Card, Badge, Button, Table, Modal, Spinner } from 'react-bootstrap';
-import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import Cookies from 'js-cookie';
-import { Delete_Project_Manager, Project_List_Manager } from './../../../Api/Manager_Api';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import PageSpinner from '../Common/PageSpinner';
-import EditProjectDetailsModal from './EditProjectDetailsModal';
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Badge,
+  Button,
+  Table,
+  Modal,
+  Spinner,
+} from "react-bootstrap";
+import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
+import Cookies from "js-cookie";
+import {
+  Delete_Project_Manager,
+  Project_List_Manager,
+} from "./../../../Api/Manager_Api";
+import axios from "axios";
+import { toast } from "react-toastify";
+import PageSpinner from "../Common/PageSpinner";
+import EditProjectDetailsModal from "./EditProjectDetailsModal";
+import { FaArrowLeft } from "react-icons/fa";
 
 function ProjectStatus() {
   const navigate = useNavigate();
 
-  const tableHeads = ['Order ID', 'Customer Name', 'Country', 'Start Date', 'End Date', 'View', 'Edit', 'Delete', 'Status'];
+  const tableHeads = [
+    "Order ID",
+    "Customer Name",
+    "Country",
+    "Start Date",
+    "End Date",
+    "View",
+    "Edit",
+    "Delete",
+    "Status",
+  ];
 
-  const [ projectList, setProjectList ] = useState([]);
-  const [ showEditModal, setShowEditModal ] = useState(false);
-  const [ projectToEdit, setProjectToEdit ] = useState(null);
-  const [ showDeleteModal, setShowDeleteModal ]  = useState(false);
-  const [ projectToDelete, setProjectToDelete ] = useState(null);
-  const [ isFetchingProject, setIsFetchingProject ] = useState(false);
+  const [projectList, setProjectList] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [projectToEdit, setProjectToEdit] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState(null);
+  const [isFetchingProject, setIsFetchingProject] = useState(false);
 
   const openDeleteModal = (project) => {
     setProjectToDelete(project);
     setShowDeleteModal(true);
-  }
+  };
 
   // Open the edit modal and populate it with project data
   const openEditModal = (project) => {
     setProjectToEdit(project);
     setShowEditModal(true);
-  }
+  };
 
   const handleDeleteConfirmation = async () => {
     if (projectToDelete) {
@@ -47,31 +71,37 @@ function ProjectStatus() {
           },
         };
 
-      let response = await axios.put(`${Delete_Project_Manager}?projectId=${projectToDelete.project_id}`, {}, config);
-      // console.log(response.data);
-        if(response.data.success) {
+        let response = await axios.put(
+          `${Delete_Project_Manager}?projectId=${projectToDelete.project_id}`,
+          {},
+          config
+        );
+        // console.log(response.data);
+        if (response.data.success) {
           fetchProjectList();
           toast.success(response.data.message);
         } else {
           toast.error(response.data.message);
         }
       } catch (error) {
-        toast.error(error.message);        
+        toast.error(error.message);
       }
-      
+
       setProjectToDelete(null);
       setShowDeleteModal(false);
     }
-  }
+  };
 
   const fetchProjectList = async () => {
     try {
       setIsFetchingProject(true);
 
       let token = Cookies.get("token");
-      
+
       if (!token) {
-        toast.error("Token not found in Cookies. Session Timeout Please Login Again.");
+        toast.error(
+          "Token not found in Cookies. Session Timeout Please Login Again."
+        );
         return;
       }
       const config = {
@@ -80,13 +110,13 @@ function ProjectStatus() {
         },
       };
 
-    let response = await axios.get(Project_List_Manager, config);
+      let response = await axios.get(Project_List_Manager, config);
 
-    if(response.data.status === 200) {
-      setProjectList(response.data.data); 
-    } else {
-      toast.error(response.data.message);
-    }      
+      if (response.data.status === 200) {
+        setProjectList(response.data.data);
+      } else {
+        toast.error(response.data.message);
+      }
     } catch (error) {
       console.log(error.message);
       toast.error(error.message);
@@ -94,13 +124,13 @@ function ProjectStatus() {
     } finally {
       setIsFetchingProject(false);
     }
-  }
+  };
 
   // Function to navigate to ProjectStatusDetails component
   const navigateToProjectDetails = (projectID) => {
     // You can add any necessary data or parameters to the navigate function if needed
     navigate(`/projectDetails/${projectID}`);
-  }
+  };
 
   useEffect(() => {
     fetchProjectList();
@@ -122,15 +152,27 @@ function ProjectStatus() {
           <PageSpinner />
         </>
       ) : (
-        <Container className="container-xxl py-5">
+        <Container className="container-xxl py-4">
           <Container>
+            <Row>
+              <Col lg={3}>
+                <Button
+                  variant="primary"
+                  as={NavLink}
+                  to={"/manager"}
+                  className="my-2"
+                >
+                  <FaArrowLeft /> Back to Manager Dashboard
+                </Button>
+              </Col>
+            </Row>
             <Row>
               <Col lg={3}>
                 <Button
                   variant="warning"
                   as={NavLink}
                   to={"/createP"}
-                  className="my-3 w-100"
+                  className="my-2 w-100"
                 >
                   Create Project
                 </Button>
@@ -158,19 +200,27 @@ function ProjectStatus() {
                           <td>
                             <Button
                               variant="secondary"
-                              size='sm'
-                              onClick={() => navigateToProjectDetails(project.project_id)}
+                              size="sm"
+                              onClick={() =>
+                                navigateToProjectDetails(project.project_id)
+                              }
                             >
                               Details
                             </Button>
                           </td>
                           <td>
-                            <Button variant="warning" size='sm' onClick={() => openEditModal(project)}>Edit</Button>
+                            <Button
+                              variant="warning"
+                              size="sm"
+                              onClick={() => openEditModal(project)}
+                            >
+                              Edit
+                            </Button>
                           </td>
                           <td>
                             <Button
                               variant="danger"
-                              size='sm'
+                              size="sm"
                               onClick={() => openDeleteModal(project)}
                             >
                               Delete
@@ -179,11 +229,29 @@ function ProjectStatus() {
                           <td>
                             {!project.is_requested_for_approval &&
                             !project.is_completed ? (
-                              <Button variant="primary" size='sm' className='w-100'>In Progress</Button>
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                className="w-100"
+                              >
+                                In Progress
+                              </Button>
                             ) : project.is_requested_for_approval ? (
-                              <Button variant="warning" size='sm' className='w-100'>Waiting</Button>
+                              <Button
+                                variant="warning"
+                                size="sm"
+                                className="w-100"
+                              >
+                                Waiting
+                              </Button>
                             ) : (
-                              <Button variant="success" size='sm' className='w-100'>Approved</Button>
+                              <Button
+                                variant="success"
+                                size="sm"
+                                className="w-100"
+                              >
+                                Approved
+                              </Button>
                             )}
                           </td>
                         </tr>
@@ -205,15 +273,14 @@ function ProjectStatus() {
         </Container>
       )}
 
-      {
-        showEditModal && 
+      {showEditModal && (
         <EditProjectDetailsModal
           show={showEditModal}
           onHide={() => setShowEditModal(false)}
           project={projectToEdit}
           fetchProjectList={fetchProjectList}
         />
-      }
+      )}
 
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>

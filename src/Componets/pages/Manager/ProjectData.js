@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import { Table, Container } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import { Manager_Base_Url } from '../../../Api/Manager_Api';
+import React, { useEffect, useState } from "react";
+import { NavLink, useParams } from "react-router-dom";
+import Cookies from "js-cookie";
+import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
+import { Row, Col, Button, Table, Container } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { Manager_Base_Url } from "../../../Api/Manager_Api";
+import { FaArrowLeft } from "react-icons/fa";
 
 function ProjectData() {
   const { techID, projectId, machineId } = useParams();
@@ -13,11 +14,11 @@ function ProjectData() {
 
   async function handleApproveClick() {
     try {
-      const token = Cookies.get('token');
+      const token = Cookies.get("token");
       const response = await fetch(
         `${Manager_Base_Url}validateReport?techId=${techID}&projectId=${projectId}&machineId=${machineId}`,
         {
-          method: 'PUT', // Adjust the method as needed (POST, PUT, etc.)
+          method: "PUT", // Adjust the method as needed (POST, PUT, etc.)
           headers: {
             Authorization: token,
           },
@@ -37,17 +38,17 @@ function ProjectData() {
       // Show a success toast message with the approval message
       toast.success(approvalMessage);
     } catch (error) {
-      console.error('Error approving report:', error);
+      console.error("Error approving report:", error);
 
       // Show an error toast message
-      toast.error('Error approving report');
+      toast.error("Error approving report");
     }
   }
 
   useEffect(() => {
     async function fetchProjectData() {
       try {
-        const token = Cookies.get('token');
+        const token = Cookies.get("token");
         const response = await fetch(
           `${Manager_Base_Url}reportDetails?techId=${techID}&projectId=${projectId}&machineId=${machineId}`,
           {
@@ -68,7 +69,7 @@ function ProjectData() {
         );
         setShowApprovedButton(hasReportForApproval);
       } catch (error) {
-        console.error('Error fetching project data:', error);
+        console.error("Error fetching project data:", error);
       }
     }
 
@@ -86,6 +87,13 @@ function ProjectData() {
         <h1 className="mb-5">Project Technician Report Details</h1>
       </div>
       <div className="container-fluid mt-5">
+        <Row>
+          <Col>
+            <Button variant="primary" as={NavLink} to={-1} className="my-4">
+              <FaArrowLeft /> Back to Project Details
+            </Button>
+          </Col>
+        </Row>
         <div>
           <div className="card p-2">
             <div className="d-flex justify-content-end mx-2">
