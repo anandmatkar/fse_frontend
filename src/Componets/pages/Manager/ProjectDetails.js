@@ -222,6 +222,37 @@ function ProjectDetails() {
                                 <ListGroup.Item>
                                   <b>End Date :</b> {projectDetails.end_date}
                                 </ListGroup.Item>
+                                <ListGroup.Item>
+                                  <b>Status :</b>{" "}
+                                  {!projectDetails.is_completed &&
+                                  !projectDetails.is_requested_for_approval ? (
+                                    <Button
+                                      variant="primary"
+                                      size="sm"
+                                      className="mx-5"
+                                    >
+                                      In Progress
+                                    </Button>
+                                  ) : projectDetails.is_completed ? (
+                                    <Button
+                                      variant="success"
+                                      size="sm"
+                                      className="mx-5"
+                                    >
+                                      Completed
+                                    </Button>
+                                  ) : projectDetails.is_requested_for_approval ? (
+                                    <Button
+                                      variant="warning"
+                                      size="sm"
+                                      className="mx-5"
+                                    >
+                                      Waiting
+                                    </Button>
+                                  ) : (
+                                    <></>
+                                  )}
+                                </ListGroup.Item>
                               </ListGroup>
                             </Card>
                           </>
