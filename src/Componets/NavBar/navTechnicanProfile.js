@@ -1,93 +1,88 @@
-import React, { useContext } from 'react';
-import AuthContext from '../auth-context/auth-context';
-import { Dropdown, ListGroup, NavLink } from 'react-bootstrap';
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import { MdArrowDropDown } from 'react-icons/md';
+import React, { useContext } from "react";
+import AuthContext from "../auth-context/auth-context";
+import {
+  Dropdown,
+  ListGroup,
+  Nav,
+  Navbar,
+  NavLink,
+  Container,
+  NavDropdown,
+} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { MdArrowDropDown } from "react-icons/md";
+import "./navTechnicanProfile.css";
 
 const NavTechnicanProfile = () => {
   const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
-  const isLoggedIn = authCtx.isLoggedIn;
-
-  const token = Cookies.get('token');
 
   const logoutHandler = () => {
     authCtx.logoutBtn();
-    navigate('/techLogin');
+    navigate("/techLogin");
   };
 
-  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-    <a
-      href=""
-      ref={ref}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick(e);
-      }}
-    >
-      {children}
-    </a>
-  ));
   return (
-    <React.Fragment>
-      <Navbar expand="lg" className="main-nav-bar">
-        <Container>
-          <Navbar.Brand href="#" as={NavLink} to="/">
-            <img
-              alt="Profile Avatar"
-              src="/assets/logofse.png"
-              width={100}
-              className="d-inline-block align-top "
-            />
-          </Navbar.Brand>
-          <div>
-            <ListGroup horizontal>
-              <span style={{}} className="h1 mt-3 text-dark fs-3">
-                {Cookies.get('Name') || 'FSE'}
-              </span>
-              <ListGroup.Item
-                className="border-0 "
-                style={{ background: 'none' }}
+    <Navbar
+      collapseOnSelect
+      expand="lg"
+      className="bg-body-success technician-ui"
+    >
+      <Container>
+        <Navbar.Brand as={NavLink} to="/">
+          <img
+            alt="Profile Avatar"
+            src="/assets/logofse.png"
+            width={100}
+            className="d-inline-block align-top"
+          />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="ms-auto">
+            <span className="text-center">
+              <strong>Technician Name :</strong>
+              {Cookies.get("Name").toUpperCase() || "FSE"}
+            </span>
+          </Nav>
+          <Nav>
+            <NavDropdown
+              className="text-center"
+              title={
+                <div className="imgdropdowns">
+                  <img
+                    src={
+                      Cookies.get("Profile") ||
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU"
+                    }
+                    alt="Profile"
+                    className="border border-dark"
+                    style={{
+                      width: "60px",
+                      borderRadius: "50%",
+                      height: "50px",
+                    }}
+                  />
+                  <MdArrowDropDown style={{ color: "black" }} size={20} />
+                </div>
+              }
+              id="collasible-nav-dropdown"
+              drop="start"
+            >
+              <NavDropdown.Item
+                onClick={() => navigate("/updateTechnicianprofile")}
               >
-                <Dropdown className="imgdropdowns " drop="start">
-                  <Dropdown.Toggle as={CustomToggle} variant="secondary">
-                    {/* Get avatar from localStorage and set as src */}
-                    <img
-                      src={
-                        Cookies.get('Profile') ||
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU'
-                      }
-                      alt="Profile"
-                      className="border border-dark"
-                      style={{
-                        width: '60px',
-                        borderRadius: '50%',
-                        height: '50px',
-                      }}
-                    />
-                    <MdArrowDropDown style={{ color: 'black' }} size={20} />
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item
-                      onClick={() => navigate('/updateTechnicianprofile')}
-                    >
-                      Show Profile
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={logoutHandler}>
-                      Logout
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </ListGroup.Item>
-            </ListGroup>
-          </div>
-        </Container>
-      </Navbar>
-    </React.Fragment>
+                Show Profile
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={logoutHandler}>
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 
