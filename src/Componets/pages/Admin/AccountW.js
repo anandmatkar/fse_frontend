@@ -12,10 +12,12 @@ import { FcApprove, FcDisapprove } from "react-icons/fc";
 import AdminDashboardNavbar from "../../NavBar/AdminDashboardNavbar";
 import Cookies from "js-cookie";
 import Spinner from "../Common/Spinner";
+import PageSpinner from "../Common/PageSpinner";
 
 function UserTable() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleAction = async (userId, actionType) => {
@@ -23,7 +25,7 @@ function UserTable() {
     setLoading(true);
 
     if (!token) {
-      console.error("Token not found in localStorage.");
+      toast.error("Token not found in Cookies.");
       return;
     }
 
@@ -57,6 +59,7 @@ function UserTable() {
   };
 
   useEffect(() => {
+    setIsFetching(true);
     const token = Cookies.get("token");
     const config = {
       headers: {
@@ -73,6 +76,7 @@ function UserTable() {
           setUsers(response.data.data.ManagerListForApproval || []);
         }
         setLoading(false);
+        setIsFetching(false);
       })
       .catch((error) => {
         if (error.response && error.response.status === 401) {
@@ -80,6 +84,7 @@ function UserTable() {
         } else {
           console.error("Error:", error);
         }
+        setIsFetching(false);
       });
   }, []);
 
@@ -106,65 +111,75 @@ function UserTable() {
             <FaArrowLeft /> Back to Admin Dashboard
           </Button>
 
-          <div className="card">
-            <div className="card-body">
-              <Table responsive hover>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Position</th>
-                    <th>Company</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Date</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users && users.length > 0 ? (
-                    users.map((user) => (
-                      <tr key={user.id}>
-                        <td>{user.name}</td>
-                        <td>{user.surname}</td>
-                        <td>{user.position}</td>
-                        <td>{user.company}</td>
-                        <td>{user.email_address}</td>
-                        <td>{user.phone_number}</td>
-                        <td>{user.created_at}</td>
-                        <td>
-                          <Button
-                            variant="primary"
-                            disabled={user.status === 1}
-                            onClick={() => handleAction(user.id, "approve")}
-                            style={{ marginRight: "10px" }}
-                            className="button-hover-effect"
-                          >
-                            <FcApprove size={34} />
-                          </Button>
-
-                          <Button
-                            variant={user.status === 1 ? "secondary" : "danger"}
-                            disabled={user.status === 1}
-                            onClick={() => handleAction(user.id, "reject")}
-                            className="button-hover-effect"
-                          >
-                            <FcDisapprove size={34} />
-                          </Button>
-                        </td>
+          {isFetching ? (
+            <>
+              <PageSpinner />
+            </>
+          ) : (
+            <>
+              <div className="card">
+                <div className="card-body">
+                  <Table responsive hover>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Position</th>
+                        <th>Company</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Date</th>
+                        <th>Action</th>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="8" className="text-center fw-bold mt-4">
-                        <h3>No manager for approval</h3>
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </Table>
-            </div>
-          </div>
+                    </thead>
+                    <tbody>
+                      {users && users.length > 0 ? (
+                        users.map((user) => (
+                          <tr key={user.id}>
+                            <td>{user.name}</td>
+                            <td>{user.surname}</td>
+                            <td>{user.position}</td>
+                            <td>{user.company}</td>
+                            <td>{user.email_address}</td>
+                            <td>{user.phone_number}</td>
+                            <td>{user.created_at}</td>
+                            <td>
+                              <Button
+                                variant="primary"
+                                disabled={user.status === 1}
+                                onClick={() => handleAction(user.id, "approve")}
+                                style={{ marginRight: "10px" }}
+                                className="button-hover-effect"
+                              >
+                                <FcApprove size={34} />
+                              </Button>
+
+                              <Button
+                                variant={
+                                  user.status === 1 ? "secondary" : "danger"
+                                }
+                                disabled={user.status === 1}
+                                onClick={() => handleAction(user.id, "reject")}
+                                className="button-hover-effect"
+                              >
+                                <FcDisapprove size={34} />
+                              </Button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="8" className="text-center fw-bold mt-4">
+                            <h3>No manager for approval</h3>
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </Table>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </>
