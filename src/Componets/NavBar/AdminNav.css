@@ -1,0 +1,8 @@
+nav.bg-body-success.navbar-admin-login.navbar.navbar-expand-lg.navbar-light {
+  background-color: #86b817;
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link.active {
+  color: #14141f !important;
+}
