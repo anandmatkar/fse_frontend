@@ -156,14 +156,26 @@ const TimeSheetForApproved = () => {
         </div>
 
         <Row>
-          <Col>
+          <Col lg={3} md={12}>
             <Button variant="primary" as={NavLink} to={-1} className="my-4">
               <FaArrowLeft /> Back to Project Details
             </Button>
           </Col>
+          <Col lg={3} md={12}></Col>
+          <Col lg={3} md={12}></Col>
+          <Col lg={3} md={12}>
+            <Button
+              variant="warning"
+              as={NavLink}
+              to={`/show-signed-papers-to-manager/${projectId}/${techId}`}
+              className="my-4"
+            >
+              Show Signed Paper Attached
+            </Button>
+          </Col>
         </Row>
 
-        <Row>
+        {/* <Row>
           <Col></Col>
           <Col></Col>
           <Col></Col>
@@ -180,7 +192,7 @@ const TimeSheetForApproved = () => {
               <></>
             )}
           </Col>
-        </Row>
+        </Row> */}
 
         <div className="card">
           {loading ? (
