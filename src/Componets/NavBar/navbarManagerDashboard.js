@@ -12,7 +12,7 @@ const NavbarManagerDashboard = () => {
 
   const logoutHandler = () => {
     authCtx.logoutBtn();
-    navigate("/managerLogin");
+    navigate("/mangerLogin");
   };
 
   return (
