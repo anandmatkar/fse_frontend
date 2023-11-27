@@ -59,6 +59,7 @@ import Cookies from "js-cookie";
 import ProjectDetails from "./Componets/pages/Manager/ProjectDetails";
 import TechnicianProjectDetails from "./Componets/pages/Teachnician/TechnicianProjectDetails";
 import ViewSignedPaperTimesheet from "./Componets/pages/Teachnician/ViewSignedPaperTimesheet.js";
+import ShowSignedPaperTimeSheet from "./Componets/pages/Manager/ShowSignedPaperTimeSheet.js";
 
 // Define a function to check if the user is authenticated
 function isAuthenticated() {
@@ -284,6 +285,14 @@ function App() {
           element={
             <ProtectedRoute role="Manager">
               <ProjectStatusDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/show-signed-papers-to-manager/:projectID/:techID"
+          element={
+            <ProtectedRoute role="Manager">
+              <ShowSignedPaperTimeSheet />
             </ProtectedRoute>
           }
         />
