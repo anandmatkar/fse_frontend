@@ -1,72 +1,73 @@
-import React from 'react';
-import ManagerDashboard from './Componets/pages/Manager/managerD';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import CreateCustomer from './Componets/pages/Manager/createCustomer';
-import ManagerLogin from './Componets/pages/Manager/managerLogin';
-import RegistrationPage from './Componets/pages/Manager/Registration';
-import AuthContext from './Componets/auth-context/auth-context';
-import NewProjectScreen from './Componets/pages/Manager/createProject';
-import ProjectStatus from './Componets/pages/Manager/projectStatus';
-import TechnicianDashboard from './Componets/pages/Teachnician/techDashboard';
-import AdminDashboard from './Componets/pages/Admin/adminDash';
-import Reset from './Componets/pages/Manager/forgetPassword';
-import LoginFrontPage from './Componets/pages/Common/Login';
-import AdminLogin from './Componets/pages/Admin/AdminLogin';
-import TechnicianLogin from './Componets/pages/Teachnician/TeachLogin';
-import JobProgress from './Componets/pages/Manager/jobiProgress';
-import JobAssigned from './Componets/pages/Teachnician/JobAssigned';
-import JobEWaitingAprroval from './Componets/pages/Teachnician/JobWaitingApproval';
-import JobClosed from './Componets/pages/Teachnician/JobClosed';
-import AccountWA from './Componets/pages/Admin/AccountW';
-import NewAccount from './Componets/pages/Manager/customerInfo';
-import Userverified from './Componets/pages/Manager/Userverified';
-import Registeredaccount from './Componets/pages/Admin/Registeredaccount';
-import ManageTechnician from './Componets/pages/Manager/ManageTechnician';
-import CreateTechnician from './Componets/pages/Manager/CreateTechnician';
-import DetailofJobwaiting from './Componets/pages/Teachnician/DetailofJobwaiting';
-import DeatailofJobAssign from './Componets/pages/Teachnician/DeatailofJobAssign';
-import DetailofJobclosed from './Componets/pages/Teachnician/DetailofJobclosed';
-import ViewTechnicianProfile from './Componets/pages/Manager/ViewTechnicianProfile';
-import ShowManagerProfile from './Componets/pages/Manager/ShowManagerProfile';
-import ProjectStatusDetails from './Componets/pages/Manager/ProjectStatusDetails';
-import CustomerList from './Componets/pages/Manager/CustomerList';
-import CustomerEditedDetails from './Componets/pages/Manager/CustomerEditedDetails';
-import UpdateTechincianprofile from './Componets/pages/Teachnician/UpdateTechincianProfile.js';
-import TechnicianForgotPassword from './Componets/pages/Teachnician/TechnicianForgotPassword';
-import ChangePassword from './Componets/pages/Teachnician/ChangePassword';
-import TimeSheetForApproved from './Componets/pages/Manager/TimeSheetForApproved';
-import ProjectReportData from './Componets/pages/Manager/ProjectReportData';
-import ProjectRequestedForApproval from './Componets/pages/Manager/ProjectRequestedForApproval';
-import ViewMachineInfo from './Componets/pages/Manager/ViewMachineInfo';
-import ViewProjectMachineInfo from './Componets/pages/Manager/ViewProjectMachineInfo';
-import EditProjectMachineInfo from './Componets/pages/Manager/EditProjectMachineInfo';
-import CompletedProjects from './Componets/pages/Manager/CompletedProjects';
-import DetailsOfMachineData from './Componets/pages/Manager/DetailsOfMachineData';
-import AssignMachineData from './Componets/pages/Teachnician/AssignMachineData';
-import AssignReportData from './Componets/pages/Teachnician/AssignReportData';
-import AssignTimesheetData from './Componets/pages/Teachnician/AssignTimesheetData';
-import AssignprojectAttachments from './Componets/pages/Teachnician/AssignprojectAttachments';
-import WaitingMachineData from './Componets/pages/Teachnician/WaitingMachineData';
-import WaitingReportData from './Componets/pages/Teachnician/WaitingReportData';
-import WaitingTimesheetData from './Componets/pages/Teachnician/WaitingTimesheetData';
-import WaitingProjectAttachment from './Componets/pages/Teachnician/WaitingProjectAttachment';
-import CompleteMachineData from './Componets/pages/Teachnician/CompleteMachineData';
-import CompleteReportData from './Componets/pages/Teachnician/CompleteReportData';
-import CompleteTimesheetData from './Componets/pages/Teachnician/CompleteTimesheetData';
-import CompleteProejctAttachment from './Componets/pages/Teachnician/CompleteProejctAttachment';
-import ProjectData from './Componets/pages/Manager/ProjectData';
-import Cookies from 'js-cookie';
-import ProjectDetails from './Componets/pages/Manager/ProjectDetails';
-import TechnicianProjectDetails from './Componets/pages/Teachnician/TechnicianProjectDetails';
+import React from "react";
+import ManagerDashboard from "./Componets/pages/Manager/managerD";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import CreateCustomer from "./Componets/pages/Manager/createCustomer";
+import ManagerLogin from "./Componets/pages/Manager/managerLogin";
+import RegistrationPage from "./Componets/pages/Manager/Registration";
+import AuthContext from "./Componets/auth-context/auth-context";
+import NewProjectScreen from "./Componets/pages/Manager/createProject";
+import ProjectStatus from "./Componets/pages/Manager/projectStatus";
+import TechnicianDashboard from "./Componets/pages/Teachnician/techDashboard";
+import AdminDashboard from "./Componets/pages/Admin/adminDash";
+import Reset from "./Componets/pages/Manager/forgetPassword";
+import LoginFrontPage from "./Componets/pages/Common/Login";
+import AdminLogin from "./Componets/pages/Admin/AdminLogin";
+import TechnicianLogin from "./Componets/pages/Teachnician/TeachLogin";
+import JobProgress from "./Componets/pages/Manager/jobiProgress";
+import JobAssigned from "./Componets/pages/Teachnician/JobAssigned";
+import JobEWaitingAprroval from "./Componets/pages/Teachnician/JobWaitingApproval";
+import JobClosed from "./Componets/pages/Teachnician/JobClosed";
+import AccountWA from "./Componets/pages/Admin/AccountW";
+import NewAccount from "./Componets/pages/Manager/customerInfo";
+import Userverified from "./Componets/pages/Manager/Userverified";
+import Registeredaccount from "./Componets/pages/Admin/Registeredaccount";
+import ManageTechnician from "./Componets/pages/Manager/ManageTechnician";
+import CreateTechnician from "./Componets/pages/Manager/CreateTechnician";
+import DetailofJobwaiting from "./Componets/pages/Teachnician/DetailofJobwaiting";
+import DeatailofJobAssign from "./Componets/pages/Teachnician/DeatailofJobAssign";
+import DetailofJobclosed from "./Componets/pages/Teachnician/DetailofJobclosed";
+import ViewTechnicianProfile from "./Componets/pages/Manager/ViewTechnicianProfile";
+import ShowManagerProfile from "./Componets/pages/Manager/ShowManagerProfile";
+import ProjectStatusDetails from "./Componets/pages/Manager/ProjectStatusDetails";
+import CustomerList from "./Componets/pages/Manager/CustomerList";
+import CustomerEditedDetails from "./Componets/pages/Manager/CustomerEditedDetails";
+import UpdateTechincianprofile from "./Componets/pages/Teachnician/UpdateTechincianProfile.js";
+import TechnicianForgotPassword from "./Componets/pages/Teachnician/TechnicianForgotPassword";
+import ChangePassword from "./Componets/pages/Teachnician/ChangePassword";
+import TimeSheetForApproved from "./Componets/pages/Manager/TimeSheetForApproved";
+import ProjectReportData from "./Componets/pages/Manager/ProjectReportData";
+import ProjectRequestedForApproval from "./Componets/pages/Manager/ProjectRequestedForApproval";
+import ViewMachineInfo from "./Componets/pages/Manager/ViewMachineInfo";
+import ViewProjectMachineInfo from "./Componets/pages/Manager/ViewProjectMachineInfo";
+import EditProjectMachineInfo from "./Componets/pages/Manager/EditProjectMachineInfo";
+import CompletedProjects from "./Componets/pages/Manager/CompletedProjects";
+import DetailsOfMachineData from "./Componets/pages/Manager/DetailsOfMachineData";
+import AssignMachineData from "./Componets/pages/Teachnician/AssignMachineData";
+import AssignReportData from "./Componets/pages/Teachnician/AssignReportData";
+import AssignTimesheetData from "./Componets/pages/Teachnician/AssignTimesheetData";
+import AssignprojectAttachments from "./Componets/pages/Teachnician/AssignprojectAttachments";
+import WaitingMachineData from "./Componets/pages/Teachnician/WaitingMachineData";
+import WaitingReportData from "./Componets/pages/Teachnician/WaitingReportData";
+import WaitingTimesheetData from "./Componets/pages/Teachnician/WaitingTimesheetData";
+import WaitingProjectAttachment from "./Componets/pages/Teachnician/WaitingProjectAttachment";
+import CompleteMachineData from "./Componets/pages/Teachnician/CompleteMachineData";
+import CompleteReportData from "./Componets/pages/Teachnician/CompleteReportData";
+import CompleteTimesheetData from "./Componets/pages/Teachnician/CompleteTimesheetData";
+import CompleteProejctAttachment from "./Componets/pages/Teachnician/CompleteProejctAttachment";
+import ProjectData from "./Componets/pages/Manager/ProjectData";
+import Cookies from "js-cookie";
+import ProjectDetails from "./Componets/pages/Manager/ProjectDetails";
+import TechnicianProjectDetails from "./Componets/pages/Teachnician/TechnicianProjectDetails";
+import ViewSignedPaperTimesheet from "./Componets/pages/Teachnician/ViewSignedPaperTimesheet.js";
 
 // Define a function to check if the user is authenticated
 function isAuthenticated() {
-  return !!Cookies.get('token');
+  return !!Cookies.get("token");
 }
 
 // Define a function to get the user's role
 function getUserRole() {
-  return Cookies.get('role');
+  return Cookies.get("role");
 }
 
 // ProtectedRoute component to protect routes based on role
@@ -370,10 +371,19 @@ function App() {
         />
 
         <Route
+          path="/view-signed-paper-timesheet/:projectID"
+          element={
+            <ProtectedRoute role="Technician">
+              <ViewSignedPaperTimesheet />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="AssignMachineData/:projectID"
           element={
             <ProtectedRoute role="Technician">
-              <AssignMachineData />{' '}
+              <AssignMachineData />{" "}
             </ProtectedRoute>
           }
         ></Route>
@@ -422,15 +432,15 @@ function App() {
           path="DetailsofJobClosed/:projectID"
           element={
             <ProtectedRoute role="Technician">
-              <DetailofJobclosed />{' '}
+              <DetailofJobclosed />{" "}
             </ProtectedRoute>
           }
         ></Route>
         <Route
           path="TechnicianForgotPassword"
-          element={ <TechnicianForgotPassword /> }
+          element={<TechnicianForgotPassword />}
         ></Route>
-        
+
         <Route
           path="WaitingMachineData/:projectID"
           element={
@@ -443,7 +453,7 @@ function App() {
           path="WaitingReportData/:projectID/:machineID"
           element={
             <ProtectedRoute role="Technician">
-              <WaitingReportData />{' '}
+              <WaitingReportData />{" "}
             </ProtectedRoute>
           }
         ></Route>
@@ -483,7 +493,7 @@ function App() {
           path="CompleteReportData/:projectID/:machineID"
           element={
             <ProtectedRoute role="Technician">
-              <CompleteReportData />{' '}
+              <CompleteReportData />{" "}
             </ProtectedRoute>
           }
         ></Route>
