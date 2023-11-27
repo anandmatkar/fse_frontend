@@ -199,7 +199,7 @@ const TimeSheetForApproved = () => {
                         <th>End Time</th>
                         <th>Lunch</th>
                         <th>Comments</th>
-                        <th>Attachments</th>
+                        {/* <th>Attachments</th> */}
                       </tr>
                     </thead>
                     <tbody>
@@ -215,7 +215,7 @@ const TimeSheetForApproved = () => {
                             <td>{entry.end_time}</td>
                             <td>{entry.lunch_time}</td>
                             <td>{entry.comments}</td>
-                            <td>
+                            {/* <td>
                               {entry.timesheet_attach.length > 0
                                 ? entry.timesheet_attach.map((attachment) => (
                                     <a
@@ -228,7 +228,7 @@ const TimeSheetForApproved = () => {
                                     </a>
                                   ))
                                 : "No attachments"}
-                            </td>
+                            </td> */}
                           </tr>
                         ))}
                     </tbody>

@@ -540,21 +540,6 @@ export default function TechnicianProjectDetails() {
                         )}
                     </Col>
                     <Col lg={3} md={12}>
-                      <input
-                        type="file"
-                        ref={fileInputRef}
-                        style={{ display: "none" }}
-                        onChange={handleImageUpload}
-                      />
-                      <Button
-                        variant="warning"
-                        className="w-100 my-2"
-                        onClick={() => fileInputRef.current.click()}
-                      >
-                        Attach Signed Paper
-                      </Button>
-                    </Col>
-                    <Col lg={3} md={6}>
                       {technicianDetails.length > 0 ? (
                         technicianDetails.map((technician) =>
                           technician.timesheet_data.length > 0 ? (
@@ -580,18 +565,42 @@ export default function TechnicianProjectDetails() {
                         <></>
                       )}
                     </Col>
-                    <Col lg={3} md={6}>
-                      {documentDownloadLink !== null ? (
+                    {/* <Col lg={3} md={12}>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: "none" }}
+                        onChange={handleImageUpload}
+                      />
+                      <Button
+                        variant="warning"
+                        className="w-100 my-2"
+                        onClick={() => fileInputRef.current.click()}
+                      >
+                        Attach Signed Paper
+                      </Button>
+                    </Col> */}
+                    <Col lg={3} md={12}></Col>
+                    <Col lg={3} md={12}>
+                      <Button
+                        variant="warning"
+                        as={NavLink}
+                        to={`/view-signed-paper-timesheet/${projectID}`}
+                        className="my-2 w-100"
+                      >
+                        View Signed Papers
+                      </Button>
+                      {/* {documentDownloadLink !== null ? (
                         <Button
                           variant="warning"
                           className="my-2 w-100"
                           onClick={handleDownloadDocument}
                         >
-                          View Signed Paper
+                          View Signed Papers
                         </Button>
                       ) : (
                         <></>
-                      )}
+                      )} */}
                     </Col>
                   </Row>
                 </Container>
