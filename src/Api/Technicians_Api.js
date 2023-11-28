@@ -1,6 +1,8 @@
 import Base from "antd/es/typography/Base";
 import { Base_Url } from "./Base_Url";
 
+export const Technician_Base_Url = `${Base_Url}api/v1/technician`;
+
 // change password
 export const Technician_ChnagePassword = `${Base_Url}api/v1/technician/changePassword`;
 
@@ -21,6 +23,8 @@ export const Technician_ProjectList = `${Base_Url}api/v1/technician/assignedProj
 // New report modal
 export const Technician_ReportAttach = `${Base_Url}api/v1/technician/uploadReportAttach`;
 export const Technician_NewCreateReport = `${Base_Url}api/v1/technician/createReport`;
+export const Technician_Show_Report_Attach = `${Base_Url}api/v1/technician/showReportAttach`;
+export const Technician_Edit_Report_Attach = `${Base_Url}api/v1/technician/editReportDoc`;
 
 // Requesrt Approval
 export const Technician_ReportRequestApproval = `${Base_Url}api/v1/technician/submitReportForApproval`;

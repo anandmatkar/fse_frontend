@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout4 from "../../Layout/Layout4";
 import {
   Row,
@@ -27,6 +28,7 @@ import EditReportModal from "./EditReportModel";
 import { FaArrowLeft } from "react-icons/fa";
 
 const AssignReportData = () => {
+  const navigate = useNavigate();
   const { projectID, machineID } = useParams();
   const [project, setProject] = useState([]);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -152,7 +154,7 @@ const AssignReportData = () => {
                   to={-1}
                   className="my-4 me-5 float-start"
                 >
-                  <FaArrowLeft /> Back to View Project Specific Machines
+                  <FaArrowLeft /> Back to Project Details
                 </Button>
               </Col>
             </Row>
@@ -192,6 +194,7 @@ const AssignReportData = () => {
                     </tr>
                   </thead>
                   <tbody>
+                    {console.log(project)}
                     {project.map((report) => (
                       <tr key={report.id}>
                         <td>{report.date}</td>
@@ -199,7 +202,7 @@ const AssignReportData = () => {
                         <td>{report.comments}</td>
                         <td>{report.duration}</td>
                         <td>
-                          {report.project_documents.map((attachment) => (
+                          {/* {report.project_documents.map((attachment) => (
                             <a
                               key={attachment.id}
                               href={attachment.file_path}
@@ -208,7 +211,17 @@ const AssignReportData = () => {
                             >
                               <AiFillProfile size="30px" color="black" />
                             </a>
-                          ))}
+                          ))} */}
+                          <Button
+                            size="sm"
+                            onClick={() =>
+                              navigate(
+                                `/view-attached-report-docs-technician/${projectID}/${machineID}/${report.id}`
+                              )
+                            }
+                          >
+                            View Documents
+                          </Button>
                         </td>
                         <td>
                           {report.is_requested_for_approval ||

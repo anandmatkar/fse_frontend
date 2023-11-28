@@ -1,57 +1,68 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { Technician_Edit_Report } from "../../../Api/Technicians_Api";
 
 function EditReportModal({ report, onEdit, onClose, fetchData }) {
-  const [editedReport, setEditedReport] = useState(report);
+  const formik = useFormik({
+    initialValues: {
+      description: report.description,
+      comments: report.comments,
+      duration: report.duration,
+      date: report.date,
+    },
+    validationSchema: Yup.object({
+      description: Yup.string().required("Description is required"),
+      comments: Yup.string().required("Comments are required"),
+      duration: Yup.number().required("Duration is required"),
+      date: Yup.date().required("Date is required"),
+    }),
+    onSubmit: async (values) => {
+      try {
+        const token = Cookies.get("token");
+        if (!token) {
+          console.error("Token not found in Cookies.");
+          return;
+        }
+        const config = {
+          headers: {
+            Authorization: token,
+          },
+        };
 
-  useEffect(() => {
-    setEditedReport(report);
-  }, [report]);
+        const updatedData = {
+          reportId: report.id,
+          description: values.description,
+          duration: values.duration,
+          comments: values.comments,
+          date: values.date,
+        };
 
-  const handleEdit = async () => {
-    try {
-      const token = Cookies.get("token");
-      if (!token) {
-        console.error("Token not found in Cookies.");
-        return;
+        const response = await axios.put(
+          Technician_Edit_Report,
+          updatedData,
+          config
+        );
+
+        if (response.data.status === 200) {
+          onEdit(updatedData);
+          onClose();
+          fetchData();
+          toast.success(response.data.message);
+        } else {
+          onEdit(updatedData);
+          onClose();
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error(error.message);
       }
-      const config = {
-        headers: {
-          Authorization: token,
-        },
-      };
-
-      const updatedData = {
-        reportId: editedReport.id,
-        description: editedReport.description,
-        duration: editedReport.duration,
-        comments: editedReport.comments,
-        date: editedReport.date,
-      };
-
-    //   console.log(updatedData);
-
-    const response = await axios.put(Technician_Edit_Report, updatedData, config);
-
-    if(response.data.status === 200) {
-        onEdit(editedReport);
-        onClose();
-        fetchData();
-        toast.success(response.data.message);
-    } else {
-        onEdit(editedReport);
-        onClose();
-        toast.error(response.data.message);
-    }
-    } catch (error) {
-      toast.error(error.message);
-    }
-    
-  };
+    },
+  });
 
   return (
     <Modal show={true} onHide={onClose}>
@@ -59,43 +70,40 @@ function EditReportModal({ report, onEdit, onClose, fetchData }) {
         <Modal.Title>Edit Report</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={formik.handleSubmit}>
           <Form.Group controlId="formDescription">
             <Form.Label>Description</Form.Label>
             <Form.Control
-              required
               type="text"
-              value={editedReport.description}
-              onChange={(e) =>
-                setEditedReport({
-                  ...editedReport,
-                  description: e.target.value,
-                })
+              {...formik.getFieldProps("description")}
+              isInvalid={
+                formik.touched.description && formik.errors.description
               }
             />
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.description}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="formComments">
             <Form.Label>Comments</Form.Label>
             <Form.Control
-              required
               as="textarea"
               rows={3}
-              value={editedReport.comments}
-              onChange={(e) =>
-                setEditedReport({ ...editedReport, comments: e.target.value })
-              }
+              {...formik.getFieldProps("comments")}
+              isInvalid={formik.touched.comments && formik.errors.comments}
             />
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.comments}
+            </Form.Control.Feedback>
           </Form.Group>
           <div className="form-group">
             <label htmlFor="duration">Duration:</label>
             <select
               className="form-control"
               name="duration"
-              value={editedReport.duration}
-              onChange={(e) =>
-                setEditedReport({ ...editedReport, duration: e.target.value })
-              }
-              required
+              value={formik.values.duration}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             >
               <option value="" hidden>
                 Select Duration
@@ -106,28 +114,31 @@ function EditReportModal({ report, onEdit, onClose, fetchData }) {
                 </option>
               ))}
             </select>
+            {formik.touched.duration && formik.errors.duration && (
+              <div className="invalid-feedback">{formik.errors.duration}</div>
+            )}
           </div>
           <Form.Group controlId="formDate">
             <Form.Label>Date</Form.Label>
             <Form.Control
-              required
               type="date"
-              value={editedReport.date}
-              onChange={(e) =>
-                setEditedReport({ ...editedReport, date: e.target.value })
-              }
+              {...formik.getFieldProps("date")}
+              isInvalid={formik.touched.date && formik.errors.date}
             />
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.date}
+            </Form.Control.Feedback>
           </Form.Group>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit">
+              Save Changes
+            </Button>
+          </Modal.Footer>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button variant="primary" onClick={handleEdit}>
-          Save Changes
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 }
