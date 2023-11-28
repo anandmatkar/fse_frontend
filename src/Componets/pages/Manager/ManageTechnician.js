@@ -29,6 +29,7 @@ import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
 import PageSpinner from "../Common/PageSpinner";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import EditTechnicianModal from "./EditTechnicianModel";
 
 export default function ManageTechnician() {
   const navigate = useNavigate();
@@ -38,10 +39,55 @@ export default function ManageTechnician() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [techniciansPerPage] = useState(10);
-  const pagesToShow = 2; // Number of pages to show before and after the current page
+  const pagesToShow = 2;
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedTechnician, setSelectedTechnician] = useState(null);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedTechnicianForEdit, setSelectedTechnicianForEdit] =
+    useState(null);
+
+  const openEditModal = (technician) => {
+    setSelectedTechnicianForEdit(technician);
+    setShowEditModal(true);
+  };
+
+  const handleSaveEditedTechnician = async (editedTechnician) => {
+    try {
+      const token = Cookies.get("token");
+
+      if (!token) {
+        console.error("Token not found in localStorage.");
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+
+      console.log("Save edited technician:", editedTechnician);
+
+      const response = await axios.put(
+        `${Manager_Base_Url}editTechnician`,
+        editedTechnician,
+        config
+      );
+      if (response.data.status === 200) {
+        toast.success(response.data.message);
+        fetchTechnicianList();
+      } else {
+        toast.error(response.data.message);
+      }
+
+      console.log(response.data);
+    } catch (error) {
+      toast.error(error.message);
+    }
+    setShowEditModal(false);
+  };
 
   const openDeleteModal = (technician) => {
     setSelectedTechnician(technician);
@@ -63,7 +109,6 @@ export default function ManageTechnician() {
         },
       };
 
-      // Send a DELETE request to your API endpoint for technician deletion
       const response = await axios.put(
         `${Manager_Base_Url}deleteTechnician?techId=${techID}`,
         {},
@@ -71,8 +116,6 @@ export default function ManageTechnician() {
       );
 
       if (response.status === 200) {
-        // Machine deletion was successful
-        // You can also update the local state or re-fetch the machine details
         fetchTechnicianList();
         toast.success(response.data.message);
       } else {
@@ -289,6 +332,12 @@ export default function ManageTechnician() {
                             </Dropdown.Item>
                             <Dropdown.Item
                               href="#"
+                              onClick={() => openEditModal(technician)}
+                            >
+                              Edit
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              href="#"
                               onClick={() => openDeleteModal(technician)}
                             >
                               Delete
@@ -359,6 +408,15 @@ export default function ManageTechnician() {
             </Modal.Footer>
           </Modal>
         </>
+      )}
+
+      {showEditModal && (
+        <EditTechnicianModal
+          show={showEditModal}
+          onHide={() => setShowEditModal(false)}
+          technician={selectedTechnicianForEdit}
+          onSave={handleSaveEditedTechnician}
+        />
       )}
     </React.Fragment>
   );

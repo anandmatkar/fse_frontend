@@ -60,6 +60,7 @@ import ProjectDetails from "./Componets/pages/Manager/ProjectDetails";
 import TechnicianProjectDetails from "./Componets/pages/Teachnician/TechnicianProjectDetails";
 import ViewSignedPaperTimesheet from "./Componets/pages/Teachnician/ViewSignedPaperTimesheet.js";
 import ShowSignedPaperTimeSheet from "./Componets/pages/Manager/ShowSignedPaperTimeSheet.js";
+import ViewReportDocsTechnician from "./Componets/pages/Teachnician/ViewReportDocsTechnician.js";
 
 // Define a function to check if the user is authenticated
 function isAuthenticated() {
@@ -387,7 +388,14 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/view-attached-report-docs-technician/:projectID/:machineID/:reportID"
+          element={
+            <ProtectedRoute role="Technician">
+              <ViewReportDocsTechnician />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="AssignMachineData/:projectID"
           element={

@@ -6,6 +6,7 @@ import { Row, Col, Button, Table, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Manager_Base_Url } from "../../../Api/Manager_Api";
 import { FaArrowLeft } from "react-icons/fa";
+import { AiFillProfile } from "react-icons/ai";
 
 function ProjectData() {
   const { techID, projectId, machineId } = useParams();
@@ -116,16 +117,39 @@ function ProjectData() {
                         <th>Description</th>
                         <th>Duration</th>
                         <th>Comments</th>
+                        <th>Documents</th>
                       </tr>
                     </thead>
                     <tbody>
                       {projectData.length > 0 ? (
                         projectData.map((report) => (
                           <tr key={report.id}>
+                            {/* {console.log(report)} */}
                             <td>{report.date}</td>
                             <td>{report.description}</td>
                             <td>{report.duration}</td>
                             <td>{report.comments}</td>
+                            <td>
+                              {report.project_documents.length > 0 ? (
+                                <>
+                                  {report.project_documents.map((document) => (
+                                    <a
+                                      key={document.id}
+                                      href={document.file_path}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <AiFillProfile
+                                        size="30px"
+                                        color="black"
+                                      />
+                                    </a>
+                                  ))}
+                                </>
+                              ) : (
+                                <span>No Attachment Found</span>
+                              )}
+                            </td>
                           </tr>
                         ))
                       ) : (
