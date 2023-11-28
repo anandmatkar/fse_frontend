@@ -217,7 +217,7 @@ export default function ViewSignedPaperTimesheet() {
                     <Col lg={12}>
                       <ListGroup.Item className="fw-bolder text-center">
                         Attachment Paper {i + 1} :{" "}
-                        <Dropdown as={"span"} className="float-end">
+                        <Dropdown as={"span"} className="float-end" drop="end">
                           <Dropdown.Toggle
                             variant="success"
                             id="dropdown-basic"
