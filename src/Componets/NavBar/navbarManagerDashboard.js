@@ -28,7 +28,7 @@ const NavbarManagerDashboard = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ms-auto">
+          <Nav className="mx-auto fs-3">
             <span className="text-center">
               <strong>Manager Name :</strong>{" "}
               {Cookies.get("Name").toUpperCase() || "FSE"}
@@ -38,25 +38,22 @@ const NavbarManagerDashboard = () => {
             <NavDropdown
               className="text-center"
               title={
-                <div className="imgdropdowns">
-                  <img
-                    src={
-                      Cookies.get("Profile") ||
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU"
-                    }
-                    alt="Profile"
-                    className="border border-dark"
-                    style={{
-                      width: "60px",
-                      borderRadius: "50%",
-                      height: "55px",
-                    }}
-                  />
-                  <MdArrowDropDown style={{ color: "black" }} size={20} />
-                </div>
+                <img
+                  src={
+                    Cookies.get("Profile") ||
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU"
+                  }
+                  alt="Profile_Picture"
+                  className="border border-dark"
+                  style={{
+                    width: "60px",
+                    borderRadius: "50%",
+                    height: "50px",
+                  }}
+                />
               }
               id="collasible-nav-dropdown"
-              drop="start"
+              drop="down"
             >
               <NavDropdown.Item onClick={() => navigate("/ShowManagerProfile")}>
                 Show Profile

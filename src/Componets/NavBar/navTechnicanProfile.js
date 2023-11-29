@@ -40,7 +40,7 @@ const NavTechnicanProfile = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ms-auto">
+          <Nav className="mx-auto fs-3">
             <span className="text-center">
               <strong>Technician Name :</strong>
               {Cookies.get("Name").toUpperCase() || "FSE"}
@@ -56,7 +56,7 @@ const NavTechnicanProfile = () => {
                       Cookies.get("Profile") ||
                       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU"
                     }
-                    alt="Profile"
+                    alt="Profile_Picture"
                     className="border border-dark"
                     style={{
                       width: "60px",
@@ -64,11 +64,11 @@ const NavTechnicanProfile = () => {
                       height: "50px",
                     }}
                   />
-                  <MdArrowDropDown style={{ color: "black" }} size={20} />
+                  {/* <MdArrowDropDown style={{ color: "black" }} size={20} /> */}
                 </div>
               }
               id="collasible-nav-dropdown"
-              drop="start"
+              drop="down"
             >
               <NavDropdown.Item
                 onClick={() => navigate("/updateTechnicianprofile")}
