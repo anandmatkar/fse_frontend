@@ -1,3 +1,7 @@
 nav.bg-body-success.technician-ui.navbar.navbar-expand-lg.navbar-light {
   background-color: #86b817;
 }
+
+.imgdropdowns .dropdown-toggle::after {
+  display: none;
+}

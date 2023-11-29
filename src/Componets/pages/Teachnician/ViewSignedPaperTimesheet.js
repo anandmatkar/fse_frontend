@@ -61,7 +61,7 @@ export default function ViewSignedPaperTimesheet() {
         config
       );
 
-      console.log(response.data);
+      // console.log(response.data);
 
       if (response.data.status === 200) {
         toast.success(response.data.message);
@@ -148,7 +148,7 @@ export default function ViewSignedPaperTimesheet() {
         `${Show_Signed_Paper_To_Tech}?projectId=${projectID}`,
         config
       );
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.status === 200) {
         setShowSignedPapers(response.data.data || []);
       } else {
@@ -193,30 +193,59 @@ export default function ViewSignedPaperTimesheet() {
             Timesheet Attached Signed Papers
           </Card.Header>
           <Card.Header>
-            <Button
-              size="sm"
-              variant="warning"
-              className="float-end"
-              onClick={() => fileInputRef.current.click()}
-            >
-              Attach Signed Paper
-            </Button>
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              multiple
-              onChange={onFileChange}
-            />
+            {signedPapers.length > 0 ? (
+              !signedPapers[0].is_requested_for_approval &&
+              !signedPapers[0].is_approved ? (
+                <>
+                  <Button
+                    size="sm"
+                    variant="warning"
+                    className="float-end"
+                    onClick={() => fileInputRef.current.click()}
+                  >
+                    Attach Signed Paper
+                  </Button>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    multiple
+                    onChange={onFileChange}
+                  />
+                </>
+              ) : (
+                <></>
+              )
+            ) : (
+              // Render the button only when there are no signed papers
+              <>
+                <Button
+                  size="sm"
+                  variant="warning"
+                  className="float-end"
+                  onClick={() => fileInputRef.current.click()}
+                >
+                  Attach Signed Paper
+                </Button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  multiple
+                  onChange={onFileChange}
+                />
+              </>
+            )}
           </Card.Header>
           <Card.Body>
             <ListGroup variant="flush">
+              {/* {console.log(signedPapers)} */}
               {signedPapers.length > 0 ? (
                 signedPapers.map((paper, i) => (
                   <Row>
                     <Col lg={12}>
                       <ListGroup.Item className="fw-bolder text-center">
-                        Attachment Paper {i + 1} :{" "}
+                        Signed Attachment Paper {i + 1} :{" "}
                         <Dropdown as={"span"} className="float-end" drop="end">
                           <Dropdown.Toggle
                             variant="success"
@@ -234,16 +263,23 @@ export default function ViewSignedPaperTimesheet() {
                             >
                               View Document
                             </Dropdown.Item>
-                            <Dropdown.Item
-                              onClick={() =>
-                                handleDeleteClick(
-                                  `Attachment Paper ${i + 1}`,
-                                  paper
-                                )
-                              }
-                            >
-                              Delete Document
-                            </Dropdown.Item>
+                            {!paper.is_requested_for_approval &&
+                            !paper.is_approved ? (
+                              <>
+                                <Dropdown.Item
+                                  onClick={() =>
+                                    handleDeleteClick(
+                                      `Attachment Paper ${i + 1}`,
+                                      paper
+                                    )
+                                  }
+                                >
+                                  Delete Document
+                                </Dropdown.Item>
+                              </>
+                            ) : (
+                              <></>
+                            )}
                           </Dropdown.Menu>
                         </Dropdown>
                       </ListGroup.Item>

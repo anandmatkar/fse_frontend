@@ -50,14 +50,14 @@ export default function ViewReportDocsTechnician() {
       formData.append("file", newDocument);
       formData.append("docId", docID);
 
-      console.log(formData);
+      // console.log(formData);
 
       const response = await axios.put(
         `${Technician_Edit_Report_Attach}`,
         formData,
         config
       );
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.status === 201) {
         toast.success(response.data.message);
         fetchReportAttachment();
