@@ -11,6 +11,8 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { toast } from "react-toastify";
 import {
   Edit_Project_Machine_Details,
@@ -35,16 +37,6 @@ export default function EditProjectMachineInfo() {
   const [isFetchingMachineDetails, setIsFetchingMachineDetails] =
     useState(false);
 
-  const [formData, setFormData] = useState({
-    machine_id: "",
-    machine_type: "",
-    serial: "",
-    hour_count: "",
-    nom_speed: "",
-    act_speed: "",
-    description: "",
-  });
-
   const handleEdit = () => {
     setEditMode(true);
   };
@@ -54,17 +46,12 @@ export default function EditProjectMachineInfo() {
     navigate(-1);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const handleEditMachineDetails = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     try {
       const token = Cookies.get("token");
       if (!token) {
-        console.error("Token not found in localStorage.");
+        console.error("Token not found in Cookies.");
         return;
       }
       const config = {
@@ -76,7 +63,7 @@ export default function EditProjectMachineInfo() {
 
       const response = await axios.put(
         Edit_Project_Machine_Details,
-        formData,
+        formik.values,
         config
       );
 
@@ -101,7 +88,7 @@ export default function EditProjectMachineInfo() {
       const token = Cookies.get("token");
 
       if (!token) {
-        console.error("Token not found in localStorage.");
+        console.error("Token not found in Cookies.");
         return;
       }
 
@@ -113,7 +100,6 @@ export default function EditProjectMachineInfo() {
 
       const response = await axios.get(Project_Machine_Details, config);
 
-      console.log(response.data.data);
       setMachineInfoDetails(response.data.data);
 
       // Find the project details based on projectID
@@ -130,19 +116,16 @@ export default function EditProjectMachineInfo() {
         if (machineDetails) {
           setMachineAttachDetails(machineDetails.machine_attach);
           // Populate the form with the specific machine details
-          setFormData({
+          formik.setValues({
             machine_id: machineDetails.machine_id,
             machine_type: machineDetails.machine_type,
             serial: machineDetails.serial,
-            hour_count: machineDetails.hour_count,
-            nom_speed: machineDetails.nom_speed,
-            act_speed: machineDetails.act_speed,
+            // hour_count: machineDetails.hour_count,
+            // nom_speed: machineDetails.nom_speed,
+            // act_speed: machineDetails.act_speed,
             description: machineDetails.description,
           });
         }
-        console.log(projectDetails);
-        console.log(machineDetails);
-        console.log(machineAttachDetails);
       }
     } catch (error) {
       console.log(error);
@@ -150,6 +133,29 @@ export default function EditProjectMachineInfo() {
       setIsFetchingMachineDetails(false);
     }
   };
+
+  const validationSchema = Yup.object().shape({
+    serial: Yup.string().required("Serial No. is required"),
+    machine_type: Yup.string().required("Machine Type is required"),
+    // hour_count: Yup.number().required("Hour Count is required"),
+    // nom_speed: Yup.number().required("Nominal Speed is required"),
+    // act_speed: Yup.number().required("Actual Speed is required"),
+    description: Yup.string().required("Description is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      machine_id: "",
+      machine_type: "",
+      serial: "",
+      // hour_count: "",
+      // nom_speed: "",
+      // act_speed: "",
+      description: "",
+    },
+    validationSchema,
+    onSubmit: handleEditMachineDetails,
+  });
 
   useEffect(() => {
     fetchMachineDetails();
@@ -181,8 +187,7 @@ export default function EditProjectMachineInfo() {
               </Col>
             </Row>
             {editMode ? (
-              <Form onSubmit={handleEditMachineDetails}>
-                {/* Editable input fields */}
+              <Form onSubmit={formik.handleSubmit}>
                 <InputGroup className="mb-3">
                   <InputGroup.Text id="basic-addon1">
                     Serial No.
@@ -191,11 +196,16 @@ export default function EditProjectMachineInfo() {
                     placeholder="Serial No."
                     aria-label="Serial No."
                     aria-describedby="basic-addon1"
-                    name="serial" // Ensure that the name matches the state property
-                    value={formData.serial}
-                    onChange={handleChange}
+                    name="serial"
+                    value={formik.values.serial}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
                 </InputGroup>
+                {formik.touched.serial && formik.errors.serial && (
+                  <div className="text-danger">{formik.errors.serial}</div>
+                )}
+
                 <InputGroup className="mb-3">
                   <InputGroup.Text id="basic-addon2">
                     Machine Type
@@ -205,49 +215,16 @@ export default function EditProjectMachineInfo() {
                     aria-label="Machine Type"
                     aria-describedby="basic-addon2"
                     name="machine_type"
-                    value={formData.machine_type}
-                    onChange={handleChange}
+                    value={formik.values.machine_type}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
                 </InputGroup>
-                <InputGroup className="mb-3">
-                  <InputGroup.Text id="basic-addon3">
-                    Hour Count
-                  </InputGroup.Text>
-                  <Form.Control
-                    placeholder="Hour Count"
-                    aria-label="Hour Count"
-                    aria-describedby="basic-addon3"
-                    name="hour_count"
-                    value={formData.hour_count}
-                    onChange={handleChange}
-                  />
-                </InputGroup>
-                <InputGroup className="mb-3">
-                  <InputGroup.Text id="basic-addon4">
-                    Nominal Speed
-                  </InputGroup.Text>
-                  <Form.Control
-                    placeholder="Nominal Speed"
-                    aria-label="Nominal Speed"
-                    aria-describedby="basic-addon4"
-                    name="nom_speed"
-                    value={formData.nom_speed}
-                    onChange={handleChange}
-                  />
-                </InputGroup>
-                <InputGroup className="mb-3">
-                  <InputGroup.Text id="basic-addon5">
-                    Actual Speed
-                  </InputGroup.Text>
-                  <Form.Control
-                    placeholder="Actual Speed"
-                    aria-label="Actual Speed"
-                    aria-describedby="basic-addon5"
-                    name="act_speed"
-                    value={formData.act_speed}
-                    onChange={handleChange}
-                  />
-                </InputGroup>
+                {formik.touched.machine_type && formik.errors.machine_type && (
+                  <div className="text-danger">
+                    {formik.errors.machine_type}
+                  </div>
+                )}
 
                 <InputGroup className="mb-3">
                   <InputGroup.Text>Description</InputGroup.Text>
@@ -256,10 +233,14 @@ export default function EditProjectMachineInfo() {
                     aria-label="With textarea"
                     placeholder="Machine Description"
                     name="description"
-                    value={formData.description}
-                    onChange={handleChange}
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
                 </InputGroup>
+                {formik.touched.description && formik.errors.description && (
+                  <div className="text-danger">{formik.errors.description}</div>
+                )}
 
                 <InputGroup>
                   <InputGroup.Text className="me-4">
@@ -288,7 +269,7 @@ export default function EditProjectMachineInfo() {
                   type="submit"
                   variant="success"
                   className="my-4 mx-2"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !formik.isValid}
                 >
                   {isSubmitting ? (
                     <Spinner animation="border" size="sm" />
@@ -315,10 +296,15 @@ export default function EditProjectMachineInfo() {
                     placeholder="Serial No."
                     aria-label="Serial No."
                     aria-describedby="basic-addon1"
-                    value={formData.serial}
-                    onChange={handleChange}
+                    value={formik.values.serial}
+                    onChange={formik.handleChange}
+                    readOnly
                   />
                 </InputGroup>
+                {formik.touched.serial && formik.errors.serial && (
+                  <div className="text-danger">{formik.errors.serial}</div>
+                )}
+
                 <InputGroup className="mb-3">
                   <InputGroup.Text id="basic-addon2">
                     Machine Type
@@ -327,46 +313,16 @@ export default function EditProjectMachineInfo() {
                     placeholder="Machine Type"
                     aria-label="Machine Type"
                     aria-describedby="basic-addon2"
-                    value={formData.machine_type}
-                    onChange={handleChange}
+                    value={formik.values.machine_type}
+                    onChange={formik.handleChange}
+                    readOnly
                   />
                 </InputGroup>
-                <InputGroup className="mb-3">
-                  <InputGroup.Text id="basic-addon3">
-                    Hour Count
-                  </InputGroup.Text>
-                  <Form.Control
-                    placeholder="Hour Count"
-                    aria-label="Hour Count"
-                    aria-describedby="basic-addon3"
-                    value={formData.hour_count}
-                    onChange={handleChange}
-                  />
-                </InputGroup>
-                <InputGroup className="mb-3">
-                  <InputGroup.Text id="basic-addon4">
-                    Nominal Speed
-                  </InputGroup.Text>
-                  <Form.Control
-                    placeholder="Nominal Speed"
-                    aria-label="Nominal Speed"
-                    aria-describedby="basic-addon4"
-                    value={formData.nom_speed}
-                    onChange={handleChange}
-                  />
-                </InputGroup>
-                <InputGroup className="mb-3">
-                  <InputGroup.Text id="basic-addon5">
-                    Actual Speed
-                  </InputGroup.Text>
-                  <Form.Control
-                    placeholder="Actual Speed"
-                    aria-label="Actual Speed"
-                    aria-describedby="basic-addon5"
-                    value={formData.act_speed}
-                    onChange={handleChange}
-                  />
-                </InputGroup>
+                {formik.touched.machine_type && formik.errors.machine_type && (
+                  <div className="text-danger">
+                    {formik.errors.machine_type}
+                  </div>
+                )}
 
                 <InputGroup className="mb-3">
                   <InputGroup.Text>Description</InputGroup.Text>
@@ -374,10 +330,14 @@ export default function EditProjectMachineInfo() {
                     as="textarea"
                     aria-label="With textarea"
                     placeholder="Machine Description"
-                    value={formData.description}
-                    onChange={handleChange}
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
+                    readOnly
                   />
                 </InputGroup>
+                {formik.touched.description && formik.errors.description && (
+                  <div className="text-danger">{formik.errors.description}</div>
+                )}
 
                 <InputGroup>
                   <InputGroup.Text className="me-4">

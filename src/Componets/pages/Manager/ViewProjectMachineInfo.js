@@ -152,9 +152,9 @@ export default function ViewProjectMachineInfo() {
               <tr>
                 <th>Serial No.</th>
                 <th>Machine Type</th>
-                <th>Hour Count</th>
-                <th>Nominal Speed</th>
-                <th>Actual Speed</th>
+                {/* <th>Hour Count</th> */}
+                {/* <th>Nominal Speed</th> */}
+                {/* <th>Actual Speed</th> */}
                 <th>Description</th>
                 <th>Actions</th>
               </tr>
@@ -165,9 +165,9 @@ export default function ViewProjectMachineInfo() {
                   <tr key={machine.machine_id}>
                     <td>{machine.serial}</td>
                     <td>{machine.machine_type}</td>
-                    <td>{machine.hour_count}</td>
-                    <td>{machine.nom_speed}</td>
-                    <td>{machine.act_speed}</td>
+                    {/* <td>{machine.hour_count}</td> */}
+                    {/* <td>{machine.nom_speed}</td> */}
+                    {/* <td>{machine.act_speed}</td> */}
                     <td>{machine.description}</td>
                     <td>
                       <Dropdown drop="centered">
