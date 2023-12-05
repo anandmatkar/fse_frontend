@@ -35,9 +35,9 @@ function CreateProject() {
     {
       MachineType: "",
       MachineSerial: "",
-      hourCount: "",
-      nomSpeed: "",
-      actSpeed: "",
+      // hourCount: "",
+      // nomSpeed: "",
+      // actSpeed: "",
       techIds: [],
       machineAttach: [],
     },
@@ -104,17 +104,17 @@ function CreateProject() {
         newErrors[`MachineSerial_${index}`] = "Serial Number is required";
       }
 
-      if (!machine.hourCount.trim()) {
-        newErrors[`hourCount_${index}`] = "Hour Count is required";
-      }
+      // if (!machine.hourCount.trim()) {
+      //   newErrors[`hourCount_${index}`] = "Hour Count is required";
+      // }
 
-      if (!machine.nomSpeed.trim()) {
-        newErrors[`nomSpeed_${index}`] = "Nominal Speed is required";
-      }
+      // if (!machine.nomSpeed.trim()) {
+      //   newErrors[`nomSpeed_${index}`] = "Nominal Speed is required";
+      // }
 
-      if (!machine.actSpeed.trim()) {
-        newErrors[`actSpeed_${index}`] = "Actual Speed is required";
-      }
+      // if (!machine.actSpeed.trim()) {
+      //   newErrors[`actSpeed_${index}`] = "Actual Speed is required";
+      // }
 
       if (!machine.techIds.length) {
         newErrors[`techIds_${index}`] = "Technician selection is required";
@@ -217,9 +217,9 @@ function CreateProject() {
       const newMachineDetail = {
         MachineType: "",
         MachineSerial: "",
-        hourCount: "",
-        nomSpeed: "",
-        actSpeed: "",
+        // hourCount: "",
+        // nomSpeed: "",
+        // actSpeed: "",
         techIds: [],
         machineAttach: [],
       };
@@ -571,7 +571,7 @@ function CreateProject() {
                         )}
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    {/* <div class="col-md-4">
                       <div class="form-group formgroup">
                         <label htmlFor="hourCount" className="labeltag">
                           Hour Count
@@ -636,7 +636,7 @@ function CreateProject() {
                           </small>
                         )}
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="col-md-4">
                       <div className="form-group formgroup">
@@ -651,7 +651,7 @@ function CreateProject() {
                           name={`techIds_${index}`}
                           options={technicians.map((technician) => ({
                             value: technician.id,
-                            label: technician.name,
+                            label: `${technician.name} - (${technician.position})`,
                           }))}
                           onChange={(selectedOptions) =>
                             handleTechChange(selectedOptions, index)
