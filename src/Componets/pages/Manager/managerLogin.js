@@ -183,10 +183,8 @@ function ManagerLogin() {
                 >
                   Sign In
                 </button>
-                <div className="float-start">
-                  <Link to="/reset" className="float-start">
-                    Forgot password?
-                  </Link>
+                <div className="float-center">
+                  <Link to="/reset">Forgot password ?</Link>
                   <br />
                   Don't have an account?{' '}
                   <Link to="/register">Create Account</Link>

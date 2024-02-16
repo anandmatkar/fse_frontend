@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import Cookies from "js-cookie";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-import { Base_Url } from "../../../Api/Base_Url";
-import { Technician_TimesheetAttach } from "../../../Api/Technicians_Api";
+import React, { useState } from 'react';
+import { Button, Modal } from 'react-bootstrap';
+import Cookies from 'js-cookie';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+import { Base_Url } from '../../../Api/Base_Url';
+import { Technician_TimesheetAttach } from '../../../Api/Technicians_Api';
 
 const generateTimeSlots = () => {
   const slots = [];
   for (let i = 0; i < 24; i++) {
     for (let j = 0; j < 60; j += 30) {
       let hours = i;
-      let period = "AM";
+      let period = 'AM';
       if (hours >= 12) {
-        period = "PM";
+        period = 'PM';
         hours -= 12;
       }
       if (hours === 0) hours = 12;
 
-      const displayHours = hours < 10 ? "0" + hours : hours;
-      const minutes = j === 0 ? "00" : j;
+      const displayHours = hours < 10 ? '0' + hours : hours;
+      const minutes = j === 0 ? '00' : j;
       slots.push(`${displayHours}:${minutes} ${period}`);
     }
   }
@@ -34,11 +34,11 @@ const TimeSheetModal = ({ projectID, onNewTimesheet, fetchProjectDetails }) => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     projectID: projectID,
-    date: "",
-    start_time: "",
-    end_time: "",
-    lunch_time: "",
-    comments: "",
+    date: '',
+    start_time: '',
+    end_time: '',
+    lunch_time: '',
+    comments: '',
     attachment: null,
   });
   const [attachments, setAttachments] = useState([]);
@@ -49,21 +49,21 @@ const TimeSheetModal = ({ projectID, onNewTimesheet, fetchProjectDetails }) => {
   };
 
   const handleFileUpload = async (e) => {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     const files = e.target.files;
 
     if (files.length > 0) {
       const fileFormData = new FormData();
 
       for (let i = 0; i < files.length; i++) {
-        fileFormData.append("files", files[i]);
+        fileFormData.append('files', files[i]);
       }
 
-      fileFormData.append("projectID", projectID); // Add projectID here
+      fileFormData.append('projectID', projectID); // Add projectID here
 
       try {
         const response = await fetch(Technician_TimesheetAttach, {
-          method: "POST",
+          method: 'POST',
           headers: {
             Authorization: token,
           },
@@ -78,24 +78,23 @@ const TimeSheetModal = ({ projectID, onNewTimesheet, fetchProjectDetails }) => {
         // Set the path to state
         setAttachments((prev) => [...prev, ...data.data]);
       } catch (error) {
-        console.error("Error uploading file:", error);
-        alert("Error uploading file: " + error.message);
+        alert('Error uploading file: ' + error.message);
       }
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
 
     try {
       const timesheetResponse = await fetch(
         `${Base_Url}api/v1/technician/createTimesheet`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
             Authorization: token,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             projectID: formData.projectID,
@@ -104,7 +103,7 @@ const TimeSheetModal = ({ projectID, onNewTimesheet, fetchProjectDetails }) => {
             endTime: formData.end_time,
             lunchtime: formData.lunch_time,
             comments: formData.comments,
-            attachment: attachments, // Send the attachments array here
+            attachment: attachments,
           }),
         }
       );
@@ -115,7 +114,7 @@ const TimeSheetModal = ({ projectID, onNewTimesheet, fetchProjectDetails }) => {
         endTime: formData.end_time,
         lunchtime: formData.lunch_time,
         comments: formData.comments,
-        attachment: attachments, // Send the attachments array here
+        attachment: attachments,
       };
 
       const timesheetData = await timesheetResponse.json();
@@ -124,17 +123,14 @@ const TimeSheetModal = ({ projectID, onNewTimesheet, fetchProjectDetails }) => {
         throw new Error(timesheetData.message);
       }
 
-      toast.success("Timesheet created successfully!");
+      toast.success('Timesheet created successfully!');
       setShowModal(false);
-      // Here's the change: Pass the newly created timesheet data back to parent.
-      console.log(timesheetData);
       if (timesheetData.success) {
         onNewTimesheet(newTimeSheetData);
         fetchProjectDetails();
       }
     } catch (error) {
-      console.error("Error:", error);
-      toast.error("Error creating timesheet: " + error.message);
+      toast.error('Error creating timesheet: ' + error.message);
     }
   };
 
@@ -227,7 +223,6 @@ const TimeSheetModal = ({ projectID, onNewTimesheet, fetchProjectDetails }) => {
                 name="comments"
                 value={formData.comments}
                 onChange={handleInputChange}
-                required
               ></textarea>
             </div>
 

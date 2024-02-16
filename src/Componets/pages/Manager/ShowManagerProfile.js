@@ -134,13 +134,19 @@ function ShowManagerProfile() {
           <h6 className="section-title bg-white text-center text-primary px-3">
             Manager's Panel
           </h6>
-          <h1 >Update Manager Profile</h1>
+          <h1>Update Manager Profile</h1>
         </div>
 
         <Link to="/manager" className="">
           <button className="btn btn-primary mb-3">
             <i className="fa fa-home"></i> Back
           </button>
+        </Link>
+        <Link
+          to="/managerChangePassword"
+          className="btn btn-success mb-3 float-end"
+        >
+          Change Password
         </Link>
         <div class="container border border-dark rounded p-4">
           <div class="row justify-content-center">
@@ -152,7 +158,7 @@ function ShowManagerProfile() {
                       src={profilePicURL || managerData.avatar}
                       alt="Profile Picture"
                       className="img-fluid mb-3"
-                      style={{ maxWidth: "150px" }}
+                      style={{ maxWidth: '150px' }}
                     />
                   )}
                   <br />
@@ -204,7 +210,7 @@ function ShowManagerProfile() {
                   </div>
                   <div class="col-md-6">
                     <label for="your-subject" className="form-label fw-bold">
-                      Email{" "}
+                      Email{' '}
                     </label>
                     <input
                       type="text"

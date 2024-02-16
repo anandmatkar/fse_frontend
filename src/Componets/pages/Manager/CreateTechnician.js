@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import * as formik from "formik";
-import * as yup from "yup";
+import React, { useState } from 'react';
+import * as formik from 'formik';
+import * as yup from 'yup';
 import {
   Card,
   Container,
@@ -9,22 +9,22 @@ import {
   Col,
   Form,
   InputGroup,
-} from "react-bootstrap";
-import { toast } from "react-toastify";
+} from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import {
   Create_Technician_Api,
   Upload_Technician_Profile,
   Upload_Technician_Documents,
   Manager_Base_Url,
-} from "./../../../Api/Manager_Api";
-import { FiUploadCloud, FiDownload, FiEye, FiEyeOff } from "react-icons/fi";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
-import { useRef } from "react";
-import { Base_Url } from "../../../Api/Base_Url";
-import { FaArrowLeft } from "react-icons/fa";
+} from './../../../Api/Manager_Api';
+import { FiUploadCloud, FiDownload, FiEye, FiEyeOff } from 'react-icons/fi';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import { useRef } from 'react';
+import { Base_Url } from '../../../Api/Base_Url';
+import { FaArrowLeft } from 'react-icons/fa';
 
 function CreateTechnician() {
   const { Formik } = formik;
@@ -35,21 +35,21 @@ function CreateTechnician() {
     surname: yup.string().required(),
     emailAddress: yup
       .string()
-      .required("Email is required")
+      .required('Email is required')
       .matches(
         /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
-        "Invalid email address"
+        'Invalid email address'
       ),
     password: yup
       .string()
-      .required("Password is required")
+      .required('Password is required')
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d).{8,}$/,
-        "Password must be at least 8 characters and contain both letters and numbers"
+        'Password must be at least 8 characters and contain both letters and numbers'
       ),
     phone: yup
       .string()
-      .matches(/^[0-9]{10}$/, "Phone number must be 10 digits")
+      .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits')
       .required(),
     nationality: yup.string().required(),
     qualification: yup.string().required(),
@@ -58,18 +58,18 @@ function CreateTechnician() {
     documents: yup.string(),
   });
 
-  const [selectedFile, setSelectedFile] = useState("");
-  const [profilePicPath, setProfilePicPath] = useState("");
+  const [selectedFile, setSelectedFile] = useState('');
+  const [profilePicPath, setProfilePicPath] = useState('');
   const [documentsPath, setDocumentsPath] = useState([]);
   const [showPassword, setShowPassword] = useState(false); // State to control password visibility
   const fileInputRef = useRef(null);
 
   const createTechnician = async (formData) => {
     try {
-      const token = Cookies.get("token");
+      const token = Cookies.get('token');
 
       if (!token) {
-        toast.error("Token not found in localStorage.");
+        toast.error('Token not found in localStorage.');
         return;
       }
       let config = {
@@ -89,13 +89,13 @@ function CreateTechnician() {
         config
       );
       if (response.data.status === 201) {
-        navigate("/managetechnician");
+        navigate('/managetechnician');
         toast.success(response.data.message);
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error("Error creating technician. Please try again.");
+      toast.error('Error creating technician. Please try again.');
     }
   };
 
@@ -109,9 +109,9 @@ function CreateTechnician() {
       setSelectedFile(e.target.files[0]);
       const profileImage = e.target.files[0];
 
-      const token = Cookies.get("token");
+      const token = Cookies.get('token');
       if (!token) {
-        console.error("Token not found in localStorage.");
+        console.error('Token not found in localStorage.');
         return;
       }
       let config = {
@@ -122,7 +122,7 @@ function CreateTechnician() {
       let fileData = new FormData();
 
       // Append the profile image to the FormData
-      fileData.append("image", profileImage);
+      fileData.append('image', profileImage);
 
       const response = await axios.post(
         Upload_Technician_Profile,
@@ -145,12 +145,12 @@ function CreateTechnician() {
 
     // Append each selected file to the FormData object
     for (let i = 0; i < selectedFiles.length; i++) {
-      docFormData.append("files", selectedFiles[i]);
+      docFormData.append('files', selectedFiles[i]);
     }
 
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     if (!token) {
-      console.error("Token not found in localStorage.");
+      console.error('Token not found in localStorage.');
       return;
     }
     let config = {
@@ -180,9 +180,9 @@ function CreateTechnician() {
   const handleExcelFileChange = async (e) => {
     const selectedExcelFile = e.target.files[0];
 
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     if (!token) {
-      console.error("Token not found in localStorage.");
+      console.error('Token not found in localStorage.');
       return;
     }
     let config = {
@@ -193,7 +193,7 @@ function CreateTechnician() {
     if (selectedExcelFile) {
       let excelFileData = new FormData();
       // Append the profile image to the FormData
-      excelFileData.append("file", selectedExcelFile);
+      excelFileData.append('file', selectedExcelFile);
 
       try {
         const response = await axios.post(
@@ -203,7 +203,7 @@ function CreateTechnician() {
         );
 
         if (response.data.status === 201) {
-          navigate("/managetechnician");
+          navigate('/managetechnician');
           toast.success(response.data.message);
         } else {
           toast.error(response.data.message);
@@ -216,7 +216,7 @@ function CreateTechnician() {
 
   const handleDownloadTemplate = () => {
     const downloadLink = `${Base_Url}uploads/exampleTemplate/tech_example.xlsx`;
-    const newTab = window.open(downloadLink, "_blank");
+    const newTab = window.open(downloadLink, '_blank');
     newTab.focus();
   };
 
@@ -237,7 +237,7 @@ function CreateTechnician() {
             <Button
               variant="primary"
               onClick={() => {
-                navigate("/managetechnician");
+                navigate('/managetechnician');
               }}
               className="my-2"
             >
@@ -250,7 +250,7 @@ function CreateTechnician() {
             <input
               ref={fileInputRef}
               type="file"
-              style={{ display: "none" }}
+              style={{ display: 'none' }}
               accept=".xlsx, .xls" // Specify allowed file types
               onChange={handleExcelFileChange}
             />
@@ -279,15 +279,15 @@ function CreateTechnician() {
           validationSchema={schema}
           onSubmit={handleSubmit}
           initialValues={{
-            name: "",
-            surname: "",
-            emailAddress: "",
-            password: "",
-            phone: "",
-            nationality: "",
-            qualification: "",
-            level: "",
-            profilePic: "",
+            name: '',
+            surname: '',
+            emailAddress: '',
+            password: '',
+            phone: '',
+            nationality: '',
+            qualification: '',
+            level: '',
+            profilePic: '',
           }}
         >
           {({ handleSubmit, handleChange, values, touched, errors }) => (
@@ -302,8 +302,13 @@ function CreateTechnician() {
                       value={values.name}
                       onChange={handleChange}
                       isValid={touched.name && !errors.name}
+                      isInvalid={touched.name && !!errors.name}
                     />
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">
+                      {touched.name && errors.name}
+                      {/* Show error only if field is touched */}
+                    </Form.Control.Feedback>
+                    {/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">
@@ -315,8 +320,13 @@ function CreateTechnician() {
                       value={values.surname}
                       onChange={handleChange}
                       isValid={touched.surname && !errors.surname}
+                      isInvalid={touched.surname && !!errors.surname}
                     />
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">
+                      {touched.surname && errors.surname}{' '}
+                      {/* Show error only if field is touched */}
+                    </Form.Control.Feedback>
+                    {/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
                   </Form.Group>
                 </Col>
                 <Col lg={6} className="mb-3">
@@ -335,10 +345,12 @@ function CreateTechnician() {
                         name="emailAddress"
                         value={values.emailAddress}
                         onChange={handleChange}
-                        isInvalid={!!errors.emailAddress}
+                        isInvalid={
+                          touched.emailAddress && !!errors.emailAddress
+                        }
                       />
                       <Form.Control.Feedback type="invalid">
-                        {errors.emailAddress}
+                        {touched.emailAddress && errors.emailAddress}
                       </Form.Control.Feedback>
                     </InputGroup>
                   </Form.Group>
@@ -348,12 +360,12 @@ function CreateTechnician() {
                     <Form.Label>Password</Form.Label>
                     <InputGroup hasValidation>
                       <Form.Control
-                        type={showPassword ? "text" : "password"}
+                        type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
                         name="password"
                         value={values.password}
                         onChange={handleChange}
-                        isInvalid={!!errors.password}
+                        isInvalid={touched.password && !!errors.password}
                       />
                       <InputGroup.Text>
                         {showPassword ? (
@@ -367,7 +379,7 @@ function CreateTechnician() {
                         )}
                       </InputGroup.Text>
                       <Form.Control.Feedback type="invalid">
-                        {errors.password}
+                        {touched.password && errors.password}
                       </Form.Control.Feedback>
                     </InputGroup>
                   </Form.Group>
@@ -380,10 +392,10 @@ function CreateTechnician() {
                       name="phone"
                       value={values.phone}
                       onChange={handleChange}
-                      isInvalid={!!errors.phone}
+                      isInvalid={touched.phone && !!errors.phone}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.phone}
+                      {touched.phone && errors.phone}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -395,10 +407,10 @@ function CreateTechnician() {
                       name="nationality"
                       value={values.nationality}
                       onChange={handleChange}
-                      isInvalid={!!errors.nationality}
+                      isInvalid={touched.nationality && !!errors.nationality}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.nationality}
+                      {touched.nationality && errors.nationality}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -410,10 +422,12 @@ function CreateTechnician() {
                       name="qualification"
                       value={values.qualification}
                       onChange={handleChange}
-                      isInvalid={!!errors.qualification}
+                      isInvalid={
+                        touched.qualification && !!errors.qualification
+                      }
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.qualification}
+                      {touched.qualification && errors.qualification}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -425,10 +439,10 @@ function CreateTechnician() {
                       name="level"
                       value={values.level}
                       onChange={handleChange}
-                      isInvalid={!!errors.level}
+                      isInvalid={touched.level && !!errors.level}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.level}
+                      {touched.level && errors.level}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import {
   Container,
   Row,
@@ -12,32 +12,32 @@ import {
   Tab,
   ListGroup,
   Modal,
-} from "react-bootstrap";
-import "./ProjectDetails.css";
-import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
-import Cookies from "js-cookie";
-import axios from "axios";
-import { toast } from "react-toastify";
+} from 'react-bootstrap';
+import './ProjectDetails.css';
+import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import {
   Approve_Project_Api,
   Project_Details_Manager,
-} from "../../../Api/Manager_Api";
-import PageSpinner from "../Common/PageSpinner";
-import { FcDocument } from "react-icons/fc";
-import { FaArrowLeft } from "react-icons/fa";
+} from '../../../Api/Manager_Api';
+import PageSpinner from '../Common/PageSpinner';
+import { FcDocument } from 'react-icons/fc';
+import { FaArrowLeft } from 'react-icons/fa';
 
 function ProjectDetails() {
   const { projectID } = useParams();
   const navigate = useNavigate();
 
   const tabNames = [
-    "project-details",
-    "customer-details",
-    "timesheets",
-    "machines-details",
+    'project-details',
+    'customer-details',
+    'timesheets',
+    'machines-details',
   ];
 
-  const [activeTab, setActiveTab] = useState("project-details");
+  const [activeTab, setActiveTab] = useState('project-details');
   const [projectDetails, setProjectDetails] = useState([]);
   const [projectMachineDetails, setProjectMachineDetails] = useState([]);
   const [technicianDetails, setTechnicianDetails] = useState([]);
@@ -48,10 +48,10 @@ function ProjectDetails() {
   // Function to handle the approval request
   const handleProjectApproveRequest = async () => {
     try {
-      let token = Cookies.get("token");
+      let token = Cookies.get('token');
       if (!token) {
         toast.error(
-          "Token not found in Cookies. Session Timeout Please Login Again."
+          'Token not found in Cookies. Session Timeout Please Login Again.'
         );
         return;
       }
@@ -83,11 +83,11 @@ function ProjectDetails() {
     try {
       setIsFetchingProjectDetails(true);
 
-      let token = Cookies.get("token");
+      let token = Cookies.get('token');
 
       if (!token) {
         toast.error(
-          "Token not found in Cookies. Session Timeout Please Login Again."
+          'Token not found in Cookies. Session Timeout Please Login Again.'
         );
         return;
       }
@@ -150,7 +150,7 @@ function ProjectDetails() {
                   <Button
                     variant="primary"
                     as={NavLink}
-                    to={"/projectStatus"}
+                    to={'/projectStatus'}
                     className="my-4"
                   >
                     <FaArrowLeft /> Back to Project Status
@@ -182,11 +182,11 @@ function ProjectDetails() {
                       onClick={() => setActiveTab(tabName)}
                       className={
                         activeTab === tabName
-                          ? "custom-tab-active"
-                          : "custom-tab"
+                          ? 'custom-tab-active'
+                          : 'custom-tab'
                       }
                     >
-                      {tabName.replace("-", " ").toUpperCase()}
+                      {tabName.replace('-', ' ').toUpperCase()}
                     </Nav.Link>
                   </Nav.Item>
                 ))}
@@ -197,7 +197,7 @@ function ProjectDetails() {
                   <Tab.Pane key={tabName} eventKey={tabName}>
                     {activeTab === tabName && (
                       <div>
-                        {tabName === "project-details" ? (
+                        {tabName === 'project-details' ? (
                           <>
                             <Card className="w-100 my-2">
                               <Card.Header className="fs-4 text-center">
@@ -208,22 +208,22 @@ function ProjectDetails() {
                                   <b>Order ID :</b> {projectDetails.order_id}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Customer Name :</b>{" "}
+                                  <b>Customer Name :</b>{' '}
                                   {projectDetails.customer_name}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Description :</b>{" "}
+                                  <b>Description :</b>{' '}
                                   {projectDetails.description}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Start Date :</b>{" "}
+                                  <b>Start Date :</b>{' '}
                                   {projectDetails.start_date}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                   <b>End Date :</b> {projectDetails.end_date}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Status :</b>{" "}
+                                  <b>Status :</b>{' '}
                                   {!projectDetails.is_completed &&
                                   !projectDetails.is_requested_for_approval ? (
                                     <Button
@@ -256,7 +256,7 @@ function ProjectDetails() {
                               </ListGroup>
                             </Card>
                           </>
-                        ) : tabName === "customer-details" ? (
+                        ) : tabName === 'customer-details' ? (
                           <>
                             <Card className="w-100 my-2">
                               <Card.Header className="fs-4 text-center">
@@ -264,15 +264,15 @@ function ProjectDetails() {
                               </Card.Header>
                               <ListGroup variant="flush">
                                 <ListGroup.Item>
-                                  <b>Customer Name : </b>{" "}
+                                  <b>Customer Name : </b>{' '}
                                   {projectDetails.customer_name}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Customer Contact : </b>{" "}
+                                  <b>Customer Contact : </b>{' '}
                                   {projectDetails.customer_contact}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Customer Account : </b>{" "}
+                                  <b>Customer Account : </b>{' '}
                                   {projectDetails.customer_account}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
@@ -293,7 +293,7 @@ function ProjectDetails() {
                               </ListGroup>
                             </Card>
                           </>
-                        ) : tabName === "timesheets" ? (
+                        ) : tabName === 'timesheets' ? (
                           <>
                             <Card className="w-100 my-2">
                               <Card.Header className="fs-4 text-center">
@@ -378,7 +378,7 @@ function ProjectDetails() {
                               </Table>
                             </Card>
                           </>
-                        ) : tabName === "machines-details" ? (
+                        ) : tabName === 'machines-details' ? (
                           <>
                             <Card className="w-100 my-2">
                               <Card.Header className="fs-4 text-center">
@@ -387,119 +387,108 @@ function ProjectDetails() {
                               <Table responsive>
                                 <thead>
                                   <tr>
-                                    <th>Machine</th>
+                                    <th>Machine Serial</th>
                                     <th>Tech</th>
+                                    <th>Hour Count</th>
+                                    <th>Nominal Count</th>
+                                    <th>Actual Count</th>
                                     <th>Report</th>
-                                    <th>Status</th>
+                                    {/* <th>Status</th> */}
                                   </tr>
                                 </thead>
                                 <tbody>
                                   {projectMachineDetails.length > 0 &&
                                     projectMachineDetails.map(
                                       (machine, index) => (
-                                        <>
-                                          <tr>
-                                            <td>{machine.serial}</td>
-                                            <td>
-                                              {machine.tech_machine_data
-                                                .length > 0 &&
-                                                machine.tech_machine_data.map(
-                                                  (technician, techIndex) => (
-                                                    <>
-                                                      <span key={techIndex}>
-                                                        <ListGroup variant="flush">
-                                                          <ListGroup.Item>
-                                                            <b>
-                                                              {technician.name}
-                                                            </b>
-                                                          </ListGroup.Item>
-                                                        </ListGroup>
-                                                      </span>
-                                                      {/* <span>
-                                                                                        <Button onClick={() => navigateToShowReports(machine)}>Reports</Button>
-                                                                                    </span> */}
-                                                    </>
-                                                  )
-                                                )}
-                                            </td>
-                                            <td>
-                                              {machine.tech_machine_data
-                                                .length > 0 &&
-                                                machine.tech_machine_data.map(
-                                                  (technician, techIndex) => (
-                                                    <>
-                                                      <span className="my-2 report-icon">
-                                                        <Button
-                                                          size="sm"
-                                                          onClick={() =>
-                                                            navigateToShowReports(
-                                                              technician.tech_id,
-                                                              technician.machine_id
+                                        <tr key={index}>
+                                          <td>{machine.serial}</td>
+                                          <td>
+                                            {machine.tech_machine_data.length >
+                                              0 &&
+                                              machine.tech_machine_data.map(
+                                                (technician, techIndex) => (
+                                                  <div key={techIndex}>
+                                                    {/* <ListGroup variant="flush"> */}
+                                                    <ListGroup.Item>
+                                                      <b>
+                                                        {technician.name}{' '}
+                                                        {technician.surname}
+                                                      </b>
+                                                    </ListGroup.Item>
+                                                    {/* </ListGroup> */}
+                                                  </div>
+                                                )
+                                              )}
+                                          </td>
+                                          <td>
+                                            {machine.tech_machine_data.length >
+                                              0 &&
+                                              machine.tech_machine_data.map(
+                                                (technician, techIndex) => (
+                                                  <div key={techIndex}>
+                                                    {machine.hour_count}
+                                                  </div>
+                                                )
+                                              )}
+                                          </td>
+                                          <td>
+                                            <div>{machine.nom_speed}</div>
+                                          </td>
+                                          <td>
+                                            <div>{machine.act_speed}</div>
+                                          </td>
+                                          <td>
+                                            {machine.tech_machine_data.length >
+                                              0 &&
+                                              machine.tech_machine_data.map(
+                                                (technician, techIndex) => (
+                                                  <div key={techIndex}>
+                                                    {technician
+                                                      .project_report_data
+                                                      .length > 0 ? (
+                                                      <Button
+                                                        variant={
+                                                          technician.project_report_data.some(
+                                                            (report) =>
+                                                              report.is_requested_for_approval
+                                                          )
+                                                            ? 'warning'
+                                                            : technician.project_report_data.some(
+                                                                (report) =>
+                                                                  report.is_approved
+                                                              )
+                                                            ? 'success'
+                                                            : 'primary'
+                                                        }
+                                                        size="sm"
+                                                        className="report-status mt-2"
+                                                      >
+                                                        {technician.project_report_data.some(
+                                                          (report) =>
+                                                            report.is_requested_for_approval
+                                                        )
+                                                          ? 'Waiting for Approval'
+                                                          : technician.project_report_data.some(
+                                                              (report) =>
+                                                                report.is_approved
                                                             )
-                                                          }
-                                                        >
-                                                          Reports
-                                                        </Button>
-                                                      </span>
-                                                    </>
-                                                  )
-                                                )}
-                                            </td>
-                                            <td>
-                                              {machine.tech_machine_data
-                                                .length > 0 &&
-                                                machine.tech_machine_data.map(
-                                                  (technician, techIndex) => (
-                                                    <div key={techIndex}>
-                                                      {technician.project_report_data.some(
-                                                        (report) =>
-                                                          report.is_requested_for_approval
-                                                      ) ? (
-                                                        <Button
-                                                          variant="warning"
-                                                          size="sm"
-                                                          className="report-status mt-2"
-                                                        >
-                                                          Waiting for Approval
-                                                        </Button>
-                                                      ) : technician.project_report_data.some(
-                                                          (report) =>
-                                                            report.is_approved
-                                                        ) ? (
-                                                        <Button
-                                                          variant="success"
-                                                          size="sm"
-                                                          className="report-status mt-2"
-                                                        >
-                                                          Approved
-                                                        </Button>
-                                                      ) : technician.project_report_data.some(
-                                                          (report) =>
-                                                            !report.is_requested_for_approval &&
-                                                            !report.is_approved
-                                                        ) ? (
-                                                        <Button
-                                                          variant="primary"
-                                                          size="sm"
-                                                          className="report-status mt-2"
-                                                        >
-                                                          In Progress
-                                                        </Button>
-                                                      ) : (
-                                                        <Button
-                                                          variant="secondary"
-                                                          size="sm"
-                                                          className="report-status mt-2"
-                                                        >
-                                                          <b>No reports</b>
-                                                        </Button>
-                                                      )}
-                                                    </div>
-                                                  )
-                                                )}
-                                            </td>
-                                          </tr>
-                                        </>
+                                                          ? 'Approved'
+                                                          : 'In Progress'}
+                                                      </Button>
+                                                    ) : (
+                                                      <Button
+                                                        variant="secondary"
+                                                        size="sm"
+                                                        className="report-status mt-2"
+                                                      >
+                                                        <b>No reports</b>
+                                                      </Button>
+                                                    )}
+                                                  </div>
+                                                )
+                                              )}
+                                          </td>
+                                        </tr>
                                       )
                                     )}
                                 </tbody>

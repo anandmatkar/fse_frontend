@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Row,
   Col,
@@ -8,22 +8,25 @@ import {
   Table,
   ListGroup,
   Dropdown,
-} from "react-bootstrap";
-import { toast } from "react-toastify";
-import Layout4 from "../../Layout/Layout4";
-import { NavLink, useParams } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
-import Cookies from "js-cookie";
-import axios from "axios";
+} from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import Layout4 from '../../Layout/Layout4';
+import { NavLink, useParams } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 import {
   Technician_Edit_Report_Attach,
   Technician_Show_Report_Attach,
-} from "../../../Api/Technicians_Api";
-import EditReportAttachDocModal from "./EditReportAttachDocModal";
+} from '../../../Api/Technicians_Api';
+import EditReportAttachDocModal from './EditReportAttachDocModal';
+import { FaRegEye } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
+import { MdDelete } from 'react-icons/md';
 
 export default function ViewReportDocsTechnician() {
   const { projectID, machineID, reportID } = useParams();
-
+  const [fileNames, setFileNames] = useState([]);
   const [reportDocuments, setReportDocuments] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
@@ -31,11 +34,11 @@ export default function ViewReportDocsTechnician() {
 
   const handleEdit = async (newDocument, docID) => {
     try {
-      let token = Cookies.get("token");
+      let token = Cookies.get('token');
 
       if (!token) {
         toast.error(
-          "Token not found in Cookies. Session Timeout Please Login Again."
+          'Token not found in Cookies. Session Timeout Please Login Again.'
         );
         return;
       }
@@ -47,8 +50,8 @@ export default function ViewReportDocsTechnician() {
       // console.log("Editing document:", newDocument);
       let formData = new FormData();
 
-      formData.append("file", newDocument);
-      formData.append("docId", docID);
+      formData.append('file', newDocument);
+      formData.append('docId', docID);
 
       // console.log(formData);
 
@@ -72,11 +75,11 @@ export default function ViewReportDocsTechnician() {
 
   const fetchReportAttachment = async () => {
     try {
-      let token = Cookies.get("token");
+      let token = Cookies.get('token');
 
       if (!token) {
         toast.error(
-          "Token not found in Cookies. Session Timeout Please Login Again."
+          'Token not found in Cookies. Session Timeout Please Login Again.'
         );
         return;
       }
@@ -89,6 +92,7 @@ export default function ViewReportDocsTechnician() {
         `${Technician_Show_Report_Attach}?reportId=${reportID}`,
         config
       );
+      console.log(response, 'responsessssssssss');
 
       // console.log(response.data);
       if (response.data.status === 200) {
@@ -137,38 +141,64 @@ export default function ViewReportDocsTechnician() {
                 {reportDocuments.length > 0 ? (
                   <>
                     {reportDocuments.map((document, i) => (
-                      <ListGroup.Item className="fw-bolder">
-                        Technicians Report Document {i + 1}
-                        <Dropdown as={"span"} className="float-end" drop="end">
-                          <Dropdown.Toggle
-                            variant="success"
-                            id="dropdown-basic"
-                            size="sm"
+                      <ListGroup.Item className="fw-bolder" key={document.id}>
+                        <div className="d-flex justify-content-between align-items-center">
+                          <div>Technicians Report Document {i + 1}</div>
+                          <a
+                            href={document.file_path}
+                            target="_blank"
+                            rel="noopener noreferrer"
                           >
-                            Actions
-                          </Dropdown.Toggle>
+                            {document.file_name !== null ? (
+                              <>{document.file_name.substring(0, 30)}...</>
+                            ) : (
+                              document.file_name
+                            )}
+                          </a>
+                          <Dropdown
+                            as={'span'}
+                            className="float-end"
+                            drop="end"
+                          >
+                            <Dropdown.Toggle
+                              variant="success"
+                              id="dropdown-basic"
+                              size="sm"
+                            >
+                              Actions
+                            </Dropdown.Toggle>
 
-                          <Dropdown.Menu>
-                            <Dropdown.Item
-                              as={NavLink}
-                              to={document.file_path}
-                              target="_blank"
-                            >
-                              View Document
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                              onClick={() => {
-                                setSelectedDocumentText(
-                                  `Report Document ${i + 1}`
-                                );
-                                setSelectedDocument(document);
-                                setShowEditModal(true);
-                              }}
-                            >
-                              Edit Document
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
+                            <Dropdown.Menu>
+                              <Dropdown.Item
+                                as={NavLink}
+                                to={document.file_path}
+                                target="_blank"
+                              >
+                                <FaRegEye
+                                  color="#579fe4"
+                                  className="me-3 fs-5"
+                                />
+                                View
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() => {
+                                  setSelectedDocumentText(
+                                    `Report Document ${i + 1}`
+                                  );
+                                  setSelectedDocument(document);
+                                  setShowEditModal(true);
+                                }}
+                              >
+                                <FaEdit color="#579fe4" className="me-3 fs-5" />
+                                Edit
+                              </Dropdown.Item>
+                              <Dropdown.Item>
+                                <MdDelete color="red" className="me-3 fs-5" />
+                                Delete
+                              </Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        </div>
                       </ListGroup.Item>
                     ))}
                   </>
@@ -176,6 +206,7 @@ export default function ViewReportDocsTechnician() {
                   <>No Report Attachments Found</>
                 )}
               </ListGroup>
+
               {/* <Table responsive>
                 <thead>
                   <tr>

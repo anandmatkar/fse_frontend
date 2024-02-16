@@ -1,34 +1,35 @@
-import React, { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import Cookies from "js-cookie";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState } from 'react';
+import { Button, Modal } from 'react-bootstrap';
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Technician_NewCreateReport,
   Technician_ReportAttach,
-} from "../../../Api/Technicians_Api";
+} from '../../../Api/Technicians_Api';
 
 const NewReportModal = ({ projectID, machineID, onNewReport }) => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     projectID: projectID,
     machineID: machineID,
-    date: "",
-    description: "",
-    comments: "",
-    duration: "",
+    date: '',
+    description: '',
+    comments: '',
+    duration: '',
     attachment: null,
   });
   const resetForm = () => {
     setFormData({
       projectID: projectID,
       machineID: machineID,
-      date: "",
-      description: "",
-      comments: "",
-      duration: "",
+      date: '',
+      description: '',
+      comments: '',
+      duration: '',
       attachment: null,
     });
+    setAttachments([]);
   };
 
   const [attachments, setAttachments] = useState([]);
@@ -39,20 +40,20 @@ const NewReportModal = ({ projectID, machineID, onNewReport }) => {
   };
 
   const handleFileUpload = async (e) => {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     const files = e.target.files;
 
     if (files.length > 0) {
       const fileFormData = new FormData();
       for (let i = 0; i < files.length; i++) {
-        fileFormData.append("files", files[i]);
+        fileFormData.append('files', files[i]);
       }
 
-      fileFormData.append("projectID", projectID);
+      fileFormData.append('projectID', projectID);
 
       try {
         const response = await fetch(Technician_ReportAttach, {
-          method: "POST",
+          method: 'POST',
           headers: {
             Authorization: token,
           },
@@ -63,26 +64,24 @@ const NewReportModal = ({ projectID, machineID, onNewReport }) => {
         if (!data.success) {
           throw new Error(data.message);
         }
-
-        // Store the attachment path directly in the state
         setAttachments((prev) => [...prev, ...data.data]);
       } catch (error) {
-        console.error("Error uploading file:", error);
-        alert("Error uploading file: " + error.message);
+        console.error('Error uploading file:', error);
+        alert('Error uploading file: ' + error.message);
       }
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
 
     try {
       const response = await fetch(`${Technician_NewCreateReport}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
           Authorization: token,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           projectID: formData.projectID,
@@ -101,13 +100,13 @@ const NewReportModal = ({ projectID, machineID, onNewReport }) => {
       }
       if (response.status === 200) {
         onNewReport(data.data);
-        toast.success("Report created successfully!");
+        toast.success('Report created successfully!');
         setShowModal(false);
         resetForm();
       }
     } catch (error) {
-      console.error("Error:", error);
-      toast.error("Error creating Report: " + error.message);
+      console.error('Error:', error);
+      toast.error('Error creating Report: ' + error.message);
     }
   };
 
@@ -126,7 +125,6 @@ const NewReportModal = ({ projectID, machineID, onNewReport }) => {
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
-            {/* Date Input */}
             <div className="form-group">
               <label for="date">Date:</label>
               <input
@@ -196,9 +194,7 @@ const NewReportModal = ({ projectID, machineID, onNewReport }) => {
             </Button>
           </form>
         </Modal.Body>
-        <Modal.Footer>
-          {/* Any other footer buttons or info can go here */}
-        </Modal.Footer>
+        <Modal.Footer></Modal.Footer>
       </Modal>
     </div>
   );
