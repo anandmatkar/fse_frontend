@@ -282,7 +282,11 @@ function ProjectStatus() {
         />
       )}
 
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+      <Modal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+        centered
+      >
         <Modal.Header closeButton>
           <Modal.Title>Confirm Delete</Modal.Title>
         </Modal.Header>

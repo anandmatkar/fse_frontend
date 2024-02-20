@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import {
   Container,
   Row,
@@ -12,32 +12,32 @@ import {
   Tab,
   ListGroup,
   Modal,
-} from 'react-bootstrap';
-import './ProjectDetails.css';
-import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import Cookies from 'js-cookie';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+} from "react-bootstrap";
+import "./ProjectDetails.css";
+import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { toast } from "react-toastify";
 import {
   Approve_Project_Api,
   Project_Details_Manager,
-} from '../../../Api/Manager_Api';
-import PageSpinner from '../Common/PageSpinner';
-import { FcDocument } from 'react-icons/fc';
-import { FaArrowLeft } from 'react-icons/fa';
+} from "../../../Api/Manager_Api";
+import PageSpinner from "../Common/PageSpinner";
+import { FcDocument } from "react-icons/fc";
+import { FaArrowLeft } from "react-icons/fa";
 
 function ProjectDetails() {
   const { projectID } = useParams();
   const navigate = useNavigate();
 
   const tabNames = [
-    'project-details',
-    'customer-details',
-    'timesheets',
-    'machines-details',
+    "project-details",
+    "customer-details",
+    "timesheets",
+    "machines-details",
   ];
 
-  const [activeTab, setActiveTab] = useState('project-details');
+  const [activeTab, setActiveTab] = useState("project-details");
   const [projectDetails, setProjectDetails] = useState([]);
   const [projectMachineDetails, setProjectMachineDetails] = useState([]);
   const [technicianDetails, setTechnicianDetails] = useState([]);
@@ -48,10 +48,10 @@ function ProjectDetails() {
   // Function to handle the approval request
   const handleProjectApproveRequest = async () => {
     try {
-      let token = Cookies.get('token');
+      let token = Cookies.get("token");
       if (!token) {
         toast.error(
-          'Token not found in Cookies. Session Timeout Please Login Again.'
+          "Token not found in Cookies. Session Timeout Please Login Again."
         );
         return;
       }
@@ -83,11 +83,11 @@ function ProjectDetails() {
     try {
       setIsFetchingProjectDetails(true);
 
-      let token = Cookies.get('token');
+      let token = Cookies.get("token");
 
       if (!token) {
         toast.error(
-          'Token not found in Cookies. Session Timeout Please Login Again.'
+          "Token not found in Cookies. Session Timeout Please Login Again."
         );
         return;
       }
@@ -150,7 +150,7 @@ function ProjectDetails() {
                   <Button
                     variant="primary"
                     as={NavLink}
-                    to={'/projectStatus'}
+                    to={"/projectStatus"}
                     className="my-4"
                   >
                     <FaArrowLeft /> Back to Project Status
@@ -182,22 +182,22 @@ function ProjectDetails() {
                       onClick={() => setActiveTab(tabName)}
                       className={
                         activeTab === tabName
-                          ? 'custom-tab-active'
-                          : 'custom-tab'
+                          ? "custom-tab-active"
+                          : "custom-tab"
                       }
                     >
-                      {tabName.replace('-', ' ').toUpperCase()}
+                      {tabName.replace("-", " ").toUpperCase()}
                     </Nav.Link>
                   </Nav.Item>
                 ))}
               </Nav>
 
-              <Tab.Content>
+              <Tab.Content className="mb-5 pb-5">
                 {tabNames.map((tabName) => (
                   <Tab.Pane key={tabName} eventKey={tabName}>
                     {activeTab === tabName && (
                       <div>
-                        {tabName === 'project-details' ? (
+                        {tabName === "project-details" ? (
                           <>
                             <Card className="w-100 my-2">
                               <Card.Header className="fs-4 text-center">
@@ -208,22 +208,22 @@ function ProjectDetails() {
                                   <b>Order ID :</b> {projectDetails.order_id}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Customer Name :</b>{' '}
+                                  <b>Customer Name :</b>{" "}
                                   {projectDetails.customer_name}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Description :</b>{' '}
+                                  <b>Description :</b>{" "}
                                   {projectDetails.description}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Start Date :</b>{' '}
+                                  <b>Start Date :</b>{" "}
                                   {projectDetails.start_date}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                   <b>End Date :</b> {projectDetails.end_date}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Status :</b>{' '}
+                                  <b>Status :</b>{" "}
                                   {!projectDetails.is_completed &&
                                   !projectDetails.is_requested_for_approval ? (
                                     <Button
@@ -256,7 +256,7 @@ function ProjectDetails() {
                               </ListGroup>
                             </Card>
                           </>
-                        ) : tabName === 'customer-details' ? (
+                        ) : tabName === "customer-details" ? (
                           <>
                             <Card className="w-100 my-2">
                               <Card.Header className="fs-4 text-center">
@@ -264,15 +264,15 @@ function ProjectDetails() {
                               </Card.Header>
                               <ListGroup variant="flush">
                                 <ListGroup.Item>
-                                  <b>Customer Name : </b>{' '}
+                                  <b>Customer Name : </b>{" "}
                                   {projectDetails.customer_name}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Customer Contact : </b>{' '}
+                                  <b>Customer Contact : </b>{" "}
                                   {projectDetails.customer_contact}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                  <b>Customer Account : </b>{' '}
+                                  <b>Customer Account : </b>{" "}
                                   {projectDetails.customer_account}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
@@ -293,7 +293,7 @@ function ProjectDetails() {
                               </ListGroup>
                             </Card>
                           </>
-                        ) : tabName === 'timesheets' ? (
+                        ) : tabName === "timesheets" ? (
                           <>
                             <Card className="w-100 my-2">
                               <Card.Header className="fs-4 text-center">
@@ -378,7 +378,7 @@ function ProjectDetails() {
                               </Table>
                             </Card>
                           </>
-                        ) : tabName === 'machines-details' ? (
+                        ) : tabName === "machines-details" ? (
                           <>
                             <Card className="w-100 my-2">
                               <Card.Header className="fs-4 text-center">
@@ -411,7 +411,7 @@ function ProjectDetails() {
                                                     {/* <ListGroup variant="flush"> */}
                                                     <ListGroup.Item>
                                                       <b>
-                                                        {technician.name}{' '}
+                                                        {technician.name}{" "}
                                                         {technician.surname}
                                                       </b>
                                                     </ListGroup.Item>
@@ -452,13 +452,13 @@ function ProjectDetails() {
                                                             (report) =>
                                                               report.is_requested_for_approval
                                                           )
-                                                            ? 'warning'
+                                                            ? "warning"
                                                             : technician.project_report_data.some(
                                                                 (report) =>
                                                                   report.is_approved
                                                               )
-                                                            ? 'success'
-                                                            : 'primary'
+                                                            ? "success"
+                                                            : "primary"
                                                         }
                                                         size="sm"
                                                         className="report-status mt-2"
@@ -467,13 +467,13 @@ function ProjectDetails() {
                                                           (report) =>
                                                             report.is_requested_for_approval
                                                         )
-                                                          ? 'Waiting for Approval'
+                                                          ? "Waiting for Approval"
                                                           : technician.project_report_data.some(
                                                               (report) =>
                                                                 report.is_approved
                                                             )
-                                                          ? 'Approved'
-                                                          : 'In Progress'}
+                                                          ? "Approved"
+                                                          : "In Progress"}
                                                       </Button>
                                                     ) : (
                                                       <Button
@@ -511,6 +511,7 @@ function ProjectDetails() {
           <Modal
             show={showApproveModal}
             onHide={() => setShowApproveModal(false)}
+            centered
           >
             <Modal.Header closeButton>
               <Modal.Title>Confirm Approval</Modal.Title>

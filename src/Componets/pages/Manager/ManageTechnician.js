@@ -379,6 +379,7 @@ export default function ManageTechnician() {
           <Modal
             show={showDeleteModal}
             onHide={() => setShowDeleteModal(false)}
+            centered
           >
             <Modal.Header closeButton>
               <Modal.Title>Confirm Deletion</Modal.Title>

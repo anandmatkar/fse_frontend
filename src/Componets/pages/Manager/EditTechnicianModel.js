@@ -40,7 +40,7 @@ const EditTechnicianModal = ({ show, onHide, technician, onSave }) => {
   });
 
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal show={show} onHide={onHide} centered scrollable>
       <Modal.Header closeButton>
         <Modal.Title>Edit Technician</Modal.Title>
       </Modal.Header>

@@ -218,6 +218,7 @@ export default function ViewProjectMachineInfo() {
           <Modal
             show={showDeleteConfirmation}
             onHide={() => setShowDeleteConfirmation(false)}
+            centered
           >
             <Modal.Header closeButton>
               <Modal.Title>Confirm Deletion</Modal.Title>
