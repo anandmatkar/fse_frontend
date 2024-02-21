@@ -31,6 +31,7 @@ import NavTechnicanProfile from "../../NavBar/navTechnicanProfile";
 import TimeSheetModal from "./TimeSheetModal";
 import { Show_Signed_Paper_Technicians } from "../../../Api/Manager_Api";
 import { FaArrowLeft } from "react-icons/fa";
+import { Alert, Tag } from "antd";
 
 export default function TechnicianProjectDetails() {
   const { projectID } = useParams();
@@ -287,7 +288,7 @@ export default function TechnicianProjectDetails() {
       {isFetchingProjectDetails ? (
         <PageSpinner />
       ) : (
-        <Container>
+        <Container className="mb-5 pb-5">
           <Row>
             <Col>
               <Button
@@ -580,7 +581,54 @@ export default function TechnicianProjectDetails() {
                         Attach Signed Paper
                       </Button>
                     </Col> */}
-                    <Col lg={3} md={12}></Col>
+                    <Col lg={3} md={12}>
+                      {technicianDetails.length > 0 &&
+                        technicianDetails.map((technician, index) => {
+                          let showAlert = true; // Flag to track if the alert has been shown for this technician
+                          return (
+                            technician.timesheet_data.length > 0 &&
+                            technician.timesheet_data.map(
+                              (timesheet, index) => {
+                                if (showAlert) {
+                                  // Only show alert once for each technician
+                                  showAlert = false; // Set the flag to false after showing the alert once
+                                  return (
+                                    <span key={index}>
+                                      {!timesheet.is_timesheet_approved &&
+                                      !timesheet.is_timesheet_requested_for_approval ? (
+                                        <Alert
+                                          type="info"
+                                          message={"IN PROGRESS"}
+                                          className="my-2 fw-bolder text-center"
+                                          showIcon
+                                        />
+                                      ) : timesheet.is_timesheet_approved ? (
+                                        <Alert
+                                          type="success"
+                                          message={"APPROVED"}
+                                          className="my-2 fw-bolder text-center"
+                                          showIcon
+                                        />
+                                      ) : timesheet.is_timesheet_requested_for_approval ? (
+                                        <Alert
+                                          type="warning"
+                                          message={"WAITING FOR APPROVAL"}
+                                          className="my-2 fw-bolder text-center"
+                                          showIcon
+                                        />
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </span>
+                                  );
+                                } else {
+                                  return null; // Return null for subsequent iterations of timesheet_data
+                                }
+                              }
+                            )
+                          );
+                        })}
+                    </Col>
                     <Col lg={3} md={12}>
                       <Button
                         variant="warning"
@@ -612,7 +660,7 @@ export default function TechnicianProjectDetails() {
                       <th>End Time</th>
                       <th>Lunch Time</th>
                       {/* <th>Attachment</th> */}
-                      <th>Status</th>
+                      {/* <th>Status</th> */}
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -643,7 +691,7 @@ export default function TechnicianProjectDetails() {
                                     )
                                   )}
                               </td> */}
-                              <td>
+                              {/* <td>
                                 {!timesheet.is_timesheet_approved &&
                                 !timesheet.is_timesheet_requested_for_approval ? (
                                   <Button variant="primary" size="sm">
@@ -660,7 +708,7 @@ export default function TechnicianProjectDetails() {
                                 ) : (
                                   <></>
                                 )}
-                              </td>
+                              </td> */}
                               <td>
                                 {timesheet.is_timesheet_requested_for_approval ||
                                 timesheet.is_timesheet_approved ? (
@@ -691,9 +739,9 @@ export default function TechnicianProjectDetails() {
       )}
 
       {/* Confirmation Dialog */}
-      <Modal show={showConfirmation} onHide={hideConfirmationDialog}>
+      <Modal show={showConfirmation} onHide={hideConfirmationDialog} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Confirmation</Modal.Title>
+          <Modal.Title>Request Confirmation</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Are you sure you want to request timesheet for approval?
@@ -712,6 +760,7 @@ export default function TechnicianProjectDetails() {
       <Modal
         show={showDeleteConfirmation}
         onHide={hideDeleteConfirmationDialog}
+        centered
       >
         <Modal.Header closeButton>
           <Modal.Title>Delete Confirmation</Modal.Title>

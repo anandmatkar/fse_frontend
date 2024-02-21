@@ -216,6 +216,14 @@ function ProjectStatus() {
                             >
                               Edit
                             </Button>
+                            {/* <Button
+                              variant="warning"
+                              size="sm"
+                              as={NavLink}
+                              to={"/edit-project-details"}
+                            >
+                              Edit Page
+                            </Button> */}
                           </td>
                           <td>
                             <Button

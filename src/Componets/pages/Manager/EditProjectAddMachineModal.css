@@ -1,0 +1,5 @@
+@media (min-width: 1200px) {
+  .edit-project-add-machine-modal {
+    max-width: 60%;
+  }
+}
