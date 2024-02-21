@@ -8,11 +8,13 @@ import {
   NavLink,
   Container,
   NavDropdown,
+  Image,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { MdArrowDropDown } from "react-icons/md";
 import "./navTechnicanProfile.css";
+import { UserOutlined } from "@ant-design/icons";
 
 const NavTechnicanProfile = () => {
   const navigate = useNavigate();
@@ -51,11 +53,8 @@ const NavTechnicanProfile = () => {
               className="text-center"
               title={
                 <div className="imgdropdowns">
-                  <img
-                    src={
-                      Cookies.get("Profile") ||
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU"
-                    }
+                  <Image
+                    src={Cookies.get("Profile") || "assets/img/profile.png"}
                     alt="Profile_Picture"
                     className="border border-dark"
                     style={{

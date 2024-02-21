@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { Navbar, Nav, Container, NavDropdown, Image } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import AuthContext from "../auth-context/auth-context";
@@ -38,11 +38,8 @@ const NavbarManagerDashboard = () => {
             <NavDropdown
               className="text-center"
               title={
-                <img
-                  src={
-                    Cookies.get("Profile") ||
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpFdo7jMQ4ZhDD1zqDdGGW0HjKNbV4iiOniQ&usqp=CAU"
-                  }
+                <Image
+                  src={Cookies.get("Profile") || "assets/img/profile.png"}
                   alt="Profile_Picture"
                   className="border border-dark"
                   style={{

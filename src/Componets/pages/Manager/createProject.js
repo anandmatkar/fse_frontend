@@ -1,43 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import './createProject.css';
-import Spinner from '../Common/Spinner';
-import Cookies from 'js-cookie';
-import { Row, Col, Button } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import { NavLink, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import "./createProject.css";
+import Spinner from "../Common/Spinner";
+import Cookies from "js-cookie";
+import { Row, Col, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   Create_Project_Api,
   Upload_File_Attach,
   Upload_Machine_Files,
   Teachnician_List_Api,
   Customer_List_Api,
-} from './../../../Api/Manager_Api';
-import Select from 'react-select';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { MdOutlineDelete } from 'react-icons/md';
-import NavbarManagerDashboard from '../../NavBar/navbarManagerDashboard';
-import { FaArrowLeft } from 'react-icons/fa';
+} from "./../../../Api/Manager_Api";
+import Select from "react-select";
+import { AiOutlinePlusCircle } from "react-icons/ai";
+import { MdOutlineDelete } from "react-icons/md";
+import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
+import { FaArrowLeft } from "react-icons/fa";
 
 function CreateProject() {
   const [customerList, setCustomerList] = useState([]);
   const [techList, setTechList] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [technicians, setTechnicians] = useState([]);
-  const [customerId, setCustomerId] = useState('');
-  const [projectType, setProjectType] = useState('');
-  const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [customerId, setCustomerId] = useState("");
+  const [projectType, setProjectType] = useState("");
+  const [description, setDescription] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [projectAttach, setProjectAttach] = useState([]);
   const [addedMachineDetails, setAddedMachineDetails] = useState([]);
   const [machineDetails, setMachineDetails] = useState([
     {
-      MachineType: '',
-      MachineSerial: '',
-      hourCount: '',
-      nomSpeed: '',
-      actSpeed: '',
+      MachineType: "",
+      MachineSerial: "",
+      hourCount: "",
+      nomSpeed: "",
+      actSpeed: "",
       techIds: [],
       machineAttach: [],
     },
@@ -46,20 +46,20 @@ function CreateProject() {
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState({
-    customerId: '',
-    projectType: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    projectAttach: '',
-    machineDetails: '',
+    customerId: "",
+    projectType: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+    projectAttach: "",
+    machineDetails: "",
   });
 
   const getCurrentDate = () => {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
   };
@@ -68,23 +68,23 @@ function CreateProject() {
     const newErrors = {};
 
     if (!customerId) {
-      newErrors.customerId = 'Customer is required';
+      newErrors.customerId = "Customer is required";
     }
 
     if (!projectType) {
-      newErrors.projectType = 'Project Type is required';
+      newErrors.projectType = "Project Type is required";
     }
 
     if (!description) {
-      newErrors.description = 'Project Description is required';
+      newErrors.description = "Project Description is required";
     }
 
     if (!startDate) {
-      newErrors.startDate = 'Start Date is required';
+      newErrors.startDate = "Start Date is required";
     }
 
     if (!endDate) {
-      newErrors.endDate = 'End Date is required';
+      newErrors.endDate = "End Date is required";
     }
 
     // if (projectAttach.length === 0) {
@@ -93,31 +93,31 @@ function CreateProject() {
     //   newErrors.projectAttach = ''; // Clear the error if files are selected
     // }
     if (!machineDetails) {
-      newErrors.machineDetails = 'All Machine Details are required';
+      newErrors.machineDetails = "All Machine Details are required";
     }
     machineDetails.forEach((machine, index) => {
       if (!machine.MachineType.trim()) {
-        newErrors[`MachineType_${index}`] = 'Machine Type is required';
+        newErrors[`MachineType_${index}`] = "Machine Type is required";
       }
 
       if (!machine.MachineSerial.trim()) {
-        newErrors[`MachineSerial_${index}`] = 'Serial Number is required';
+        newErrors[`MachineSerial_${index}`] = "Serial Number is required";
       }
 
       if (!machine.hourCount.trim()) {
-        newErrors[`hourCount_${index}`] = 'Hour Count is required';
+        newErrors[`hourCount_${index}`] = "Hour Count is required";
       }
 
       if (!machine.nomSpeed.trim()) {
-        newErrors[`nomSpeed_${index}`] = 'Nominal Speed is required';
+        newErrors[`nomSpeed_${index}`] = "Nominal Speed is required";
       }
 
       if (!machine.actSpeed.trim()) {
-        newErrors[`actSpeed_${index}`] = 'Actual Speed is required';
+        newErrors[`actSpeed_${index}`] = "Actual Speed is required";
       }
 
       if (!machine.techIds.length) {
-        newErrors[`techIds_${index}`] = 'Technician selection is required';
+        newErrors[`techIds_${index}`] = "Technician selection is required";
       }
 
       // if (!machine.machineAttach.length) {
@@ -133,10 +133,10 @@ function CreateProject() {
   };
 
   useEffect(() => {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
 
     if (token) {
-      axios.defaults.headers.common['Authorization'] = token;
+      axios.defaults.headers.common["Authorization"] = token;
     }
 
     // Fetch customer data
@@ -149,7 +149,7 @@ function CreateProject() {
         setCustomers(customersData);
       })
       .catch((error) => {
-        console.error('Error fetching customer data:', error);
+        console.error("Error fetching customer data:", error);
       });
 
     // Fetch technician data
@@ -164,13 +164,13 @@ function CreateProject() {
         setTechnicians(techniciansData);
       })
       .catch((error) => {
-        console.error('Error fetching technician data:', error);
+        console.error("Error fetching technician data:", error);
       });
   }, []);
 
   const handleTechChange = (selectedOptions, machineIndex) => {
     if (selectedOptions.length > 10) {
-      toast.error('You can only select a maximum of 10 Technicians.');
+      toast.error("You can only select a maximum of 10 Technicians.");
       return; // Don't update the state if more than 10 technicians are selected
     }
 
@@ -192,7 +192,7 @@ function CreateProject() {
       const formData = new FormData();
 
       fileArray.forEach((file, index) => {
-        formData.append('files', file);
+        formData.append("files", file);
       });
 
       try {
@@ -204,10 +204,10 @@ function CreateProject() {
           updatedMachineDetails[machineIndex].machineAttach = uploadedURLs;
           setMachineDetails(updatedMachineDetails);
         } else {
-          console.error('Files Upload Failed. Status Code:', response.status);
+          console.error("Files Upload Failed. Status Code:", response.status);
         }
       } catch (error) {
-        console.error('API Error:', error);
+        console.error("API Error:", error);
       }
     }
   };
@@ -215,11 +215,11 @@ function CreateProject() {
   const addMachineDetail = () => {
     if (machineDetails.length < 10) {
       const newMachineDetail = {
-        MachineType: '',
-        MachineSerial: '',
-        hourCount: '',
-        nomSpeed: '',
-        actSpeed: '',
+        MachineType: "",
+        MachineSerial: "",
+        hourCount: "",
+        nomSpeed: "",
+        actSpeed: "",
         techIds: [],
         machineAttach: [],
       };
@@ -227,7 +227,7 @@ function CreateProject() {
     } else {
       // You can display an error message or take other actions if the limit is reached.
       // For example, you can set an error state.
-      toast.error('You can only add a maximum of 10 machine details.');
+      toast.error("You can only add a maximum of 10 machine details.");
     }
   };
 
@@ -240,7 +240,7 @@ function CreateProject() {
       const formData = new FormData();
 
       fileArray.forEach((file, index) => {
-        formData.append('files', file);
+        formData.append("files", file);
       });
 
       try {
@@ -250,10 +250,10 @@ function CreateProject() {
           const uploadedURLs = response.data.data;
           setProjectAttach(uploadedURLs);
         } else {
-          console.error('Files Upload Failed. Status Code:', response.status);
+          console.error("Files Upload Failed. Status Code:", response.status);
         }
       } catch (error) {
-        console.error('API Error:', error);
+        console.error("API Error:", error);
       }
     }
   };
@@ -287,18 +287,18 @@ function CreateProject() {
         const response = await axios.post(Create_Project_Api, projectData);
 
         if (response.data.status === 200) {
-          toast.success('Project created successfully');
-          navigate('/projectStatus');
+          toast.success("Project created successfully");
+          navigate("/projectStatus");
         } else {
-          toast.error('Error creating project');
+          toast.error("Error creating project");
           console.error(
-            'Error creating project. Status Code:',
+            "Error creating project. Status Code:",
             response.status
           );
         }
       } catch (error) {
-        toast.error('An error occurred while creating the project');
-        console.error('API Error:', error);
+        toast.error("An error occurred while creating the project");
+        console.error("API Error:", error);
       } finally {
         setIsLoading(false); // Set isLoading back to false after the API request is complete
       }
@@ -319,7 +319,7 @@ function CreateProject() {
       updatedMachineDetails.splice(index, 1);
       setMachineDetails(updatedMachineDetails);
     } else {
-      toast.error('The first machine detail cannot be deleted.');
+      toast.error("The first machine detail cannot be deleted.");
     }
   };
 
@@ -341,7 +341,7 @@ function CreateProject() {
             <Button
               variant="primary"
               as={NavLink}
-              to={'/projectStatus'}
+              to={"/projectStatus"}
               className="my-4"
             >
               <FaArrowLeft /> Back to Project Status
@@ -488,7 +488,7 @@ function CreateProject() {
                   <input
                     type="file"
                     className={`form-control formcontrolinput ${
-                      errors.projectAttach ? 'is-invalid' : ''
+                      errors.projectAttach ? "is-invalid" : ""
                     }`}
                     multiple
                     onChange={handleProjectAttachChange}
@@ -532,7 +532,7 @@ function CreateProject() {
                             handleMachineDetailChange(
                               event,
                               index,
-                              'MachineType'
+                              "MachineType"
                             )
                           }
                           placeholder="Machine type"
@@ -558,7 +558,7 @@ function CreateProject() {
                             handleMachineDetailChange(
                               event,
                               index,
-                              'MachineSerial'
+                              "MachineSerial"
                             )
                           }
                           placeholder="Machine Serial number"
@@ -581,7 +581,7 @@ function CreateProject() {
                           name="hourCount"
                           value={machine.hourCount}
                           onChange={(event) =>
-                            handleMachineDetailChange(event, index, 'hourCount')
+                            handleMachineDetailChange(event, index, "hourCount")
                           }
                           placeholder="Hour Count"
                           class="form-control formcontrolinput"
@@ -603,7 +603,7 @@ function CreateProject() {
                           name="nomSpeed"
                           value={machine.nomSpeed}
                           onChange={(event) =>
-                            handleMachineDetailChange(event, index, 'nomSpeed')
+                            handleMachineDetailChange(event, index, "nomSpeed")
                           }
                           placeholder="Nominal Speed"
                           class="form-control formcontrolinput"
@@ -625,7 +625,7 @@ function CreateProject() {
                           name="actSpeed"
                           value={machine.actSpeed}
                           onChange={(event) =>
-                            handleMachineDetailChange(event, index, 'actSpeed')
+                            handleMachineDetailChange(event, index, "actSpeed")
                           }
                           placeholder="Actual Speed"
                           class="form-control formcontrolinput"
@@ -704,7 +704,7 @@ function CreateProject() {
                     color="black"
                     className="border border-0 btn fs-1  btn-success"
                     onClick={addMachineDetail}
-                  />{' '}
+                  />{" "}
                   Add Machine Details
                 </div>
                 <div>
