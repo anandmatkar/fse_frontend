@@ -12,7 +12,8 @@ import * as Yup from "yup";
 import EditProjectAddMachineModal from "./EditProjectAddMachineModal";
 import "./EditProjectDetailsModal.css";
 import EditProjectViewMachineModal from "./EditProjectViewMachineModal";
-import { Alert } from "antd";
+import { Alert, Space, Tag, Button as AntButton } from "antd";
+import { NavLink } from "react-router-dom";
 
 function EditProjectDetailsModal({ show, onHide, project, fetchProjectList }) {
   const [showAddMachineModal, setShowAddMachineModal] = useState(false);
@@ -20,7 +21,7 @@ function EditProjectDetailsModal({ show, onHide, project, fetchProjectList }) {
   const [machineFormDataList, setMachineFormDataList] = useState([]);
   const [technicians, setTechnicians] = useState([]);
 
-  // console.log(project);
+  console.log(project);
 
   const handleOpenAddMachineModal = () => {
     setShowAddMachineModal(true);
@@ -249,13 +250,50 @@ function EditProjectDetailsModal({ show, onHide, project, fetchProjectList }) {
               </Col>
             </Row>
 
-            <Button
-              onClick={handleOpenAddMachineModal}
-              size="sm"
-              className="mb-2 mx-2"
-            >
-              Add Machine
-            </Button>
+            <Row>
+              <Col lg={4} md={4} sm={4} xs={4}>
+                <Button
+                  onClick={handleOpenAddMachineModal}
+                  size="sm"
+                  className="mb-2 mx-2"
+                >
+                  Add Machine
+                </Button>
+              </Col>
+              <Col lg={8} md={8} sm={8} xs={8}>
+                <span>
+                  <Alert
+                    type="info"
+                    showIcon
+                    className="fw-bolder p-1"
+                    // message={` Machines Attached : ${project.machine_count}`}
+                    action={
+                      <Space className="text-center">
+                        <Row>
+                          <Col lg={12} md={12}>
+                            <span>{` Machines Attached : ${project.machine_count}`}</span>
+                          </Col>
+                          <Col lg={12} md={12}>
+                            <NavLink
+                              to={`/project-attached-machine-details/${project.project_id}`}
+                            >
+                              <AntButton
+                                type="text"
+                                size="small"
+                                ghost
+                                className="fw-bold text-primary"
+                              >
+                                Manage Machines
+                              </AntButton>
+                            </NavLink>
+                          </Col>
+                        </Row>
+                      </Space>
+                    }
+                  />
+                </span>
+              </Col>
+            </Row>
 
             {/* <Button
               onClick={handleOpenViewMachineModal}

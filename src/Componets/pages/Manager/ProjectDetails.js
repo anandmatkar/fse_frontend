@@ -393,7 +393,7 @@ function ProjectDetails() {
                                     <th>Nominal Count</th>
                                     <th>Actual Count</th>
                                     <th>Report</th>
-                                    {/* <th>Status</th> */}
+                                    <th>Status</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -436,6 +436,29 @@ function ProjectDetails() {
                                           </td>
                                           <td>
                                             <div>{machine.act_speed}</div>
+                                          </td>
+                                          <td>
+                                            {machine.tech_machine_data.length >
+                                              0 &&
+                                              machine.tech_machine_data.map(
+                                                (technician, techIndex) => (
+                                                  <>
+                                                    <span className="my-2 report-icon">
+                                                      <Button
+                                                        size="sm"
+                                                        onClick={() =>
+                                                          navigateToShowReports(
+                                                            technician.tech_id,
+                                                            technician.machine_id
+                                                          )
+                                                        }
+                                                      >
+                                                        Reports
+                                                      </Button>
+                                                    </span>
+                                                  </>
+                                                )
+                                              )}
                                           </td>
                                           <td>
                                             {machine.tech_machine_data.length >

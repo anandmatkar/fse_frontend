@@ -134,7 +134,7 @@ function ProjectStatus() {
 
   useEffect(() => {
     fetchProjectList();
-  }, []);
+  }, [navigate]);
 
   return (
     <>

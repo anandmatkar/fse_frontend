@@ -23,6 +23,7 @@ import { BsFiletypeDoc } from "react-icons/bs";
 import PageSpinner from "../Common/PageSpinner";
 import Cookies from "js-cookie";
 import { FaArrowLeft } from "react-icons/fa";
+import EditProjectMachineAttach from "./EditProjectMachineAttach";
 
 export default function EditProjectMachineInfo() {
   const navigate = useNavigate();
@@ -32,18 +33,21 @@ export default function EditProjectMachineInfo() {
   const [machineInfoDetails, setMachineInfoDetails] = useState([]);
   const [projectSpecificDetails, setProjectSpecificDetails] = useState([]);
   const [machineAttachDetails, setMachineAttachDetails] = useState([]);
-  const [editMode, setEditMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isFetchingMachineDetails, setIsFetchingMachineDetails] =
     useState(false);
 
-  const handleEdit = () => {
-    setEditMode(true);
+  // State variables for modal
+  const [showEditMachAttachModal, setShowEditMachAttachModal] = useState(false);
+
+  // Function to open modal and set selected attachment
+  const handleOpenEditMachAttachModal = () => {
+    setShowEditMachAttachModal(true);
   };
 
-  const handleCancel = () => {
-    setEditMode(false);
-    navigate(-1);
+  // Function to close modal
+  const handleCloseEditMachAttachModal = () => {
+    setShowEditMachAttachModal(false);
   };
 
   const handleEditMachineDetails = async (e) => {
@@ -68,7 +72,6 @@ export default function EditProjectMachineInfo() {
       );
 
       if (response.data.status === 200) {
-        setEditMode(false);
         toast.success(response.data.message);
         navigate(-1);
       } else {
@@ -186,189 +189,114 @@ export default function EditProjectMachineInfo() {
                 </Button>
               </Col>
             </Row>
-            {editMode ? (
-              <Form onSubmit={formik.handleSubmit}>
-                <InputGroup className="mb-3">
-                  <InputGroup.Text id="basic-addon1">
-                    Serial No.
-                  </InputGroup.Text>
-                  <Form.Control
-                    placeholder="Serial No."
-                    aria-label="Serial No."
-                    aria-describedby="basic-addon1"
-                    name="serial"
-                    value={formik.values.serial}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                </InputGroup>
-                {formik.touched.serial && formik.errors.serial && (
-                  <div className="text-danger">{formik.errors.serial}</div>
-                )}
 
-                <InputGroup className="mb-3">
-                  <InputGroup.Text id="basic-addon2">
-                    Machine Type
-                  </InputGroup.Text>
-                  <Form.Control
-                    placeholder="Machine Type"
-                    aria-label="Machine Type"
-                    aria-describedby="basic-addon2"
-                    name="machine_type"
-                    value={formik.values.machine_type}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                </InputGroup>
-                {formik.touched.machine_type && formik.errors.machine_type && (
-                  <div className="text-danger">
-                    {formik.errors.machine_type}
-                  </div>
-                )}
+            <Form onSubmit={formik.handleSubmit}>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon1">Serial No.</InputGroup.Text>
+                <Form.Control
+                  placeholder="Serial No."
+                  aria-label="Serial No."
+                  aria-describedby="basic-addon1"
+                  name="serial"
+                  value={formik.values.serial}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </InputGroup>
+              {formik.touched.serial && formik.errors.serial && (
+                <div className="text-danger">{formik.errors.serial}</div>
+              )}
 
-                <InputGroup className="mb-3">
-                  <InputGroup.Text>Description</InputGroup.Text>
-                  <Form.Control
-                    as="textarea"
-                    aria-label="With textarea"
-                    placeholder="Machine Description"
-                    name="description"
-                    value={formik.values.description}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                </InputGroup>
-                {formik.touched.description && formik.errors.description && (
-                  <div className="text-danger">{formik.errors.description}</div>
-                )}
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon2">
+                  Machine Type
+                </InputGroup.Text>
+                <Form.Control
+                  placeholder="Machine Type"
+                  aria-label="Machine Type"
+                  aria-describedby="basic-addon2"
+                  name="machine_type"
+                  value={formik.values.machine_type}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </InputGroup>
+              {formik.touched.machine_type && formik.errors.machine_type && (
+                <div className="text-danger">{formik.errors.machine_type}</div>
+              )}
 
-                <InputGroup>
-                  <InputGroup.Text className="me-4">
-                    Attachments
-                  </InputGroup.Text>
-                  {machineAttachDetails === null ? (
-                    <>No Attachments Found</>
-                  ) : (
-                    machineAttachDetails.map((document) => (
-                      <>
-                        <NavLink
-                          as={NavLink}
-                          to={document.file_path}
-                          target="_blank"
-                        >
-                          <BsFiletypeDoc className="fs-3 mx-3">
-                            Document
-                          </BsFiletypeDoc>
-                        </NavLink>
-                      </>
-                    ))
-                  )}
-                </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text>Description</InputGroup.Text>
+                <Form.Control
+                  as="textarea"
+                  aria-label="With textarea"
+                  placeholder="Machine Description"
+                  name="description"
+                  value={formik.values.description}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </InputGroup>
+              {formik.touched.description && formik.errors.description && (
+                <div className="text-danger">{formik.errors.description}</div>
+              )}
 
-                <Button
-                  type="submit"
-                  variant="success"
-                  className="my-4 mx-2"
-                  disabled={isSubmitting || !formik.isValid}
-                >
-                  {isSubmitting ? (
-                    <Spinner animation="border" size="sm" />
-                  ) : (
-                    "Update Machine Details"
-                  )}
+              <InputGroup>
+                {/* <InputGroup.Text className="me-4">Attachments</InputGroup.Text>
+                {machineAttachDetails === null ? (
+                  <>No Attachments Found</>
+                ) : (
+                  machineAttachDetails.map((document) => (
+                    <>
+                      <NavLink
+                        as={NavLink}
+                        to={document.file_path}
+                        target="_blank"
+                      >
+                        <BsFiletypeDoc className="fs-3 mx-3">
+                          Document
+                        </BsFiletypeDoc>
+                      </NavLink>
+                    </>
+                  ))
+                )} */}
+                <Button size="sm" onClick={handleOpenEditMachAttachModal}>
+                  View Attachments
                 </Button>
-                <Button
-                  variant="danger"
-                  onClick={handleCancel}
-                  className="my-4 mx-2"
-                >
-                  Cancel
-                </Button>
-              </Form>
-            ) : (
-              // View mode with non-editable input fields
-              <>
-                <InputGroup className="mb-3">
-                  <InputGroup.Text id="basic-addon1">
-                    Serial No.
-                  </InputGroup.Text>
-                  <Form.Control
-                    placeholder="Serial No."
-                    aria-label="Serial No."
-                    aria-describedby="basic-addon1"
-                    value={formik.values.serial}
-                    onChange={formik.handleChange}
-                    readOnly
-                  />
-                </InputGroup>
-                {formik.touched.serial && formik.errors.serial && (
-                  <div className="text-danger">{formik.errors.serial}</div>
+              </InputGroup>
+
+              <Button
+                type="submit"
+                variant="success"
+                className="my-4 mx-2"
+                disabled={isSubmitting || !formik.isValid}
+              >
+                {isSubmitting ? (
+                  <Spinner animation="border" size="sm" />
+                ) : (
+                  "Update Machine Details"
                 )}
-
-                <InputGroup className="mb-3">
-                  <InputGroup.Text id="basic-addon2">
-                    Machine Type
-                  </InputGroup.Text>
-                  <Form.Control
-                    placeholder="Machine Type"
-                    aria-label="Machine Type"
-                    aria-describedby="basic-addon2"
-                    value={formik.values.machine_type}
-                    onChange={formik.handleChange}
-                    readOnly
-                  />
-                </InputGroup>
-                {formik.touched.machine_type && formik.errors.machine_type && (
-                  <div className="text-danger">
-                    {formik.errors.machine_type}
-                  </div>
-                )}
-
-                <InputGroup className="mb-3">
-                  <InputGroup.Text>Description</InputGroup.Text>
-                  <Form.Control
-                    as="textarea"
-                    aria-label="With textarea"
-                    placeholder="Machine Description"
-                    value={formik.values.description}
-                    onChange={formik.handleChange}
-                    readOnly
-                  />
-                </InputGroup>
-                {formik.touched.description && formik.errors.description && (
-                  <div className="text-danger">{formik.errors.description}</div>
-                )}
-
-                <InputGroup>
-                  <InputGroup.Text className="me-4">
-                    Attachments
-                  </InputGroup.Text>
-                  {machineAttachDetails === null ? (
-                    <>No Attachments Found</>
-                  ) : (
-                    machineAttachDetails.map((document) => (
-                      <>
-                        <NavLink
-                          as={NavLink}
-                          to={document.file_path}
-                          target="_blank"
-                        >
-                          <BsFiletypeDoc className="fs-3 mx-3">
-                            Document
-                          </BsFiletypeDoc>
-                        </NavLink>
-                      </>
-                    ))
-                  )}
-                </InputGroup>
-
-                <Button variant="info" className="my-4" onClick={handleEdit}>
-                  Edit Machine Info
-                </Button>
-              </>
-            )}
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => navigate(-1)}
+                className="my-4 mx-2"
+              >
+                Cancel
+              </Button>
+            </Form>
           </>
         )}
+
+        <EditProjectMachineAttach
+          showModal={showEditMachAttachModal}
+          onSubmit={(values) => {
+            console.log(values);
+          }}
+          onCancel={handleCloseEditMachAttachModal}
+          machineInfoDetails={machineInfoDetails}
+          machineAttachDetails={machineAttachDetails}
+        />
       </Container>
     </>
   );

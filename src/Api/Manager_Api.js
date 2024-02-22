@@ -1,5 +1,5 @@
-import Base from 'antd/es/typography/Base';
-import { Base_Url } from './Base_Url';
+import Base from "antd/es/typography/Base";
+import { Base_Url } from "./Base_Url";
 
 export const Manager_Base_Url = `${Base_Url}api/v1/manager/`;
 
@@ -46,3 +46,5 @@ export const Machine_Details_APi = `${Base_Url}machineData?`;
 export const Insert_Customer_Api = `${Base_Url}api/v1/manager/insertCustomer?`;
 export const Show_Signed_Paper_Technicians = `${Base_Url}api/v1/manager/showSignedPaper`;
 export const Approve_Project_Api = `${Base_Url}api/v1/manager/completeProject`;
+export const Delete_Machine_Attachment = `${Base_Url}api/v1/manager/deleteMachineAttach`;
+export const Upload_Machine_Files_While_Editing = `${Base_Url}api/v1/manager/uploadMachineFilesWhileEditing`;
