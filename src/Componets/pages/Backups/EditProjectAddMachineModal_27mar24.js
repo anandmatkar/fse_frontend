@@ -365,7 +365,6 @@ import {
 
 function EditProjectAddMachineModal({ show, onHide, project, onSubmit }) {
   const [technicians, setTechnicians] = useState([]);
-  const { machine_count } = project;
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -472,231 +471,213 @@ function EditProjectAddMachineModal({ show, onHide, project, onSubmit }) {
             {({ values, handleChange, handleSubmit, setFieldValue }) => (
               <FormikForm>
                 {values.machineFormDataList.map((item, index) => (
-                  <>
-                    <label className="fs-6 fw-bold">{`Machine ${
-                      index + 1
-                    }`}</label>
-                    <Card key={index} className="mb-3 border-2" border="dark">
-                      <Card.Header>
-                        <Row>
-                          <Col lg={4} md={6} sm={12}>
-                            <Form.Group
-                              controlId={`MachineType${index}`}
-                              className="mb-3"
-                            >
-                              <Form.Label className="fw-bold">
-                                Machine Type
-                              </Form.Label>
-                              <Field
-                                type="text"
-                                name={`machineFormDataList[${index}].MachineType`}
-                                className="form-control"
-                              />
-                              <ErrorMessage
-                                name={`machineFormDataList[${index}].MachineType`}
-                                component="div"
-                                className="text-danger"
-                              />
-                            </Form.Group>
-                          </Col>
-                          <Col lg={4} md={6} sm={12}>
-                            <Form.Group
-                              controlId={`MachineSerial${index}`}
-                              className="mb-3"
-                            >
-                              <Form.Label className="fw-bold">
-                                Serial Number
-                              </Form.Label>
-                              <Field
-                                type="text"
-                                name={`machineFormDataList[${index}].MachineSerial`}
-                                className="form-control"
-                              />
-                              <ErrorMessage
-                                name={`machineFormDataList[${index}].MachineSerial`}
-                                component="div"
-                                className="text-danger"
-                              />
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg={4} md={6} sm={12}>
-                            <Form.Group
-                              controlId={`hourCount${index}`}
-                              className="mb-3"
-                            >
-                              <Form.Label className="fw-bold">
-                                Hour Count
-                              </Form.Label>
-                              <Field
-                                type="text"
-                                name={`machineFormDataList[${index}].hourCount`}
-                                className="form-control"
-                              />
-                              <ErrorMessage
-                                name={`machineFormDataList[${index}].hourCount`}
-                                component="div"
-                                className="text-danger"
-                              />
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg={4} md={6} sm={12}>
-                            <Form.Group
-                              controlId={`nomSpeed${index}`}
-                              className="mb-3"
-                            >
-                              <Form.Label className="fw-bold">
-                                Nominal Speed
-                              </Form.Label>
-                              <Field
-                                type="text"
-                                name={`machineFormDataList[${index}].nomSpeed`}
-                                className="form-control"
-                              />
-                              <ErrorMessage
-                                name={`machineFormDataList[${index}].nomSpeed`}
-                                component="div"
-                                className="text-danger"
-                              />
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg={4} md={6} sm={12}>
-                            <Form.Group
-                              controlId={`actSpeed${index}`}
-                              className="mb-3"
-                            >
-                              <Form.Label className="fw-bold">
-                                Actual Speed
-                              </Form.Label>
-                              <Field
-                                type="text"
-                                name={`machineFormDataList[${index}].actSpeed`}
-                                className="form-control"
-                              />
-                              <ErrorMessage
-                                name={`machineFormDataList[${index}].actSpeed`}
-                                component="div"
-                                className="text-danger"
-                              />
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg={4} md={6} sm={12}>
-                            <Form.Group
-                              controlId={`techIds${index}`}
-                              className="mb-3"
-                            >
-                              <Form.Label className="fw-bold">
-                                Technician
-                              </Form.Label>
-                              <Select
-                                placeholder="Select Technicians"
-                                menuPortalTarget={document.body}
-                                styles={customStyles}
-                                options={technicians.map((tech) => ({
-                                  label: tech.name,
-                                  value: tech.id,
-                                }))}
-                                isMulti
-                                onChange={(selectedOptions) => {
-                                  const selectedTechnicians =
-                                    selectedOptions.map(
-                                      (option) => option.value
-                                    );
-                                  setFieldValue(
-                                    `machineFormDataList[${index}].techIds`,
-                                    selectedTechnicians
-                                  );
-                                }}
-                              />
-                              <ErrorMessage
-                                name={`machineFormDataList[${index}].techIds`}
-                                component="div"
-                                className="text-danger"
-                              />
-                            </Form.Group>
-                          </Col>
-
+                  <Card key={index} className="mb-3 border-2" border="dark">
+                    <Card.Header>
+                      <Row>
+                        <Col lg={4} md={6} sm={12}>
                           <Form.Group
-                            controlId={`machineAttach${index}`}
+                            controlId={`MachineType${index}`}
                             className="mb-3"
                           >
                             <Form.Label className="fw-bold">
-                              Machine Attachments
+                              Machine Type
                             </Form.Label>
-                            <Form.Control
-                              type="file"
-                              size="sm"
-                              name="machineAttach"
-                              onChange={(e) => handleChange(e, index)}
-                              multiple // Allow multiple file selection if needed
+                            <Field
+                              type="text"
+                              name={`machineFormDataList[${index}].MachineType`}
+                              className="form-control"
+                            />
+                            <ErrorMessage
+                              name={`machineFormDataList[${index}].MachineType`}
+                              component="div"
+                              className="text-danger"
                             />
                           </Form.Group>
+                        </Col>
+                        <Col lg={4} md={6} sm={12}>
+                          <Form.Group
+                            controlId={`MachineSerial${index}`}
+                            className="mb-3"
+                          >
+                            <Form.Label className="fw-bold">
+                              Serial Number
+                            </Form.Label>
+                            <Field
+                              type="text"
+                              name={`machineFormDataList[${index}].MachineSerial`}
+                              className="form-control"
+                            />
+                            <ErrorMessage
+                              name={`machineFormDataList[${index}].MachineSerial`}
+                              component="div"
+                              className="text-danger"
+                            />
+                          </Form.Group>
+                        </Col>
 
-                          <Row>
-                            <Col>
-                              {values.machineFormDataList.length > 1 && (
-                                <Button
-                                  type="button"
-                                  variant="danger"
-                                  size="sm"
-                                  onClick={() => {
-                                    const updatedMachineFormDataList =
-                                      values.machineFormDataList.filter(
-                                        (_, i) => i !== index
-                                      );
-                                    setFieldValue(
-                                      "machineFormDataList",
-                                      updatedMachineFormDataList
-                                    );
-                                  }}
-                                >
-                                  Remove
-                                </Button>
-                              )}
-                            </Col>
-                            <Col></Col>
-                            <Col></Col>
-                            <Col></Col>
-                          </Row>
+                        <Col lg={4} md={6} sm={12}>
+                          <Form.Group
+                            controlId={`hourCount${index}`}
+                            className="mb-3"
+                          >
+                            <Form.Label className="fw-bold">
+                              Hour Count
+                            </Form.Label>
+                            <Field
+                              type="text"
+                              name={`machineFormDataList[${index}].hourCount`}
+                              className="form-control"
+                            />
+                            <ErrorMessage
+                              name={`machineFormDataList[${index}].hourCount`}
+                              component="div"
+                              className="text-danger"
+                            />
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg={4} md={6} sm={12}>
+                          <Form.Group
+                            controlId={`nomSpeed${index}`}
+                            className="mb-3"
+                          >
+                            <Form.Label className="fw-bold">
+                              Nominal Speed
+                            </Form.Label>
+                            <Field
+                              type="text"
+                              name={`machineFormDataList[${index}].nomSpeed`}
+                              className="form-control"
+                            />
+                            <ErrorMessage
+                              name={`machineFormDataList[${index}].nomSpeed`}
+                              component="div"
+                              className="text-danger"
+                            />
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg={4} md={6} sm={12}>
+                          <Form.Group
+                            controlId={`actSpeed${index}`}
+                            className="mb-3"
+                          >
+                            <Form.Label className="fw-bold">
+                              Actual Speed
+                            </Form.Label>
+                            <Field
+                              type="text"
+                              name={`machineFormDataList[${index}].actSpeed`}
+                              className="form-control"
+                            />
+                            <ErrorMessage
+                              name={`machineFormDataList[${index}].actSpeed`}
+                              component="div"
+                              className="text-danger"
+                            />
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg={4} md={6} sm={12}>
+                          <Form.Group
+                            controlId={`techIds${index}`}
+                            className="mb-3"
+                          >
+                            <Form.Label className="fw-bold">
+                              Technician
+                            </Form.Label>
+                            <Select
+                              placeholder="Select Technicians"
+                              menuPortalTarget={document.body}
+                              styles={customStyles}
+                              options={technicians.map((tech) => ({
+                                label: tech.name,
+                                value: tech.id,
+                              }))}
+                              isMulti
+                              onChange={(selectedOptions) => {
+                                const selectedTechnicians = selectedOptions.map(
+                                  (option) => option.value
+                                );
+                                setFieldValue(
+                                  `machineFormDataList[${index}].techIds`,
+                                  selectedTechnicians
+                                );
+                              }}
+                            />
+                            <ErrorMessage
+                              name={`machineFormDataList[${index}].techIds`}
+                              component="div"
+                              className="text-danger"
+                            />
+                          </Form.Group>
+                        </Col>
+
+                        <Form.Group
+                          controlId={`machineAttach${index}`}
+                          className="mb-3"
+                        >
+                          <Form.Label className="fw-bold">
+                            Machine Attachments
+                          </Form.Label>
+                          <Form.Control
+                            type="file"
+                            size="sm"
+                            name="machineAttach"
+                            onChange={(e) => handleChange(e, index)}
+                            multiple // Allow multiple file selection if needed
+                          />
+                        </Form.Group>
+
+                        <Row>
+                          <Col>
+                            {" "}
+                            <Button
+                              type="button"
+                              variant="danger"
+                              size="sm"
+                              onClick={() => {
+                                const updatedMachineFormDataList =
+                                  values.machineFormDataList.filter(
+                                    (_, i) => i !== index
+                                  );
+                                setFieldValue(
+                                  "machineFormDataList",
+                                  updatedMachineFormDataList
+                                );
+                              }}
+                            >
+                              Remove
+                            </Button>{" "}
+                          </Col>
+                          <Col></Col>
+                          <Col></Col>
+                          <Col></Col>
                         </Row>
-                      </Card.Header>
-                    </Card>
-                  </>
+                      </Row>
+                    </Card.Header>
+                  </Card>
                 ))}
-
-                {values.machineFormDataList.length + parseInt(machine_count) <
-                  10 && (
-                  <Button
-                    type="button"
-                    className="mb-2"
-                    onClick={() => {
-                      const totalMachineCount =
-                        values.machineFormDataList.length +
-                        parseInt(machine_count);
-                      if (totalMachineCount <= 10) {
-                        setFieldValue("machineFormDataList", [
-                          ...values.machineFormDataList,
-                          {
-                            MachineType: "",
-                            MachineSerial: "",
-                            hourCount: "",
-                            nomSpeed: "",
-                            actSpeed: "",
-                            techIds: [],
-                            machineAttach: "",
-                          },
-                        ]);
-                      } else {
-                        toast.error("Maximum machine count reached.");
-                      }
-                    }}
-                  >
-                    Add
-                  </Button>
-                )}
+                <Button
+                  type="button"
+                  className="mb-2"
+                  onClick={() =>
+                    setFieldValue("machineFormDataList", [
+                      ...values.machineFormDataList,
+                      {
+                        MachineType: "",
+                        MachineSerial: "",
+                        hourCount: "",
+                        nomSpeed: "",
+                        actSpeed: "",
+                        techIds: [],
+                        machineAttach: "",
+                      },
+                    ])
+                  }
+                >
+                  Add
+                </Button>
 
                 <Modal.Footer>
                   <Button variant="secondary" onClick={onHide}>
