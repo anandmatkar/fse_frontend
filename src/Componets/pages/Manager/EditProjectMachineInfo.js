@@ -1,9 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Container,
-  Table,
   Form,
   Row,
   Col,
@@ -19,7 +18,6 @@ import {
   Project_Machine_Details,
 } from "../../../Api/Manager_Api";
 import NavbarManagerDashboard from "../../NavBar/navbarManagerDashboard";
-import { BsFiletypeDoc } from "react-icons/bs";
 import PageSpinner from "../Common/PageSpinner";
 import Cookies from "js-cookie";
 import { FaArrowLeft } from "react-icons/fa";
@@ -31,7 +29,6 @@ export default function EditProjectMachineInfo() {
   let { projectID, machineID } = useParams();
 
   const [machineInfoDetails, setMachineInfoDetails] = useState([]);
-  const [projectSpecificDetails, setProjectSpecificDetails] = useState([]);
   const [machineAttachDetails, setMachineAttachDetails] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isFetchingMachineDetails, setIsFetchingMachineDetails] =
@@ -84,7 +81,30 @@ export default function EditProjectMachineInfo() {
     }
   };
 
-  const fetchMachineDetails = async () => {
+  const validationSchema = Yup.object().shape({
+    serial: Yup.string().required("Serial No. is required"),
+    machine_type: Yup.string().required("Machine Type is required"),
+    hour_count: Yup.number().required("Hour Count is required"),
+    nom_speed: Yup.number().required("Nominal Speed is required"),
+    act_speed: Yup.number().required("Actual Speed is required"),
+    description: Yup.string().required("Description is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      machine_id: "",
+      machine_type: "",
+      serial: "",
+      hour_count: "",
+      nom_speed: "",
+      act_speed: "",
+      description: "",
+    },
+    validationSchema,
+    onSubmit: handleEditMachineDetails,
+  });
+
+  const fetchMachineDetails = useCallback(async () => {
     try {
       setIsFetchingMachineDetails(true);
 
@@ -123,9 +143,9 @@ export default function EditProjectMachineInfo() {
             machine_id: machineDetails.machine_id,
             machine_type: machineDetails.machine_type,
             serial: machineDetails.serial,
-            // hour_count: machineDetails.hour_count,
-            // nom_speed: machineDetails.nom_speed,
-            // act_speed: machineDetails.act_speed,
+            hour_count: machineDetails.hour_count,
+            nom_speed: machineDetails.nom_speed,
+            act_speed: machineDetails.act_speed,
             description: machineDetails.description,
           });
         }
@@ -135,34 +155,11 @@ export default function EditProjectMachineInfo() {
     } finally {
       setIsFetchingMachineDetails(false);
     }
-  };
-
-  const validationSchema = Yup.object().shape({
-    serial: Yup.string().required("Serial No. is required"),
-    machine_type: Yup.string().required("Machine Type is required"),
-    // hour_count: Yup.number().required("Hour Count is required"),
-    // nom_speed: Yup.number().required("Nominal Speed is required"),
-    // act_speed: Yup.number().required("Actual Speed is required"),
-    description: Yup.string().required("Description is required"),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      machine_id: "",
-      machine_type: "",
-      serial: "",
-      // hour_count: "",
-      // nom_speed: "",
-      // act_speed: "",
-      description: "",
-    },
-    validationSchema,
-    onSubmit: handleEditMachineDetails,
-  });
+  }, [projectID, machineID]);
 
   useEffect(() => {
     fetchMachineDetails();
-  }, [projectID, machineID]);
+  }, [projectID, machineID, fetchMachineDetails]);
 
   return (
     <>
@@ -239,6 +236,54 @@ export default function EditProjectMachineInfo() {
               </InputGroup>
               {formik.touched.description && formik.errors.description && (
                 <div className="text-danger">{formik.errors.description}</div>
+              )}
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text>Hour Count</InputGroup.Text>
+                <Form.Control
+                  placeholder="Hour Count"
+                  aria-label="Hour Count"
+                  aria-describedby="basic-addon4"
+                  name="hour_count"
+                  value={formik.values.hour_count}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </InputGroup>
+              {formik.touched.hour_count && formik.errors.hour_count && (
+                <div className="text-danger">{formik.errors.hour_count}</div>
+              )}
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text>Nominal Speed</InputGroup.Text>
+                <Form.Control
+                  placeholder="Nominal Speed"
+                  aria-label="Nominal Speed"
+                  aria-describedby="basic-addon5"
+                  name="nom_speed"
+                  value={formik.values.nom_speed}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </InputGroup>
+              {formik.touched.nom_speed && formik.errors.nom_speed && (
+                <div className="text-danger">{formik.errors.nom_speed}</div>
+              )}
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text>Actual Speed</InputGroup.Text>
+                <Form.Control
+                  placeholder="Actual Speed"
+                  aria-label="Actual Speed"
+                  aria-describedby="basic-addon6"
+                  name="act_speed"
+                  value={formik.values.act_speed}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </InputGroup>
+              {formik.touched.act_speed && formik.errors.act_speed && (
+                <div className="text-danger">{formik.errors.act_speed}</div>
               )}
 
               <InputGroup>

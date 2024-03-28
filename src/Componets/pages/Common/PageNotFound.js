@@ -3,8 +3,6 @@ import Layout from "../../Layout/Layout";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "./LoginMain.css";
 
-import PageSpinner from "./PageSpinner";
-
 function PageNotFound() {
   return (
     <Layout>
